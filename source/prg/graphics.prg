@@ -177,7 +177,7 @@ CLASS GPGraphics
       METHOD SetPageUnit            ( )
       METHOD SetPixelOffsetMode     ( )
       METHOD SetRenderingOrigin     ( )
-      METHOD SetSmoothingMode       ( ) INLINE SetSmoothingMode(::g)
+      METHOD SetSmoothingMode       ( nMode ) 
       METHOD SetTextContrast        ( )
       METHOD SetTextRenderingHint   ( )
       METHOD SetTransform           ( )
@@ -849,6 +849,26 @@ return 0
 return 0
 
 **********************************************************************************************************
+  METHOD SetSmoothingMode( nMode ) CLASS GPGraphics
+**********************************************************************************************************
+//enum QualityMode
+//{
+//    QualityModeInvalid   = -1,
+//    QualityModeDefault   = 0,
+//    QualityModeLow       = 1, // Best performance
+//    QualityModeHigh      = 2  // Best rendering quality
+//};
+
+DEFAULT nMode := 2 // SmoothingModeHighQuality
+
+SetSmoothingMode(::g, nMode )
+
+return 0
+
+
+
+
+**********************************************************************************************************
   METHOD SetTextContrast( ) CLASS GPGraphics
 **********************************************************************************************************
 
@@ -961,8 +981,6 @@ HB_FUNC( GDIPLUSDELETEGRAPHICS )
    delete (Graphics*) hb_parptr( 1 );
    hb_ret                        ();
 }
-
-
 
 //Status AddMetafileComment(
 //  [in]  const BYTE *data,
@@ -1232,8 +1250,8 @@ HB_FUNC( GP_TRANSLATETRANSFORM )
 HB_FUNC( SETSMOOTHINGMODE )
 {
    Graphics *g = (Graphics*) hb_parptr( 1 );
-   //g->SetSmoothingMode(SmoothingModeHighQuality);
-   g->SetSmoothingMode(SmoothingModeAntiAlias);
+   SmoothingMode  q = (SmoothingMode ) hb_parni( 2 );
+   g->SetSmoothingMode(q);
 }
 
 HB_FUNC( SETTEXTRENDERINGHINT )
