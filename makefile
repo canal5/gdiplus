@@ -6,8 +6,6 @@ C_SOURCE_PATH=
 CPP_SOURCE_PATH=
 OBJ_PATH=.\obj
 OBJ_EXT=obj
-FWDIR=c:\fivewin\svn\repo
-HBDIR=c:\harbour
 HBLIB=$(HBDIR)\lib\win\msvc
 FWLIB=$(FWDIR)\lib
 LD=link
@@ -31,7 +29,7 @@ MSVC_LIB=kernel32 user32 gdi32 winspool comctl32 comdlg32 advapi32 shell32 ole32
 					uuid odbc32 odbccp32 iphlpapi mpr version wsock32 psapi msimg32 libcmt oldnames libcpmt oledlg ws2_32 winmm
 
 #user lib
-USER_LIBS= $(DOLPHIN)\lib\HARBOUR\MSVC32\dolphin.lib $(DOLPHIN)\lib\mysql\coff\libmysqlm.lib 
+USER_LIBS=
 
 
 #build internal libs
