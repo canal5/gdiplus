@@ -14,42 +14,42 @@ CLASS GPGraphicsPath
 
    METHOD AddArc( rc, start, angle )          INLINE GP_AddArc(::g, rc, start, angle )
    METHOD AddBezier( aPt1, aPt2, aPt3, aPt4 ) INLINE GP_AddBezier(::g, aPt1, aPt2, aPt3, aPt4 )
-   METHOD AddClosedCurve()                    VIRTUAL
-   METHOD AddCurve()                          VIRTUAL
-   METHOD AddEllipse()                        VIRTUAL
-   METHOD AddLine()                           VIRTUAL
-   METHOD AddLines()                          VIRTUAL
-   METHOD AddPath()                           VIRTUAL
-   METHOD AddPie()                            VIRTUAL
-   METHOD AddPolygon()                        VIRTUAL
-   METHOD AddRectangle()                      VIRTUAL
-   METHOD AddRectangles()                     VIRTUAL
-   METHOD AddString()                         VIRTUAL
-   METHOD ClearMarkers()                      VIRTUAL
-   METHOD Clone()                             VIRTUAL
-   METHOD CloseAllFigures()                   VIRTUAL
-   METHOD CloseFigure()                       VIRTUAL
-   METHOD CreateObjRef()                      VIRTUAL
-   METHOD Dispose()                           VIRTUAL
-   METHOD Equals()                            VIRTUAL
-   METHOD Flatten()                           VIRTUAL
-   METHOD GetBounds()                         VIRTUAL
-   METHOD GetHashCode()                       VIRTUAL
-   METHOD GetLastPoint()                      VIRTUAL
-   METHOD GetLifetimeService()                VIRTUAL
-   METHOD GetType()                           VIRTUAL
-   METHOD InitializeLifetimeService()         VIRTUAL
-   METHOD IsOutlineVisible()                  VIRTUAL
-   METHOD IsVisible()                         VIRTUAL
-   METHOD ReferenceEquals()                   VIRTUAL
-   METHOD Reset()                             VIRTUAL
-   METHOD Reverse()                           VIRTUAL
-   METHOD SetMarkers()                        VIRTUAL
-   METHOD StartFigure()                       VIRTUAL
-   METHOD ToString()                          VIRTUAL
-   METHOD Transform()                         VIRTUAL
-   METHOD Warp()                              VIRTUAL
-   METHOD Widen()                             VIRTUAL
+   METHOD AddClosedCurve()
+   METHOD AddCurve()
+   METHOD AddEllipse()
+   METHOD AddLine()
+   METHOD AddLines()
+   METHOD AddPath()
+   METHOD AddPie()
+   METHOD AddPolygon()
+   METHOD AddRectangle()
+   METHOD AddRectangles()
+   METHOD AddString()
+   METHOD ClearMarkers()
+   METHOD Clone()
+   METHOD CloseAllFigures()
+   METHOD CloseFigure()
+   METHOD CreateObjRef()
+   METHOD Dispose()
+   METHOD Equals()
+   METHOD Flatten()
+   METHOD GetBounds()
+   METHOD GetHashCode()
+   METHOD GetLastPoint()
+   METHOD GetLifetimeService()
+   METHOD GetType()
+   METHOD InitializeLifetimeService()
+   METHOD IsOutlineVisible()
+   METHOD IsVisible()
+   METHOD ReferenceEquals()
+   METHOD Reset()
+   METHOD Reverse()
+   METHOD SetMarkers()
+   METHOD StartFigure()
+   METHOD ToString()
+   METHOD Transform()
+   METHOD Warp()
+   METHOD Widen()
 
 ENDCLASS
 
@@ -60,6 +60,223 @@ ENDCLASS
   ::handle := _GraphicsPath( cFileName )
 
 return self
+
+********************************************************************************************************
+   METHOD AddClosedCurve() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD AddCurve() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD AddEllipse() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD AddLine() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD AddLines() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD AddPath() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD AddPie() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD AddPolygon() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD AddRectangle() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD AddRectangles() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD AddString() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD ClearMarkers() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD Clone() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD CloseAllFigures() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD CloseFigure() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD CreateObjRef() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD Dispose() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD Equals() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD Flatten() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD GetBounds() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD GetHashCode() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD GetLastPoint() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD GetLifetimeService() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD GetType() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD InitializeLifetimeService() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD IsOutlineVisible() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD IsVisible() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD ReferenceEquals() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD Reset() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD Reverse() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD SetMarkers() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD StartFigure() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD ToString() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD Transform() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD Warp() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
+********************************************************************************************************
+   METHOD Widen() CLASS GPGraphicsPath
+********************************************************************************************************
+
+return 0
+
 
 *********************************************************************************************************
   METHOD Destroy() CLASS GPGraphicsPath
@@ -80,19 +297,19 @@ using namespace Gdiplus;
 HB_FUNC( _GRAPHICSPATH )
 {
    GraphicsPath* gp = new GraphicsPath();
-   hb_retptr( (void*) gp );
+   hb_retni( (long) gp );
 }
 
 HB_FUNC( DELETEGRAPHICSPATH )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parptr( 1 );
+   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    delete (GraphicsPath*) gp;
    hb_ret();
 }
 
 HB_FUNC( GP_ADDARC )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parptr( 1 );
+   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    RectF rect = RectF(hb_parvnd( 2, 1 ), hb_parvnd( 2, 2 ), hb_parvnd( 2, 3 ), hb_parvnd( 2, 4 ));
    gp->AddArc( rect, (float) hb_parnd( 3 ), (float) hb_parnd( 4 ) );
    hb_ret();
@@ -100,7 +317,7 @@ HB_FUNC( GP_ADDARC )
 
 HB_FUNC( GP_ADDBEZIER )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parptr( 1 );
+   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    PointF * pf1 = new PointF( (REAL) hb_parvnd( 2, 1 ), (REAL) hb_parvnd( 2, 2 ) );
    PointF * pf2 = new PointF( (REAL) hb_parvnd( 3, 1 ), (REAL) hb_parvnd( 3, 2 ) );
    PointF * pf3 = new PointF( (REAL) hb_parvnd( 4, 1 ), (REAL) hb_parvnd( 4, 2 ) );
@@ -118,7 +335,7 @@ HB_FUNC( GP_ADDBEZIER )
 
 HB_FUNC( GP_ADDCLOSEDCURVE )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parptr( 1 );
+   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
 //   WORD wArray, wVertex, wItem = 0, wLen = 0;
 //   POINT * pBuffer;
 //   int * pItems;
@@ -155,21 +372,21 @@ HB_FUNC( GP_ADDCLOSEDCURVE )
 
 HB_FUNC( GP_ADDELLIPSE )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parptr( 1 );
+   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    gp->AddEllipse( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ));
    hb_ret();
 }
 
 HB_FUNC( GP_ADDLINE )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parptr( 1 );
+   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    gp->AddLine( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ));
    hb_ret();
 }
 
 HB_FUNC( GP_ADDRECTANGLE )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parptr( 1 );
+   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    RectF rect = RectF(hb_parvnd( 2, 1 ), hb_parvnd( 2, 2 ), hb_parvnd( 2, 3 ), hb_parvnd( 2, 4 ));
    gp->AddRectangle( rect );
    hb_ret();
@@ -177,13 +394,13 @@ HB_FUNC( GP_ADDRECTANGLE )
 
 HB_FUNC( GP_ADDSTRING )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parptr( 1 );
+   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    LPWSTR str = hb_mbtowc( (LPSTR) hb_parc( 2 ));
-   FontFamily* ff = (FontFamily*) hb_parptr( 3 );
+   FontFamily* ff = (FontFamily*) hb_parnl( 3 );
    int style = hb_parni( 4 );
    float emSize = (float) hb_parnd( 5 );
    RectF rect = RectF(hb_parvnd( 6, 1 ), hb_parvnd( 6, 2 ), hb_parvnd( 6, 3 ), hb_parvnd( 6, 4 ));
-   StringFormat* sf = (StringFormat*) hb_parptr( 7 );
+   StringFormat* sf = (StringFormat*) hb_parni( 7 );
    gp->AddString( str, hb_parclen( 2 ), ff, style, emSize, rect, sf );
 
    hb_xfree( str );
@@ -192,14 +409,14 @@ HB_FUNC( GP_ADDSTRING )
 
 HB_FUNC( GP_STARTFIGURE )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parptr( 1 );
+   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    gp->StartFigure();
    hb_ret();
 }
 
 HB_FUNC( GP_CLOSEFIGURE )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parptr( 1 );
+   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    gp->CloseFigure();
    hb_ret();
 }
