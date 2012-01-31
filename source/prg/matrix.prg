@@ -168,7 +168,11 @@ return 0
 
 return 0
 
+*********************************************************************************************************
+  METHOD Destroy() CLASS GPMatrix
+*********************************************************************************************************
 
+return nil
 
 // Matrix::Matrix()	                         Creates and initializes a Matrix::Matrix object that represents the identity matrix.
 // Matrix::Matrix(REAL,REAL,REAL,REAL,REAL,REAL) Creates and initializes a Matrix::Matrix object based on six numbers that define an affine transformation.
