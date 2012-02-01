@@ -15,7 +15,7 @@ CC_FLAGS=-nologo -c -TP -W3 -GA -I$(HBDIR)\include -I$(FWDIR)\include -I.\includ
 
 #should use tabs to indent lines
 #we dont need extention
-SRC_FILES_PRG= graphics color font fontfamily GraphicsPath image LinearGB pathgradient pen solidbrush stringformat 
+SRC_FILES_PRG=graphics color CustomLineCap font fontfamily gdiplus GraphicsPath HueSaturationLightness image LinearGradientBrush matrix metafile metafileheader pathgradient pathgradientbrush pen solidbrush stringformat TextureBrush 
 SRC_FILES_C=
 SRC_FILES_CPP=
 

@@ -127,7 +127,7 @@ HB_FUNC( GPSAVEIMAGE )
 //    [in]  const CLSID *clsidEncoder,
 //    [in]  const EncoderParameters *encoderParams
 //  );
-
+/*
   Image* img = (Image*) hb_parptr( 1 );
   WCHAR* filename;
   CLSID clsidEncoder;
@@ -180,7 +180,7 @@ HB_FUNC( GPSAVEIMAGE )
   h = img->Save( filename, &clsidEncoder, encoderParams );
 
   hb_retni( h );
-
+*/
 }
 
 

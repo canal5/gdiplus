@@ -33,7 +33,7 @@ ENDCLASS
   METHOD New( cFileName ) CLASS GPMetafile
 *******************************************************************************
 
-  ::handle := GPMetafile( cFileName )
+  ::handle := GPMetafile_( cFileName )
 
 return self
 
@@ -149,7 +149,7 @@ return nil
 
 using namespace Gdiplus;
 
-HB_FUNC( GPMETAFILE )
+HB_FUNC( GPMETAFILE_ )
 {
    //Metafile(
    //  [in]  const WCHAR *filename

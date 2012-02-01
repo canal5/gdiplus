@@ -110,7 +110,7 @@ return GPPenSetAlignment( ::handle )
   METHOD GetBrush() CLASS GPPen
 *********************************************************************************************************
 
-return
+return 0
 
 *********************************************************************************************************
   METHOD GetColor() CLASS GPPen
@@ -405,6 +405,7 @@ return GPPenSetWidth( ::handle, nWidth )
 #pragma BEGINDUMP
 #include "windows.h"
 #include "hbapi.h"
+#include <hbapiitm.h>
 #include <gdiplus.h>
 
 using namespace Gdiplus;
@@ -482,13 +483,27 @@ HB_FUNC( GPPENSETBRUSH )
 //   [in]  INT count
 // );
 
-HB_FUNC( GPPENSETDASHPATTERN )
+HB_FUNC(GPPENSETDASHPATTERN )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   ¿¿¿Array de REALES???
+	Pen* p = (Pen*) hb_parptr( 1 );
+  int iLen;
+	REAL * pReal; 
+	PHB_ITEM aDashVals = hb_param( 2, HB_IT_ARRAY );
+	PHB_ITEM pItem;
+	INT j;
+	iLen = hb_arrayLen( aDashVals );
+	pReal = ( REAL * ) hb_xgrab( sizeof( REAL )* iLen );
 
-   hb_retni( (int) p->SetDashPattern( dasharray, hb_parni( 2 )));
-}
+  for( j = 0; j < iLen; j++ )
+  {
+	  pItem = hb_itemArrayGet( aDashVals, j + 1 );
+   	pReal[ j ] = ( REAL ) hb_arrayGetND( pItem, 1 );
+  }
+	
+	hb_retni( (int) p->SetDashPattern( pReal, iLen ) );
+	hb_xfree( ( void *) pReal );	
+	
+} 
 
 
 // Status SetDashStyle(
@@ -517,7 +532,7 @@ HB_FUNC( GPPENSETCOLOR )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    Color* c = (Color*) hb_parptr( 2 );
-   hb_retni( (int) p->SetColor( c ) );
+   hb_retni( (int) p->SetColor( c->GetValue() ) );
 
 }
 
@@ -555,7 +570,7 @@ HB_FUNC( GPPENSETSTARTCAP )
 HB_FUNC( GPPENSETWIDTH )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->SetWidth( (REAL) hb_parnd( 2 ) );
+   hb_retni( (int) p->SetWidth( (REAL) hb_parnd( 2 ) ) );
 }
 
 
