@@ -75,7 +75,7 @@ return 0
 local g       := Graphics( hDC )
 local oColor  := Color( 255,0,0,0 )
 local oPen1   := Pen( oColor, 1 )
-
+oPen1:SetDashPattern( { 5, 2, 15, 4 } )
 g:SetSmoothingMode()
 g:SetPen( oPen1 )
 

@@ -494,11 +494,11 @@ HB_FUNC(GPPENSETDASHPATTERN )
 	INT j;
 	iLen = hb_arrayLen( aDashVals );
 	pReal = ( REAL * ) hb_xgrab( sizeof( REAL )* iLen );
+	
 
   for( j = 0; j < iLen; j++ )
   {
-	  pItem = hb_itemArrayGet( aDashVals, j + 1 );
-   	pReal[ j ] = ( REAL ) hb_arrayGetND( pItem, 1 );
+   	pReal[ j ] = ( REAL ) hb_arrayGetND( aDashVals, j + 1 );
   }
 
 	hb_retni( (int) p->SetDashPattern( pReal, iLen ) );
@@ -576,3 +576,5 @@ HB_FUNC( GPPENSETWIDTH )
 
 
 #pragma ENDDUMP
+
+
