@@ -311,10 +311,10 @@ return GPPenSetDashStyle( ::handle, dashStyle )
 return GPPenSetEndCap( ::handle, linecap )
 
 *********************************************************************************************************
-  METHOD SetLineCap() CLASS GPPen
+  METHOD SetLineCap( startCap, dashCap, endCap) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenSetLineCap( ::handle, startCap, endCap, dashCap )
 
 *********************************************************************************************************
   METHOD SetLineJoin( linejoin ) CLASS GPPen
