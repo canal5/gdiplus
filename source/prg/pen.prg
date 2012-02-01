@@ -43,8 +43,8 @@ CLASS GPPen
   METHOD ResetTransform()
   METHOD RotateTransform()
   METHOD ScaleTransform()
-  METHOD SetAlignment()
-  METHOD SetBrush()
+  METHOD SetAlignment( PenAlignament )
+  METHOD SetBrush( oBrush )
   METHOD SetColor()
   METHOD SetCompoundArray()
   METHOD SetCustomEndCap()
@@ -53,13 +53,13 @@ CLASS GPPen
   METHOD SetDashOffset()
   METHOD SetDashPattern()
   METHOD SetDashStyle()
-  METHOD SetEndCap()
+  METHOD SetEndCap( linecap )
   METHOD SetLineCap()
   METHOD SetLineJoin()
   METHOD SetMiterLimit()
-  METHOD SetStartCap()
+  METHOD SetStartCap( linecap )
   METHOD SetTransform()
-  METHOD SetWidth()
+  METHOD SetWidth( nWidth )
 
 ENDCLASS
 
@@ -104,13 +104,11 @@ return nil
   METHOD GetAlignment() CLASS GPPen
 *********************************************************************************************************
 
-return GdiPlus_PenAlignment( ::handle )
+return GPPenSetAlignment( ::handle )
 
 *********************************************************************************************************
   METHOD GetBrush() CLASS GPPen
 *********************************************************************************************************
-
-
 
 return
 
@@ -247,22 +245,22 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD SetAlignment() CLASS GPPen
+  METHOD SetAlignment( PenAlignament ) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenSetAlignament( ::handle, PenAlignament )
 
 *********************************************************************************************************
-  METHOD SetBrush() CLASS GPPen
+  METHOD SetBrush( oBrush ) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenSetBrush( ::handle, oBrush:handle )
 
 *********************************************************************************************************
-  METHOD SetColor() CLASS GPPen
+  METHOD SetColor( oColor ) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenSetColor( ::handle, oColor:handle )
 
 *********************************************************************************************************
   METHOD SetCompoundArray() CLASS GPPen
@@ -271,7 +269,7 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD SetCustomEndCap() CLASS GPPen
+  METHOD SetCustomEndCap( ) CLASS GPPen
 *********************************************************************************************************
 
 return 0
@@ -283,10 +281,10 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD SetDashCap() CLASS GPPen
+  METHOD SetDashCap( dashcap ) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenSetDashCap( ::handle, dashcap )
 
 *********************************************************************************************************
   METHOD SetDashOffset() CLASS GPPen
@@ -295,22 +293,22 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD SetDashPattern() CLASS GPPen
+  METHOD SetDashPattern( dasharray ) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenSetDasPattern( ::handle, dasharray )
 
 *********************************************************************************************************
-  METHOD SetDashStyle() CLASS GPPen
+  METHOD SetDashStyle( dashStyle ) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenSetDashStyle( ::handle, dashStyle )
 
 *********************************************************************************************************
-  METHOD SetEndCap() CLASS GPPen
+  METHOD SetEndCap( linecap ) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenSetEndCap( ::handle, linecap )
 
 *********************************************************************************************************
   METHOD SetLineCap() CLASS GPPen
@@ -319,10 +317,10 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD SetLineJoin() CLASS GPPen
+  METHOD SetLineJoin( linejoin ) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenSetLineJoin( ::handle, linejoin )
 
 *********************************************************************************************************
   METHOD SetMiterLimit() CLASS GPPen
@@ -331,10 +329,10 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD SetStartCap() CLASS GPPen
+  METHOD SetStartCap( linecap ) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenStartCap( ::handle, linecap )
 
 *********************************************************************************************************
   METHOD SetTransform() CLASS GPPen
@@ -343,10 +341,10 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD SetWidth() CLASS GPPen
+  METHOD SetWidth( nWidth ) CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenSetWidth( ::handle, nWidth )
 
 
 
@@ -444,36 +442,121 @@ HB_FUNC( GDIPLUS_PENCLONE )
    hb_retptr( (void*) p );
 }
 
-HB_FUNC( GDIPLUS_PENALIGNMENT )
+HB_FUNC( GPPENGETALIGNMENT )
 {
-   //enum PenAlignment                   //VOID Example_GetAlignment(HDC hdc)
-   //{                                   //{
-   //    PenAlignmentCenter       = 0,   //   Graphics graphics(hdc);
-   //    PenAlignmentInset        = 1    //
-   //};                                  //   // Create a Pen object and set its alignment.
-                                         //   Pen pen(Color(255, 0, 255, 0), 15);
-                                         //   pen.SetAlignment(PenAlignmentCenter);
-                                         //
-                                         //   // Draw a line.
-                                         //   graphics.DrawLine(&pen, 0, 0, 100, 50);
-                                         //
-                                         //   // Obtain information about the Pen object.
-                                         //   PenAlignment penAlignment;
-                                         //   penAlignment = pen.GetAlignment();
-                                         //
-                                         //   if(penAlignment == PenAlignmentCenter)
-                                         //      ;  // The pixels will be centered on the theoretical line.
-                                         //   else if(penAlignment == PenAlignmentInset)
-                                         //      ;  // The pixels will lie inside the filled area  of the theoretical line.
-                                         //}
+   //enum PenAlignment
+   //{
+   //    PenAlignmentCenter       = 0,
+   //    PenAlignmentInset        = 1
+   //};
 
    Pen* p = (Pen*) hb_parptr( 1 );
    PenAlignment pa = p->GetAlignment();
    hb_retni( pa );
 }
 
+//   Status SetAlignment(
+//     [in]  PenAlignment penAlignment
+//   );
+HB_FUNC( GPPENSETALIGNAMENT )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   PenAlignment pa = (PenAlignment) hb_parni( 2 );
+   hb_retni( (int) p->SetAlignment( pa ) );
+
+}
+
+//  Status SetBrush(
+//    [in]  const Brush *brush
+//  );
+HB_FUNC( GPPENSETBRUSH )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   Brush* b = (Brush*) hb_parptr( 2 );
+   hb_retni( (int) p->SetBrush( b ) );
+
+}
+
+// Status SetDashPattern(
+//   [in]  const REAL *dashArray,
+//   [in]  INT count
+// );
+
+HB_FUNC( GPPENSETDASHPATTERN )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   ¿¿¿Array de REALES???
+
+   hb_retni( (int) p->SetDashPattern( dasharray, hb_parni( 2 )));
+}
 
 
+// Status SetDashStyle(
+//   [in]  DashStyle dashStyle
+// );
+HB_FUNC( GPPENSETDASHSTYLE )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->SetDashStyle( (DashStyle) hb_parni( 2 ) ) );
+}
+
+
+// Status SetDashCap(
+//   [in]  DashCap dashCap
+// );
+HB_FUNC( GPPENSETDASHCAP )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->SetDashCap( (DashCap) hb_parni( 2 ) ) );
+}
+
+// Status SetColor(
+//   [in, ref]  const Color &color
+// );
+HB_FUNC( GPPENSETCOLOR )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   Color* c = (Color*) hb_parptr( 2 );
+   hb_retni( (int) p->SetColor( c ) );
+
+}
+
+// Status SetEndCap(
+//   [in]  LineCap endCap
+// );
+HB_FUNC( GPPENSETENDCAP )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->SetEndCap( (LineCap) hb_parni( 2 ) ) );
+}
+
+
+// Status SetLineJoin(
+//   [in]  LineJoin lineJoin
+// );
+HB_FUNC( GPPENSETLINEJOIN )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->SetLineJoin( (LineJoin) hb_parni( 2 ) ) );
+}
+
+// Status SetStartCap(
+//   [in]  LineCap startCap
+// );
+HB_FUNC( GPPENSETSTARTCAP )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->SetStartCap( (LineCap) hb_parni( 2 ) ) );
+}
+
+// Status SetWidth(
+//   [in]  REAL width
+// );
+HB_FUNC( GPPENSETWIDTH )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->SetWidth( (REAL) hb_parnd( 2 ) );
+}
 
 
 #pragma ENDDUMP
