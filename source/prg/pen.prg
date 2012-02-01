@@ -245,10 +245,10 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD SetAlignment( PenAlignament ) CLASS GPPen
+  METHOD SetAlignment( PenAlignment ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPenSetAlignament( ::handle, PenAlignament )
+return GPPenSetAlignment( ::handle, PenAlignment )
 
 *********************************************************************************************************
   METHOD SetBrush( oBrush ) CLASS GPPen
@@ -296,7 +296,7 @@ return 0
   METHOD SetDashPattern( dasharray ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPenSetDasPattern( ::handle, dasharray )
+return GPPenSetDashPattern( ::handle, dasharray )
 
 *********************************************************************************************************
   METHOD SetDashStyle( dashStyle ) CLASS GPPen
@@ -314,7 +314,8 @@ return GPPenSetEndCap( ::handle, linecap )
   METHOD SetLineCap( startCap, dashCap, endCap) CLASS GPPen
 *********************************************************************************************************
 
-return GPPenSetLineCap( ::handle, startCap, endCap, dashCap )
+return 0
+//return GPPenSetLineCap( ::handle, startCap, endCap, dashCap )
 
 *********************************************************************************************************
   METHOD SetLineJoin( linejoin ) CLASS GPPen
@@ -459,7 +460,7 @@ HB_FUNC( GPPENGETALIGNMENT )
 //   Status SetAlignment(
 //     [in]  PenAlignment penAlignment
 //   );
-HB_FUNC( GPPENSETALIGNAMENT )
+HB_FUNC( GPPENSETALIGNMENT )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    PenAlignment pa = (PenAlignment) hb_parni( 2 );
@@ -487,7 +488,7 @@ HB_FUNC(GPPENSETDASHPATTERN )
 {
 	Pen* p = (Pen*) hb_parptr( 1 );
   int iLen;
-	REAL * pReal; 
+	REAL * pReal;
 	PHB_ITEM aDashVals = hb_param( 2, HB_IT_ARRAY );
 	PHB_ITEM pItem;
 	INT j;
@@ -499,11 +500,11 @@ HB_FUNC(GPPENSETDASHPATTERN )
 	  pItem = hb_itemArrayGet( aDashVals, j + 1 );
    	pReal[ j ] = ( REAL ) hb_arrayGetND( pItem, 1 );
   }
-	
+
 	hb_retni( (int) p->SetDashPattern( pReal, iLen ) );
-	hb_xfree( ( void *) pReal );	
-	
-} 
+	hb_xfree( ( void *) pReal );
+
+}
 
 
 // Status SetDashStyle(
@@ -558,7 +559,7 @@ HB_FUNC( GPPENSETLINEJOIN )
 // Status SetStartCap(
 //   [in]  LineCap startCap
 // );
-HB_FUNC( GPPENSETSTARTCAP )
+HB_FUNC( GPPENSTARTCAP )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->SetStartCap( (LineCap) hb_parni( 2 ) ) );

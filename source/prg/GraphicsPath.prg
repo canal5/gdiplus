@@ -335,7 +335,7 @@ HB_FUNC( GP_ADDBEZIER )
 
 HB_FUNC( GP_ADDCLOSEDCURVE )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
+//   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
 //   WORD wArray, wVertex, wItem = 0, wLen = 0;
 //   POINT * pBuffer;
 //   int * pItems;
@@ -367,7 +367,7 @@ HB_FUNC( GP_ADDCLOSEDCURVE )
 //   hb_retl( PolyPolygon( hDC, pBuffer, pItems, wPolygons ) );
 //   hb_xfree( ( void * ) pBuffer );
 //   hb_xfree( ( void * ) pItems );
-     hb_ret();
+//   hb_ret();
 }
 
 HB_FUNC( GP_ADDELLIPSE )
