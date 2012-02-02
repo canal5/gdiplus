@@ -218,7 +218,7 @@ return 0
   METHOD GetWidth() CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenGetWidth(::handle)
 
 *********************************************************************************************************
   METHOD MultiplyTransform() CLASS GPPen
@@ -447,6 +447,13 @@ HB_FUNC( GPPENGETALIGNMENT )
    Pen* p = (Pen*) hb_parptr( 1 );
    PenAlignment pa = p->GetAlignment();
    hb_retni( pa );
+}
+
+
+HB_FUNC( GPPENGETWIDTH )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->GetWidth() );
 }
 
 //   Status SetAlignment(
