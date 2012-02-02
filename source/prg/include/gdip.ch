@@ -1102,10 +1102,8 @@
 #define ALPHA_MASK  nLShift(0xFF , ALPHA_SHIFT )
 //-------------------------------------------------------------------------------------------------------------------------
 
-#translate RGB( <nRed>, <nGreen>, <nBlue> ) => ;
-              ( <nRed> + ( <nGreen> * 256 ) + ( <nBlue> * 65536 ) )
-
-
+#translate ARGB( <alpha>, <nRed>, <nGreen>, <nBlue> ) => ;
+              ( ( <alpha> * ( 2 ^ 24 ) ) + ( <nRed> * ( 2 ^ 16 ) ) + ( <nGreen> * ( 2 ^ 8 ) ) + <nBlue> )
 
 #xtranslate PixelFormat.Indexed         => 0x00010000
 #xtranslate PixelFormat.GDI             => 0x00020000
