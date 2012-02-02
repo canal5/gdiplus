@@ -110,7 +110,7 @@ return GPPenSetAlignment( ::handle )
   METHOD GetBrush() CLASS GPPen
 *********************************************************************************************************
 
-return 0
+return GPPenGetBrush( ::handle )
 
 *********************************************************************************************************
   METHOD GetColor() CLASS GPPen
@@ -466,6 +466,14 @@ HB_FUNC( GPPENSETALIGNMENT )
    hb_retni( (int) p->SetAlignment( pa ) );
 
 }
+
+// Brush* GetBrush();
+HB_FUNC( GPPENGETBRUSH )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retptr( (Brush*) p->GetBrush() );
+}
+
 
 //  Status SetBrush(
 //    [in]  const Brush *brush

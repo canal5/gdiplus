@@ -5,7 +5,7 @@ CLASS TTestUnit
       METHOD New() CONSTRUCTOR
       METHOD End()
 
-      METHOD Assert( cProcName, cProcLine, cValue,  bAction )
+      METHOD Assert( cProcName, cProcLine, cValue,  bAction, cDescription )
       METHOD Show()
       METHOD OnError( oError )
 
@@ -24,7 +24,7 @@ ENDCLASS
                              {"DATE"     , "D",   8, 0 },;
                              {"TIME"     , "C",  15, 0 },;
                              {"RESULTADO", "C",   5, 0 },;
-                             {"DESCRIP"  , "C",  60, 0 },;
+                             {"DESCRIP"  , "C", 160, 0 },;
                              {"ERRORCODE", "C",   5, 0 } } )
    USE result ALIAS result
 
@@ -52,20 +52,23 @@ return nil
 return nil
 
 
-************************************************************************
-  METHOD Assert( cProcname, cProcline, cValue, bAction ) CLASS TTestUnit
-************************************************************************
+*****************************************************************************************
+  METHOD Assert( cProcname, cProcline, cValue, bAction, cDescription ) CLASS TTestUnit
+*****************************************************************************************
 
 Local oValor
 Local bErr := ErrorBlock( { |oError| ::OnError( oError ) } )
+
+DEFAULT cDescription := ""
 
 BEGIN SEQUENCE
 
 result->(DbAppend())
 
-result->Test = cValue
-result->Date = DATE()
-result->Time = TIME()
+result->Test    = cValue
+result->Date    = DATE()
+result->Time    = TIME()
+result->descrip = left(cDescription,160)
 
 if eval( bAction )
    result->Resultado := "OK"

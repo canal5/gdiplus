@@ -1,14 +1,14 @@
 #include "fivewin.ch"
 
-function SolidBrush( oColor, nWidth )
-return GPSolidBrush():New( oColor, nWidth )
+function SolidBrush( oColor )
+return GPSolidBrush():New( oColor )
 
 
 CLASS GPSolidBrush
 
   DATA handle
 
-  METHOD New( oColor, nWidth ) CONSTRUCTOR
+  METHOD New( oColor ) CONSTRUCTOR
 
   METHOD     Destroy()
   DESTRUCTOR Destroy()
@@ -16,10 +16,8 @@ CLASS GPSolidBrush
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New( oColor, nWidth ) CLASS GPSolidBrush
+  METHOD New( oColor ) CLASS GPSolidBrush
 *********************************************************************************************************
-
-DEFAULT nWidth := 1
 
   ::handle := _GPSolidBrush( oColor:handle )
 

@@ -1,25 +1,24 @@
 #include "fivewin.ch"
 
-function Font( cFaceName, nHeight, lItalic, lBold, lUnderline )
-return GPFont():New( cFaceName, nHeight, lItalic, lBold, lUnderline )
+function Font( cFaceName, nHeight)
+return GPFont():New( cFaceName )
 
 
 CLASS GPFont
 
   DATA handle
 
-  METHOD New( cFaceName, nHeight, lItalic, lBold, lUnderline ) CONSTRUCTOR
+  METHOD New( cFaceName, nHeight ) CONSTRUCTOR
   METHOD     Destroy()
   DESTRUCTOR Destroy()
 
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New( cFaceName, nHeight, lItalic, lBold, lUnderline ) CLASS GPFont
+  METHOD New( cFaceName, nHeight ) CLASS GPFont
 *********************************************************************************************************
 
-  ::handle := _GPFont( cFaceName, nHeight, lItalic, lBold, lUnderline )
-
+  ::handle := GPFontNew( cFaceName, nHeight )
 
 return self
 
@@ -27,7 +26,7 @@ return self
   METHOD Destroy() CLASS GPFont
 *********************************************************************************************************
 
-  DeleteFont( ::handle )
+  GPDeleteFont( ::handle )
 
 return nil
 
@@ -39,7 +38,7 @@ return nil
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPFONT )
+HB_FUNC( GPFONTNEW )
 {
    LPWSTR cFaceName = hb_mbtowc( (LPSTR) hb_parc( 1 ));
    Font* f = new Font( cFaceName, hb_parni( 2 ) );
@@ -48,7 +47,7 @@ HB_FUNC( _GPFONT )
 
 }
 
-HB_FUNC( DELETEFONT )
+HB_FUNC( GPDELETEFONT )
 {
    Font* f = (Font*) hb_parptr( 1 );
    delete (Font*) f;
