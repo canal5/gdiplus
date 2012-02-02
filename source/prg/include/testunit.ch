@@ -3,8 +3,9 @@
    <oTest> := ThisTest( TTestUnit():New() )
 
 #xcommand TEST <uAction,...>  ;
+          [ DESCRIPTION <cDescription> ] ;
        => ;
-          ThisTest():Assert( ProcName(), ProcLine(), <(uAction)>, {|This|<uAction>} )
+          ThisTest():Assert( ProcName(), ProcLine(), <(uAction)>, {|This|<uAction>}, <cDescription> )
 
 #xcommand ENDDEFINE   ;
        => ;
