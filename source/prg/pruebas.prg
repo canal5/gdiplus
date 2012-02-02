@@ -51,6 +51,11 @@ gdiplusstartup()
 
    ENDDEFINE
 
+      oColor:end()
+      oPen:end()  
+      oBrush:end()
+      oFont:end()
+
 GdiplusShutdown()
 
 return nil

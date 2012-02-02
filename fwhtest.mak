@@ -83,10 +83,10 @@ APP_OBJS = $(APP_PRG_LIST:.prg=.obj) $(APP_CPPPP_LIST:.cpp=.obj) $(APP_C_LIST:.c
 
 # Fivewin directories ########################################################
 
-FIVEWIN_INCLUDE_DIR = \fwh\include
-FIVEWIN_LIB_DIR     = \fwh\lib
-#FIVEWIN_INCLUDE_DIR = \fwh\include
-#FIVEWIN_LIB_DIR     = \fwh\lib
+FIVEWIN_INCLUDE_DIR  = $(FWDIR)\include
+FIVEWIN_LIB_DIR      = $(FWDIR)\lib
+#FIVEWIN_INCLUDE_DIR = $(FWDIR)\include
+#FIVEWIN_LIB_DIR     = $(FWDIR)\lib
 
 # Fivewin libraries ##########################################################
 
@@ -95,12 +95,12 @@ FIVEC_LIB = $(FIVEWIN_LIB_DIR)\fiveHC.lib
 
 # Harbour directories & flags ################################################
 
-HARBOUR_INCLUDE_DIR = \harbour\include;
-HARBOUR_EXE_DIR     = \harbour\bin
-HARBOUR_LIB_DIR     = \harbour\lib
-#HARBOUR_INCLUDE_DIR = c:\xharbour\include;
-#HARBOUR_EXE_DIR     = c:\xharbour\bin
-#HARBOUR_LIB_DIR     = c:\xharbour\lib
+HARBOUR_INCLUDE_DIR = $(HBDIR)\include;
+HARBOUR_EXE_DIR     = $(HBDIR)\bin
+HARBOUR_LIB_DIR     = $(HBDIR)\lib
+#HARBOUR_INCLUDE_DIR = $(XHBDIR)\include;
+#HARBOUR_EXE_DIR     = $(XHBDIR)\bin
+#HARBOUR_LIB_DIR     = $(XHBDIR)\lib
 
 HARBOUR_FLAGS       = -i$(APP_INCLUDE_DIR);$(FIVEWIN_INCLUDE_DIR);$(HARBOUR_INCLUDE_DIR);.\source\prg\include -n -m -w0 -es2 -gc0
 HARBOUR_EXE         = $(HARBOUR_EXE_DIR)\harbour.exe

@@ -497,7 +497,6 @@ HB_FUNC(GPPENSETDASHPATTERN )
    int iLen;
    REAL * pReal;
    PHB_ITEM aDashVals = hb_param( 2, HB_IT_ARRAY );
-   PHB_ITEM pItem;
    INT j;
    iLen = hb_arrayLen( aDashVals );
    pReal = ( REAL * ) hb_xgrab( sizeof( REAL )* iLen );
