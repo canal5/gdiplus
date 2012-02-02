@@ -10,7 +10,7 @@ local oBrush
 local oFont
 local rgbColor := RGB( 100, 120, 130 )
 
-gdiplusstartup()
+
 
    DEFINE SUITTEST oTest
 
@@ -42,8 +42,6 @@ gdiplusstartup()
       TEST !Empty( oFont:handle  )  DESCRIPTION "Creación objeto GPFont"
 
 
-
-
       TEST Pen( Color( 255, 0, 0, 0 ), 5 ):GetWidth() == 5
 
 
@@ -51,12 +49,18 @@ gdiplusstartup()
 
    ENDDEFINE
 
-      oColor:end()
-      oPen:end()  
-      oBrush:end()
-      oFont:end()
-
-GdiplusShutdown()
-
 return nil
 
+
+init procedure entrada
+
+  gdiplusstartup()
+
+return
+
+
+exit procedure salida
+
+  GdiplusShutdown()
+
+return
