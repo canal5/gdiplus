@@ -9,7 +9,8 @@ gdiplusstartup()
 
    DEFINE SUITTEST oTest
 
-      TEST Color(255,0,0,0):handle != 0
+      TEST !Empty( Color(255,0,0,0):handle )
+      TEST !Empty( Pen( Color( 255,0,0,0 ), 5 ))
 
       SHOW RESULT
 
