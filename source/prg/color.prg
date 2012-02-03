@@ -1,6 +1,5 @@
 #include "fivewin.ch"
 
-
 function Color( nA, nR, nG, nB )
 return GPColor():New( nA, nR, nG, nB )
 
@@ -9,8 +8,6 @@ CLASS GPColor
   DATA handle
 
   METHOD New( nA, nR, nG, nB ) CONSTRUCTOR
-  METHOD ColorRGB( nR, nG, nB ) CONSTRUCTOR
-  METHOD ColorARGB( nARGB ) CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
@@ -25,7 +22,7 @@ CLASS GPColor
   METHOD GetRed()
   METHOD GetValue()
   METHOD SetFromCOLORREF()
-  METHOD SetValue()
+  METHOD SetValue( argbColor )
   METHOD ToCOLORREF()
 
 ENDCLASS
@@ -39,32 +36,15 @@ local iParams := PCount()
 
   if iParams == 0
      ::handle := _GPColor()
-  else if iParams == 1
+  elseif iParams == 1
      ::handle := _GPColor( nA ) // ARGB
-  else if iParams == 3
+  elseif iParams == 3
      ::handle := _GPColor( nA, nR, nG ) // R,G,B
-  else if iParams == 4
+  else
      ::handle := _GPColor( nA, nR, nG, nB ) // A,R,G,B
   endif
 
 return self
-
-*********************************************************************************************************
-  METHOD ColorRGB( nR, nG, nB ) CLASS GPColor
-*********************************************************************************************************
-
-  ::handle := GPColorRGB( nR, nG, nB )
-
-return self
-
-*********************************************************************************************************
-  METHOD ColorARGB( nARGB ) CLASS GPColor
-*********************************************************************************************************
-
-  ::handle := GPColorARGB( nARGB )
-
-return self
-
 
 
 *********************************************************************************************************
@@ -137,7 +117,7 @@ return GPColorGetValue(::handle)
 return GPColorSetFromCOLORREF(::handle, rgbColor)
 
 *********************************************************************************************************
-  METHOD SetValue() CLASS GPColor
+  METHOD SetValue( argbColor ) CLASS GPColor
 *********************************************************************************************************
 
 return GPColorSetValue(::handle, argbColor)
@@ -269,6 +249,11 @@ HB_FUNC( GPCOLORTOCOLORREF )
    hb_retnl( (long) clr->ToCOLORREF() );
 }
 
+HB_FUNC( MAKEARGB )
+{
+   hb_retnl( (long) Color::MakeARGB( hb_parnl( 1 ), hb_parnl( 2 ),hb_parnl( 3 ),hb_parnl( 4 ) ));
+
+}
 
 
 #pragma ENDDUMP
