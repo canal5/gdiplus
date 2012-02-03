@@ -4,12 +4,15 @@
 function Color( nA, nR, nG, nB )
 return GPColor():New( nA, nR, nG, nB )
 
+function ColorRGB( nR, nG, nB )
+return GPColor():Color( 255, nR, nG, nB )
 
 CLASS GPColor
 
   DATA handle
 
   METHOD New( nA, nR, nG, nB ) CONSTRUCTOR
+  METHOD Color( nR, nG, nB ) CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
@@ -36,6 +39,16 @@ ENDCLASS
   ::handle := _GPColor( nA, nR, nG, nB )
 
 return self
+
+*********************************************************************************************************
+  METHOD Color( nR, nG, nB ) CLASS GPColor
+*********************************************************************************************************
+
+  ::handle := GPColorRGB( nR, nG, nB )
+
+return self
+
+
 
 *********************************************************************************************************
   METHOD Destroy() CLASS GPColor
@@ -144,6 +157,12 @@ using namespace Gdiplus;
 HB_FUNC( _GPCOLOR )
 {
    Color* clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
+   hb_retptr( (void*) clr );
+}
+
+HB_FUNC( GPCOLORRGB )
+{
+   Color* clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
    hb_retptr( (void*) clr );
 }
 

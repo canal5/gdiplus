@@ -124,7 +124,7 @@ function zBrowse( cTitle, cListName, bNew, bModify, bDelete, bSearch, bList,;
 
    DEFAULT cTitle  := "Browse", cListName := "Fields"
 
-   DEFINE DIALOG oDlg FROM 3, 3 TO 26, 79 TITLE cTitle FONT oFont
+DEFINE DIALOG oDlg FROM 3, 3 TO 26, 79 TITLE cTitle FONT oFont
 
    @ 0.1, 1.4 SAY cListName  OF oDlg
 
