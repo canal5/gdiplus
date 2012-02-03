@@ -4,15 +4,13 @@
 function Color( nA, nR, nG, nB )
 return GPColor():New( nA, nR, nG, nB )
 
-function ColorRGB( nR, nG, nB )
-return GPColor():Color( 255, nR, nG, nB )
-
 CLASS GPColor
 
   DATA handle
 
   METHOD New( nA, nR, nG, nB ) CONSTRUCTOR
-  METHOD Color( nR, nG, nB ) CONSTRUCTOR
+  METHOD ColorRGB( nR, nG, nB ) CONSTRUCTOR
+  METHOD ColorARGB( nARGB ) CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
@@ -36,15 +34,34 @@ ENDCLASS
   METHOD New( nA, nR, nG, nB ) CLASS GPColor
 *********************************************************************************************************
 
-  ::handle := _GPColor( nA, nR, nG, nB )
+local iParams := PCount()
+
+
+  if iParams == 0
+     ::handle := _GPColor()
+  else if iParams == 1
+     ::handle := _GPColor( nA ) // ARGB
+  else if iParams == 3
+     ::handle := _GPColor( nA, nR, nG ) // R,G,B
+  else if iParams == 4
+     ::handle := _GPColor( nA, nR, nG, nB ) // A,R,G,B
+  endif
 
 return self
 
 *********************************************************************************************************
-  METHOD Color( nR, nG, nB ) CLASS GPColor
+  METHOD ColorRGB( nR, nG, nB ) CLASS GPColor
 *********************************************************************************************************
 
   ::handle := GPColorRGB( nR, nG, nB )
+
+return self
+
+*********************************************************************************************************
+  METHOD ColorARGB( nARGB ) CLASS GPColor
+*********************************************************************************************************
+
+  ::handle := GPColorARGB( nARGB )
 
 return self
 
@@ -156,13 +173,18 @@ using namespace Gdiplus;
 
 HB_FUNC( _GPCOLOR )
 {
-   Color* clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   hb_retptr( (void*) clr );
-}
+   Color* clr;
+   int iParams = hb_pcount();
 
-HB_FUNC( GPCOLORRGB )
-{
-   Color* clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
+   if( iParams == 0 )
+       clr = new Color();
+   else if (iParams == 1 )
+       clr = new Color( (ARGB) hb_parnl( 1 ) );
+   else if (iParams == 3 )
+       clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
+   else
+       clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
+
    hb_retptr( (void*) clr );
 }
 
