@@ -1,7 +1,34 @@
+//
+//
+// Francisco García Fernández 2012 canalfive@gmail.com
+//
+// CLASE FINALIZADA
+
 #include "fivewin.ch"
 
+/**
+
+   local oColor := Color()
+   ...
+   local nARGB  := MAKEARGB( 255, 255, 255, 255 )
+   local oColor := Color( nARB )
+   ...
+   local oColor := Color( 255, 0, 0 )
+   ...
+   local oColor := Color( 255, 255, 255, 255 )
+
+   Los objetos se destruyen cuando pierden ámbito.
+
+
+   Ejecutar unitarias.exe para antes de montar la librería.
+
+*/
+
+
 function Color( nA, nR, nG, nB )
+
 return GPColor():New( nA, nR, nG, nB )
+
 
 CLASS GPColor
 
