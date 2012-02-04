@@ -33,9 +33,19 @@ ENDCLASS
   METHOD New( cFileName ) CLASS GPMetafile
 *******************************************************************************
 
-  ::handle := GPMetafile_( cFileName )
+  ::handle := _GPMetafile( cFileName )
 
 return self
+
+*********************************************************************************************************
+  METHOD Destroy() CLASS GPMetafile
+*********************************************************************************************************
+
+  if !empty(::handle)
+     GPDeleteMetafile( ::handle )
+  endif
+
+return nil
 
 *******************************************************************************
   METHOD ConvertToEmfPlus()              CLASS GPMetafile
@@ -115,13 +125,7 @@ return 0
 
 return 0
 
-*********************************************************************************************************
-  METHOD Destroy() CLASS GPMetafile
-*********************************************************************************************************
 
-  GPDeleteMetafile( ::handle )
-
-return nil
 
 
 
@@ -149,7 +153,7 @@ return nil
 
 using namespace Gdiplus;
 
-HB_FUNC( GPMETAFILE_ )
+HB_FUNC( _GPMETAFILE )
 {
    //Metafile(
    //  [in]  const WCHAR *filename

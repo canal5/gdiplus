@@ -40,7 +40,37 @@ ENDCLASS
   METHOD New() CLASS GPMatrix
 *******************************************************************************************
 
+local iParams := PCount()
+
+
+  if iParams == 0
+     ::handle := _GPMatrix()
+  elseif iParams == 1
+     ::handle := _GPMatrix( p1 )                               //
+  elseif iParams == 3
+     ::handle := _GPMatrix( p1, p2, p3 )                       //
+  elseif iParams == 4
+     ::handle := _GPMatrix( p1, p2, p3 )                       //
+  elseif iParams == 5
+     ::handle := _GPMatrix( p1, p2, p3, p4, p5 )               //
+  elseif iParams == 6
+     ::handle := _GPMatrix( p1, p2, p3, p4, p5, p6 )           //
+  elseif iParams == 7
+     ::handle := _GPMatrix( p1, p2, p3, p4, p5, p6, p7 )       //
+  endif
+
+
 return self
+
+*********************************************************************************************************
+  METHOD Destroy() CLASS GPMatrix
+*********************************************************************************************************
+
+  if !empty(::handle)
+  endif
+
+return nil
+
 
 *******************************************************************************************
    METHOD Clone() CLASS GPMatrix
@@ -168,11 +198,6 @@ return 0
 
 return 0
 
-*********************************************************************************************************
-  METHOD Destroy() CLASS GPMatrix
-*********************************************************************************************************
-
-return nil
 
 // Matrix::Matrix()	                         Creates and initializes a Matrix::Matrix object that represents the identity matrix.
 // Matrix::Matrix(REAL,REAL,REAL,REAL,REAL,REAL) Creates and initializes a Matrix::Matrix object based on six numbers that define an affine transformation.
@@ -218,6 +243,34 @@ return nil
 
 using namespace Gdiplus;
 
+HB_FUNC( _GPMATRIX )
+{
+   //Matrix* ptr;
+   //int iParams = hb_pcount();
+   //
+   //if( iParams == 0 )
+   //    ptr = new Matrix();
+   //else if (iParams == 1 )
+   //    ptr = new Matrix( hb_parnl( 1 ) );
+   //else if (iParams == 3 )
+   //    ptr = new Matrix( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
+   //else
+   //    ptr = new Matrix( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
+   //
+   //hb_retptr( (void*) ptr );
+}
+
+HB_FUNC( DELETEMATRIX )
+{
+   //Matrix* clr = (Matrix*) hb_parptr( 1 );
+   //delete (Matrix*) clr;
+   //hb_ret();
+}
+
+//HB_FUNC( GPMATRIX... )
+//{
+//   Matrix* ptr = (Matrix*) hb_parptr( 1 );
+//}
 
 
 

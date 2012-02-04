@@ -23,7 +23,7 @@ CLASS GPPen
   METHOD GetCustomStartCap( oCustomLineCap )
   METHOD GetDashCap()
   METHOD GetDashOffset()
-  METHOD GetDashPattern()
+  METHOD GetDashPattern( aDashPattern )
   METHOD GetDashPatternCount()
   METHOD GetDashStyle()
   METHOD GetEndCap()
@@ -65,14 +65,11 @@ ENDCLASS
 local iParams := pcount()
 
   if o:isKindOf( GPPen() )
-
-     if iParams == 1
-        ::handle := GPPen_Clone( o )             // Clonar un Pen
-     else
-        ::handle := GPPenA( o:handle, nWidth )  // Pen y ancho
-     endif
+     ::handle := GPPenClone( o )             // Clonar un Pen
+  elseif o:isKindOf( GPColor() )
+     ::handle := GPPenA( o:handle, nWidth )  // Color y ancho
   else
-     ::handle := GPPenB( o:handle )             // Brush
+     ::handle := GPPenB( o:handle, nWidth )  // Brush y ancho
   endif
 
 return self
@@ -89,7 +86,9 @@ return self
   METHOD Destroy() CLASS GPPen
 *********************************************************************************************************
 
-  DeletePen( ::handle )
+  if !empty(::handle)
+     DeletePen( ::handle )
+  endif
 
 return nil
 
@@ -97,55 +96,55 @@ return nil
   METHOD GetAlignment() CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_SetAlignment( ::handle )
+return GPPenSetAlignment( ::handle )
 
 *********************************************************************************************************
   METHOD GetBrush() CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_GetBrush( ::handle )
+return GPPenGetBrush( ::handle )
 
 *********************************************************************************************************
   METHOD GetColor( oColor ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_GetColor(::handle, oColor:handle )
+return GPPenGetColor(::handle, oColor:handle )
 
 *********************************************************************************************************
   METHOD GetCompoundArray( a ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_GetCompoundArray( ::handle, a )
+return GPPenGetCompoundArray( ::handle, a )
 
 *********************************************************************************************************
   METHOD GetCompoundArrayCount() CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_GetCompoundArrayCount(::handle)
+return GPPenGetCompoundArrayCount(::handle)
 
 *********************************************************************************************************
   METHOD GetCustomEndCap( oCustomLineCap ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_GetCustomEndCap(::handle, oCustomLineCap:handle )
+return GPPenGetCustomEndCap(::handle, oCustomLineCap:handle )
 
 *********************************************************************************************************
   METHOD GetCustomStartCap( oCustomLineCap ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_GetCustomStartCap(::handle, oCustomLineCap:handle )
+return GPPenGetCustomStartCap(::handle, oCustomLineCap:handle )
 
 *********************************************************************************************************
   METHOD GetDashCap() CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_GetDashCap(::handle)
+return GPPenGetDashCap(::handle)
 
 *********************************************************************************************************
   METHOD GetDashOffset() CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_GetDashOffset(::handle)
+return GPPenGetDashOffset(::handle)
 
 *********************************************************************************************************
   METHOD GetDashPattern( adashArray ) CLASS GPPen
@@ -155,7 +154,7 @@ local nStatus := Status.GenericError
 
 if nElements > 0
    adashArray := afill(array(nElements),0)
-   nStatus := GPPen_GetDashPattern( ::handle, adashArray, nElements )
+   nStatus := GPPenGetDashPattern( ::handle, @adashArray, nElements )
 endif
 
 return nStatus
@@ -164,7 +163,7 @@ return nStatus
   METHOD GetDashPatternCount() CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_GetDashPatternCount(::handle)
+return GPPenGetDashPatternCount(::handle)
 
 *********************************************************************************************************
   METHOD GetDashStyle() CLASS GPPen
@@ -248,19 +247,19 @@ return 0
   METHOD SetAlignment( PenAlignment ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_SetAlignment( ::handle, PenAlignment )
+return GPPenSetAlignment( ::handle, PenAlignment )
 
 *********************************************************************************************************
   METHOD SetBrush( oBrush ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_SetBrush( ::handle, oBrush:handle )
+return GPPenSetBrush( ::handle, oBrush:handle )
 
 *********************************************************************************************************
   METHOD SetColor( oColor ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_SetColor( ::handle, oColor:handle )
+return GPPenSetColor( ::handle, oColor:handle )
 
 *********************************************************************************************************
   METHOD SetCompoundArray() CLASS GPPen
@@ -284,7 +283,7 @@ return 0
   METHOD SetDashCap( dashcap ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_SetDashCap( ::handle, dashcap )
+return GPPenSetDashCap( ::handle, dashcap )
 
 *********************************************************************************************************
   METHOD SetDashOffset() CLASS GPPen
@@ -296,19 +295,19 @@ return 0
   METHOD SetDashPattern( dasharray ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_SetDashPattern( ::handle, dasharray )
+return GPPenSetDashPattern( ::handle, dasharray )
 
 *********************************************************************************************************
   METHOD SetDashStyle( dashStyle ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_SetDashStyle( ::handle, dashStyle )
+return GPPenSetDashStyle( ::handle, dashStyle )
 
 *********************************************************************************************************
   METHOD SetEndCap( linecap ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_SetEndCap( ::handle, linecap )
+return GPPenSetEndCap( ::handle, linecap )
 
 *********************************************************************************************************
   METHOD SetLineCap( startCap, dashCap, endCap) CLASS GPPen
@@ -333,7 +332,7 @@ return 0
   METHOD SetStartCap( linecap ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_StartCap( ::handle, linecap )
+return GPPenStartCap( ::handle, linecap )
 
 *********************************************************************************************************
   METHOD SetTransform() CLASS GPPen
@@ -345,7 +344,7 @@ return 0
   METHOD SetWidth( nWidth ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPen_SetWidth( ::handle, nWidth )
+return GPPenSetWidth( ::handle, nWidth )
 
 
 
@@ -406,17 +405,16 @@ using namespace Gdiplus;
 HB_FUNC( GPPENA )
 {
    Color* c = (Color*) hb_parptr( 1 );
-   Pen* clr = new Pen( *c, hb_parni( 2 ));
+   Pen* clr = new Pen( *c, (REAL)hb_parnd( 2 ));
    hb_retptr( (void*) clr );
 
 }
 
 HB_FUNC( GPPENB )
 {
-   Brush* b = (Brush*) hb_parni( 1 );
-   Pen* p = new Pen( b, (REAL)hb_parni( 2 ));
+   Brush* b = (Brush*) hb_parptr( 1 );
+   Pen* p = new Pen( b, (REAL) hb_parnd( 2 ));
    hb_retptr( (void*) p );
-
 }
 
 
@@ -429,14 +427,14 @@ HB_FUNC( DELETEPEN )
 
 }
 
-HB_FUNC( GPPEN_CLONE )
+
+HB_FUNC( GPPENCLONE )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
-   Pen* pPen = p->Clone();
-   hb_retptr( (void*) p );
+   hb_retptr( (void*) p->Clone() );
 }
 
-HB_FUNC( GPPEN_GETALIGNMENT )
+HB_FUNC( GPPENGETALIGNMENT )
 {
    //enum PenAlignment
    //{
@@ -450,7 +448,7 @@ HB_FUNC( GPPEN_GETALIGNMENT )
 }
 
 
-HB_FUNC( GPPEN_GETWIDTH )
+HB_FUNC( GPPENGETWIDTH )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->GetWidth() );
@@ -460,7 +458,7 @@ HB_FUNC( GPPEN_GETWIDTH )
 //     [in]  PenAlignment penAlignment
 //   );
 
-HB_FUNC( GPPEN_SETALIGNMENT )
+HB_FUNC( GPPENSETALIGNMENT )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    PenAlignment pa = (PenAlignment) hb_parni( 2 );
@@ -470,7 +468,7 @@ HB_FUNC( GPPEN_SETALIGNMENT )
 
 // Brush* GetBrush();
 
-HB_FUNC( GPPEN_GETBRUSH )
+HB_FUNC( GPPENGETBRUSH )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retptr( (Brush*) p->GetBrush() );
@@ -478,11 +476,11 @@ HB_FUNC( GPPEN_GETBRUSH )
 
 // Brush* GetBrush();
 
-HB_FUNC( GPPEN_GETCOLOR )
+HB_FUNC( GPPENGETCOLOR )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    Color* c = (Color*) hb_parptr( 2 );
-   hb_retni( (int) p->GetColor( c );
+   hb_retni( (int) p->GetColor( c ));
 }
 
 
@@ -491,7 +489,7 @@ HB_FUNC( GPPEN_GETCOLOR )
 //   [in]   INT count
 // );
 
-HB_FUNC( GPPEN_GETCOMPOUNDARRAY )
+HB_FUNC( GPPENGETCOMPOUNDARRAY )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    int iLen;
@@ -512,7 +510,7 @@ HB_FUNC( GPPEN_GETCOMPOUNDARRAY )
 }
 
 // INT GetCompoundArrayCount();
-HB_FUNC( GPPEN_GETCOMPOUNDARRAYCOUNT )
+HB_FUNC( GPPENGETCOMPOUNDARRAYCOUNT )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->GetCompoundArrayCount() );
@@ -522,41 +520,38 @@ HB_FUNC( GPPEN_GETCOMPOUNDARRAYCOUNT )
 // Status GetCustomEndCap(
 //   [out]  CustomLineCap *customCap
 // );
-HB_FUNC( GPPEN_GETCUSTOMENDCAP )
+HB_FUNC( GPPENGETCUSTOMENDCAP )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    CustomLineCap* ccp = (CustomLineCap*) hb_parptr( 2 );
-   hb_parni( (int) p->GetCustomEndCap( cpp ));
+   hb_parni( (int) p->GetCustomEndCap( ccp ));
 }
 
 // Status GetCustomStartCap(
 //   [out]  CustomLineCap *customCap
 // );
-HB_FUNC( GPPEN_GETCUSTOMSTARTCAP )
+HB_FUNC( GPPENGETCUSTOMSTARTCAP )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    CustomLineCap* ccp = (CustomLineCap*) hb_parptr( 2 );
-   hb_parni( (int) p->GetCustomStartCap( cpp ));
+   hb_parni( (int) p->GetCustomStartCap( ccp ));
 }
 
 // DashCap GetDashCap();
-HB_FUNC( GPPEN_GETDASHCAP )
+HB_FUNC( GPPENGETDASHCAP )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_parni( (int) p->GetDashCap());
 }
 
-
-
 //  Status SetBrush(
 //    [in]  const Brush *brush
 //  );
-HB_FUNC( GPPEN_SETBRUSH )
+HB_FUNC( GPPENSETBRUSH )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    Brush* b = (Brush*) hb_parptr( 2 );
    hb_retni( (int) p->SetBrush( b ) );
-
 }
 
 // Status SetDashPattern(
@@ -564,7 +559,7 @@ HB_FUNC( GPPEN_SETBRUSH )
 //   [in]  INT count
 // );
 
-HB_FUNC(GPPEN_SETDASHPATTERN )
+HB_FUNC(GPPENSETDASHPATTERN )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    int iLen;
@@ -581,60 +576,121 @@ HB_FUNC(GPPEN_SETDASHPATTERN )
 
    hb_retni( (int) p->SetDashPattern( pReal, iLen ) );
    hb_xfree( ( void *) pReal );
-
 }
 
 // Status SetDashStyle(
 //   [in]  DashStyle dashStyle
 // );
-HB_FUNC( GPPEN_SETDASHSTYLE )
+HB_FUNC( GPPENSETDASHSTYLE )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->SetDashStyle( (DashStyle) hb_parni( 2 ) ) );
 }
 
-
 // Status SetDashCap(
 //   [in]  DashCap dashCap
 // );
-HB_FUNC( GPPEN_SETDASHCAP )
+HB_FUNC( GPPENSETDASHCAP )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->SetDashCap( (DashCap) hb_parni( 2 ) ) );
 }
 
 // REAL GetDashOffset()
-HB_FUNC( GPPEN_GETDASHOFFSET )
+HB_FUNC( GPPENGETDASHOFFSET )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->GetDashOffset() );
 }
 
-
-
-GPPen_GetDashPattern
 //Status GetDashPattern(
 //  [out]  REAL *dashArray,
 //  [in]   INT count
 //);
-HB_FUNC( GPPEN_GETDASHPATTERN )
+HB_FUNC( GPPENGETDASHPATTERN )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   int iCount = p->GetDashPatternCount();
-   PHBITEM pArray = hb_itemNew (NULL);
-   hb_arrayNew (pArray, iCount);
-
-
+  Pen* p = (Pen*) hb_parptr( 1 );
+  int iCount = hb_parni( 3 );
+  PHB_ITEM pArray = hb_param( 2, HB_IT_ARRAY );
+  REAL * real = ( REAL * ) hb_xgrab( sizeof( REAL ) * iCount );
+  int j, iStatus;
+  iStatus = p->GetDashPattern( real, iCount );
+  for( j = 0; j < iCount; j ++ )
+  {
+     hb_arraySetND( pArray, j + 1, ( DOUBLE ) real[j] );
+  }
+  hb_xfree( real );
+  hb_storvptr( pArray, 2 );
+  hb_itemRelease( pArray );
+  hb_retni( iStatus );
 }
 
-
-
 // INT GetDashPatternCount();
-HB_FUNC( GPPEN_GETDASHPATTERNCOUNT )
+HB_FUNC( GPPENGETDASHPATTERNCOUNT )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->GetDashPatternCount() );
 }
+
+// DashStyle GetDashStyle();
+HB_FUNC( GPPENGETDASHSTYLE )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->GetDashStyle() );
+}
+
+// LineCap GetEndCap();
+HB_FUNC( GPPENGETENDCAP )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->GetEndCap() );
+}
+
+// Status GetLastStatus();
+HB_FUNC( GPPENGETLASTSTATUS )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->GetLastStatus() );
+}
+
+// LineJoin GetLineJoin();
+HB_FUNC( GPPENGETLINEJOIN )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->GetLineJoin() );
+}
+
+// REAL GetMiterLimit();
+HB_FUNC( GPPENGETMITERLIMIT )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retnd( (int) p->GetMiterLimit() );
+}
+
+// PenType GetPenType();
+HB_FUNC( GPPENGETPENTYPE )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->GetPenType() );
+}
+
+// LineCap GetStartCap();
+HB_FUNC( GPPENGETSTARTCAP )
+{
+   Pen* p = (Pen*) hb_parptr( 1 );
+   hb_retni( (int) p->GetStartCap() );
+}
+
+// Status GetTransform(
+//  [out]  Matrix *matrix
+// );
+HB_FUNC( GPPENGETTRANSFORM )
+{
+   //Pen* p = (Pen*) hb_parptr( 1 );
+
+
+}
+
 
 
 
@@ -642,7 +698,7 @@ HB_FUNC( GPPEN_GETDASHPATTERNCOUNT )
 // Status SetColor(
 //   [in, ref]  const Color &color
 // );
-HB_FUNC( GPPEN_SETCOLOR )
+HB_FUNC( GPPENSETCOLOR )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    Color* c = (Color*) hb_parptr( 2 );
@@ -653,7 +709,7 @@ HB_FUNC( GPPEN_SETCOLOR )
 // Status SetEndCap(
 //   [in]  LineCap endCap
 // );
-HB_FUNC( GPPEN_SETENDCAP )
+HB_FUNC( GPPENSETENDCAP )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->SetEndCap( (LineCap) hb_parni( 2 ) ) );
@@ -663,7 +719,7 @@ HB_FUNC( GPPEN_SETENDCAP )
 // Status SetLineJoin(
 //   [in]  LineJoin lineJoin
 // );
-HB_FUNC( GPPEN_SETLINEJOIN )
+HB_FUNC( GPPENSETLINEJOIN )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->SetLineJoin( (LineJoin) hb_parni( 2 ) ) );
@@ -672,7 +728,7 @@ HB_FUNC( GPPEN_SETLINEJOIN )
 // Status SetStartCap(
 //   [in]  LineCap startCap
 // );
-HB_FUNC( GPPEN_STARTCAP )
+HB_FUNC( GPPENSTARTCAP )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->SetStartCap( (LineCap) hb_parni( 2 ) ) );
@@ -681,7 +737,7 @@ HB_FUNC( GPPEN_STARTCAP )
 // Status SetWidth(
 //   [in]  REAL width
 // );
-HB_FUNC( GPPEN_SETWIDTH )
+HB_FUNC( GPPENSETWIDTH )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    hb_retni( (int) p->SetWidth( (REAL) hb_parnd( 2 ) ) );
@@ -689,5 +745,3 @@ HB_FUNC( GPPEN_SETWIDTH )
 
 
 #pragma ENDDUMP
-
-

@@ -21,11 +21,34 @@ ENDCLASS
   METHOD New() CLASS GPHueSaturationLighness
 *******************************************************************************************
 
+local iParams := PCount()
+
+
+  if iParams == 0
+     ::handle := _GPHueSaturationLighness()
+  elseif iParams == 1
+     ::handle := _GPHueSaturationLighness( p1 )                               //
+  elseif iParams == 3
+     ::handle := _GPHueSaturationLighness( p1, p2, p3 )                       //
+  elseif iParams == 4
+     ::handle := _GPHueSaturationLighness( p1, p2, p3 )                       //
+  elseif iParams == 5
+     ::handle := _GPHueSaturationLighness( p1, p2, p3, p4, p5 )               //
+  elseif iParams == 6
+     ::handle := _GPHueSaturationLighness( p1, p2, p3, p4, p5, p6 )           //
+  elseif iParams == 7
+     ::handle := _GPHueSaturationLighness( p1, p2, p3, p4, p5, p6, p7 )       //
+  endif
+
+
 return self
 
 *********************************************************************************************************
   METHOD Destroy() CLASS GPHueSaturationLighness
 *********************************************************************************************************
+
+  if !empty(::handle)
+  endif
 
 return nil
 
@@ -56,6 +79,34 @@ return 0
 
 using namespace Gdiplus;
 
+HB_FUNC( _GPHUESATURATIONLIGHNESS )
+{
+   //HueSaturationLighness* ptr;
+   //int iParams = hb_pcount();
+   //
+   //if( iParams == 0 )
+   //    ptr = new HueSaturationLighness();
+   //else if (iParams == 1 )
+   //    ptr = new HueSaturationLighness( hb_parnl( 1 ) );
+   //else if (iParams == 3 )
+   //    ptr = new HueSaturationLighness( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
+   //else
+   //    ptr = new HueSaturationLighness( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
+   //
+   //hb_retptr( (void*) ptr );
+}
+
+HB_FUNC( DELETEHUESATURATIONLIGHNESS )
+{
+   //HueSaturationLighness* clr = (HueSaturationLighness*) hb_parptr( 1 );
+   //delete (HueSaturationLighness*) clr;
+   //hb_ret();
+}
+
+//HB_FUNC( GPHUESATURATIONLIGHNESS... )
+//{
+//   HueSaturationLighness* ptr = (HueSaturationLighness*) hb_parptr( 1 );
+//}
 
 
 

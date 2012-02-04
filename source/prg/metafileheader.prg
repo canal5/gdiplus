@@ -41,6 +41,16 @@ ENDCLASS
 
 return self
 
+
+*********************************************************************************************************
+  METHOD Destroy() CLASS GPMetafileHeader
+*********************************************************************************************************
+
+  if !empty(::handle)
+  endif
+
+return nil
+
 *******************************************************************************
   METHOD GetBounds() CLASS GPMetafileHeader
 *******************************************************************************
@@ -142,11 +152,6 @@ return 0
 
 return 0
 
-*********************************************************************************************************
-  METHOD Destroy() CLASS GPMetafileHeader
-*********************************************************************************************************
-
-return nil
 
 
 
@@ -199,25 +204,25 @@ return nil
 
 using namespace Gdiplus;
 
-HB_FUNC( GPMETAFILE )
+HB_FUNC( _GPMETAFILEHEADER )
 {
    //Metafile(
    //  [in]  const WCHAR *filename
    //);
 
-   LPWSTR cFileName = hb_mbtowc( (LPSTR) hb_parc( 1 ));
-   Metafile * mf = new Metafile( cFileName );
-   hb_retptr( (void*) mf );
+   //LPWSTR cFileName = hb_mbtowc( (LPSTR) hb_parc( 1 ));
+   //Metafile * mf = new Metafile( cFileName );
+   //hb_retptr( (void*) mf );
 
 }
 
 
-HB_FUNC( GPDELETEMETAFILE )
+HB_FUNC( GPDELETEMETAFILEHEADER )
 {
 
-   Metafile* p = (Metafile*) hb_parptr( 1 );
-   delete (Metafile*) p;
-   hb_ret();
+   //Metafile* p = (Metafile*) hb_parptr( 1 );
+   //delete (Metafile*) p;
+   //hb_ret();
 
 }
 

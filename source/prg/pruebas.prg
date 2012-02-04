@@ -15,8 +15,8 @@ local rgbColor := RGB( 100, 120, 130 )
    DEFINE SUITTEST oTest
 
       oColor := Color( 255, 10, 20, 30 )
-      oPen   := Pen( oColor, 5 )
       oBrush := SolidBrush( oColor )
+      oPen   := Pen( oBrush, 5 )
       oFont  := Font( "Ms Sans Serif", 12 )
 
 
@@ -100,3 +100,4 @@ exit procedure salida
   GdiplusShutdown()
 
 return
+

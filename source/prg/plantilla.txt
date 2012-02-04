@@ -15,7 +15,7 @@ CLASS GP%%%%
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-  METHOD
+//  METHOD
 
 
 ENDCLASS
@@ -28,19 +28,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := GP%%%%()
+     ::handle := _GP%%%%()
   elseif iParams == 1
-     ::handle := GP%%%%( p1 )                               //
+     ::handle := _GP%%%%( p1 )                               //
   elseif iParams == 3
-     ::handle := GP%%%%( p1, p2, p3 )                       //
+     ::handle := _GP%%%%( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := GP%%%%( p1, p2, p3 )                       //
+     ::handle := _GP%%%%( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := GP%%%%( p1, p2, p3, p2, p3 )               //
+     ::handle := _GP%%%%( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := GP%%%%( p1, p2, p3, p2, p3, p2 )           //
+     ::handle := _GP%%%%( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := GP%%%%( p1, p2, p3, p2, p3, p2, p3 )       //
+     ::handle := _GP%%%%( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -53,11 +53,11 @@ return self
 
 return nil
 
-*********************************************************************************************************
-  METHOD () CLASS GP%%%%
-*********************************************************************************************************
-
-return GP%%%%(::handle)
+//*********************************************************************************************************
+//  METHOD () CLASS GP%%%%
+//*********************************************************************************************************
+//
+//return GP%%%%(::handle)
 
 
 #pragma BEGINDUMP
@@ -67,35 +67,34 @@ return GP%%%%(::handle)
 
 using namespace Gdiplus;
 
-HB_FUNC( GP%%%% )
+HB_FUNC( _GP%%%% )
 {
-   %%%%* clr;
-   int iParams = hb_pcount();
-
-   if( iParams == 0 )
-       clr = new %%%%();
-   else if (iParams == 1 )
-       clr = new %%%%( hb_parnl( 1 ) );
-   else if (iParams == 3 )
-       clr = new %%%%( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   else
-       clr = new %%%%( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-
-   hb_retptr( (void*)  );
+   //%%%%* ptr;
+   //int iParams = hb_pcount();
+   //
+   //if( iParams == 0 )
+   //    ptr = new %%%%();
+   //else if (iParams == 1 )
+   //    ptr = new %%%%( hb_parnl( 1 ) );
+   //else if (iParams == 3 )
+   //    ptr = new %%%%( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
+   //else
+   //    ptr = new %%%%( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
+   //
+   //hb_retptr( (void*) ptr );
 }
 
 HB_FUNC( DELETE%%%% )
 {
-   %%%%* clr = (%%%%*) hb_parptr( 1 );
-   delete (%%%%*) clr;
-   hb_ret();
+   //%%%%* clr = (%%%%*) hb_parptr( 1 );
+   //delete (%%%%*) clr;
+   //hb_ret();
 }
 
-HB_FUNC( GP%%%%... )
-{
-   %%%%* ptr = (%%%%*) hb_parptr( 1 );
-   hb_retni( ptr->GetA() );
-}
+//HB_FUNC( GP%%%%... )
+//{
+//   %%%%* ptr = (%%%%*) hb_parptr( 1 );
+//}
 
 #pragma ENDDUMP
 

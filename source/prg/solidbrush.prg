@@ -27,9 +27,33 @@ return self
   METHOD Destroy() CLASS GPSolidBrush
 *********************************************************************************************************
 
-  DeleteSolidBrush( ::handle )
+  if !Empty(::handle )
+     DeleteSolidBrush( ::handle )
+  endif
 
 return nil
+
+
+
+
+//Constructors
+//
+//The SolidBrush class has the following constructors.
+//
+//Constructor                       Description
+//SolidBrush::SolidBrush            Creates a SolidBrush object based on a color.
+//
+//
+//Methods
+//
+//The SolidBrush class has the following methods.
+//
+//Method                            Description
+//SolidBrush::GetColor              The SolidBrush::GetColor method gets the color of this solid brush.
+//SolidBrush::SetColor              The SolidBrush::SetColor method sets the color of this solid brush.
+
+
+
 
 
 #pragma BEGINDUMP

@@ -1,83 +1,7 @@
+// TODO: Revisar los métodos y sus sobrecargas y hacer los que falten
+
 #include "fivewin.ch"
 
-static oWnd
-static nPaint := 1
-
-function main()
-
-local oIcon
-
-
-DEFINE ICON oIcon NAME 1
-
-gdiplusstartup()
-
-DEFINE WINDOW oWnd TITLE "Test GdiPlus"
-
-
-
-ACTIVATE WINDOW oWnd ON PAINT Pinta( hDC ) MAXIMIZED
-
-GdiplusShutdown()
-
-return nil
-
-
-function pinta( hDC )
-
-local g       := Graphics( hDC )
-local oColor  := Color( 255,0,0,0 )
-//local oFont   := Font( "Segoe UI", 30 )
-local oPen1   := Pen( oColor, 1 )
-local oPen2   := Pen( oColor, 2 )
-//local oPen3   := Pen( oColor, 3 )
-//local oBrush1 := SolidBrush( oColor )
-local rc := GetClientRect(oWnd:hWnd )
-local oImage   := Image( "ice_cream.png" )
-g:DrawImage( oImage, 10, 10, rc[4]/3, rc[3]/3 )
-
-g:SetSmoothingMode()
-g:SetPen( oPen1 )
-g:DrawLine( 10, 10, 300, 300 )
-//
-g:SetPen( oPen2 )
-g:DrawRectangle( {50, 50, 200, 300} )
-
-return 0
-
-
-/* Ejemplo de uso
-
-local g       := Graphics( hDC )
-local oColor  := Color( 255,0,0,0 )
-local oFont   := Font( "Segoe UI", 30 )
-local oPen1   := Pen( oColor, 1 )
-local oPen2   := Pen( oColor, 2 )
-local oPen3   := Pen( oColor, 3 )
-local oBrush1 := SolidBrush( oColor )
-
-
-g:SetPen( oPen1 )
-g:DrawLine( 10, 10, 300, 300 )
-
-g:SetPen( oPen2 )
-g:DrawRectangle( 50, 50, 200, 300 )
-
-return 0
-
-
-Los objetos se destruyen solos cuando se termina la función porque se han definido en las clases metodos DESTRUCTOR
-o por lo menos eso creo
-
-Los métodos susceptibles de recibir un rectangulo pueden o pasar nTop, nLeft, nWidth, nHeight o un rectangulo como primer
-parametro
-
-Las funciones de pintado tienen que tener puestas con antelación lo que necesiten para pintar:
-
-   Una funcion que dibuje una línea tiene que tener un objeto Pen establecido.
-   Si una función necesita un brush y un pen pues igual. Necesitas un g:SetBrush( oBrush ) y un g:SetPen( oPen )
-
-*/
 
 
 function Graphics( hDC )
@@ -86,7 +10,7 @@ return GPGraphics():New( hDC )
 
 CLASS GPGraphics
 
-      DATA g
+      DATA handle
 
       DATA oBrush
       DATA oPen
@@ -177,7 +101,7 @@ CLASS GPGraphics
       METHOD SetPageUnit            ( )
       METHOD SetPixelOffsetMode     ( )
       METHOD SetRenderingOrigin     ( )
-      METHOD SetSmoothingMode       ( nMode ) 
+      METHOD SetSmoothingMode       ( nMode )
       METHOD SetTextContrast        ( )
       METHOD SetTextRenderingHint   ( )
       METHOD SetTransform           ( )
@@ -201,18 +125,30 @@ ENDCLASS
 **********************************************************************************************************
 
   if valtype( hDCOrImage ) == "N"
-     ::g := GdiPlusNewGraphics( hDCOrImage )
+     ::handle:= GdiPlusNewGraphics( hDCOrImage )
   elseif valtype( hDCOrImage ) == "O"
-     ::g := GdiPlusNewGraphicsFromBitmap( hDCOrImage:handle )
+     ::handle:= GdiPlusNewGraphicsFromBitmap( hDCOrImage:handle )
   endif
 
 return self
 
 **********************************************************************************************************
+  METHOD Destroy() CLASS GPGraphics
+**********************************************************************************************************
+
+  if !empty(::handle)
+     GdiPlusDeleteGraphics( ::handle)
+  endif
+  ::handle:= nil
+
+return nil
+
+
+**********************************************************************************************************
   METHOD AddMetafileComment( cComment ) CLASS GPGraphics
 **********************************************************************************************************
 
-  GP_AddMetafileComment( ::g, cComment )
+  GP_AddMetafileComment( ::handle, cComment )
 
 return 0
 
@@ -220,13 +156,13 @@ return 0
   METHOD BeginContainer( ) CLASS GPGraphics
 **********************************************************************************************************
 
-return GP_BeginContainer(::g)
+return GP_BeginContainer(::handle)
 
 **********************************************************************************************************
   METHOD BitBlt( oImage, nTop, nLeft, nTopSrc, nLeftSrc, nWidth, nHeight, units ) CLASS GPGraphics
 **********************************************************************************************************
 
-  GP_BitBlt( ::g, oImage:handle, nTop, nLeft, nTopSrc, nLeftSrc, nWidth, nHeight, units )
+  GP_BitBlt( ::handle, oImage:handle, nTop, nLeft, nTopSrc, nLeftSrc, nWidth, nHeight, units )
 
 return 0
 
@@ -235,25 +171,17 @@ return 0
   METHOD Clear( oColor ) CLASS GPGraphics
 **********************************************************************************************************
 
-  GP_Clear( ::g, oColor:handle )
+  GP_Clear( ::handle, oColor:handle )
 
 return 0
 
 
-**********************************************************************************************************
-  METHOD Destroy() CLASS GPGraphics
-**********************************************************************************************************
-
-  GdiPlusDeleteGraphics( ::g )
-  ::g := nil
-
-return nil
 
 **********************************************************************************************************
   METHOD DrawArc( nTop, nLeft, nWidth, nHeight, nStartFrom, nAngle ) CLASS GPGraphics
 **********************************************************************************************************
 
-  GP_DrawArc( ::g, ::oPen:handle, nTop, nLeft, nWidth, nHeight, nStartFrom, nAngle )
+  GP_DrawArc( ::handle, ::oPen:handle, nTop, nLeft, nWidth, nHeight, nStartFrom, nAngle )
 
 return 0
 
@@ -261,7 +189,7 @@ return 0
   METHOD DrawBezier( aStartPt, aPtCtrl1, aPtCtrl2, aEndPt   ) CLASS GPGraphics
 **********************************************************************************************************
 
-  GP_DrawBezier( ::g, ::oPen:handle, aStartPt[1], aStartPt[2], aPtCtrl1[1], aPtCtrl1[2], aPtCtrl2[1], aPtCtrl2[2], aEndPt[1], aEndPt[2]  )
+  GP_DrawBezier( ::handle, ::oPen:handle, aStartPt[1], aStartPt[2], aPtCtrl1[1], aPtCtrl1[2], aPtCtrl2[1], aPtCtrl2[2], aEndPt[1], aEndPt[2]  )
 
 return 0
 
@@ -276,7 +204,7 @@ return 0
   METHOD DrawCachedBitmap( oCBitmap, nTop, nLeft ) CLASS GPGraphics
 **********************************************************************************************************
 
-  GP_DrawCachedBitmap( ::g, oCBitmap:handle, nTop, nLeft )
+  GP_DrawCachedBitmap( ::handle, oCBitmap:handle, nTop, nLeft )
 
 return 0
 
@@ -310,7 +238,7 @@ return 0
      nTop    := nTop[1]
   endif
 
-  GP_DrawEllipse( ::g, ::oPen:handle, nTop, nLeft, nwidth, nHeight )
+  GP_DrawEllipse( ::handle, ::oPen:handle, nTop, nLeft, nwidth, nHeight )
 
 return 0
 
@@ -321,7 +249,7 @@ return 0
   DEFAULT nWidth  := oImage:nWidth()
   DEFAULT nHeight := oImage:nHeight()
 
-  GP_DrawImage( ::g, oImage:handle, nTop, nLeft, nWidth, nHeight )
+  GP_DrawImage( ::handle, oImage:handle, nTop, nLeft, nWidth, nHeight )
 
 
 return 0
@@ -337,7 +265,7 @@ return 0
      nTop    := nTop[1]
   endif
 
-  GP_FillEllipse( ::g, ::oBrush:handle, nTop, nLeft, nwidth, nHeight )
+  GP_FillEllipse( ::handle, ::oBrush:handle, nTop, nLeft, nwidth, nHeight )
 
 return 0
 
@@ -373,9 +301,9 @@ return 0
 
 
   if oPen == nil
-     GP_FillRect( ::g, {rc[1],rc[2], rc[4]-rc[2], rc[3]-rc[1]}, oBrush:handle )
+     GP_FillRect( ::handle, {rc[1],rc[2], rc[4]-rc[2], rc[3]-rc[1]}, oBrush:handle )
   else
-     GP_FillRect( ::g, {rc[1],rc[2], rc[4]-rc[2], rc[3]-rc[1]}, oBrush:handle, oPen:handle )
+     GP_FillRect( ::handle, {rc[1],rc[2], rc[4]-rc[2], rc[3]-rc[1]}, oBrush:handle, oPen:handle )
   endif
 
 return 0
@@ -401,7 +329,7 @@ return 0
   DEFAULT oBrush := ::oBrush
   DEFAULT oPen   := ::oPen
 
-  GP_RoundRect( ::g, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2, oBrush:handle )
+  GP_RoundRect( ::handle, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2, oBrush:handle )
 
 return 0
 
@@ -688,7 +616,7 @@ return 0
 
   DEFAULT oPen := ::oPen
 
-  GP_DrawRectangle( ::g, rc, oPen:handle )
+  GP_DrawRectangle( ::handle, rc, oPen:handle )
 
 return 0
 
@@ -703,7 +631,7 @@ return 0
   METHOD DrawRoundRect( rc, oPen, nRad1, nRad2 ) CLASS GPGraphics
 **********************************************************************************************************
 
-  GP_RoundRect( ::g, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2 )
+  GP_RoundRect( ::handle, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2 )
 
 return 0
 
@@ -714,7 +642,7 @@ return 0
   DEFAULT font := ::oFont
   DEFAULT color := ::oColor
 
-  GP_DrawString( ::g, cText, nTop, nLeft, font:handle, color:handle )
+  GP_DrawString( ::handle, cText, nTop, nLeft, font:handle, color:handle )
 
 return 0
 
@@ -752,7 +680,7 @@ return 0
   METHOD DrawLine( nTop, nLeft, nBottom, nRight ) CLASS GPGraphics
 **********************************************************************************************************
 
- GP_DrawLine( ::g, ::oPen:handle, nTop, nLeft, nBottom, nRight )
+ GP_DrawLine( ::handle, ::oPen:handle, nTop, nLeft, nBottom, nRight )
 
 return 0
 
@@ -768,7 +696,7 @@ return 0
   METHOD RotateTransform( angle, order ) CLASS GPGraphics
 **********************************************************************************************************
 
-  GP_RotateTransform( ::g, angle, order )
+  GP_RotateTransform( ::handle, angle, order )
 
 return nil
 
@@ -781,7 +709,7 @@ return nil
   METHOD ScaleTransform( hor, ver, order ) CLASS GPGraphics
 **********************************************************************************************************
 
-  GP_ScaleTransform( ::g, hor, ver, order )
+  GP_ScaleTransform( ::handle, hor, ver, order )
 
 return nil
 
@@ -861,7 +789,7 @@ return 0
 
 DEFAULT nMode := 2 // SmoothingModeHighQuality
 
-SetSmoothingMode(::g, nMode )
+SetSmoothingMode(::handle, nMode )
 
 return 0
 
@@ -908,9 +836,229 @@ return 0
   METHOD TranslateTransform( hor, ver, order ) CLASS GPGraphics
 **********************************************************************************************************
 
-  GP_TranslateTransform( ::g, hor, ver, order )
+  GP_TranslateTransform( ::handle, hor, ver, order )
 
 return nil
+
+
+//Constructors
+//
+//The Graphics class has the following constructors.
+//
+//Constructor                                                              Description
+//Graphics::Graphics(HDC)                                                  Creates a Graphics::Graphics object that is associated with a specified device context.
+//Graphics::Graphics(HDC,HANDLE)                                           Creates a Graphics::Graphics object that is associated with a specified device context and a specified device.
+//Graphics::Graphics(HWND,BOOL)                                            Creates a Graphics::Graphics object that is associated with a specified window.
+//Graphics::Graphics(Image*)                                               Creates a Graphics::Graphics object that is associated with an Image object.
+//
+//
+//Methods
+//
+//The Graphics class has the following methods.
+//
+//Method                                                                   Description
+//Graphics::AddMetafileComment                                             The Graphics::AddMetafileComment method adds a text comment to an existing metafile.
+//Graphics::BeginContainer()                                               The Graphics::BeginContainer method begins a new graphics container.
+//Graphics::BeginContainer(Rect&,Rect&,Unit)                               The Graphics::BeginContainer method begins a new graphics container.
+//Graphics::BeginContainer(RectF&,RectF&,Unit)                             The Graphics::BeginContainer method begins a new graphics container.
+//Graphics::Clear                                                          The Graphics::Clear method clears a Graphics object to a specified color.
+//Graphics::DrawArc(Pen*,INT,INT,INT,INT,REAL,REAL)                        The Graphics::DrawArc method draws an arc. The arc is part of an ellipse.
+//Graphics::DrawArc(Pen*,REAL,REAL,REAL,REAL,REAL,REAL)                    The Graphics::DrawArc method draws an arc. The arc is part of an ellipse.
+//Graphics::DrawArc(Pen*,Rect&,REAL,REAL)                                  The Graphics::DrawArc method draws an arc. The arc is part of an ellipse.
+//Graphics::DrawArc(Pen*,RectF&,REAL,REAL)                                 The Graphics::DrawArc method draws an arc. The arc is part of an ellipse.
+//Graphics::DrawBezier(Pen*,INT,INT,INT,INT,INT,INT,INT,INT)               The Graphics::DrawBezier method draws a Bézier spline.
+//Graphics::DrawBezier(Pen*,POINT&,POINT&,POINT&,POINT&)                   The Graphics::DrawBezier method draws a Bézier spline.
+//Graphics::DrawBezier(Pen*,POINTF&,POINTF&,POINTF&,POINTF&)               The Graphics::DrawBezier method draws a Bézier spline.
+//Graphics::DrawBezier(Pen*,REAL,REAL,REAL,REAL,REAL,REAL,REAL,REAL)       The Graphics::DrawBezier method draws a Bézier spline.
+//Graphics::DrawBeziers(Pen*,Point*,INT)                                   The Graphics::DrawBeziers method draws a sequence of connected Bézier splines.
+//Graphics::DrawBeziers(Pen*,PointF*,INT)                                  The Graphics::DrawBeziers method draws a sequence of connected Bézier splines.
+//Graphics::DrawCachedBitmap                                               The Graphics::DrawCachedBitmap method draws the image stored in a CachedBitmap object.
+//Graphics::DrawClosedCurve(Pen*,Point*,INT)                               The Graphics::DrawClosedCurve method draws a closed cardinal spline.
+//Graphics::DrawClosedCurve(Pen*,Point*,INT,REAL)                          The Graphics::DrawClosedCurve method draws a closed cardinal spline.
+//Graphics::DrawClosedCurve(Pen*,PointF*,INT)                              The Graphics::DrawClosedCurve method draws a closed cardinal spline.
+//Graphics::DrawClosedCurve(Pen*,PointF*,INT,REAL)                         The Graphics::DrawClosedCurve method draws a closed cardinal spline.
+//Graphics::DrawCurve(Pen*,Point*,INT)                                     The Graphics::DrawCurve method draws a cardinal spline.
+//Graphics::DrawCurve(Pen*,Point*,INT,INT,INT,REAL)                        The Graphics::DrawCurve method draws a cardinal spline.
+//Graphics::DrawCurve(Pen*,Point*,INT,REAL)                                The Graphics::DrawCurve method draws a cardinal spline.
+//Graphics::DrawCurve(Pen*,PointF*,INT)                                    The Graphics::DrawCurve method draws a cardinal spline.
+//Graphics::DrawCurve(Pen*,PointF*,INT,INT,INT,REAL)                       The Graphics::DrawCurve method draws a cardinal spline.
+//Graphics::DrawCurve(Pen*,PointF*,INT,REAL)                               The Graphics::DrawCurve method draws a cardinal spline.
+//Graphics::DrawDriverString                                               The Graphics::DrawDriverString method draws characters at the specified positions. The method gives the client complete control over the appearance of text. The method assumes that the client has already set up the format and layout to be applied.
+//Graphics::DrawEllipse(Pen*,INT,INT,INT,INT)                              The Graphics::DrawEllipse method draws an ellipse.
+//Graphics::DrawEllipse(Pen*,REAL,REAL,REAL,REAL)                          The Graphics::DrawEllipse method draws an ellipse.
+//Graphics::DrawEllipse(Pen*,Rect&)                                        The Graphics::DrawEllipse method draws an ellipse.
+//Graphics::DrawEllipse(Pen*,RectF&)                                       The Graphics::DrawEllipse method draws an ellipse.
+//Graphics::DrawImage(Image*,INT,INT)                                      The Graphics::DrawImage method draws an image at a specified location.
+//Graphics::DrawImage(Image*,INT,INT,INT,INT)                              The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,INT,INT,INT,INT,INT,INT,Unit)                 The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,Point&)                                       The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,Point*,INT)                                   The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,Point*,INT,INT,INT,INT,INT,Unit,ImageAttributes*,DrawImageAbort,VOID*) The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,PointF&)                                      The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,PointF*,INT)                                  The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,PointF*,INT,REAL,REAL,REAL,REAL,Unit,ImageAttributes*,DrawImageAbort,VOID*)  The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,REAL,REAL)                                    The Graphics::DrawImage method draws an image at a specified location.
+//Graphics::DrawImage(Image*,REAL,REAL,REAL,REAL)                          The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,REAL,REAL,REAL,REAL,REAL,REAL,Unit)           The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,Rect&)                                        The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,Rect&,INT,INT,INT,INT,Unit,ImageAttributes*,DrawImageAbort,VOID*)  The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,RectF&)                                       The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,RectF&,REAL,REAL,REAL,REAL,Unit,ImageAttributes*,DrawImageAbort,VOID*)   The Graphics::DrawImage method draws an image.
+//Graphics::DrawImage(Image*,RectF&,RectF&,Unit,ImageAttributes*)          The Graphics::DrawImage method draws a specified portion of an image at a specified location.
+//Graphics::DrawImage(Image*,RectF*,Matrix*,Effect*,ImageAttributes*,Unit*) The method draws a portion of an image after applying a specified effect.
+//Graphics::DrawLine(Pen*,INT,INT,INT,INT)                                 The Graphics::DrawLine method draws a line that connects two points.
+//Graphics::DrawLine(Pen*,Point&,Point&)                                   The Graphics::DrawLine method draws a line that connects two points.
+//Graphics::DrawLine(Pen*,PointF&,PointF&)                                 The Graphics::DrawLine method draws a line that connects two points.
+//Graphics::DrawLine(Pen*,REAL,REAL,REAL,REAL)                             The Graphics::DrawLine method draws a line that connects two points.
+//Graphics::DrawLines(Pen*,Point*,INT)                                     The Graphics::DrawLines method draws a sequence of connected lines.
+//Graphics::DrawLines(Pen*,PointF*,INT)                                    The Graphics::DrawLines method draws a sequence of connected lines.
+//Graphics::DrawPath                                                       The Graphics::DrawPath method draws a sequence of lines and curves defined by a GraphicsPath object.
+//Graphics::DrawPie(Pen*,INT,INT,INT,INT,REAL,REAL)                        The Graphics::DrawPie method draws a pie.
+//Graphics::DrawPie(Pen*,REAL,REAL,REAL,REAL,REAL,REAL)                    The Graphics::DrawPie method draws a pie.
+//Graphics::DrawPie(Pen*,Rect&,REAL,REAL)                                  The Graphics::DrawPie method draws a pie.
+//Graphics::DrawPie(Pen*,RectF&,REAL,REAL)                                 The Graphics::DrawPie method draws a pie.
+//Graphics::DrawPolygon(Pen*,Point*,INT*)                                  The Graphics::DrawPolygon method draws a polygon.
+//Graphics::DrawPolygon(Pen*,PointF*,INT*)                                 The Graphics::DrawPolygon method draws a polygon.
+//Graphics::DrawRectangle(Pen*,INT,INT,INT,INT)                            The Graphics::DrawRectangle method draws a rectangle.
+//Graphics::DrawRectangle(Pen*,REAL,REAL,REAL,REAL)                        The Graphics::DrawRectangle method draws a rectangle.
+//Graphics::DrawRectangle(Pen*,Rect&)                                      The Graphics::DrawRectangle method draws a rectangle.
+//Graphics::DrawRectangle(Pen*,RectF&)                                     The Graphics::DrawRectangle method draws a rectangle.
+//Graphics::DrawRectangles(Pen*,Rect*,INT)                                 The Graphics::DrawRectangles method draws a sequence of rectangles.
+//Graphics::DrawRectangles(Pen*,RectF*,INT)                                The Graphics::DrawRectangles method draws a sequence of rectangles.
+//Graphics::DrawString(WCHAR*,INT,Font*,PointF&,Brush*)                    The Graphics::DrawString method draws a string based on a font and an origin for the string.
+//Graphics::DrawString(WCHAR*,INT,Font*,PointF&,StringFormat*,Brush*)      The Graphics::DrawString method draws a string based on a font, a string origin, and a format.
+//Graphics::DrawString(WCHAR*,INT,Font*,RectF&,StringFormat*,Brush*)       The Graphics::DrawString method draws a string based on a font, a layout rectangle, and a format.
+//Graphics::EndContainer                                                   The Graphics::EndContainer method closes a graphics container that was previously opened by the Graphics::BeginContainer method.
+//Graphics::EnumerateMetafile(Metafile*,Metafile&,EnumerateMetafileProc,VOID*,ImageAttributes*)           The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,Point&,Rect&,Unit,EnumerateMetafileProc,VOID*,ImageAttributes*)   The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,Point&,Rect&,Unit,EnumerateMetafileProc,VOID*,ImageAttributes*)   The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,Point*,INT,EnumerateMetafileProc,VOID*,ImageAttributes*)          The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,Point*,INT,EnumerateMetafileProc,VOID*,ImageAttributes*)          The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,Point*,INT,Rect&,Unit,EnumerateMetafileProc,VOID*,ImageAttributes*) The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,Point*,INT,RectF&,Unit,EnumerateMetafileProc,VOID*,ImageAttributes*) The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,PointF&,EnumerateMetafileProc,VOID*,ImageAttributes*)             The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,Rect&,EnumerateMetafileProc,VOID*,ImageAttributes*)               The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,Rect&,Rect&,Unit,EnumerateMetafileProc,VOID*,ImageAttributes*)    The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,RectF&,EnumerateMetafileProc,VOID*,ImageAttributes*)              The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::EnumerateMetafile(Metafile*,RectF&,RectF&,Unit,EnumerateMetafileProc,VOID*,ImageAttributes*)  The Graphics::EnumerateMetafile method calls an application-defined callback function for each record in a specified metafile. You can use this method to display a metafile by calling Metafile::PlayRecord in the callback function.
+//Graphics::ExcludeClip(Rect&)                                                                            The Graphics::ExcludeClip method updates the clipping region to the portion of itself that does not intersect the specified rectangle.
+//Graphics::ExcludeClip(RectF&)                                            The Graphics::ExcludeClip method updates the clipping region to the portion of itself that does not intersect the specified rectangle.
+//Graphics::ExcludeClip(Region*)                                           The Graphics::ExcludeClip method updates the clipping region with the portion of itself that does not overlap the specified region.
+//Graphics::FillClosedCurve(Brush*,Point*,INT)                             The Graphics::FillClosedCurve method creates a closed cardinal spline from an array of points and uses a brush to fill the interior of the spline.
+//Graphics::FillClosedCurve(Brush*,Point*,INT,FillMode,REAL)               The Graphics::FillClosedCurve method creates a closed cardinal spline from an array of points and uses a brush to fill, according to a specified mode, the interior of the spline.
+//Graphics::FillClosedCurve(Brush*,PointF*,INT)                            The Graphics::FillClosedCurve method creates a closed cardinal spline from an array of points and uses a brush to fill the interior of the spline.
+//Graphics::FillClosedCurve(Brush*,PointF*,INT,FillMode,REAL)              The Graphics::FillClosedCurve method creates a closed cardinal spline from an array of points and uses a brush to fill, according to a specified mode, the interior of the spline.
+//Graphics::FillEllipse(Brush*,INT,INT,INT,INT)                            The Graphics::FillEllipse method uses a brush to fill the interior of an ellipse that is specified by coordinates and dimensions.
+//Graphics::FillEllipse(Brush*,REAL,REAL,REAL,REAL)                        The Graphics::FillEllipse method uses a brush to fill the interior of an ellipse that is specified by coordinates and dimensions.
+//Graphics::FillEllipse(Brush*,Rect&)                                      The Graphics::FillEllipse method uses a brush to fill the interior of an ellipse that is specified by a rectangle.
+//Graphics::FillEllipse(Brush*,RectF&)                                     The Graphics::FillEllipse method uses a brush to fill the interior of an ellipse that is specified by a rectangle.
+//Graphics::FillPath                                                       The Graphics::FillPath method uses a brush to fill the interior of a path. If a figure in the path is not closed, this method treats the nonclosed figure as if it were closed by a straight line that connects the figure's starting and ending points.
+//Graphics::FillPie(Brush*,INT,INT,INT,INT,REAL,REAL)                      The Graphics::FillPie method uses a brush to fill the interior of a pie.
+//Graphics::FillPie(Brush*,REAL,REAL,REAL,REAL,REAL,REAL)                  The Graphics::FillPie method uses a brush to fill the interior of a pie.
+//Graphics::FillPie(Brush*,Rect&,REAL,REAL)                                The Graphics::FillPie method uses a brush to fill the interior of a pie.
+//Graphics::FillPie(Brush*,RectF&,REAL,REAL)                               The Graphics::FillPie method uses a brush to fill the interior of a pie.
+//Graphics::FillPolygon(Brush*,Point*,INT)                                 The Graphics::FillPolygon method uses a brush to fill the interior of a polygon.
+//Graphics::FillPolygon(Brush*,Point*,INT,FillMode)                        The Graphics::FillPolygon method uses a brush to fill the interior of a polygon.
+//Graphics::FillPolygon(Brush*,PointF*,INT)                                The Graphics::FillPolygon method uses a brush to fill the interior of a polygon.
+//Graphics::FillPolygon(Brush*,PointF*,INT,FillMode)                       The Graphics::FillPolygon method uses a brush to fill the interior of a polygon.
+//Graphics::FillRectangle(Brush*,INT,INT,INT,INT)                          The Graphics::FillRectangle method uses a brush to fill the interior of a rectangle.
+//Graphics::FillRectangle(Brush*,REAL,REAL,REAL,REAL)                      The Graphics::FillRectangle method uses a brush to fill the interior of a rectangle.
+//Graphics::FillRectangle(Brush*,Rect&)                                    The Graphics::FillRectangle method uses a brush to fill the interior of a rectangle.
+//Graphics::FillRectangle(Brush*,RectF&)                                   The Graphics::FillRectangle method uses a brush to fill the interior of a rectangle.
+//Graphics::FillRectangles(Brush*,Rect*,INT)                               The Graphics::FillRectangles method uses a brush to fill the interior of a sequence of rectangles.
+//Graphics::FillRectangles(Brush*,RectF*,INT)                              The Graphics::FillRectangles method uses a brush to fill the interior of a sequence of rectangles.
+//Graphics::FillRegion                                                     The Graphics::FillRegion method uses a brush to fill a specified region.
+//Graphics::Flush                                                          The Graphics::Flush method flushes all pending graphics operations.
+//Graphics::FromHDC(HDC)                                                   The Graphics::FromHDC method creates a Graphics object that is associated with a specified device context.
+//Graphics::FromHDC(HDD,HANDLE)                                            The Graphics::FromHDC method creates a Graphics object that is associated with a specified device context and a specified device.
+//Graphics::FromHWND                                                       The Graphics::FromHWND method creates a Graphics object that is associated with a specified window.
+//Graphics::FromImage                                                      The Graphics::FromImage method creates a Graphics object that is associated with a specified Image object.
+//Graphics::GetClip                                                        The Graphics::GetClip method gets the clipping region of this Graphics object.
+//Graphics::GetClipBounds(Rect*)                                           The Graphics::GetClipBounds method gets a rectangle that encloses the clipping region of this Graphics object.
+//Graphics::GetClipBounds(RectF*)                                          The Graphics::GetClipBounds method gets a rectangle that encloses the clipping region of this Graphics object.
+//Graphics::GetCompositingMode                                             The Graphics::GetCompositingMode method gets the compositing mode currently set for this Graphics object.
+//Graphics::GetCompositingQuality                                          The Graphics::GetCompositingQuality method gets the compositing quality currently set for this Graphics object.
+//Graphics::GetDpiX                                                        The Graphics::GetDpiX method gets the horizontal resolution, in dots per inch, of the display device associated with this Graphics object.
+//Graphics::GetDpiY                                                        The Graphics::GetDpiY method gets the vertical resolution, in dots per inch, of the display device associated with this Graphics object.
+//Graphics::GetHalftonePalette                                             The Graphics::GetHalftonePalette method gets a Windows halftone palette.
+//Graphics::GetHDC                                                         The Graphics::GetHDC method gets a handle to the device context associated with this Graphics object.
+//Graphics::GetInterpolationMode                                           The Graphics::GetInterpolationMode method gets the interpolation mode currently set for this Graphics object. The interpolation mode determines the algorithm that is used when images are scaled or rotated.
+//Graphics::GetLastStatus                                                  The Graphics::GetLastStatus method returns a value that indicates the nature of this Graphics object's most recent method failure.
+//Graphics::GetNearestColor                                                The Graphics::GetNearestColor method gets the nearest color to the color that is passed in. This method works on 8-bits per pixel or lower display devices for which there is an 8-bit color palette.
+//Graphics::GetPageScale                                                   The Graphics::GetPageScale method gets the scaling factor currently set for the page transformation of this Graphics object. The page transformation converts page coordinates to device coordinates.
+//Graphics::GetPageUnit                                                    The Graphics::GetPageUnit method gets the unit of measure currently set for this Graphics object.
+//Graphics::GetPixelOffsetMode                                             The Graphics::GetPixelOffsetMode method gets the pixel offset mode currently set for this Graphics object.
+//Graphics::GetRenderingOrigin                                             The Graphics::GetRenderingOrigin method gets the rendering origin currently set for this Graphics object. The rendering origin is used to set the dither origin for 8-bits per pixel and 16-bits per pixel dithering and is also used to set the origin for hatch brushes.
+//Graphics::GetSmoothingMode                                               The Graphics::GetSmoothingMode method determines whether smoothing (antialiasing) is applied to the Graphics object.
+//Graphics::GetTextContrast                                                The Graphics::GetTextContrast method gets the contrast value currently set for this Graphics object. The contrast value is used for antialiasing text.
+//Graphics::GetTextRenderingHint                                           The Graphics::GetTextRenderingHint method returns the text rendering mode currently set for this Graphics object.
+//Graphics::GetTransform                                                   The Graphics::GetTransform method gets the world transformation matrix of this Graphics object.
+//Graphics::GetVisibleClipBounds(Rect*)                                    The Graphics::GetVisibleClipBounds method gets a rectangle that encloses the visible clipping region of this Graphics object. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::GetVisibleClipBounds(RectF*)                                   The Graphics::GetVisibleClipBounds method gets a rectangle that encloses the visible clipping region of this Graphics object. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::IntersectClip(Rect&)                                           The Graphics::IntersectClip method updates the clipping region of this Graphics object to the portion of the specified rectangle that intersects with the current clipping region of this Graphics object.
+//Graphics::IntersectClip(RectF&)                                          The Graphics::IntersectClip method updates the clipping region of this Graphics object to the portion of the specified rectangle that intersects with the current clipping region of this Graphics object.
+//Graphics::IntersectClip(Region*)                                         The Graphics::IntersectClip method updates the clipping region of this Graphics object to the portion of the specified region that intersects with the current clipping region of this Graphics object.
+//Graphics::IsClipEmpty                                                    The Graphics::IsClipEmpty method determines whether the clipping region of this Graphics object is empty.
+//Graphics::IsVisible(INT,INT)                                             The Graphics::IsVisible method determines whether the specified point is inside the visible clipping region of this Graphics object. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::IsVisible(INT,INT,INT,INT)                                     The Graphics::IsVisible method determines whether the specified rectangle intersects the visible clipping region of this Graphics object. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::IsVisible(Point&)                                              The Graphics::IsVisible method determines whether the specified point is inside the visible clipping region of this Graphics object. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::IsVisible(PointF&)                                             The Graphics::IsVisible method determines whether the specified point is inside the visible clipping region of this Graphics object. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::IsVisible(REAL,REAL)                                           The Graphics::IsVisible method determines whether the specified point is inside the visible clipping region of this Graphics object. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::IsVisible(REAL,REAL,REAL,REAL)                                 The Graphics::IsVisible method determines whether the specified rectangle intersects the visible clipping region of this Graphics object. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::IsVisible(Rect&)                                               The Graphics::IsVisible method determines whether the specified rectangle intersects the visible clipping region of this Graphics object. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::IsVisible(RectF&)                                              The Graphics::IsVisible method determines whether the specified rectangle intersects the visible clipping region of this Graphics object. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::IsVisibleClipEmpty                                             The Graphics::IsVisibleClipEmpty method determines whether the visible clipping region of this Graphics object is empty. The visible clipping region is the intersection of the clipping region of this Graphics object and the clipping region of the window.
+//Graphics::MeasureCharacterRanges                                         The Graphics::MeasureCharacterRanges method gets a set of regions each of which bounds a range of character positions within a string.
+//Graphics::MeasureDriverString                                            The Graphics::MeasureDriverString method measures the bounding box for the specified characters and their corresponding positions.
+//Graphics::MeasureString(WCHAR*,INT,Font*,PointF&,RectF*)                 The Graphics::MeasureString method measures the extent of the string in the specified font and layout rectangle.
+//Graphics::MeasureString(WCHAR*,INT,Font*,PointF&,StringFormat*,RectF*)   The Graphics::MeasureString method measures the extent of the string in the specified font, format, and layout rectangle.
+//Graphics::MeasureString(WCHAR*,INT,Font*,RectF&,RectF*)                  The Graphics::MeasureString method measures the extent of the string in the specified font and layout rectangle.
+//Graphics::MeasureString(WCHAR*,INT,Font*,RectF&,StringFormat*,RectF*,INT*,INT*)  The Graphics::MeasureString method measures the extent of the string in the specified font, format, and layout rectangle.
+//Graphics::MeasureString(WCHAR*,INT,Font*,SizeF&,StringFormat*,SizeF*,INT*,INT*)  The Graphics::MeasureString method measures the extent of the string in the specified font, format, and layout rectangle.
+//Graphics::MultiplyTransform                                              The Graphics::MultiplyTransform method updates this Graphics object's world transformation matrix with the product of itself and another matrix.
+//Graphics::ReleaseHDC                                                     The Graphics::ReleaseHDC method releases a device context handle obtained by a previous call to the Graphics::GetHDC method of this Graphics object.
+//Graphics::ResetClip                                                      The Graphics::ResetClip method sets the clipping region of this Graphics object to an infinite region.
+//Graphics::ResetTransform                                                 The Graphics::ResetTransform method sets the world transformation matrix of this Graphics object to the identity matrix.
+//Graphics::Restore                                                        The Graphics::Restore method sets the state of this Graphics object to the state stored by a previous call to the Graphics::Save method of this Graphics object.
+//Graphics::RotateTransform                                                The Graphics::RotateTransform method updates the world transformation matrix of this Graphics object with the product of itself and a rotation matrix.
+//Graphics::Save                                                           The Graphics::Save method saves the current state (transformations, clipping region, and quality settings) of this Graphics object. You can restore the state later by calling the Graphics::Restore method.
+//Graphics::ScaleTransform                                                 The Graphics::ScaleTransform method updates this Graphics object's world transformation matrix with the product of itself and a scaling matrix.
+//Graphics::SetAbort                                                       Not used in GDI+ versions 1.0 and 1.1.
+//Graphics::SetClip(Graphics*,CombineMode)                                 The Graphics::SetClip method updates the clipping region of this Graphics object to a region that is the combination of itself and the clipping region of another Graphics object.
+//Graphics::SetClip(GraphicsPath*,CombineMode)                             The Graphics::SetClip method updates the clipping region of this Graphics object to a region that is the combination of itself and the region specified by a graphics path. If a figure in the path is not closed, this method treats the nonclosed figure as if it were closed by a straight line that connects the figure's starting and ending points.
+//Graphics::SetClip(HRGN,CombineMode)                                      The Graphics::SetClip method updates the clipping region of this Graphics object to a region that is the combination of itself and a GDI region.
+//Graphics::SetClip(Rect&,CombineMode)                                     The Graphics::SetClip method updates the clipping region of this Graphics object to a region that is the combination of itself and a rectangle.
+//Graphics::SetClip(RectF&,CombineMode)                                    The Graphics::SetClip method updates the clipping region of this Graphics object to a region that is the combination of itself and a rectangle.
+//Graphics::SetClip(Region*,CombineMode)                                   The Graphics::SetClip method updates the clipping region of this Graphics object to a region that is the combination of itself and the region specified by a Region object.
+//Graphics::SetCompositingMode                                             The Graphics::SetCompositingMode method sets the compositing mode of this Graphics object.
+//Graphics::SetCompositingQuality                                          The Graphics::SetCompositingQuality method sets the compositing quality of this Graphics object.
+//Graphics::SetInterpolationMode                                           The Graphics::SetInterpolationMode method sets the interpolation mode of this Graphics object. The interpolation mode determines the algorithm that is used when images are scaled or rotated.
+//Graphics::SetPageScale                                                   The Graphics::SetPageScale method sets the scaling factor for the page transformation of this Graphics object. The page transformation converts page coordinates to device coordinates.
+//Graphics::SetPageUnit                                                    The Graphics::SetPageUnit method sets the unit of measure for this Graphics object. The page unit belongs to the page transformation, which converts page coordinates to device coordinates.
+//Graphics::SetPixelOffsetMode                                             The Graphics::SetPixelOffsetMode method sets the pixel offset mode of this Graphics object.
+//Graphics::SetRenderingOrigin                                             The Graphics::SetRenderingOrigin method sets the rendering origin of this Graphics object. The rendering origin is used to set the dither origin for 8-bits-per-pixel and 16-bits-per-pixel dithering and is also used to set the origin for hatch brushes.
+//Graphics::SetSmoothingMode                                               The Graphics::SetSmoothingMode method sets the rendering quality of the Graphics object.
+//Graphics::SetTextContrast                                                The Graphics::SetTextContrast method sets the contrast value of this Graphics object. The contrast value is used for antialiasing text.
+//Graphics::SetTextRenderingHint                                           The Graphics::SetTextRenderingHint method sets the text rendering mode of this Graphics object.
+//Graphics::SetTransform                                                   The Graphics::SetTransform method sets the world transformation of this Graphics object.
+//Graphics::TransformPoints                                                The Graphics::TransformPoints method converts an array of points from one coordinate space to another. The conversion is based on the current world and page transformations of this Graphics object.
+//Graphics::TranslateClip(INT,INT)                                         The Graphics::TranslateClip method translates the clipping region of this Graphics object.
+//Graphics::TranslateClip(REAL,REAL)                                       The Graphics::TranslateClip method translates the clipping region of this Graphics object.
+//Graphics::TranslateTransform                                             The Graphics::TranslateTransform method updates this Graphics object's world transformation matrix with the product of itself and a translation matrix.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #pragma BEGINDUMP
@@ -922,7 +1070,7 @@ return nil
 using namespace Gdiplus;
 
 GdiplusStartupInput gdiplusStartupInput;
-ULONG_PTR	gdiplusToken;
+ULONG_PTR       gdiplusToken;
 
 
 
@@ -1268,4 +1416,96 @@ HB_FUNC( SETTEXTRENDERINGHINT )
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//static oWnd
+//static nPaint := 1
+//
+//function main()
+//
+//local oIcon
+//
+//
+//DEFINE ICON oIcon NAME 1
+//
+//gdiplusstartup()
+//
+//DEFINE WINDOW oWnd TITLE "Test GdiPlus"
+//
+//
+//
+//ACTIVATE WINDOW oWnd ON PAINT Pinta( hDC ) MAXIMIZED
+//
+//GdiplusShutdown()
+//
+//return nil
+//
+//
+//function pinta( hDC )
+//
+//local g       := Graphics( hDC )
+//local oColor  := Color( 255,0,0,0 )
+////local oFont   := Font( "Segoe UI", 30 )
+//local oPen1   := Pen( oColor, 1 )
+//local oPen2   := Pen( oColor, 2 )
+////local oPen3   := Pen( oColor, 3 )
+////local oBrush1 := SolidBrush( oColor )
+//local rc := GetClientRect(oWnd:hWnd )
+//local oImage   := Image( "ice_cream.png" )
+//g:DrawImage( oImage, 10, 10, rc[4]/3, rc[3]/3 )
+//
+//g:SetSmoothingMode()
+//g:SetPen( oPen1 )
+//g:DrawLine( 10, 10, 300, 300 )
+////
+//g:SetPen( oPen2 )
+//g:DrawRectangle( {50, 50, 200, 300} )
+//
+//return 0
+//
+
+/* Ejemplo de uso
+
+local g       := Graphics( hDC )
+local oColor  := Color( 255,0,0,0 )
+local oFont   := Font( "Segoe UI", 30 )
+local oPen1   := Pen( oColor, 1 )
+local oPen2   := Pen( oColor, 2 )
+local oPen3   := Pen( oColor, 3 )
+local oBrush1 := SolidBrush( oColor )
+
+
+g:SetPen( oPen1 )
+g:DrawLine( 10, 10, 300, 300 )
+
+g:SetPen( oPen2 )
+g:DrawRectangle( 50, 50, 200, 300 )
+
+return 0
+
+
+Los objetos se destruyen solos cuando se termina la función porque se han definido en las clases metodos DESTRUCTOR
+o por lo menos eso creo
+
+Los métodos susceptibles de recibir un rectangulo pueden o pasar nTop, nLeft, nWidth, nHeight o un rectangulo como primer
+parametro
+
+Las funciones de pintado tienen que tener puestas con antelación lo que necesiten para pintar:
+
+   Una funcion que dibuje una línea tiene que tener un objeto Pen establecido.
+   Si una función necesita un brush y un pen pues igual. Necesitas un g:SetBrush( oBrush ) y un g:SetPen( oPen )
+
+*/
 

@@ -37,8 +37,36 @@ ENDCLASS
 *******************************************************************************************
   METHOD New() CLASS GPCustomLineCap
 *******************************************************************************************
+local iParams := PCount()
+
+
+  if iParams == 0
+     ::handle := _GPCustomLineCap()
+  elseif iParams == 1
+     ::handle := _GPCustomLineCap( p1 )                               //
+  elseif iParams == 3
+     ::handle := _GPCustomLineCap( p1, p2, p3 )                       //
+  elseif iParams == 4
+     ::handle := _GPCustomLineCap( p1, p2, p3 )                       //
+  elseif iParams == 5
+     ::handle := _GPCustomLineCap( p1, p2, p3, p4, p5 )               //
+  elseif iParams == 6
+     ::handle := _GPCustomLineCap( p1, p2, p3, p4, p5, p6 )           //
+  elseif iParams == 7
+     ::handle := _GPCustomLineCap( p1, p2, p3, p4, p5, p6, p7 )       //
+  endif
 
 return self
+
+*********************************************************************************************************
+  METHOD Destroy() CLASS GPCustomLineCap
+*********************************************************************************************************
+
+  if !empty(::handle)
+
+  endif
+
+return nil
 
 
 *******************************************************************************************
@@ -120,11 +148,6 @@ return 0
 return 0
 
 
-*********************************************************************************************************
-  METHOD Destroy() CLASS GPCustomLineCap
-*********************************************************************************************************
-
-return nil
 
 // CustomLineCap::Clone           The CustomLineCap::Clone method copies the contents of the existing object into a new CustomLineCap object.
 // CustomLineCap::GetBaseCap      The CustomLineCap::GetBaseCap method gets the style of the base cap. The base cap is a LineCap object used as a cap at the end of a line along with this CustomLineCap object.
@@ -153,7 +176,34 @@ return nil
 
 using namespace Gdiplus;
 
+HB_FUNC( _GPCUSTOMLINECAP )
+{
+   //CustomLineCap* ptr;
+   //int iParams = hb_pcount();
+   //
+   //if( iParams == 0 )
+   //    ptr = new CustomLineCap();
+   //else if (iParams == 1 )
+   //    ptr = new CustomLineCap( hb_parnl( 1 ) );
+   //else if (iParams == 3 )
+   //    ptr = new CustomLineCap( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
+   //else
+   //    ptr = new CustomLineCap( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
+   //
+   //hb_retptr( (void*) ptr );
+}
 
+HB_FUNC( DELETECUSTOMLINECAP )
+{
+   //CustomLineCap* clr = (CustomLineCap*) hb_parptr( 1 );
+   //delete (CustomLineCap*) clr;
+   //hb_ret();
+}
+
+//HB_FUNC( GPCUSTOMLINECAP... )
+//{
+//   CustomLineCap* ptr = (CustomLineCap*) hb_parptr( 1 );
+//}
 
 
 

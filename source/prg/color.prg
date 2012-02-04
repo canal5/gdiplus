@@ -78,7 +78,9 @@ return self
   METHOD Destroy() CLASS GPColor
 *********************************************************************************************************
 
-  DeleteColor( ::handle )
+  if !empty(::handle)
+     DeleteColor( ::handle )
+  endif
 
 return nil
 

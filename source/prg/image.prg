@@ -32,7 +32,9 @@ return self
    METHOD Destroy() CLASS GPImage
 *********************************************************************************************************
 
-   DeleteImage ( ::handle )
+  if !empty(::handle)
+     DeleteImage ( ::handle )
+  endif
 
 return nil
 
@@ -46,6 +48,70 @@ local cExt := upper( right( cFileName, 3 ) )
 
 
 return nil
+
+
+
+
+
+//Constructors
+//
+//The Image class has the following constructors.
+//
+//Constructor                                         Description
+//Image::Image(IStream*,BOOL)                         Creates an Image::Image object based on a stream.
+//Image::Image(WCHAR*,BOOL)                           Creates an Image::Image object based on a file.
+//
+//
+//Methods
+//
+//The Image class has the following methods.
+//
+//Method                                              Description
+//Image::Clone                                        The Image::Clone method creates a new Image object and initializes it with the contents of this Image object.
+//Image::FindFirstItem                                The Image::FindFirstItem method retrieves the description and the data size of the first metadata item in this Image object.
+//Image::FindNextItem                                 The Image::FindNextItem method is used along with the Image::FindFirstItem method to enumerate the metadata items stored in this Image object. The Image::FindNextItem method retrieves the description and the data size of the next metadata item in this Image object.
+//Image::FromFile                                     The Image::FromFile method creates an Image object based on a file.
+//Image::FromStream                                   The Image::FromStream method creates a new Image object based on a stream.
+//Image::GetAllPropertyItems                          The Image::GetAllPropertyItems method gets all the property items (metadata) stored in this Image object.
+//Image::GetBounds                                    The Image::GetBounds method gets the bounding rectangle for this image.
+//Image::GetEncoderParameterList                      The Image::GetEncoderParameterList method gets a list of the parameters supported by a specified image encoder.
+//Image::GetEncoderParameterListSize                  The Image::GetEncoderParameterListSize method gets the size, in bytes, of the parameter list for a specified image encoder.
+//Image::GetFlags                                     The Image::GetFlags method gets a set of flags that indicate certain attributes of this Image object.
+//Image::GetFrameCount                                The Image::GetFrameCount method gets the number of frames in a specified dimension of this Image object.
+//Image::GetFrameDimensionsCount                      The Image::GetFrameDimensionsCount method gets the number of frame dimensions in this Image object.
+//Image::GetFrameDimensionsList                       The Image::GetFrameDimensionsList method gets the identifiers for the frame dimensions of this Image object.
+//Image::GetHeight                                    The Image::GetHeight method gets the image height, in pixels, of this image.
+//Image::GetHorizontalResolution                      The Image::GetHorizontalResolution method gets the horizontal resolution, in dots per inch, of this image.
+//Image::GetItemData                                  The Image::GetItemData method gets one piece of metadata from this Image object.
+//Image::GetLastStatus                                The Image::GetLastStatus method returns a value that indicates the nature of this Image object's most recent method failure.
+//Image::GetPalette                                   The Image::GetPalette method gets the ColorPalette of this Image object.
+//Image::GetPaletteSize                               The Image::GetPaletteSize method gets the size, in bytes, of the color palette of this Image object.
+//Image::GetPhysicalDimension                         The Image::GetPhysicalDimension method gets the width and height of this image.
+//Image::GetPixelFormat                               The Image::GetPixelFormat method gets the pixel format of this Image object.
+//Image::GetPropertyCount                             The Image::GetPropertyCount method gets the number of properties (pieces of metadata) stored in this Image object.
+//Image::GetPropertyIdList                            The Image::GetPropertyIdList method gets a list of the property identifiers used in the metadata of this Image object.
+//Image::GetPropertyItem                              The Image::GetPropertyItem method gets a specified property item (piece of metadata) from this Image object.
+//Image::GetPropertyItemSize                          The Image::GetPropertyItemSize method gets the size, in bytes, of a specified property item of this Image object.
+//Image::GetPropertySize                              The Image::GetPropertySize method gets the total size, in bytes, of all the property items stored in this Image object. The Image::GetPropertySize method also gets the number of property items stored in this Image object.
+//Image::GetRawFormat                                 The Image::GetRawFormat method gets a globally unique identifier (       GUID) that identifies the format of this Image object. GUIDs that identify various file formats are defined in Gdiplusimaging.h.
+//Image::GetThumbnailImage                            The Image::GetThumbnailImage method gets a thumbnail image from this Image object.
+//Image::GetType                                      The Image::GetType method gets the type (bitmap or metafile) of this Image object.
+//Image::GetVerticalResolution                        The Image::GetVerticalResolution method gets the vertical resolution, in dots per inch, of this image.
+//Image::GetWidth                                     The Image::GetWidth method gets the width, in pixels, of this image.
+//Image::RemovePropertyItem                           The Image::RemovePropertyItem method removes a property item (piece of metadata) from this Image object.
+//Image::RotateFlip                                   The Image::RotateFlip method rotates and flips this image.
+//Image::Save(IStream*,CLSID*,EncoderParameters*)     The Image::Save method saves this image to a stream.
+//Image::Save(WCHAR*,CLSID*,EncoderParameters*)       The Image::Save method saves this image to a file.
+//Image::SaveAdd(EncoderParameters*)                  The Image::SaveAdd method adds a frame to a file or stream specified in a previous call to the Save method. Use this method to save selected frames from a multiple-frame image to another multiple-frame image.
+//Image::SaveAdd(Image*,EncoderParameters*)           The Image::SaveAdd method adds a frame to a file or stream specified in a previous call to the Save method.
+//Image::SelectActiveFrame                            The Image::SelectActiveFrame method selects the frame in this Image object specified by a dimension and an index.
+//Image::SetAbort                                     The Image::SetAbort method sets the object whose Abort method is called periodically during time-consuming rendering operation.
+//Image::SetPalette                                   The Image::SetPalette method sets the color palette of this Image object.
+//Image::SetPropertyItem                              The Image::SetPropertyItem method sets a property item (piece of metadata) for this Image object. If the item already exists, then its contents are updated; otherwise, a new item is added.
+
+
+
+
 
 
 

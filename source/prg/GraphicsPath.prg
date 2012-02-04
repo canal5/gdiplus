@@ -12,8 +12,8 @@ CLASS GPGraphicsPath
    METHOD     Destroy()
    DESTRUCTOR Destroy()
 
-   METHOD AddArc( rc, start, angle )          INLINE GP_AddArc(::g, rc, start, angle )
-   METHOD AddBezier( aPt1, aPt2, aPt3, aPt4 ) INLINE GP_AddBezier(::g, aPt1, aPt2, aPt3, aPt4 )
+   METHOD AddArc( rc, start, angle )          INLINE GPAddArc(::g, rc, start, angle )
+   METHOD AddBezier( aPt1, aPt2, aPt3, aPt4 ) INLINE GPAddBezier(::g, aPt1, aPt2, aPt3, aPt4 )
    METHOD AddClosedCurve()
    METHOD AddCurve()
    METHOD AddEllipse()
@@ -57,9 +57,20 @@ ENDCLASS
   METHOD New( cFileName ) CLASS GPGraphicsPath
 *********************************************************************************************************
 
-  ::handle := _GraphicsPath( cFileName )
+  ::handle := _GPGraphicsPath( cFileName )
 
 return self
+
+*********************************************************************************************************
+  METHOD Destroy() CLASS GPGraphicsPath
+*********************************************************************************************************
+
+  if !empty(::handle)
+     DeleteGraphicsPath ( ::handle )
+  endif
+
+return nil
+
 
 ********************************************************************************************************
    METHOD AddClosedCurve() CLASS GPGraphicsPath
@@ -278,13 +289,6 @@ return 0
 return 0
 
 
-*********************************************************************************************************
-  METHOD Destroy() CLASS GPGraphicsPath
-*********************************************************************************************************
-
-   DeleteGraphicsPath ( ::handle )
-
-return nil
 
 #pragma BEGINDUMP
 #include "windows.h"
@@ -294,7 +298,7 @@ return nil
 
 using namespace Gdiplus;
 
-HB_FUNC( _GRAPHICSPATH )
+HB_FUNC( _GPGRAPHICSPATH )
 {
    GraphicsPath* gp = new GraphicsPath();
    hb_retni( (long) gp );
@@ -307,7 +311,7 @@ HB_FUNC( DELETEGRAPHICSPATH )
    hb_ret();
 }
 
-HB_FUNC( GP_ADDARC )
+HB_FUNC( GPADDARC )
 {
    GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    RectF rect = RectF(hb_parvnd( 2, 1 ), hb_parvnd( 2, 2 ), hb_parvnd( 2, 3 ), hb_parvnd( 2, 4 ));
@@ -315,7 +319,7 @@ HB_FUNC( GP_ADDARC )
    hb_ret();
 }
 
-HB_FUNC( GP_ADDBEZIER )
+HB_FUNC( GPADDBEZIER )
 {
    GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    PointF * pf1 = new PointF( (REAL) hb_parvnd( 2, 1 ), (REAL) hb_parvnd( 2, 2 ) );
@@ -333,7 +337,7 @@ HB_FUNC( GP_ADDBEZIER )
    hb_ret();
 }
 
-HB_FUNC( GP_ADDCLOSEDCURVE )
+HB_FUNC( GPADDCLOSEDCURVE )
 {
 //   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
 //   WORD wArray, wVertex, wItem = 0, wLen = 0;
@@ -370,21 +374,21 @@ HB_FUNC( GP_ADDCLOSEDCURVE )
 //   hb_ret();
 }
 
-HB_FUNC( GP_ADDELLIPSE )
+HB_FUNC( GPADDELLIPSE )
 {
    GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    gp->AddEllipse( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ));
    hb_ret();
 }
 
-HB_FUNC( GP_ADDLINE )
+HB_FUNC( GPADDLINE )
 {
    GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    gp->AddLine( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ));
    hb_ret();
 }
 
-HB_FUNC( GP_ADDRECTANGLE )
+HB_FUNC( GPADDRECTANGLE )
 {
    GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    RectF rect = RectF(hb_parvnd( 2, 1 ), hb_parvnd( 2, 2 ), hb_parvnd( 2, 3 ), hb_parvnd( 2, 4 ));
@@ -392,7 +396,7 @@ HB_FUNC( GP_ADDRECTANGLE )
    hb_ret();
 }
 
-HB_FUNC( GP_ADDSTRING )
+HB_FUNC( GPADDSTRING )
 {
    GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    LPWSTR str = hb_mbtowc( (LPSTR) hb_parc( 2 ));
@@ -407,14 +411,14 @@ HB_FUNC( GP_ADDSTRING )
    hb_ret();
 }
 
-HB_FUNC( GP_STARTFIGURE )
+HB_FUNC( GPSTARTFIGURE )
 {
    GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    gp->StartFigure();
    hb_ret();
 }
 
-HB_FUNC( GP_CLOSEFIGURE )
+HB_FUNC( GPCLOSEFIGURE )
 {
    GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
    gp->CloseFigure();
