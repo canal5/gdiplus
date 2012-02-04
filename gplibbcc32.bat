@@ -15,13 +15,12 @@ if "%1" == "CLEAN" goto CLEAN
 del *.log
 del obj\*.obj
 
-if exist %PATHLIB%\*.lib del %PATHLIB%\*.lib
-%BCC_DIR%\bin\tlib %PATHLIB%\%LIBNAME%
+if not exist %PATHLIB%\%LIBNAME% goto CREA
 
 :BUILD
 
 
-   %BCC_DIR%\bin\make -flibbcc32.mak %1 %2 %3 >> make_libh.log
+   %BCC_DIR%\bin\make -flibbcc32.mak %1 %2 %3 > makelibbcc32.log
 
    if errorlevel 1 goto BUILD_ERR
 
@@ -39,6 +38,10 @@ if exist %PATHLIB%\*.lib del %PATHLIB%\*.lib
    if exist %PATHLIB%\%LIBNAME% del %PATHLIB%\%LIBNAME%
    if exist source\obj\*.obj del source\obj\*.obj
    goto EXIT
+
+:CREA
+   %BCC_DIR%\bin\tlib %PATHLIB%\%LIBNAME%
+   goto BUILD
 
 :EXIT
 
