@@ -50,23 +50,62 @@ APP_MAP  = $(APP_RES_DIR)\$(APP_NAME).map
 APP_PRG_LIST =                 \
     pruebas.prg                \
     testunit.prg               \
-    color.prg                  \
-    CustomLineCap.prg          \
-    font.prg                   \
-    fontfamily.prg             \
-    graphics.prg               \
-    GraphicsPath.prg           \
-    HueSaturationLightness.prg \
-    image.prg                  \
-    LinearGradientBrush.prg    \
-    matrix.prg                 \
-    metafile.prg               \
-    metafileheader.prg         \
-    pathgradientbrush.prg      \
-    pen.prg                    \
-    solidbrush.prg             \
-    stringformat.prg           \
-    TextureBrush.prg
+    AdjustableArrowCap.prg          \
+    Bitmap.prg                      \
+    BitmapData.prg                  \
+    Blur.prg                        \
+    BrightnessContrast.prg          \
+    Brush.prg                       \
+    CachedBitmap.prg                \
+    CharacterRange.prg              \
+    Color.prg                       \
+    ColorBalance.prg                \
+    ColorCurve.prg                  \
+    ColorLUT.prg                    \
+    ColorMatrixEffect.prg           \
+    CustomLineCap.prg               \
+    Effect.prg                      \
+    EncoderParameter.prg            \
+    EncoderParameters.prg           \
+    Font.prg                        \
+    FontCollection.prg              \
+    Fontfamily.prg                  \
+    Gdiplus.prg                     \
+    GdiplusBase.prg                 \
+    Graphics.prg                    \
+    GraphicsPath.prg                \
+    GraphicsPathIterator.prg        \
+    HatchBrush.prg                  \
+    HueSaturationLightness.prg      \
+    Image.prg                       \
+    ImageAttributes.prg             \
+    ImageCodecInfo.prg              \
+    ImageItemData.prg               \
+    InstalledFontCollection.prg     \
+    Levels.prg                      \
+    LinearGradientBrush.prg         \
+    Matrix.prg                      \
+    Metafile.prg                    \
+    Metafileheader.prg              \
+    PathData.prg                    \
+    Pathgradientbrush.prg           \
+    Pen.prg                         \
+    Point.prg                       \
+    PointF.prg                      \
+    PrivateFontCollection.prg       \
+    PropertyItem.prg                \
+    Rect.prg                        \
+    RectF.prg                       \
+    RedEyeCorrection.prg            \
+    Region.prg                      \
+    Sharpen.prg                     \
+    Size.prg                        \
+    SizeF.prg                       \
+    Solidbrush.prg                  \
+    Stringformat.prg                \
+    TextureBrush.prg                \
+    Tint.prg
+
 
 APP_CPPPP_LIST =
 
