@@ -48,25 +48,25 @@ return self
 return nil
 
 *******************************************************************************
-  METHOD ConvertToEmfPlus()              CLASS GPMetafile
+  METHOD ConvertToEmfPlus() CLASS GPMetafile
 *******************************************************************************
 
 return 0
 
 *******************************************************************************
-  METHOD ConvertToEmfPlus2()              CLASS GPMetafile
+  METHOD ConvertToEmfPlus2() CLASS GPMetafile
 *******************************************************************************
 
 return 0
 
 *******************************************************************************
-  METHOD ConvertToEmfPlus3()              CLASS GPMetafile
+  METHOD ConvertToEmfPlus3() CLASS GPMetafile
 *******************************************************************************
 
 return 0
 
 *******************************************************************************
-  METHOD EmfToWmfBits()                  CLASS GPMetafile
+  METHOD EmfToWmfBits() CLASS GPMetafile
 *******************************************************************************
 
 return 0
@@ -78,49 +78,49 @@ return 0
 return 0
 
 *******************************************************************************
-  METHOD GetHENHMETAFILE()CLASS GPMetafile
+  METHOD GetHENHMETAFILE() CLASS GPMetafile
 *******************************************************************************
 
 return 0
 
 *******************************************************************************
-  METHOD GetMetafileHeader()CLASS GPMetafile
+  METHOD GetMetafileHeader() CLASS GPMetafile
 *******************************************************************************
 
 return 0
 
 *******************************************************************************
-  METHOD GetMetafileHeader2()CLASS GPMetafile
+  METHOD GetMetafileHeader2() CLASS GPMetafile
 *******************************************************************************
 
 return 0
 
 *******************************************************************************
-  METHOD GetMetafileHeader3()CLASS GPMetafile
+  METHOD GetMetafileHeader3() CLASS GPMetafile
 *******************************************************************************
 
 return 0
 
 *******************************************************************************
-  METHOD GetMetafileHeader4()CLASS GPMetafile
+  METHOD GetMetafileHeader4() CLASS GPMetafile
 *******************************************************************************
 
 return 0
 
 *******************************************************************************
-  METHOD GetMetafileHeader5()CLASS GPMetafile
+  METHOD GetMetafileHeader5() CLASS GPMetafile
 *******************************************************************************
 
 return 0
 
 *******************************************************************************
-  METHOD PlayRecord()CLASS GPMetafile
+  METHOD PlayRecord() CLASS GPMetafile
 *******************************************************************************
 
 return 0
 
 *******************************************************************************
-  METHOD SetDownLevelRasterizationLimit()CLASS GPMetafile
+  METHOD SetDownLevelRasterizationLimit() CLASS GPMetafile
 *******************************************************************************
 
 return 0

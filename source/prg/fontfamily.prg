@@ -8,6 +8,9 @@ CLASS GPFontFamily
 
   METHOD New() CONSTRUCTOR
 
+  METHOD Destroy()
+  DESTRUCTOR Destroy()
+
   METHOD Clone()
   METHOD GenericMonospace()
   METHOD GenericSansSerif()
@@ -21,8 +24,6 @@ CLASS GPFontFamily
   METHOD IsAvailable()
   METHOD IsStyleAvailable()
 
-  METHOD Destroy()
-  DESTRUCTOR Destroy()
 
 ENDCLASS
 

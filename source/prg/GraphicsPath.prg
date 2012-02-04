@@ -14,6 +14,7 @@ CLASS GPGraphicsPath
 
    METHOD AddArc( rc, start, angle )          INLINE GPAddArc(::g, rc, start, angle )
    METHOD AddBezier( aPt1, aPt2, aPt3, aPt4 ) INLINE GPAddBezier(::g, aPt1, aPt2, aPt3, aPt4 )
+   METHOD AddBeziers()
    METHOD AddClosedCurve()
    METHOD AddCurve()
    METHOD AddEllipse()
@@ -71,6 +72,11 @@ return self
 
 return nil
 
+*********************************************************************************************************
+   METHOD AddBeziers() CLASS GPGraphicsPath
+*********************************************************************************************************
+
+return 0
 
 ********************************************************************************************************
    METHOD AddClosedCurve() CLASS GPGraphicsPath
@@ -288,6 +294,46 @@ return 0
 
 return 0
 
+//   AddArc                       Sobrecargado. Agrega un arco elíptico a la figura actual.
+//   AddBezier                    Sobrecargado. Agrega una curva Bézier cúbica a la figura actual.
+//   AddBeziers                   Sobrecargado. Agrega una secuencia de curvas Bézier cúbicas conectadas a la figura actual.
+//   AddClosedCurve               Sobrecargado. Agrega una curva cerrada a este trazado. Se utiliza una curva spline cardinal porque la curva recorre todos los puntos de la matriz.
+//   AddCurve                     Sobrecargado. Agrega una curva spline a la figura actual. Se utiliza una curva spline cardinal porque la curva recorre todos los puntos de la matriz.
+//   AddEllipse                   Sobrecargado. Agrega una elipse al trazado actual.
+//   AddLine                      Sobrecargado. Anexa un segmento de línea a este trazado GraphicsPath.
+//   AddLines                     Sobrecargado. Anexa una serie de segmentos de línea conectados al final de este trazado GraphicsPath.
+//   AddPath                      Anexa el trazado GraphicsPath especificado a este trazado.
+//   AddPie                       Sobrecargado. Agrega el contorno de una forma circular a este trazado.
+//   AddPolygon                   Sobrecargado. Agrega un polígono a este trazado.
+//   AddRectangle                 Sobrecargado. Agrega un rectángulo a este trazado.
+//   AddRectangles                Sobrecargado. Agrega una serie de rectángulos a este trazado.
+//   AddString                    Sobrecargado. Agrega una cadena de texto a este trazado.
+//   ClearMarkers                 Borra todos los marcadores de este trazado.
+//   Clone                        Crea una copia exacta de este trazado.
+//   CloseAllFigures              Cierra todas las figuras abiertas de este trazado e inicia una nueva figura. Cierra cada figura abierta conectando una línea desde su extremo hasta su punto inicial.
+//   CloseFigure                  Cierra la figura actual e inicia una nueva figura. Si la figura actual contiene una secuencia de líneas y curvas interconectadas, este método cierra el bucle conectando una línea desde el extremo hasta el punto inicial.
+//   CreateObjRef                 Crea un objeto que contiene toda la información relevante necesaria para generar un proxy utilizado para comunicarse con un objeto remoto. (Se hereda de MarshalByRefObject).
+//   Dispose                      Libera todos los recursos utilizados por este trazado GraphicsPath.
+//   Equals                       Sobrecargado. Determina si dos instancias de Object son iguales. (Se hereda de Object).
+//   Flatten                      Sobrecargado. Convierte cada una de las curvas de este trazado en una secuencia de segmentos conectados.
+//   GetBounds                    Sobrecargado. Devuelve un rectángulo que delimita este trazado GraphicsPath.
+//   GetHashCode                  Sirve como función hash para un tipo concreto. GetHashCode es apropiado para su utilización en algoritmos de hash y en estructuras de datos como las tablas hash. (Se hereda de Object).
+//   GetLastPoint                 Obtiene el último punto de la matriz PathPoints de este trazado GraphicsPath.
+//   GetLifetimeService           Recupera el objeto de servicio de duración actual que controla la directiva de duración de esta instancia. (Se hereda de MarshalByRefObject).
+//   GetType                      Obtiene el objeto Type de la instancia actual. (Se hereda de Object).
+//   InitializeLifetimeService    Obtiene un objeto de servicio de duración para controlar la directiva de duración de esta instancia. (Se hereda de MarshalByRefObject).
+//   IsOutlineVisible             Sobrecargado. Indica si el punto especificado está dentro del contorno de este trazado GraphicsPath cuando se dibuja con el Pen especificado.
+//   IsVisible                    Sobrecargado. Indica si el punto especificado está dentro de este trazado GraphicsPath.
+//   ReferenceEquals              Determina si las instancias de Object especificadas son la misma instancia. (Se hereda de Object).
+//   Reset                        Vacía las matrices PathPoints y PathTypes y establece FillMode en Alternate.
+//   Reverse                      Invierte el orden de los puntos en la matriz de PathPoints de este trazado GraphicsPath.
+//   SetMarkers                   Establece un marcador en este trazado GraphicsPath.
+//   StartFigure                  Inicia una nueva figura sin cerrar la actual. Todos los puntos siguientes agregados al trazado se incorporan a esta nueva figura.
+//   ToString                     Devuelve una clase String que representa la clase Object actual. (Se hereda de Object).
+//   Transform                    Aplica una matriz de transformación a este trazado GraphicsPath.
+//   Warp                         Sobrecargado. Aplica una transformación de alabeo, definida por un rectángulo y un paralelogramo, a este trazado GraphicsPath.
+//   Widen                        Sobrecargado. Reemplaza este trazado con curvas que rodean el área que está rellena cuando ese trazado se dibuja con el lápiz especificado.
+
 
 
 #pragma BEGINDUMP
@@ -429,46 +475,6 @@ HB_FUNC( GPCLOSEFIGURE )
 #pragma ENDDUMP
 
 
-
-//   AddArc                       Sobrecargado. Agrega un arco elíptico a la figura actual.
-//   AddBezier                    Sobrecargado. Agrega una curva Bézier cúbica a la figura actual.
-//   AddBeziers                   Sobrecargado. Agrega una secuencia de curvas Bézier cúbicas conectadas a la figura actual.
-//   AddClosedCurve               Sobrecargado. Agrega una curva cerrada a este trazado. Se utiliza una curva spline cardinal porque la curva recorre todos los puntos de la matriz.
-//   AddCurve                     Sobrecargado. Agrega una curva spline a la figura actual. Se utiliza una curva spline cardinal porque la curva recorre todos los puntos de la matriz.
-//   AddEllipse                   Sobrecargado. Agrega una elipse al trazado actual.
-//   AddLine                      Sobrecargado. Anexa un segmento de línea a este trazado GraphicsPath.
-//   AddLines                     Sobrecargado. Anexa una serie de segmentos de línea conectados al final de este trazado GraphicsPath.
-//   AddPath                      Anexa el trazado GraphicsPath especificado a este trazado.
-//   AddPie                       Sobrecargado. Agrega el contorno de una forma circular a este trazado.
-//   AddPolygon                   Sobrecargado. Agrega un polígono a este trazado.
-//   AddRectangle                 Sobrecargado. Agrega un rectángulo a este trazado.
-//   AddRectangles                Sobrecargado. Agrega una serie de rectángulos a este trazado.
-//   AddString                    Sobrecargado. Agrega una cadena de texto a este trazado.
-//   ClearMarkers                 Borra todos los marcadores de este trazado.
-//   Clone                        Crea una copia exacta de este trazado.
-//   CloseAllFigures              Cierra todas las figuras abiertas de este trazado e inicia una nueva figura. Cierra cada figura abierta conectando una línea desde su extremo hasta su punto inicial.
-//   CloseFigure                  Cierra la figura actual e inicia una nueva figura. Si la figura actual contiene una secuencia de líneas y curvas interconectadas, este método cierra el bucle conectando una línea desde el extremo hasta el punto inicial.
-//   CreateObjRef                 Crea un objeto que contiene toda la información relevante necesaria para generar un proxy utilizado para comunicarse con un objeto remoto. (Se hereda de MarshalByRefObject).
-//   Dispose                      Libera todos los recursos utilizados por este trazado GraphicsPath.
-//   Equals                       Sobrecargado. Determina si dos instancias de Object son iguales. (Se hereda de Object).
-//   Flatten                      Sobrecargado. Convierte cada una de las curvas de este trazado en una secuencia de segmentos conectados.
-//   GetBounds                    Sobrecargado. Devuelve un rectángulo que delimita este trazado GraphicsPath.
-//   GetHashCode                  Sirve como función hash para un tipo concreto. GetHashCode es apropiado para su utilización en algoritmos de hash y en estructuras de datos como las tablas hash. (Se hereda de Object).
-//   GetLastPoint                 Obtiene el último punto de la matriz PathPoints de este trazado GraphicsPath.
-//   GetLifetimeService           Recupera el objeto de servicio de duración actual que controla la directiva de duración de esta instancia. (Se hereda de MarshalByRefObject).
-//   GetType                      Obtiene el objeto Type de la instancia actual. (Se hereda de Object).
-//   InitializeLifetimeService    Obtiene un objeto de servicio de duración para controlar la directiva de duración de esta instancia. (Se hereda de MarshalByRefObject).
-//   IsOutlineVisible             Sobrecargado. Indica si el punto especificado está dentro del contorno de este trazado GraphicsPath cuando se dibuja con el Pen especificado.
-//   IsVisible                    Sobrecargado. Indica si el punto especificado está dentro de este trazado GraphicsPath.
-//   ReferenceEquals              Determina si las instancias de Object especificadas son la misma instancia. (Se hereda de Object).
-//   Reset                        Vacía las matrices PathPoints y PathTypes y establece FillMode en Alternate.
-//   Reverse                      Invierte el orden de los puntos en la matriz de PathPoints de este trazado GraphicsPath.
-//   SetMarkers                   Establece un marcador en este trazado GraphicsPath.
-//   StartFigure                  Inicia una nueva figura sin cerrar la actual. Todos los puntos siguientes agregados al trazado se incorporan a esta nueva figura.
-//   ToString                     Devuelve una clase String que representa la clase Object actual. (Se hereda de Object).
-//   Transform                    Aplica una matriz de transformación a este trazado GraphicsPath.
-//   Warp                         Sobrecargado. Aplica una transformación de alabeo, definida por un rectángulo y un paralelogramo, a este trazado GraphicsPath.
-//   Widen                        Sobrecargado. Reemplaza este trazado con curvas que rodean el área que está rellena cuando ese trazado se dibuja con el lápiz especificado.
 
 
 

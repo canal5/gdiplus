@@ -15,8 +15,8 @@ CLASS GPPrivateFontCollection
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-//  METHOD
-
+  METHOD AddFontFile()
+  METHOD AddMemoryFont()
 
 ENDCLASS
 
@@ -54,6 +54,21 @@ return self
   endif
 
 return nil
+
+
+*********************************************************************************************************
+  METHOD AddFontFile() CLASS GPPrivateFontCollection
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD AddMemoryFont() CLASS GPPrivateFontCollection
+*********************************************************************************************************
+
+return 0
+
+
 
 //*********************************************************************************************************
 //  METHOD () CLASS GPPrivateFontCollection

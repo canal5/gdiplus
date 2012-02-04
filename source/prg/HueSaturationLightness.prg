@@ -8,12 +8,11 @@ CLASS GPHueSaturationLighness
    DATA handle
 
    METHOD New() CONSTRUCTOR
+   METHOD Destroy()
+   DESTRUCTOR Destroy()
 
    METHOD GetParameters()
    METHOD SetParameters()
-
-   METHOD Destroy()
-   DESTRUCTOR Destroy()
 
 ENDCLASS
 
@@ -40,7 +39,6 @@ local iParams := PCount()
      ::handle := _GPHueSaturationLighness( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
-
 return self
 
 *********************************************************************************************************
@@ -65,8 +63,9 @@ return 0
 return 0
 
 
-// Method	                                Description
 
+
+// Method	                                Description
 // HueSaturationLightness::GetParameters	The HueSaturationLightness::GetParameters method gets the current values of the parameters of this HueSaturationLightness object.
 // HueSaturationLightness::SetParameters	The HueSaturationLightness::SetParameters method sets the parameters of this HueSaturationLightness object.
 

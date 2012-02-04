@@ -9,14 +9,18 @@ return GPImageItemData():New()
 CLASS GPImageItemData
 
   DATA handle
+  DATA Size
+  DATA Position
+  DATA Desc
+  DATA DescSize
+  DATA Data
+  DATA DataSize
+  DATA Cookie
 
   METHOD New() CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
-
-//  METHOD
-
 
 ENDCLASS
 

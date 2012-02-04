@@ -9,13 +9,23 @@ return GPSize():New()
 CLASS GPSize
 
   DATA handle
+  DATA Height
+  DATA Width
 
   METHOD New() CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-//  METHOD
+//Constructor
+//Size::Size()
+//Size::Size(INT,INT)
+//Size::Size(Size&)
+
+  METHOD Empty()
+  METHOD Equals()
+//operator-(Size&)
+//operator+(Size&)
 
 
 ENDCLASS
@@ -55,11 +65,18 @@ return self
 
 return nil
 
-//*********************************************************************************************************
-//  METHOD () CLASS GPSize
-//*********************************************************************************************************
-//
-//return GPSize(::handle)
+*********************************************************************************************************
+  METHOD Empty() CLASS GPSize
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD Equals() CLASS GPSize
+*********************************************************************************************************
+
+return 0
+
 
 //Constructors
 //

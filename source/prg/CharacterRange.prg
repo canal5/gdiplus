@@ -16,6 +16,7 @@ CLASS GPCharacterRange
   DESTRUCTOR Destroy()
 
 //  METHOD
+//  OPERATOR "="
 
 
 ENDCLASS

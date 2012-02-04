@@ -9,14 +9,15 @@ return GPPropertyItem():New()
 CLASS GPPropertyItem
 
   DATA handle
+  DATA id
+  DATA length
+  DATA type
+  DATA value
 
   METHOD New() CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
-
-//  METHOD
-
 
 ENDCLASS
 

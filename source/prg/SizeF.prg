@@ -9,13 +9,24 @@ return GPSizeF():New()
 CLASS GPSizeF
 
   DATA handle
+  DATA Height
+  DATA Width
 
   METHOD New() CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-//  METHOD
+//Constructor
+//SizeF::SizeF()
+//SizeF::SizeF(REAL,REAL)
+//SizeF::SizeF(SizeF&)
+
+  METHOD Empty()
+  METHOD Equals()
+//operator-(SizeF&)
+//operator+(SizeF&)
+
 
 
 ENDCLASS
@@ -55,11 +66,18 @@ return self
 
 return nil
 
-//*********************************************************************************************************
-//  METHOD () CLASS GPSizeF
-//*********************************************************************************************************
-//
-//return GPSizeF(::handle)
+*********************************************************************************************************
+  METHOD Empty() CLASS GPSizeF
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD Equals() CLASS GPSizeF
+*********************************************************************************************************
+
+return 0
+
 
 
 //Constructors

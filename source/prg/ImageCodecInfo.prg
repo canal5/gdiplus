@@ -11,14 +11,24 @@ return GPImageCodecInfo():New()
 CLASS GPImageCodecInfo
 
   DATA handle
+  DATA Clsid
+  DATA FormatID
+  DATA CodecName
+  DATA DllName
+  DATA FormatDescription
+  DATA FilenameExtension
+  DATA MimeType
+  DATA Flags
+  DATA Version
+  DATA SigCount
+  DATA SigSize
+  DATA SigPattern
+  DATA SigMask
 
   METHOD New() CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
-
-//  METHOD
-
 
 ENDCLASS
 
@@ -57,11 +67,6 @@ return self
 
 return nil
 
-//*********************************************************************************************************
-//  METHOD () CLASS GPImageCodecInfo
-//*********************************************************************************************************
-//
-//return GPImageCodecInfo(::handle)
 
 
 //Data Members

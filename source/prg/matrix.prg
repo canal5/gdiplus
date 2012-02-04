@@ -9,6 +9,9 @@ CLASS GPMatrix
 
    METHOD New( n1, n2, n3, n4, n5, n6 ) CONSTRUCTOR
 
+   METHOD Destroy()
+   DESTRUCTOR Destroy()
+
    METHOD Clone()
    METHOD Equals()
    METHOD GetElements()
@@ -31,8 +34,13 @@ CLASS GPMatrix
    METHOD TransformVectors(PointF,n)
    METHOD Translate()
 
-   METHOD Destroy()
-   DESTRUCTOR Destroy()
+
+// Constructors
+// Matrix::Matrix()
+// Matrix::Matrix(REAL,REAL,REAL,REAL,REAL,REAL)
+// Matrix::Matrix(Rect&,Point*)
+// Matrix::Matrix(RectF&,PointF*)
+
 
 ENDCLASS
 
@@ -198,7 +206,7 @@ return 0
 
 return 0
 
-
+// Constructors
 // Matrix::Matrix()	                         Creates and initializes a Matrix::Matrix object that represents the identity matrix.
 // Matrix::Matrix(REAL,REAL,REAL,REAL,REAL,REAL) Creates and initializes a Matrix::Matrix object based on six numbers that define an affine transformation.
 // Matrix::Matrix(Rect&,Point*)	                 Creates a Matrix::Matrix object based on a rectangle and a point.

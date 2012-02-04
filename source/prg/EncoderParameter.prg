@@ -15,9 +15,6 @@ CLASS GPEncoderParameter
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-//  METHOD
-
-
 ENDCLASS
 
 *********************************************************************************************************

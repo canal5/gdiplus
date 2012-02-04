@@ -15,7 +15,16 @@ CLASS GPPointF
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-//  METHOD
+//Constructor
+//PointF::PointF()
+//PointF::PointF(PointF&)
+//PointF::PointF(REAL,REAL)
+//PointF::PointF(SizeF&)
+
+
+//Equals
+//operator-(PointF&)
+//operator+(PointF&)
 
 
 ENDCLASS

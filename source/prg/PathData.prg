@@ -9,14 +9,15 @@ return GPPathData():New()
 CLASS GPPathData
 
   DATA handle
+  DATA Count
+  DATA Points
+  DATA Types
+
 
   METHOD New() CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
-
-//  METHOD
-
 
 ENDCLASS
 

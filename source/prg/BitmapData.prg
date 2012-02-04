@@ -9,6 +9,12 @@ return GPBitmapData():New()
 CLASS GPBitmapData
 
   DATA handle
+  DATA Width
+  DATA Height
+  DATA Stride
+  DATA PixelFormat
+  DATA Scan0
+  DATA Reserved
 
   METHOD New() CONSTRUCTOR
 

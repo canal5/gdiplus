@@ -8,6 +8,10 @@ CLASS GPPathGradientBrush
    DATA handle
 
    METHOD New()                        CONSTRUCTOR
+   METHOD Destroy()
+   DESTRUCTOR Destroy()
+
+
    METHOD GetBlend()
    METHOD GetBlendCount()
    METHOD GetCenterColor()
@@ -41,8 +45,12 @@ CLASS GPPathGradientBrush
    METHOD SetWrapMode()
    METHOD TranslateTransform()
 
-   METHOD Destroy()
-   DESTRUCTOR Destroy()
+
+//Constructor                                                      Description
+//PathGradientBrush::PathGradientBrush(GraphicsPath*)              Creates a PathGradientBrush::PathGradientBrush object based on a GraphicsPath object.
+//PathGradientBrush::PathGradientBrush(Point*,INT,WrapMode)        Creates a PathGradientBrush::PathGradientBrush object based on an array of points. Initializes the wrap mode of the path gradient brush.
+//PathGradientBrush::PathGradientBrush(PointF*,INT,WrapMode)       Creates a PathGradientBrush object based on an array of points. Initializes the wrap mode of the path gradient brush.
+
 
 ENDCLASS
 

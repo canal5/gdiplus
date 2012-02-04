@@ -9,13 +9,23 @@ return GPPoint():New()
 CLASS GPPoint
 
   DATA handle
+  DATA X
+  DATA Y
 
   METHOD New() CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-//  METHOD
+//Constructor
+//Point::Point()
+//Point::Point(INT,INT)
+//Point::Point(Point&)
+//Point::Point(Size&)
+
+//Equals
+//operator-(Point&)
+//operator+(Point&)
 
 
 ENDCLASS

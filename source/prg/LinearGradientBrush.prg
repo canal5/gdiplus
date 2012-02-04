@@ -13,6 +13,44 @@ CLASS GPLinearGradientBrush
    METHOD     Destroy()
    DESTRUCTOR Destroy()
 
+//Constructors
+//
+//The LinearGradientBrush class has the following constructors.
+//
+//Constructor
+//LinearGradientBrush::LinearGradientBrush(Point&,Point&,Color&,Color&)
+//LinearGradientBrush::LinearGradientBrush(PointF&,PointF&,Color&,Color&)
+//LinearGradientBrush::LinearGradientBrush(Rect&,Color&,Color&,LinearGradientMode)
+//LinearGradientBrush::LinearGradientBrush(Rect&,Color&,Color&,REAL,BOOL)
+//LinearGradientBrush::LinearGradientBrush(Rect&,Color&,Color&,REAL,BOOL)
+//LinearGradientBrush::LinearGradientBrush(RectF&,Color&,Color&,LinearGradientMode)
+
+  METHOD GetBlend()
+  METHOD GetBlendCount()
+  METHOD GetGammaCorrection()
+  METHOD GetInterpolationColorCount()
+  METHOD GetInterpolationColors()
+  METHOD GetLinearColors()
+  METHOD GetRectangle()
+  METHOD GetRectangle2()
+  METHOD GetTransform()
+  METHOD GetWrapMode()
+  METHOD MultiplyTransform()
+  METHOD ResetTransform()
+  METHOD RotateTransform()
+  METHOD ScaleTransform()
+  METHOD SetBlend()
+  METHOD SetBlendBellShape()
+  METHOD SetBlendTriangularShape()
+  METHOD SetGammaCorrection()
+  METHOD SetInterpolationColors()
+  METHOD SetLinearColors()
+  METHOD SetTransform()
+  METHOD SetWrapMode()
+  METHOD TranslateTransform()
+
+
+
 ENDCLASS
 
 **************************************************************************************************************
@@ -23,15 +61,6 @@ ENDCLASS
   DEFAULT lScalable := .t.
 
   ::handle   := _GPLinearGradientBrush( rc, color1:handle, color2:handle, angle, lScalable )
-
-//enum LinearGradientMode
-//{
-//    LinearGradientModeHorizontal,         // 0
-//    LinearGradientModeVertical,           // 1
-//    LinearGradientModeForwardDiagonal,    // 2
-//    LinearGradientModeBackwardDiagonal    // 3
-//};
-
 
 return self
 
@@ -44,6 +73,147 @@ return self
   endif
 
 return nil
+
+
+*********************************************************************************************************
+  METHOD GetBlend() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD GetBlendCount() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD GetGammaCorrection() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD GetInterpolationColorCount() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD GetInterpolationColors() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD GetLinearColors() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD GetRectangle() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD GetRectangle2() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD GetTransform() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD GetWrapMode() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD MultiplyTransform() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD ResetTransform() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD RotateTransform() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD ScaleTransform() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD SetBlend() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD SetBlendBellShape() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD SetBlendTriangularShape() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD SetGammaCorrection() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD SetInterpolationColors() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD SetLinearColors() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD SetTransform() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD SetWrapMode() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+*********************************************************************************************************
+  METHOD TranslateTransform() CLASS GPLinearGradientBrush
+*********************************************************************************************************
+
+return 0
+
+
 
 
 //Constructors

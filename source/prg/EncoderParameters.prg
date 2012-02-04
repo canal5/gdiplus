@@ -9,6 +9,8 @@ return GPEncoderParameters():New()
 CLASS GPEncoderParameters
 
   DATA handle
+  DATA Count
+  DATA Parameter
 
   METHOD New() CONSTRUCTOR
 

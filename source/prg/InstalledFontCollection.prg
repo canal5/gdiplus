@@ -15,7 +15,9 @@ CLASS GPInstalledFontCollection
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-//  METHOD
+//Constructor
+//InstalledFontCollection::InstalledFontCollection
+
 
 
 ENDCLASS
@@ -67,10 +69,6 @@ return nil
 //
 //Constructor                                            Description
 //InstalledFontCollection::InstalledFontCollection       Creates an InstalledFontCollection::InstalledFontCollection object.
-
-
-
-
 
 
 #pragma BEGINDUMP
