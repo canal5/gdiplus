@@ -8,7 +8,7 @@ rem ---------------------------------------------------------------
 
 :BUILD
 
-   \bcc582\bin\make -ffwh.mak %2 %3 FWDIR=c:\fivewin\svn\repo HBDIR=c:\harbour > make.log
+   \bcc582\bin\make -ffwh.mak %2 %3 FWDIR=c:\fWH HBDIR=c:\hB30 > make.log
    if errorlevel 1 goto BUILD_ERR
 
 :BUILD_OK
