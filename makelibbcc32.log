@@ -1,0 +1,104 @@
+MAKE Version 5.2  Copyright (c) 1987, 2000 Borland
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\CustomLineCap.obj obj\CustomLineCap.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\CustomLineCap.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\CustomLineCap.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\GraphicsPath.obj obj\GraphicsPath.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\GraphicsPath.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\GraphicsPath.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\HueSaturationLightness.obj obj\HueSaturationLightness.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\HueSaturationLightness.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\HueSaturationLightness.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\LinearGradientBrush.obj obj\LinearGradientBrush.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\LinearGradientBrush.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\LinearGradientBrush.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\TextureBrush.obj obj\TextureBrush.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\TextureBrush.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\TextureBrush.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\color.obj obj\color.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Color.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\color.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\font.obj obj\font.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Font.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\font.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\fontfamily.obj obj\fontfamily.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Fontfamily.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\fontfamily.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\graphics.obj obj\graphics.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Graphics.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\graphics.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\image.obj obj\image.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Image.hrb:
+Warning W8004 source\\prg\\Image.prg 422: 'pImageCodecInfo' is assigned a value that is never used in function GetEncoderClsid(const wchar_t *,_GUID *)
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\image.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\matrix.obj obj\matrix.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Matrix.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\matrix.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\metafile.obj obj\metafile.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Metafile.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\metafile.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\metafileheader.obj obj\metafileheader.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Metafileheader.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\metafileheader.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\pathgradientbrush.obj obj\pathgradientbrush.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Pathgradientbrush.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\pathgradientbrush.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\pen.obj obj\pen.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Pen.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\pen.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\solidbrush.obj obj\solidbrush.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Solidbrush.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\solidbrush.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
+	\bcc582\bin\bcc32.exe -P -c -O2 -I\hb30\include;\bcc582\include -oobj\stringformat.obj obj\stringformat.hrb
+Borland C++ 5.82 for Win32 Copyright (c) 1993, 2005 Borland
+obj\Stringformat.hrb:
+	\bcc582\bin\tlib.exe lib\32\bcc\gdiplus32hb.lib -+ obj\stringformat.obj,,
+TLIB 4.5 Copyright (c) 1987, 1998 Borland International
+
