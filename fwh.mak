@@ -45,7 +45,6 @@ APP_MAP  = $(APP_RES_DIR)\$(APP_NAME).map
 
 # Application PRG files (your PRG files go here) #############################
 
-#     ttreevie.prg  \    ttvitem.prg   \     timaglst.prg  \
 
 APP_PRG_LIST =                 \
     gdiplus.prg                \
@@ -94,7 +93,7 @@ FIVEC_LIB = $(FIVEWIN_LIB_DIR)\fiveHC.lib
 
 # Harbour directories & flags ################################################
 
-HARBOUR_INCLUDE_DIR = $(HBDIR)\include;
+HARBOUR_INCLUDE_DIR = $(HBDIR)\include;$(APP_PRG_DIR)\include
 HARBOUR_EXE_DIR     = $(HBDIR)\bin
 HARBOUR_LIB_DIR     = $(HBDIR)\lib
 #HARBOUR_INCLUDE_DIR = $(XHBDIR)\include;
