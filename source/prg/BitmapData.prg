@@ -55,9 +55,7 @@ return self
   METHOD Destroy() CLASS GPBitmapData
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteBitmapData( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

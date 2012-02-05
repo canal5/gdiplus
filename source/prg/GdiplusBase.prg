@@ -51,9 +51,7 @@ return self
   METHOD Destroy() CLASS GPGdiplusBase
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteGdiplusBase( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

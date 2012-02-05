@@ -50,9 +50,7 @@ return self
   METHOD Destroy() CLASS GPCharacterRange
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteCharacterRange( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

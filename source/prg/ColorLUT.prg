@@ -49,9 +49,7 @@ return self
   METHOD Destroy() CLASS GPColorLUT
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteColorLUT( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

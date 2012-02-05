@@ -52,9 +52,7 @@ return self
   METHOD Destroy() CLASS GPLevels
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteLevels( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

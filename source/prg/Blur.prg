@@ -51,9 +51,7 @@ return self
   METHOD Destroy() CLASS GPBlur
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteBlur( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

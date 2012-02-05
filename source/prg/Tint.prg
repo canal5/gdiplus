@@ -49,9 +49,7 @@ return self
   METHOD Destroy() CLASS GPTint
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteTint( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

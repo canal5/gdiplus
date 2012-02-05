@@ -50,9 +50,7 @@ return self
   METHOD Destroy() CLASS GPFontCollection
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteFontCollection( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

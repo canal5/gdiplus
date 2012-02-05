@@ -59,9 +59,7 @@ return self
   METHOD Destroy() CLASS GPSize
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteSize( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

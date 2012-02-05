@@ -1,7 +1,10 @@
 // Este fichero lo he copiado de algun lado pero no soy capaz de recordar de donde
 // si alguien sabe que lo diga y si no le gusta que lo copie, lo borro.
-// Pero según está me parece utilisimo. Yo no le he quitado ninguna cabecera
+// Pero según está me parece utilísimo. Yo no le he quitado ninguna cabecera
 // que pone que tenga copyright.
+
+
+#xcommand PEN <oPen>( <oColor>[, <n> ] ) => <oPen> := Pen( <oColor>[, <n> ] )
 
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"

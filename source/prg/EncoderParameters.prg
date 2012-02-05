@@ -51,9 +51,7 @@ return self
   METHOD Destroy() CLASS GPEncoderParameters
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteEncoderParameters( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

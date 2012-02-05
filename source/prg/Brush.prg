@@ -52,9 +52,7 @@ return self
   METHOD Destroy() CLASS GPBrush
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteBrush( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

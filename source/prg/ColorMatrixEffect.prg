@@ -48,9 +48,7 @@ return self
   METHOD Destroy() CLASS GPColorMatrixEffect
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteColorMatrixEffect( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

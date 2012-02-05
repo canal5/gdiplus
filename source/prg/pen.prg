@@ -86,9 +86,7 @@ return self
   METHOD Destroy() CLASS GPPen
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeletePen( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

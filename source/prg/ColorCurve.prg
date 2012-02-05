@@ -49,9 +49,7 @@ return self
   METHOD Destroy() CLASS GPColorCurve
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteColorCurve( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

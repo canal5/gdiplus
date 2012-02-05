@@ -103,9 +103,7 @@ return self
   METHOD Destroy() CLASS GPRegion
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteRegion( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

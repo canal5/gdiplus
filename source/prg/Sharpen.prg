@@ -49,9 +49,7 @@ return self
   METHOD Destroy() CLASS GPSharpen
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteSharpen( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

@@ -66,9 +66,7 @@ return self
   METHOD Destroy() CLASS GPGraphicsPath
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteGraphicsPath ( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

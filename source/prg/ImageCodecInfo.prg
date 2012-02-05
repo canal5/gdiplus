@@ -61,9 +61,7 @@ return self
   METHOD Destroy() CLASS GPImageCodecInfo
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteImageCodecInfo( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

@@ -51,9 +51,7 @@ return self
   METHOD Destroy() CLASS GPBrightnessContrast
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteBrightnessContrast( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

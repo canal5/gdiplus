@@ -77,9 +77,7 @@ return self
   METHOD Destroy() CLASS GPRect
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteRect( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

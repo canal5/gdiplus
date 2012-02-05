@@ -48,9 +48,7 @@ return self
   METHOD Destroy() CLASS GPFont
 *********************************************************************************************************
 
-  if !empty(::handle)
-     GPDeleteFont( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

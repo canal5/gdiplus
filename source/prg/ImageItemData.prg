@@ -53,9 +53,7 @@ return self
   METHOD Destroy() CLASS GPImageItemData
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteImageItemData( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

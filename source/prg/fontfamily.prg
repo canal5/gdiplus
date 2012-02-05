@@ -54,9 +54,7 @@ return self
   METHOD Destroy() CLASS GPFontFamily
 *******************************************************************************************
 
-  if !empty(::handle)
-     DeleteFontFamily( ::handle )
-  endif
+  ::handle := nil
 
 return self
 

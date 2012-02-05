@@ -59,7 +59,7 @@ local hDC := CreateDC("DISPLAY",0,0,0)
 local g := Graphics(hDC)
 DeleteDC( hDC )
 
-return g:handle != 0
+return !empty(g:handle)
 
 *********************************************************************************************************************
   function TestSetFromCOLORREF()

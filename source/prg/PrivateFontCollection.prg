@@ -49,9 +49,7 @@ return self
   METHOD Destroy() CLASS GPPrivateFontCollection
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeletePrivateFontCollection( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

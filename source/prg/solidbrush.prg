@@ -30,9 +30,7 @@ return self
   METHOD Destroy() CLASS GPSolidBrush
 *********************************************************************************************************
 
-  if !Empty(::handle )
-     DeleteSolidBrush( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

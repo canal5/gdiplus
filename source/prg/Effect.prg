@@ -53,9 +53,7 @@ return self
   METHOD Destroy() CLASS GPEffect
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteEffect( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

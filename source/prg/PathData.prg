@@ -50,9 +50,7 @@ return self
   METHOD Destroy() CLASS GPPathData
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeletePathData( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

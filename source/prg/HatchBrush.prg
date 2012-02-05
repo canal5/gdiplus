@@ -51,9 +51,7 @@ return self
   METHOD Destroy() CLASS GPHatchBrush
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteHatchBrush( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

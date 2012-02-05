@@ -78,9 +78,7 @@ return self
    METHOD Destroy() CLASS GPImage
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteImage ( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

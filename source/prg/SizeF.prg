@@ -60,9 +60,7 @@ return self
   METHOD Destroy() CLASS GPSizeF
 *********************************************************************************************************
 
-  if !empty( ::handle )
-     DeleteSizeF( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

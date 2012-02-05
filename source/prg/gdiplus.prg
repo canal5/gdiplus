@@ -1,4 +1,5 @@
 #include "fivewin.ch"
+#include "gdip.ch"
 
 static oWnd
 static nPaint := 1
@@ -59,6 +60,7 @@ local oPen1   := Pen( oColor, 1 )
 local oPen2   := Pen( oColor, 2 )
 local oPen3   := Pen( oColor, 3 )
 local oBrush1 := SolidBrush( oColor )
+
 g:SetSmoothingMode()
 g:SetPen( oPen1 )
 g:DrawLine( 10, 10, 300, 300 )
@@ -75,6 +77,9 @@ return 0
 local g       := Graphics( hDC )
 local oColor  := Color( 255,0,0,0 )
 local oPen1   := Pen( oColor, 1 )
+
+// PEN oPen1( Color( 255,125, 10 ), 5 ) // también funciona y es mas parecido a .Net
+
 oPen1:SetDashPattern( { 5, 2, 15, 4 } )
 g:SetSmoothingMode()
 g:SetPen( oPen1 )
@@ -97,7 +102,6 @@ g:SetPen( oPen1 )
 g:DrawRectangle( {50, 50, 200, 300} )
 
 g:DrawRectangle( {150, 150, 100, 300}, oPen2 )
-
 
 return 0
 

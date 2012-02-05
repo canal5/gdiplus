@@ -49,9 +49,7 @@ return self
   METHOD Destroy() CLASS GPRedEyeCorrection
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteRedEyeCorrection( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

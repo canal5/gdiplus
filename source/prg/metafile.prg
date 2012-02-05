@@ -41,9 +41,7 @@ return self
   METHOD Destroy() CLASS GPMetafile
 *********************************************************************************************************
 
-  if !empty(::handle)
-     GPDeleteMetafile( ::handle )
-  endif
+   ::handle := nil
 
 return nil
 

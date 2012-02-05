@@ -59,9 +59,7 @@ return self
   METHOD Destroy() CLASS GPPoint
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeletePoint( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

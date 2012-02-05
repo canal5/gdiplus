@@ -1,28 +1,29 @@
 #include "fivewin.ch"
 
+//Constructor
+//RectF::RectF()
+//RectF::RectF(PointF&,SizeF&)
+//RectF::RectF(REAL,REAL,REAL,REAL)
 
-function RectF()
+function RectF( p1, p2, p3, p4)
 
-return GPRectF():New()
+return GPRectF():New( p1, p2, p3, p4)
 
 
 CLASS GPRectF
 
   DATA handle
-  DATA X
-  DATA Y
-  DATA Width
-  DATA Height
 
   METHOD New() CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-//Constructor
-//RectF::RectF()
-//RectF::RectF(PointF&,SizeF&)
-//RectF::RectF(REAL,REAL,REAL,REAL)
+  METHOD X()         SETGET
+  METHOD Y()         SETGET
+  METHOD Width()     SETGET
+  METHOD Height()    SETGET
+
 
   METHOD Clone()
   METHOD Contains()
@@ -54,21 +55,12 @@ ENDCLASS
 
 local iParams := PCount()
 
-
   if iParams == 0
      ::handle := _GPRectF()
-  elseif iParams == 1
-     ::handle := _GPRectF( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPRectF( p1, p2, p3 )                       //
+//  elseif iParams == 2
+//     ::handle := _GPRectF( p1, p2 )                           //
   elseif iParams == 4
-     ::handle := _GPRectF( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPRectF( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPRectF( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPRectF( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := _GPRectF( p1, p2, p3, p4 )                   //
   endif
 
 return self
@@ -77,9 +69,7 @@ return self
   METHOD Destroy() CLASS GPRectF
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteRectF( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 
@@ -209,6 +199,40 @@ return 0
 
 return 0
 
+*********************************************************************************************************
+  METHOD X( nValue ) CLASS GPRectF
+*********************************************************************************************************
+
+if pcount() > 0
+   GPRectFSetX(::handle, nValue )
+endif
+
+return ::GetLeft()
+
+*********************************************************************************************************
+  METHOD Y( nValue ) CLASS GPRectF
+*********************************************************************************************************
+
+if pcount() > 0
+   GPRectFSetY(::handle, nValue )
+endif
+
+return ::GetTop()
+
+*********************************************************************************************************
+  METHOD Width( nValue ) CLASS GPRectF
+*********************************************************************************************************
+
+return GPRectFGetWidth(::handle)
+
+*********************************************************************************************************
+  METHOD Height( nValue ) CLASS GPRectF
+*********************************************************************************************************
+
+return GPRectFGetHeight(::handle)
+
+
+
 
 
 //Constructors
@@ -283,27 +307,55 @@ using namespace Gdiplus;
 
 HB_FUNC( _GPRECTF )
 {
-   //RectF* ptr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    ptr = new RectF();
-   //else if (iParams == 1 )
-   //    ptr = new RectF( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    ptr = new RectF( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    ptr = new RectF( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*) ptr );
+    RectF * ptr = NULL;
+    int iParams = hb_pcount();
+    Point pt = *(Point*) hb_parptr( 1 );
+    Size sz = *(Size*) hb_parptr( 2 );
+
+    if( iParams == 0 )
+       ptr = new RectF();
+    /*else if( iParams == 2 )
+       ptr = new RectF( pt, sz );*/
+    else if( iParams == 4 )
+       ptr = new RectF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd(2 ), (REAL) hb_parnd(3 ), (REAL) hb_parnd(4 ) );
+
+    hb_retptr( (void*) ptr );
 }
 
 HB_FUNC( DELETERECTF )
 {
-   //RectF* clr = (RectF*) hb_parptr( 1 );
-   //delete (RectF*) clr;
-   //hb_ret();
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   delete (RectF*) ptr;
+   hb_ret();
 }
+
+
+HB_FUNC( GPRECTFSETX )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   ptr->X = (REAL) hb_parnd( 2 );
+   hb_ret();
+}
+HB_FUNC( GPRECTFSETY )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   ptr->Y = (REAL) hb_parnd( 2 );
+   hb_ret();
+}
+
+HB_FUNC( GPRECTFGETWIDTH )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   hb_retni( (int) ptr->Width );
+}
+
+HB_FUNC( GPRECTFGETHEIGHT )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   hb_retni( (int) ptr->Height );
+}
+
+
 
 //HB_FUNC( GPRECTF... )
 //{

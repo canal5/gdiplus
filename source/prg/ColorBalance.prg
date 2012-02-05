@@ -49,9 +49,7 @@ return self
   METHOD Destroy() CLASS GPColorBalance
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteColorBalance( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

@@ -59,9 +59,7 @@ return self
   METHOD Destroy() CLASS GPGraphicsPathIterator
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteGraphicsPathIterator( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

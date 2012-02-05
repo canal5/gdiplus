@@ -68,9 +68,7 @@ return self
    METHOD Destroy() CLASS GPLinearGradientBrush
 **************************************************************************************************************
 
-  if !empty(::handle)
-     DeleteLGB( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

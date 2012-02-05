@@ -51,9 +51,7 @@ return self
   METHOD Destroy() CLASS GPInstalledFontCollection
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteInstalledFontCollection( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

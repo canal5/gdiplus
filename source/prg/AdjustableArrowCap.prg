@@ -57,9 +57,7 @@ return self
   METHOD Destroy() CLASS GPAdjustableArrowCap
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteAdjustableArrowCap( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

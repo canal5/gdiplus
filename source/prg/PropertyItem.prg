@@ -50,9 +50,7 @@ return self
   METHOD Destroy() CLASS GPPropertyItem
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeletePropertyItem( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 

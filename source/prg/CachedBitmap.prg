@@ -49,9 +49,7 @@ return self
   METHOD Destroy() CLASS GPCachedBitmap
 *********************************************************************************************************
 
-  if !empty(::handle)
-     DeleteCachedBitmap( ::handle )
-  endif
+  ::handle := nil
 
 return nil
 
