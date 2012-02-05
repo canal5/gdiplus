@@ -65,7 +65,7 @@ ENDCLASS
 local iParams := pcount()
 
   if o:isKindOf( GPPen() )
-     ::handle := GPPenClone( o )             // Clonar un Pen
+     ::handle := ::Clone( o )                // Clonar un Pen
   elseif o:isKindOf( GPColor() )
      ::handle := GPPenA( o:handle, nWidth )  // Color y ancho
   else
