@@ -7,6 +7,11 @@
        => ;
           ThisTest():Assert( ProcName(), ProcLine(), <(uAction)>, {|This|<uAction>}, <cDescription> )
 
+#xcommand SEPARADOR <cDescription>  ;
+       => ;
+          ThisTest():Separator( <cDescription> )
+
+
 #xcommand ENDDEFINE   ;
        => ;
        ThisTest():End()

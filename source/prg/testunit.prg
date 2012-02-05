@@ -2,6 +2,8 @@
 
 CLASS TTestUnit
 
+      DATA bRun
+
       METHOD New() CONSTRUCTOR
       METHOD End()
 
@@ -9,6 +11,7 @@ CLASS TTestUnit
       METHOD Show()
       METHOD OnError( oError )
       METHOD Separator( cHeader )
+
 
 ENDCLASS
 
@@ -104,17 +107,12 @@ return nil
   METHOD OnError( oError ) CLASS TTestUnit
 ************************************************************************
 
-
-
       result->Resultado := 2
-      result->Descrip := oError:Description
-      result->Errorcode := str(oError:genCode )
+      result->Errorcode := oError:Description
 
       if oError:severity > 1
          Break( oError )
       endif
-
-
 
 RETURN NIL
 

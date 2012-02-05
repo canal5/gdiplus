@@ -5,6 +5,7 @@
 
 
 #xcommand PEN <oPen>( <oColor>[, <n> ] ) => <oPen> := Pen( <oColor>[, <n> ] )
+#xcommand RECTF <oRectF>( <nX>, <nY>, <nWidth>, <nHeight> ) => <oRectF> := RectF( <nX>, <nY>, <nWidth>, <nHeight> )
 
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"

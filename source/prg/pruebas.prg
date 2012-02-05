@@ -1,15 +1,17 @@
 #include "fivewin.ch"
 #include "testunit.ch"
-
+#include "gdip.ch"
 
 function main()
 Local oTest
 local oColor
 local oPen
+local oPen2
 local oBrush
 local oFont
 local rgbColor := RGB( 100, 120, 130 )
 local g
+local oRect
 
 
 
@@ -18,10 +20,23 @@ local g
       oColor := Color( 255, 10, 20, 30 )
       oBrush := SolidBrush( oColor )
       oPen   := Pen( oBrush, 5 )
+      oPen2  := Pen( oColor, 5 )
       oFont  := Font( "Ms Sans Serif", 12 )
+      oRect  := RectF( 10, 10, 200, 200 )
 
-
+      SEPARADOR( "GRAPHICS" )
       TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
+
+      SEPARADOR( "PEN" )
+
+      TEST !empty( Pen( oPen ):handle )                      DESCRIPTION "Constructor Pen. Pen( oPen )"
+      TEST !empty( Pen( oBrush, 5 ):handle )                 DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
+      TEST !empty( Pen( oColor, 5 ):handle )                 DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
+      TEST oPen:SetAlignment( PenAlignment.Center ) == oPen:GetAlignment() ;
+                                                             DESCRIPTION "SetAlignment, GetAlignMent"
+
+      SEPARADOR( "COLOR" )
+      // Color
       TEST !Empty( oColor:handle )                           DESCRIPTION "Creación objeto GPColor"
       TEST oColor:GetA() == 255                              DESCRIPTION "Obtener componente Alpha"
       TEST oColor:GetAlpha() == 255                          DESCRIPTION "Obtener componente Alpha"
@@ -37,19 +52,45 @@ local g
       TEST TestToCOLORREF()                                  DESCRIPTION "Test ToCOLORREF"
 
 
-      TEST !Empty( oPen:handle   )  DESCRIPTION "Creación objeto GPPen con Color y ancho"
+      SEPARADOR( "BRUSH" )
       TEST !Empty( oBrush:handle )  DESCRIPTION "Creación objeto GPSolidBrush"
+
+      SEPARADOR( "FONT" )
       TEST !Empty( oFont:handle  )  DESCRIPTION "Creación objeto GPFont"
 
-
-      TEST Pen( Color( 255, 0, 0, 0 ), 5 ):GetWidth() == 5
-
+      SEPARADOR( "RECTF" )
+      TEST !empty(oRect:handle )          DESCRIPTION "Método New"
+      TEST oRect:Contains3( 20, 20 )      DESCRIPTION "Método Contains3( x, y )"
+      TEST oRect:GetBottom() == 10 + 200  DESCRIPTION "Método GetBottom"
+      TEST oRect:GetLeft() == 10          DESCRIPTION "Método GetLeft"
+      TEST oRect:GetRight() == 10 + 200   DESCRIPTION "Método GetRight"
+      TEST oRect:GetTop() == 10           DESCRIPTION "Método GetTop"
+      TEST TestRectFInflate()             DESCRIPTION "Método Inflate2( X, Y )"
 
       SHOW RESULT
 
    ENDDEFINE
 
 return nil
+
+
+*********************************************************************************************************************
+  function TestRectFInflate()
+*********************************************************************************************************************
+local oRect
+local nTop  := 20
+local nLeft := 10
+local nWidth := 500
+local nHeight := 300
+
+RECTF oRect( nLeft, nTop, nWidth, nHeight )
+
+oRect:Inflate2( 10, 10 )
+
+return oRect:GetLeft() == nLeft-10 .and. oRect:GetTop() == nTop-10 .and. ;
+       oRect:GetBottom() == nTop+nHeight+10 .and. oRect:GetRight() == nLeft + nWidth + 10
+
+
 
 
 *********************************************************************************************************************
