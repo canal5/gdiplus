@@ -1067,14 +1067,70 @@ return nil
 #include "windows.h"
 #include "hbapi.h"
 #include <gdiplus.h>
+#include <hbapierr.h>
 
 
 using namespace Gdiplus;
 
 GdiplusStartupInput gdiplusStartupInput;
-ULONG_PTR       gdiplusToken;
+ULONG_PTR	gdiplusToken;
+
+//------------------------------------------------//
 
 
+static HB_GARBAGE_FUNC( GDI_Graphics_release )
+{
+   void ** ph = ( void ** ) Cargo;
+
+   /* Check if pointer is not NULL to avoid multiple freeing */
+   if( ph && * ph )
+   {
+      /* Destroy the object */
+      delete (Graphics*) * ph;
+
+      /* set pointer to NULL to avoid multiple freeing */
+      * ph = NULL;
+   }
+}
+
+#ifndef __XHARBOUR__ 
+const HB_GC_FUNCS s_gcMYSQLFuncs =
+{
+   GDI_Graphics_release,
+   hb_gcDummyMark
+};
+
+#endif //__XHARBOUR__
+
+//------------------------------------------------//
+
+static void hb_Graphics_ret( Graphics * p )
+{
+   if( p )
+   {
+#ifndef __XHARBOUR__
+      void ** ph = ( void ** ) hb_gcAllocate( sizeof( Graphics * ), &s_gcMYSQLFuncs );
+#else
+      void ** ph = ( void ** ) hb_gcAlloc( sizeof( Graphics * ), GDI_Graphics_release );
+#endif //__XHARBOUR__
+      * ph = p;
+
+      hb_retptrGC( ph );
+   }
+   else
+      hb_retptr( NULL );
+}
+
+static Graphics * hb_Graphics_par( int iParam )
+{
+#ifndef __XHARBOUR__      
+   void ** ph = ( void ** ) hb_parptrGC( &s_gcMYSQLFuncs, iParam );
+#else
+   void ** ph = ( void ** ) hb_parptrGC( MYSQL_release, iParam );
+#endif //__XHARBOUR__
+
+   return ph ? ( Graphics * ) * ph : NULL;
+}
 
 
 HB_FUNC( GDIPLUSSTARTUP )
@@ -1116,19 +1172,25 @@ HB_FUNC( GDIPLUSSHUTDOWN )
 HB_FUNC( GDIPLUSNEWGRAPHICS )
 {
    Graphics *g = new Graphics( (HDC) hb_parnl(1));
-   hb_retptr( (void *) g );
+   hb_Graphics_ret( g );
 }
 
 HB_FUNC( GDIPLUSNEWGRAPHICSFROMBITMAP )
 {
    Graphics *g = new Graphics( (Image*) hb_parptr(1) );
-   hb_retptr( (void *) g );
+   hb_Graphics_ret( g );
 }
 
 
 HB_FUNC( GDIPLUSDELETEGRAPHICS )
 {
-   delete (Graphics*) hb_parptr( 1 );
+   Graphics *g = hb_Graphics_par( 1 );
+   
+   if( g )
+      delete g;
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
+   
    hb_ret                        ();
 }
 
@@ -1139,17 +1201,31 @@ HB_FUNC( GDIPLUSDELETEGRAPHICS )
 
 HB_FUNC( GPADDMETAFILECOMMENT )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+   Graphics *g = hb_Graphics_par( 1 );
+   
+   if( g )
+   {
     LPSTR bByte  = (char*)hb_parc( 2 );
     g->AddMetafileComment( (BYTE*) bByte, hb_parclen( 2 ) );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );  
+      
     hb_ret();
 
 }
 
 HB_FUNC( GPBEGINCONTAINER )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
-    GraphicsContainer gc = g->BeginContainer();
+   Graphics *g = hb_Graphics_par( 1 );
+   GraphicsContainer gc;
+   if( g )
+   {
+    gc = g->BeginContainer();
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );  
+    
     hb_retnl( gc );
 }
 
@@ -1177,18 +1253,35 @@ HB_FUNC( GPBEGINCONTAINER )
 
 HB_FUNC( GP_BITBLT )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
-    Image* img = (Image*) hb_parptr( 2 );
+   Graphics *g = hb_Graphics_par( 1 );
+   Image* img = (Image*) hb_parptr( 2 );
+   
+   if( g && img && hb_pcount() > 8 )
+   {
+    //TODO Garbage Collector for IMAGE    
     Unit u = (Unit) hb_parnl( 9 );
     g->DrawImage( img, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 6 ), hb_parni( 5 ), hb_parni( 7 ), hb_parni( 8 ), u );
-    hb_ret();
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+
+   hb_ret();
 }
 
 HB_FUNC( GP_CLEAR )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
-    Color* c = (Color*) hb_parptr( 2 );
-    g->Clear( *c );
+   Graphics *g = hb_Graphics_par( 1 );
+   Color* c = (Color*) hb_parptr( 2 );
+   
+   //TODO Garbage Collector for COLOR    
+   if( g && c )
+   {
+     g->Clear( *c );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+    
+   
     hb_ret();
 }
 
@@ -1196,121 +1289,208 @@ HB_FUNC( GP_CLEAR )
 
 HB_FUNC( GP_DRAWARC )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+    Graphics *g = hb_Graphics_par( 1 );
     Pen* p = (Pen*) hb_parptr( 2 );
+
+   if( g && p && hb_pcount() > 7 )
+   {
+    //TODO Garbage Collector for PEN    
     g->DrawArc( p, hb_parni(4), hb_parni(3), hb_parni(5), hb_parni(6), (REAL) hb_parnd( 7 ), (REAL) hb_parnd( 8 ) );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
+    
     hb_ret();
 }
 
 HB_FUNC( GP_DRAWBEZIER )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+    Graphics *g = hb_Graphics_par( 1 );
     Pen* p = (Pen*) hb_parptr( 2 );
-    g->DrawBezier( p, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 6 ), hb_parni( 5 ), hb_parni( 8 ), hb_parni( 7 ), hb_parni( 10 ), hb_parni( 9 ) );
+    
+   if( g && p && hb_pcount() > 9 )
+   {
+    //TODO Garbage Collector for PEN    
+     g->DrawBezier( p, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 6 ), hb_parni( 5 ), hb_parni( 8 ), hb_parni( 7 ), hb_parni( 10 ), hb_parni( 9 ) );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    
+    
     hb_ret();
 }
 
 HB_FUNC( GP_DRAWCACHEDBITMAP )
 {
-    Graphics* g = (Graphics*) hb_parptr( 1 );
+    Graphics* g = hb_Graphics_par( 1 );
     CachedBitmap* b = (CachedBitmap*) hb_parptr( 2 );
-    g->DrawCachedBitmap( b, hb_parni( 4 ), hb_parni( 3 ));
+
+   if( g && b && hb_pcount() > 3 )
+   {
+    //TODO Garbage Collector for CachedBitmap    
+     g->DrawCachedBitmap( b, hb_parni( 4 ), hb_parni( 3 ));
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          
+    
+    
     hb_ret();
 }
 
 HB_FUNC( GP_DRAWELLIPSE )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+    Graphics *g = hb_Graphics_par( 1 );
     Pen* p = (Pen*) hb_parptr( 2 );
-    g->DrawEllipse( p, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 ));
+    
+   if( g && p && hb_pcount() > 5 )
+   {
+     //TODO Garbage Collector for PEN    
+     g->DrawEllipse( p, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 ));
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
+    
+    
     hb_ret();
 }
 
 HB_FUNC( GP_DRAWIMAGE )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+    Graphics *g = hb_Graphics_par( 1 );
     Image* c = (Image*) hb_parptr( 2 );
+    
+   if( g && c && hb_pcount() > 5 )
+   {
+    //TODO Garbage Collector for IMAGE    
     g->DrawImage( c, hb_parni(3), hb_parni(4), hb_parni(5), hb_parni(6) );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );     
+    
+    
     hb_ret();
 }
 
 
 HB_FUNC( GP_DRAWLINE )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+    Graphics *g = hb_Graphics_par( 1 );
     Pen* p = (Pen*) hb_parptr( 2 );
-    g->DrawLine( p, hb_parni(4), hb_parni(3), hb_parni(6), hb_parni(5) );
+
+   if( g && p && hb_pcount() > 5 )
+   {
+     //TODO Garbage Collector for PEN    
+     g->DrawLine( p, hb_parni(4), hb_parni(3), hb_parni(6), hb_parni(5) );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );     
+    
+    
     hb_ret();
 }
 
 HB_FUNC( GP_ROUNDRECT )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+    Graphics *g = hb_Graphics_par( 1 );
     Pen* p = (Pen*) hb_parptr( 2 );
     int x = hb_parni( 4 );
     int y = hb_parni( 3 );
     int xr = x + hb_parni( 5 );
     int yr = y + hb_parni( 6 );
-    Size* CornerSize = new Size(hb_parni( 7 ),hb_parni( 8 ));
+    
 
-    RectF* tl = new RectF(x,y,CornerSize->Width,CornerSize->Height);
-    RectF* tr = new RectF(xr,y,CornerSize->Width,CornerSize->Height);
-    RectF* bl = new RectF(x,yr,CornerSize->Width,CornerSize->Height);
-    RectF* br = new RectF(xr,yr,CornerSize->Width,CornerSize->Height);
-    GraphicsPath* oPath = new GraphicsPath                        ();
-    oPath->AddArc(*tl, 180, 90);
-    oPath->AddArc(*tr, 270, 90);
-    oPath->AddArc(*br, 360, 90);  //NOTE: br BEFORE bl
-    oPath->AddArc(*bl, 90, 90);
-    oPath->CloseAllFigures                        ();
-    if ( hb_pcount                        () > 8 )
+    if( g && p && hb_pcount() > 7 )
     {
-       SolidBrush* b = (SolidBrush*) hb_parptr( 9 );
-       g->FillPath( b, oPath );
+      //TODO Garbage Collector for PEN    
+      Size* CornerSize = new Size(hb_parni( 7 ),hb_parni( 8 ));
+      RectF* tl = new RectF(x,y,CornerSize->Width,CornerSize->Height);
+      RectF* tr = new RectF(xr,y,CornerSize->Width,CornerSize->Height);
+      RectF* bl = new RectF(x,yr,CornerSize->Width,CornerSize->Height);
+      RectF* br = new RectF(xr,yr,CornerSize->Width,CornerSize->Height);
+      GraphicsPath* oPath = new GraphicsPath                        ();
+      oPath->AddArc(*tl, 180, 90);
+      oPath->AddArc(*tr, 270, 90);
+      oPath->AddArc(*br, 360, 90);  //NOTE: br BEFORE bl
+      oPath->AddArc(*bl, 90, 90);
+      oPath->CloseAllFigures                        ();
+      if ( hb_pcount                        () > 8 )
+      {
+         SolidBrush* b = (SolidBrush*) hb_parptr( 9 );
+         g->FillPath( b, oPath );
+      }
+      g->DrawPath( p, oPath );
+      
+      delete (RectF*) tl;
+      delete (RectF*) tr;
+      delete (RectF*) bl;
+      delete (RectF*) br;
+      delete (GraphicsPath*) oPath;
     }
-    g->DrawPath( p, oPath );
+    else
+       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
 
-    delete (RectF*) tl;
-    delete (RectF*) tr;
-    delete (RectF*) bl;
-    delete (RectF*) br;
-    delete (GraphicsPath*) oPath;
+
+
 
 }
 
 
 HB_FUNC( GP_DRAWPATH )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
-    Pen* p = (Pen*) hb_parptr( 2 );
+    Graphics *g = hb_Graphics_par( 1 );
+    Pen* p = (Pen*) hb_parptr( 2 );    
     GraphicsPath* gp = (GraphicsPath*) hb_parptr( 3 );
-    g->DrawPath(p, gp );
+
+   if( g && p && gp )
+   {
+     //TODO Garbage Collector for PEN, GraphicsPath  
+     g->DrawPath(p, gp );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
 
     hb_ret();
 }
 
 HB_FUNC( GP_DRAWRECTANGLE )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+    Graphics *g = hb_Graphics_par( 1 );
     Pen* p = (Pen*) hb_parptr(3);
 
-    RectF rect = RectF( hb_parvnd( 2, 1 ), hb_parvnd( 2, 2 ), hb_parvnd( 2, 3 ), hb_parvnd( 2, 4 ) );
-    g->DrawRectangle(p, rect );
+   if( g && p )
+   {
+     //TODO Garbage Collector for PEN, GraphicsPath  
+     RectF rect = RectF( hb_parvnd( 2, 1 ), hb_parvnd( 2, 2 ), hb_parvnd( 2, 3 ), hb_parvnd( 2, 4 ) );
+     g->DrawRectangle(p, rect );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+      
+
+
     hb_ret();
 }
 
 HB_FUNC( GP_DRAWSTRING )
 {
-   Graphics *g = (Graphics*) hb_parptr( 1 );
-   LPWSTR str = hb_mbtowc( (LPSTR) hb_parc( 2 ));
+   Graphics *g = hb_Graphics_par( 1 );
    Font* myFont = (Font*) hb_parptr( 5 );
-   PointF origin((float) hb_parni( 4 ), (float) hb_parni( 3 ) );
    Color* c = (Color*) hb_parptr(6);
-   SolidBrush* blackBrush = new SolidBrush(*c);
-   g->DrawString( str, hb_parclen( 2 ), myFont, origin, blackBrush);
+   
+   if( g && myFont && c )
+   { 
+      LPWSTR str = hb_mbtowc( (LPSTR) hb_parc( 2 ));
+      PointF origin((float) hb_parni( 4 ), (float) hb_parni( 3 ) );
+      SolidBrush* blackBrush = new SolidBrush(*c);
+      g->DrawString( str, hb_parclen( 2 ), myFont, origin, blackBrush);
+      delete (SolidBrush*) blackBrush;
+      hb_xfree( str );   
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
 
-   delete (SolidBrush*) blackBrush;
-   hb_xfree( str );
 }
 
 //Status DrawString(
@@ -1339,35 +1519,57 @@ HB_FUNC( GP_DRAWSTRING )
 
 HB_FUNC( GP_FILLELLIPSE )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+    Graphics *g = hb_Graphics_par( 1 );
     Brush* b = (Brush*) hb_parptr( 2 );
-    g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 ));
+    
+   if( g && b && hb_pcount() > 5 )
+   {
+    g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 ));   
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
+      
     hb_ret();
 }
 
 
 HB_FUNC( GP_FILLPATH )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+    Graphics *g = hb_Graphics_par( 1 );
     SolidBrush* brush = (SolidBrush*) hb_parptr( 2 );
     GraphicsPath* gp = (GraphicsPath*) hb_parptr( 3 );
-    g->FillPath(brush, gp );
 
+   if( g && brush && gp )
+   {
+     g->FillPath(brush, gp );   
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );   
+          
     hb_ret();
 }
 
 HB_FUNC( GP_FILLRECT )
 {
-    Graphics *g = (Graphics*) hb_parptr( 1 );
+    Graphics *g = hb_Graphics_par( 1 );
     SolidBrush* brush = (SolidBrush*) hb_parptr(3);
 
-    RectF rect = RectF(hb_parvnd( 2, 1 ), hb_parvnd( 2, 2 ), hb_parvnd( 2, 3 ), hb_parvnd( 2, 4 ));
-    g->FillRectangle(brush, rect );
-    if( hb_pcount                        () > 3 )
-    {
-       Pen *p = (Pen*) hb_parptr( 4 );
-       g->DrawRectangle( p, rect );
-    }
+   if( g && brush )
+   {
+
+     RectF rect = RectF(hb_parvnd( 2, 1 ), hb_parvnd( 2, 2 ), hb_parvnd( 2, 3 ), hb_parvnd( 2, 4 ));
+     g->FillRectangle(brush, rect );
+     if( hb_pcount                        () > 3 )
+     {
+        Pen *p = (Pen*) hb_parptr( 4 );
+        g->DrawRectangle( p, rect );
+     }   
+
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );   
+      
+
     hb_ret();
 }
 
@@ -1378,38 +1580,77 @@ HB_FUNC( GP_FILLRECT )
 //} MatrixOrder;
 HB_FUNC( GP_ROTATETRANSFORM )
 {
-   Graphics *g = (Graphics*) hb_parptr( 1 );
-   g->RotateTransform( (REAL) hb_parnd( 2 ), (MatrixOrder) hb_parni( 3 ) );
+   Graphics *g = hb_Graphics_par( 1 );
+
+   if( g && hb_pcount() > 2 )
+   {
+      g->RotateTransform( (REAL) hb_parnd( 2 ), (MatrixOrder) hb_parni( 3 ) );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+         
    hb_ret();
 }
 
 HB_FUNC( GP_SCALETRANSFORM )
 {
-   Graphics *g = (Graphics*) hb_parptr( 1 );
-   g->ScaleTransform( (REAL) hb_parnd( 2 ), (REAL) hb_parnd( 3 ), (MatrixOrder) hb_parni( 4 ) );
+   Graphics *g = hb_Graphics_par( 1 );
+
+
+   if( g && hb_pcount() > 3 )
+   {
+      g->ScaleTransform( (REAL) hb_parnd( 2 ), (REAL) hb_parnd( 3 ), (MatrixOrder) hb_parni( 4 ) );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
+   
+   
    hb_ret();
 }
 
 HB_FUNC( GP_TRANSLATETRANSFORM )
 {
-   Graphics *g = (Graphics*) hb_parptr( 1 );
-   g->TranslateTransform( (REAL) hb_parnd( 2 ), (REAL) hb_parnd( 3 ), (MatrixOrder) hb_parni( 4 ) );
+   Graphics *g = hb_Graphics_par( 1 );
+
+   if( g && hb_pcount() > 3 )
+   {
+      g->TranslateTransform( (REAL) hb_parnd( 2 ), (REAL) hb_parnd( 3 ), (MatrixOrder) hb_parni( 4 ) );
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+   
+   
    hb_ret();
 }
 
 HB_FUNC( SETSMOOTHINGMODE )
 {
-   Graphics *g = (Graphics*) hb_parptr( 1 );
+   Graphics *g = hb_Graphics_par( 1 );
    SmoothingMode  q = (SmoothingMode ) hb_parni( 2 );
-   g->SetSmoothingMode(q);
+
+   if( g && q )
+   {
+      g->SetSmoothingMode(q);
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+   
+   
 }
 
 HB_FUNC( SETTEXTRENDERINGHINT )
 {
-   Graphics *g = (Graphics*) hb_parptr( 1 );
-   g->SetTextRenderingHint(TextRenderingHintAntiAlias);
+   Graphics *g = hb_Graphics_par( 1 );
+   
+   if( g  )
+   {
+      g->SetTextRenderingHint(TextRenderingHintAntiAlias);
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+   
+   
 }
-
 
 
 
