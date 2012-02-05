@@ -21,9 +21,8 @@ local g
       oFont  := Font( "Ms Sans Serif", 12 )
 
 
-      TEST !Empty( oColor:handle )  DESCRIPTION "Creación objeto GPColor"
-
       TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
+      TEST !Empty( oColor:handle )                           DESCRIPTION "Creación objeto GPColor"
       TEST oColor:GetA() == 255                              DESCRIPTION "Obtener componente Alpha"
       TEST oColor:GetAlpha() == 255                          DESCRIPTION "Obtener componente Alpha"
       TEST oColor:GetR() == 10                               DESCRIPTION "Obtener componente Red"
