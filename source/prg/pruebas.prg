@@ -9,6 +9,7 @@ local oPen
 local oBrush
 local oFont
 local rgbColor := RGB( 100, 120, 130 )
+local g
 
 
 
@@ -22,6 +23,7 @@ local rgbColor := RGB( 100, 120, 130 )
 
       TEST !Empty( oColor:handle )  DESCRIPTION "Creación objeto GPColor"
 
+      TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
       TEST oColor:GetA() == 255                              DESCRIPTION "Obtener componente Alpha"
       TEST oColor:GetAlpha() == 255                          DESCRIPTION "Obtener componente Alpha"
       TEST oColor:GetR() == 10                               DESCRIPTION "Obtener componente Red"
@@ -50,6 +52,15 @@ local rgbColor := RGB( 100, 120, 130 )
 
 return nil
 
+
+*********************************************************************************************************************
+  function TestConstructorDestructorGraphics()
+*********************************************************************************************************************
+local hDC := CreateDC("DISPLAY",0,0,0)
+local g := Graphics(hDC)
+DeleteDC( hDC )
+
+return g:handle != 0
 
 *********************************************************************************************************************
   function TestSetFromCOLORREF()
