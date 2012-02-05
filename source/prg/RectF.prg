@@ -311,13 +311,13 @@ HB_FUNC( _GPRECTF )
 {
     RectF * ptr = NULL;
     int iParams = hb_pcount();
-    //Point pt = *(Point*) hb_parptr( 1 );
-    //Size sz = *(Size*) hb_parptr( 2 );
+    const PointF *pt = ( const PointF * ) hb_parptr( 1 );
+    const SizeF *sz = ( const SizeF * ) hb_parptr( 2 );
 
     if( iParams == 0 )
        ptr = new RectF();
-    /*else if( iParams == 2 )
-       ptr = new RectF( pt, sz );*/
+    else if( iParams == 2 )
+       ptr = new RectF( pt->X, pt->Y, sz->Width, sz->Height );
     else if( iParams == 4 )
        ptr = new RectF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd(2 ), (REAL) hb_parnd(3 ), (REAL) hb_parnd(4 ) );
 
