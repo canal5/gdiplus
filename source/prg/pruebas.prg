@@ -25,7 +25,7 @@ local oPoint
       oPen   := Pen( oBrush, 5 )
       oPen2  := Pen( oColor, 5 )
       oFont  := Font( "Ms Sans Serif", 12 )
-      
+
       RectF  oRect( 10, 10, 200, 200 )
       PointF oPoint( 13, 22 )
       SizeF  oSize ( 50, 50 )
@@ -69,8 +69,8 @@ local oPoint
       TEST !empty(oRect:handle )          DESCRIPTION "Método New"
       TEST !empty(oRect2:handle )         DESCRIPTION "Metodo New( oPoint, oSize )"
       TEST oRect:Contains( 20, 20 )       DESCRIPTION "Método Contains( x, y )"
-      TEST oRect:Contains2( oPoint )      DESCRIPTION "Método Contains( pt )"
-      TEST oRect:Contains3( oRect )       DESCRIPTION "Método Contains( rc )"
+      TEST oRect:Contains2( oPoint )      DESCRIPTION "Método Contains2( pt )"
+      TEST oRect:Contains3( oRect )       DESCRIPTION "Método Contains3( rc )"
       TEST oRect:GetBottom() == 10 + 200  DESCRIPTION "Método GetBottom"
       TEST oRect:GetLeft() == 10          DESCRIPTION "Método GetLeft"
       TEST oRect:GetRight() == 10 + 200   DESCRIPTION "Método GetRight"

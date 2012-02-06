@@ -29,7 +29,9 @@ ENDCLASS
                              {"TEST"     , "C", 100, 0 },;
                              {"ERRORCODE", "C", 100, 0 },;
                              {"DATE"     , "D",   8, 0 },;
-                             {"TIME"     , "C",  15, 0 } } )
+                             {"TIME"     , "C",  15, 0 },;
+                             {"PROCNAME" , "C", 100, 0 },;
+                             {"PROCLINE" , "C",  10, 0 } } )
    USE result ALIAS result
 
 return self
@@ -85,6 +87,8 @@ result->Test    = cValue
 result->Date    = DATE()
 result->Time    = TIME()
 result->descrip = left(cDescription,160)
+result->procname = left(Procname(1),100)
+result->procline = left(str(procline(1)),10)
 
 if eval( bAction )
    result->Resultado := 1
@@ -150,21 +154,23 @@ DEFINE WINDOW oWnd FROM 1, 1 TO 700, 900 PIXEL TITLE cTitle
                               result->test      ,;
                               result->errorcode ,;
                               dtoc(result->date),;
-                              result->time ;
-          FIELDSIZES 14, 280, 260, 280, 60, 60  ;
+                              result->time      ,;
+                              result->procname  ,;
+                              result->procline  ;
+          FIELDSIZES 14, 280, 260, 280, 60, 60, 150, 70  ;
       SIZE 284, 137  OF oWnd
 
    oLbx:aActions   = Array( ( Alias() )->( FCount() ) )
    oLbx:nClrText = nClrText
    oLbx:nClrForeFocus = nClrForeFocus
 
-   if aColSizes != nil
-      oLbx:aColSizes = aColSizes
-   endif
-
-   for n = 1 to Len( oLbx:aActions )
-      oLbx:aActions[ n ] = { || MsgInfo( "Column action" ) }
-   next
+//   if aColSizes != nil
+//      oLbx:aColSizes = aColSizes
+//   endif
+//
+//   for n = 1 to Len( oLbx:aActions )
+//      oLbx:aActions[ n ] = { || MsgInfo( "Column action" ) }
+//   next
 
    oWnd:oClient := oLbx
 
