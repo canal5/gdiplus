@@ -1,9 +1,9 @@
 #include "fivewin.ch"
 
 
-function PointF()
+function PointF(x,y)
 
-return GPPointF():New()
+return GPPointF():New(x,y)
 
 
 CLASS GPPointF
@@ -30,7 +30,7 @@ CLASS GPPointF
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New() CLASS GPPointF
+  METHOD New(p1, p2, p3, p4, p5, p6, p7 ) CLASS GPPointF
 *********************************************************************************************************
 
 local iParams := PCount()
@@ -38,18 +38,20 @@ local iParams := PCount()
 
   if iParams == 0
      ::handle := _GPPointF()
-  elseif iParams == 1
-     ::handle := _GPPointF( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPPointF( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPPointF( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPPointF( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPPointF( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPPointF( p1, p2, p3, p4, p5, p6, p7 )       //
+  //elseif iParams == 1
+  //   ::handle := _GPPointF( p1 )                               //
+  elseif iParams == 2
+     ::handle := _GPPointF( p1, p2 )                           //
+  //elseif iParams == 3
+  //   ::handle := _GPPointF( p1, p2, p3 )                       //
+  //elseif iParams == 4
+  //   ::handle := _GPPointF( p1, p2, p3, p4 )                   //
+  //elseif iParams == 5
+  //   ::handle := _GPPointF( p1, p2, p3, p4, p5 )               //
+  //elseif iParams == 6
+  //   ::handle := _GPPointF( p1, p2, p3, p4, p5, p6 )           //
+  //elseif iParams == 7
+  //   ::handle := _GPPointF( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -99,19 +101,21 @@ using namespace Gdiplus;
 
 HB_FUNC( _GPPOINTF )
 {
-   //PointF* ptr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    ptr = new PointF();
+   PointF* ptr;
+   int iParams = hb_pcount();
+
+   if( iParams == 0 )
+       ptr = new PointF();
    //else if (iParams == 1 )
    //    ptr = new PointF( hb_parnl( 1 ) );
+   else if (iParams == 2 )
+       ptr = new PointF( (REAL) hb_parnd( 1 ), (REAL)hb_parnd( 2 ) );
    //else if (iParams == 3 )
    //    ptr = new PointF( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
    //else
    //    ptr = new PointF( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
    //
-   //hb_retptr( (void*) ptr );
+   hb_retptr( (void*) ptr );
 }
 
 HB_FUNC( DELETEPOINTF )

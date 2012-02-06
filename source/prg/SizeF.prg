@@ -1,9 +1,9 @@
 #include "fivewin.ch"
 
 
-function SizeF()
+function SizeF(sx,sy)
 
-return GPSizeF():New()
+return GPSizeF():New(sx,sy)
 
 
 CLASS GPSizeF
@@ -32,7 +32,7 @@ CLASS GPSizeF
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New() CLASS GPSizeF
+  METHOD New(p1, p2, p3, p4, p5, p6, p7) CLASS GPSizeF
 *********************************************************************************************************
 
 local iParams := PCount()
@@ -42,6 +42,8 @@ local iParams := PCount()
      ::handle := _GPSizeF()
   elseif iParams == 1
      ::handle := _GPSizeF( p1 )                               //
+  elseif iParams == 2
+     ::handle := _GPSizeF( p1, p2 )                           //
   elseif iParams == 3
      ::handle := _GPSizeF( p1, p2, p3 )                       //
   elseif iParams == 4

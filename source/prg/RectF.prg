@@ -26,9 +26,9 @@ CLASS GPRectF
 
 
   METHOD Clone()     HIDDEN
-  METHOD Contains()
-  METHOD Contains2()
-  METHOD Contains3(X, Y)
+  METHOD Contains(x,y)
+  METHOD Contains2(pt)
+  METHOD Contains3(rc)
   METHOD Equals()
   METHOD GetBottom()
   METHOD GetBounds()
@@ -58,11 +58,11 @@ local iParams := PCount()
   if iParams == 0
      ::handle := _GPRectF()
   elseif iParams == 1
-     ::handle := ::Clone( p1 )                   //
-//  elseif iParams == 2
-//     ::handle := _GPRectF( p1, p2 )                         //
+     ::handle := ::Clone( p1 )                      //
+  elseif iParams == 2
+     ::handle := _GPRectF( p1:handle, p2:handle )   // oPoint, oSize
   elseif iParams == 4
-     ::handle := _GPRectF( p1, p2, p3, p4 )                   //
+     ::handle := _GPRectF( p1, p2, p3, p4 )         //
   endif
 
 return self
@@ -82,22 +82,22 @@ return nil
 return GPRectFClone(o:handle)
 
 *********************************************************************************************************
-  METHOD Contains() CLASS GPRectF
+  METHOD Contains(x,y) CLASS GPRectF
 *********************************************************************************************************
 
-return 0
+return GPRectFContains( ::handle, X, Y )
 
 *********************************************************************************************************
-  METHOD Contains2() CLASS GPRectF
+  METHOD Contains2( pt ) CLASS GPRectF
 *********************************************************************************************************
 
-return 0
+return GPRectFContains2( ::handle, pt:handle )
 
 *********************************************************************************************************
-  METHOD Contains3( X, Y ) CLASS GPRectF
+  METHOD Contains3( rc ) CLASS GPRectF
 *********************************************************************************************************
 
-return GPRectFContains3( ::handle, X, Y )
+return GPRectFContains3( ::handle, rc:handle )
 
 *********************************************************************************************************
   METHOD Equals() CLASS GPRectF
@@ -324,6 +324,7 @@ HB_FUNC( _GPRECTF )
     hb_retptr( (void*) ptr );
 }
 
+
 HB_FUNC( DELETERECTF )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
@@ -338,10 +339,24 @@ HB_FUNC( GPRECTFCLONE )
    hb_retptr( (void*) ptr->Clone() );
 }
 
-HB_FUNC( GPRECTFCONTAINS3 )
+HB_FUNC( GPRECTFCONTAINS )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
    hb_retl( ptr->Contains( (REAL) hb_parnd( 2 ), (REAL) hb_parnd( 3 )) );
+}
+
+HB_FUNC( GPRECTFCONTAINS2 )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   const PointF *pt = ( const PointF * ) hb_parptr( 2 );
+   hb_retl( ptr->Contains( pt& );
+}
+
+HB_FUNC( GPRECTFCONTAINS3 )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   const RectF *rc = ( const RectF * ) hb_parptr( 2 );
+   hb_retl( ptr->Contains( rc );
 }
 
 HB_FUNC( GPRECTFGETBOTTOM )
