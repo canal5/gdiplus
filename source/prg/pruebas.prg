@@ -28,8 +28,8 @@ local oPoint
 
       RectF  oRect( 10, 10, 200, 200 )
       PointF oPoint( 13, 22 )
-      SizeF  oSize ( 50, 50 )
-      oRect2 = RectF( oPoint, oSize )
+      SizeF  oSize ( 50, 50 )      
+      RectF oRect2( oPoint, oSize )
 
       SEPARADOR( "GRAPHICS" )
       TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"

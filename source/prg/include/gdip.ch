@@ -5,10 +5,9 @@
 
 
 #xcommand PEN <oPen>( <oColor>[, <n> ] ) => <oPen> := Pen( <oColor>[, <n> ] )
-#xcommand RECTF <oRectF>( <nX>, <nY>, <nWidth>, <nHeight> ) => <oRectF> := RectF( <nX>, <nY>, <nWidth>, <nHeight> )
-//#xcommand RECTF <oRectF>( <par1>, <par2> ) => <oRectF> := RectF( <par1>, <par2> )
-#xcommand POINTF <oPointF>( <nX>, <nY> ) => <oPointF> := PointF( <nX>, <nY> )
-#xcommand SIZEF <oSizeF>( <nWidth>, <nHeight> ) => <oSizeF> := SizeF( <nWidth>, <nHeight> )
+#xcommand RECTF <oRectF>( [<nX>[, <nY> [, <nWidth>, <nHeight> ] ] ] ) => <oRectF> := RectF( [ <nX> ] [, <nY> ] [, <nWidth> ] [, <nHeight> ] )
+#xcommand POINTF <oPointF>( [ <par1>[, <par2> ] ] ) => <oPointF> := PointF( [ <par1> ] [, <par2> ] )
+#xcommand SIZEF <oSizeF>( [<nWidth>[, <nHeight> ] ] ) => <oSizeF> := SizeF( [ <nWidth> ] [, <nHeight> ] )
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"
 #xtranslate guidStr.ImageFormatMemoryBMP      =>   "B96B3CAA-0728-11D3-9D7B-0000F81EF32E"

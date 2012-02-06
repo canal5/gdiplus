@@ -1,10 +1,25 @@
 #include "fivewin.ch"
 
 
-function SizeF(sx,sy)
+function SizeF( ... )
 
-return GPSizeF():New(sx,sy)
-
+   local aParams := hb_aparams()
+   local oObj
+   local nLen := Len( aParams )
+   
+   switch nLen
+      case 0
+         oObj = GPSizeF():New()
+         exit
+      case 1
+         oObj = GPSizeF():New( aParams[ 1 ] )
+         exit
+      case 2
+         oObj = GPSizeF():New( aParams[ 1 ], aParams[ 2 ] )
+         exit
+   endswitch
+   
+return oObj
 
 CLASS GPSizeF
 
@@ -37,24 +52,18 @@ ENDCLASS
 
 local iParams := PCount()
 
-
-  if iParams == 0
-     ::handle := _GPSizeF()
-  elseif iParams == 1
-     ::handle := _GPSizeF( p1 )                               //
-  elseif iParams == 2
-     ::handle := _GPSizeF( p1, p2 )                           //
-  elseif iParams == 3
-     ::handle := _GPSizeF( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPSizeF( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPSizeF( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPSizeF( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPSizeF( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
+   
+  switch( iParams ) 
+     case 0
+        ::handle := _GPSizeF()
+        exit
+     case 1
+        ::handle := _GPSizeF( p1 )
+        exit            
+     case 2
+        ::handle := _GPSizeF( p1, p2 )
+        exit 
+  endswitch
 
 return self
 
@@ -123,19 +132,27 @@ using namespace Gdiplus;
 
 HB_FUNC( _GPSIZEF )
 {
-   //SizeF* ptr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    ptr = new SizeF();
-   //else if (iParams == 1 )
-   //    ptr = new SizeF( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    ptr = new SizeF( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    ptr = new SizeF( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*) ptr );
+   SizeF* ptr;
+   int iParams = hb_pcount();
+   
+   switch( iParams )
+   {
+      case 0:   
+         ptr = new SizeF();
+         break;
+      case 1:
+         {
+           SizeF * par_Size = ( SizeF * ) hb_parptr( 1 );
+           SizeF sz( par_Size->Width, par_Size->Height );         
+           ptr = new SizeF( sz );         
+         }
+         break;
+      case 2:
+         ptr = new SizeF( ( REAL ) hb_parnd( 1 ), ( REAL ) hb_parnd( 2 ) );
+         break;
+   }
+   
+   hb_retptr( (void*) ptr );
 }
 
 HB_FUNC( DELETESIZEF )

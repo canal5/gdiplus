@@ -1,9 +1,25 @@
 #include "fivewin.ch"
 
 
-function PointF(x,y)
+function PointF( ... )
 
-return GPPointF():New(x,y)
+   local aParams := hb_aparams()
+   local oObj
+   local nLen := Len( aParams )
+   
+   switch nLen
+      case 0
+         oObj = GPPointF():New()
+         exit
+      case 1
+         oObj = GPPointF():New( aParams[ 1 ] )
+         exit
+      case 2
+         oObj = GPPointF():New( aParams[ 1 ], aParams[ 2 ] )
+         exit
+   endswitch
+   
+return oObj
 
 
 CLASS GPPointF
@@ -30,29 +46,25 @@ CLASS GPPointF
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New(p1, p2, p3, p4, p5, p6, p7 ) CLASS GPPointF
+  METHOD New( p1, p2 ) CLASS GPPointF
 *********************************************************************************************************
 
 local iParams := PCount()
 
-
-  if iParams == 0
-     ::handle := _GPPointF()
-  //elseif iParams == 1
-  //   ::handle := _GPPointF( p1 )                               //
-  elseif iParams == 2
-     ::handle := _GPPointF( p1, p2 )                           //
-  //elseif iParams == 3
-  //   ::handle := _GPPointF( p1, p2, p3 )                       //
-  //elseif iParams == 4
-  //   ::handle := _GPPointF( p1, p2, p3, p4 )                   //
-  //elseif iParams == 5
-  //   ::handle := _GPPointF( p1, p2, p3, p4, p5 )               //
-  //elseif iParams == 6
-  //   ::handle := _GPPointF( p1, p2, p3, p4, p5, p6 )           //
-  //elseif iParams == 7
-  //   ::handle := _GPPointF( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
+  switch( iParams )
+     case 0
+        ::handle := _GPPointF()
+        exit 
+     case 1
+        if p1:IsKindOf( "GPPOINTF" )
+           ::handle := _GPPointFFromPoint( p1 )
+        elseif p1:IsKindOf( "GPSIZEF" )
+           ::handle := _GPPointFFromSize( p1 )
+        endif 
+        exit 
+     case 2
+        ::handle := _GPPointF( p1, p2 )
+  endswitch
 
 return self
 
@@ -106,15 +118,31 @@ HB_FUNC( _GPPOINTF )
 
    if( iParams == 0 )
        ptr = new PointF();
-   //else if (iParams == 1 )
-   //    ptr = new PointF( hb_parnl( 1 ) );
    else if (iParams == 2 )
        ptr = new PointF( (REAL) hb_parnd( 1 ), (REAL)hb_parnd( 2 ) );
-   //else if (iParams == 3 )
-   //    ptr = new PointF( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    ptr = new PointF( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
+
+   hb_retptr( (void*) ptr );
+}
+
+HB_FUNC( _GPPOINTFFROMPOINT )
+{
+   PointF * ptr;
+   PointF * par_Point = ( PointF * ) hb_parptr( 1 );
+   PointF pf( par_Point->X, par_Point->Y );
+   
+   ptr = new PointF( pf );
+
+   hb_retptr( (void*) ptr );
+}
+
+HB_FUNC( _GPPOINTFFROMSIZE )
+{
+   PointF * ptr;
+   SizeF * par_Size = ( SizeF * ) hb_parptr( 1 );
+   SizeF sz( par_Size->Width, par_Size->Height );
+   
+   ptr = new PointF( sz );
+
    hb_retptr( (void*) ptr );
 }
 
