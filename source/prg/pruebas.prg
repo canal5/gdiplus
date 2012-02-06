@@ -70,7 +70,7 @@ local oPoint
       TEST !empty(oRect2:handle )         DESCRIPTION "Metodo New( oPoint, oSize )"
       TEST oRect:Contains( 20, 20 )       DESCRIPTION "Método Contains( x, y )"
       TEST oRect:Contains2( oPoint )      DESCRIPTION "Método Contains( pt )"
-      TEST oRect:Contains3( oRect2 )       DESCRIPTION "Método Contains( rc )"
+      TEST oRect:Contains3( oRect )       DESCRIPTION "Método Contains( rc )"
       TEST oRect:GetBottom() == 10 + 200  DESCRIPTION "Método GetBottom"
       TEST oRect:GetLeft() == 10          DESCRIPTION "Método GetLeft"
       TEST oRect:GetRight() == 10 + 200   DESCRIPTION "Método GetRight"
