@@ -367,7 +367,7 @@ HB_FUNC( GPRECTFCONTAINS2 )
 
 HB_FUNC( GPRECTFCONTAINS3 )
 {
-   RectF * ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = (RectF*) hb_parptr( 1 );
    RectF rc1, *p_rc = ( RectF * ) hb_parptr( 2 );
    
    memcpy( &rc1, p_rc, sizeof( RectF ) );
@@ -462,7 +462,6 @@ HB_FUNC( GPRECTFGETHEIGHT )
 //{
 //   RectF* ptr = (RectF*) hb_parptr( 1 );
 //}
-
 
 #pragma ENDDUMP
 
