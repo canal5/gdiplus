@@ -12,6 +12,9 @@ local oFont
 local rgbColor := RGB( 100, 120, 130 )
 local g
 local oRect
+local oRect2
+local oSize
+local oPoint
 
 
 
@@ -23,6 +26,11 @@ local oRect
       oPen2  := Pen( oColor, 5 )
       oFont  := Font( "Ms Sans Serif", 12 )
       oRect  := RectF( 10, 10, 200, 200 )
+
+      PointF oPoint( 13, 22 )
+      SizeF  oSize ( 200, 300 )
+      RectF  oRect2( oPoint, oSize )
+
 
       SEPARADOR( "GRAPHICS" )
       TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
@@ -60,7 +68,10 @@ local oRect
 
       SEPARADOR( "RECTF" )
       TEST !empty(oRect:handle )          DESCRIPTION "Método New"
-      TEST oRect:Contains3( 20, 20 )      DESCRIPTION "Método Contains3( x, y )"
+      TEST !empty(oRect2:handle )         DESCRIPTION "Metodo New( oPoint, oSize )"
+      TEST oRect:Contains( 20, 20 )       DESCRIPTION "Método Contains( x, y )"
+      TEST oRect:Contains2( oPoint )      DESCRIPTION "Método Contains( pt )"
+      TEST oRect:Contains3( oRect2 )       DESCRIPTION "Método Contains( rc )"
       TEST oRect:GetBottom() == 10 + 200  DESCRIPTION "Método GetBottom"
       TEST oRect:GetLeft() == 10          DESCRIPTION "Método GetLeft"
       TEST oRect:GetRight() == 10 + 200   DESCRIPTION "Método GetRight"
@@ -83,7 +94,7 @@ local nLeft := 10
 local nWidth := 500
 local nHeight := 300
 
-RECTF oRect( nLeft, nTop, nWidth, nHeight )
+RectF oRect( nLeft, nTop, nWidth, nHeight )
 
 oRect:Inflate2( 10, 10 )
 
