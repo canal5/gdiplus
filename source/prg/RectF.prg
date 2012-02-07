@@ -5,9 +5,27 @@
 //RectF::RectF(PointF&,SizeF&)
 //RectF::RectF(REAL,REAL,REAL,REAL)
 
-function RectF( p1, p2, p3, p4 )
-
-return GPRectF():New( p1, p2, p3, p4 )
+function RectF( ... )
+   local aParams := hb_aparams()
+   local oRect
+   local nLen := Len( aParams )
+   
+   switch nLen
+      case 0
+         oRect = GPRectF():New()
+         exit
+      case 1
+         oRect = GPRectF():New( aParams[ 1 ] )
+         exit
+      case 2
+         oRect = GPRectF():New( aParams[ 1 ], aParams[ 2 ] )
+         exit
+      case 4
+         oRect = GPRectF():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
+        exit
+   endswitch
+   
+return oRect
 
 
 CLASS GPRectF
@@ -316,15 +334,15 @@ HB_FUNC( _GPRECTF )
        ptr = new RectF();
     else if( iParams == 2 )
     {
-       PointF pt1, * p_pt = ( PointF * ) hb_parptr( 1 );
-       SizeF sz1, * p_sz = ( SizeF * ) hb_parptr( 2 );    
+       PointF * p_pt = ( PointF * ) hb_parptr( 1 );
+       SizeF * p_sz = ( SizeF * ) hb_parptr( 2 );    
        
-       memcpy ( &pt1, p_pt, sizeof( PointF ) ); 
-       memcpy ( &sz1, p_sz, sizeof( SizeF ) ); 
+       PointF pt( p_pt->X, p_pt->Y ) ;
+
+       SizeF sz( p_sz->Width, p_sz->Height );
        
-       const PointF& pt = pt1;
-       const SizeF& sz = sz1;    	    
        ptr = new RectF( pt, sz );
+       
     }   
     else if( iParams == 4 )
        ptr = new RectF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd(2 ), (REAL) hb_parnd(3 ), (REAL) hb_parnd(4 ) );
@@ -356,25 +374,20 @@ HB_FUNC( GPRECTFCONTAINS )
 HB_FUNC( GPRECTFCONTAINS2 )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
-   PointF pt1, * p_pt = ( PointF * ) hb_parptr( 1 );
+   PointF * p_pt = ( PointF * ) hb_parptr( 1 );
+   PointF pt1( p_pt->X, p_pt->Y );
    
-   memcpy ( &pt1, p_pt, sizeof( PointF ) ); 
- 
-   const PointF& pt = pt1;
-   
-   hb_retl( ptr->Contains( pt ) );
+   hb_retl( ptr->Contains( pt1 ) );
 }
 
 HB_FUNC( GPRECTFCONTAINS3 )
 {
-   RectF * ptr = (RectF*) hb_parptr( 1 );
-   RectF rc1, *p_rc = ( RectF * ) hb_parptr( 2 );
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF *p_rc = ( RectF * ) hb_parptr( 2 );
    
-   memcpy( &rc1, p_rc, sizeof( RectF ) );
+   RectF rc1( p_rc->X, p_rc->Y, p_rc->Width, p_rc->Height );
    
-   const RectF& rc  = rc1;
-   
-   hb_retl( ptr->Contains( rc ) );
+   hb_retl( ptr->Contains( rc1 ) );
 }
 
 HB_FUNC( GPRECTFGETBOTTOM )
@@ -463,9 +476,4 @@ HB_FUNC( GPRECTFGETHEIGHT )
 //   RectF* ptr = (RectF*) hb_parptr( 1 );
 //}
 
-
 #pragma ENDDUMP
-
-
-
-
