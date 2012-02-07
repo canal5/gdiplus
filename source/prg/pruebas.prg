@@ -15,6 +15,7 @@ local oRect
 local oRect2
 local oSize
 local oPoint
+local oRect3
 
 
 
@@ -26,9 +27,10 @@ local oPoint
       oPen2  := Pen( oColor, 5 )
       oFont  := Font( "Ms Sans Serif", 12 )
 
-      RectF  oRect( 10, 10, 200, 200 )
+      RectF  oRect ( 10, 10, 200, 200 )
+      RectF  oRect3( 10, 10, 200, 200 )
       PointF oPoint( 13, 22 )
-      SizeF  oSize ( 50, 50 )      
+      SizeF  oSize ( 50, 50 )
       RectF oRect2( oPoint, oSize )
 
       SEPARADOR( "GRAPHICS" )
@@ -71,11 +73,15 @@ local oPoint
       TEST oRect:Contains( 20, 20 )       DESCRIPTION "Método Contains( x, y )"
       TEST oRect:Contains2( oPoint )      DESCRIPTION "Método Contains2( pt )"
       TEST oRect:Contains3( oRect )       DESCRIPTION "Método Contains3( rc )"
+      TEST oRect:Equals( oRect3 )         DESCRIPTION "Método Equals"
+      TEST TestGetBounds( )               DESCRIPTION "Método TestGetBounds"
+      TEST TestGetLocation()              DESCRIPTION "Método TestGetLocation"
       TEST oRect:GetBottom() == 10 + 200  DESCRIPTION "Método GetBottom"
       TEST oRect:GetLeft() == 10          DESCRIPTION "Método GetLeft"
       TEST oRect:GetRight() == 10 + 200   DESCRIPTION "Método GetRight"
       TEST oRect:GetTop() == 10           DESCRIPTION "Método GetTop"
-      TEST TestRectFInflate()             DESCRIPTION "Método Inflate2( X, Y )"
+      TEST TestRectFInflate()             DESCRIPTION "Método Inflate( X, Y )"
+      TEST TestRectFInflate2()            DESCRIPTION "Método Inflate2( pt )"
 
       SHOW RESULT
 
@@ -85,6 +91,49 @@ return nil
 
 
 *********************************************************************************************************************
+  function TestGetLocation()
+*********************************************************************************************************************
+local rc1, pt2
+
+local nTop     := 10
+local nLeft    := 20
+local nWidth   := 100
+local nHeight  := 200
+
+local nTop2    := 110
+local nLeft2   := 120
+
+RectF  rc1( nLeft, nTop, nWidth, nHeight )
+PointF pt2( nLeft2, nTop2 )
+
+rc1:GetLocation( pt2 )
+
+return pt2:X == nLeft .and. pt2:Y == nTop
+
+
+*********************************************************************************************************************
+  function TestGetBounds()
+*********************************************************************************************************************
+local rc1, rc2
+
+local nTop     := 10
+local nLeft    := 20
+local nWidth   := 300
+local nHeight  := 400
+
+local nTop2    := 110
+local nLeft2   := 120
+local nWidth2  := 1300
+local nHeight2 := 1400
+
+RectF rc1( nLeft, nTop, nWidth, nHeight )
+RectF rc2( nLeft2, nTop2, nWidth2, nHeight2 )
+
+rc1:GetBounds( rc2 )
+
+return rc2:GetLeft() == nLeft .and. rc2:GetTop() == nTop .and. rc2:Width() == nWidth .and. rc2:Height() == nHeight
+
+*********************************************************************************************************************
   function TestRectFInflate()
 *********************************************************************************************************************
 local oRect
@@ -92,14 +141,38 @@ local nTop  := 20
 local nLeft := 10
 local nWidth := 500
 local nHeight := 300
+local X := 10
+local Y := 20
 
 RectF oRect( nLeft, nTop, nWidth, nHeight )
 
-oRect:Inflate2( 10, 10 )
+oRect:Inflate2( X, Y )
 
-return oRect:GetLeft() == nLeft-10 .and. oRect:GetTop() == nTop-10 .and. ;
-       oRect:GetBottom() == nTop+nHeight+10 .and. oRect:GetRight() == nLeft + nWidth + 10
+return oRect:GetLeft()   == nLeft          - X .and. ;
+       oRect:GetTop()    == nTop           - Y .and. ;
+       oRect:GetBottom() == nTop  + nHeight+ Y .and. ;
+       oRect:GetRight()  == nLeft + nWidth + X
 
+*********************************************************************************************************************
+  function TestRectFInflate2()
+*********************************************************************************************************************
+local oRect, oPoint
+local nTop  := 20
+local nLeft := 10
+local nWidth := 500
+local nHeight := 300
+local X := 10
+local Y := 20
+
+RectF oRect( nLeft, nTop, nWidth, nHeight )
+PointF oPoint( X, Y )
+
+oRect:Inflate2( oPoint )
+
+return oRect:GetLeft()   == nLeft          - X .and. ;
+       oRect:GetTop()    == nTop           - Y .and. ;
+       oRect:GetBottom() == nTop  + nHeight+ Y .and. ;
+       oRect:GetRight()  == nLeft + nWidth + X
 
 
 

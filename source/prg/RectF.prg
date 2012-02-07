@@ -1,4 +1,5 @@
 #include "fivewin.ch"
+#include "gdip.ch"
 
 //Constructor
 //RectF::RectF()
@@ -9,7 +10,7 @@ function RectF( ... )
    local aParams := hb_aparams()
    local oRect
    local nLen := Len( aParams )
-   
+
    switch nLen
       case 0
          oRect = GPRectF():New()
@@ -24,7 +25,7 @@ function RectF( ... )
          oRect = GPRectF():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
         exit
    endswitch
-   
+
 return oRect
 
 
@@ -37,21 +38,21 @@ CLASS GPRectF
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-  METHOD X()         SETGET
-  METHOD Y()         SETGET
-  METHOD Width()     SETGET
-  METHOD Height()    SETGET
+  METHOD X()
+  METHOD Y()
+  METHOD Width()
+  METHOD Height()
 
 
   METHOD Clone()     HIDDEN
   METHOD Contains(x,y)
   METHOD Contains2(pt)
   METHOD Contains3(rc)
-  METHOD Equals()
+  METHOD Equals(rc)
   METHOD GetBottom()
-  METHOD GetBounds()
+  METHOD GetBounds(rc)
   METHOD GetLeft()
-  METHOD GetLocation()
+  METHOD GetLocation(pt)
   METHOD GetRight()
   METHOD GetSize()
   METHOD GetTop()
@@ -118,10 +119,10 @@ return GPRectFContains2( ::handle, pt:handle )
 return GPRectFContains3( ::handle, rc:handle )
 
 *********************************************************************************************************
-  METHOD Equals() CLASS GPRectF
+  METHOD Equals(rc) CLASS GPRectF
 *********************************************************************************************************
 
-return 0
+return GPRectFEquals(::handle,rc:handle)
 
 *********************************************************************************************************
   METHOD GetBottom() CLASS GPRectF
@@ -130,10 +131,10 @@ return 0
 return GPRectFGetBottom(::handle)
 
 *********************************************************************************************************
-  METHOD GetBounds() CLASS GPRectF
+  METHOD GetBounds(rc) CLASS GPRectF
 *********************************************************************************************************
 
-return 0
+return GPRectFGetBounds( ::handle, rc:handle )
 
 *********************************************************************************************************
   METHOD GetLeft() CLASS GPRectF
@@ -142,10 +143,10 @@ return 0
 return GPRectFGetLeft(::handle)
 
 *********************************************************************************************************
-  METHOD GetLocation() CLASS GPRectF
+  METHOD GetLocation(pt) CLASS GPRectF
 *********************************************************************************************************
 
-return 0 //GPRectFGetLocation(::handle)
+return GPRectFGetLocation(::handle, pt:handle)
 
 *********************************************************************************************************
   METHOD GetRight() CLASS GPRectF
@@ -220,36 +221,28 @@ return GPRectFOffset(::handle, X, Y)
 return 0
 
 *********************************************************************************************************
-  METHOD X( nValue ) CLASS GPRectF
+  METHOD X() CLASS GPRectF
 *********************************************************************************************************
 
-if pcount() > 0
-   GPRectFSetX(::handle, nValue )
-endif
-
-return ::GetLeft()
+return GPRectFX(::handle)
 
 *********************************************************************************************************
-  METHOD Y( nValue ) CLASS GPRectF
+  METHOD Y() CLASS GPRectF
 *********************************************************************************************************
 
-if pcount() > 0
-   GPRectFSetY(::handle, nValue )
-endif
-
-return ::GetTop()
+return GPRectFY(::handle)
 
 *********************************************************************************************************
-  METHOD Width( nValue ) CLASS GPRectF
+  METHOD Width() CLASS GPRectF
 *********************************************************************************************************
 
-return GPRectFGetWidth(::handle)
+return GPRectFWidth(::handle)
 
 *********************************************************************************************************
-  METHOD Height( nValue ) CLASS GPRectF
+  METHOD Height() CLASS GPRectF
 *********************************************************************************************************
 
-return GPRectFGetHeight(::handle)
+return GPRectFHeight(::handle)
 
 
 
@@ -321,6 +314,7 @@ return GPRectFGetHeight(::handle)
 #pragma BEGINDUMP
 #include "windows.h"
 #include "hbapi.h"
+#include <hbapiitm.h>
 #include <gdiplus.h>
 
 using namespace Gdiplus;
@@ -335,15 +329,15 @@ HB_FUNC( _GPRECTF )
     else if( iParams == 2 )
     {
        PointF * p_pt = ( PointF * ) hb_parptr( 1 );
-       SizeF * p_sz = ( SizeF * ) hb_parptr( 2 );    
-       
+       SizeF * p_sz = ( SizeF * ) hb_parptr( 2 );
+
        PointF pt( p_pt->X, p_pt->Y ) ;
 
        SizeF sz( p_sz->Width, p_sz->Height );
-       
+
        ptr = new RectF( pt, sz );
-       
-    }   
+
+    }
     else if( iParams == 4 )
        ptr = new RectF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd(2 ), (REAL) hb_parnd(3 ), (REAL) hb_parnd(4 ) );
 
@@ -357,7 +351,6 @@ HB_FUNC( DELETERECTF )
    delete (RectF*) ptr;
    hb_ret();
 }
-
 
 HB_FUNC( GPRECTFCLONE )
 {
@@ -376,7 +369,7 @@ HB_FUNC( GPRECTFCONTAINS2 )
    RectF* ptr = (RectF*) hb_parptr( 1 );
    PointF * p_pt = ( PointF * ) hb_parptr( 1 );
    PointF pt1( p_pt->X, p_pt->Y );
-   
+
    hb_retl( ptr->Contains( pt1 ) );
 }
 
@@ -384,10 +377,20 @@ HB_FUNC( GPRECTFCONTAINS3 )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
    RectF *p_rc = ( RectF * ) hb_parptr( 2 );
-   
+
    RectF rc1( p_rc->X, p_rc->Y, p_rc->Width, p_rc->Height );
-   
+
    hb_retl( ptr->Contains( rc1 ) );
+}
+
+HB_FUNC( GPRECTFEQUALS )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF *p_rc = ( RectF * ) hb_parptr( 2 );
+
+   RectF rc1( p_rc->X, p_rc->Y, p_rc->Width, p_rc->Height );
+
+   hb_retl(ptr->Equals(rc1));
 }
 
 HB_FUNC( GPRECTFGETBOTTOM )
@@ -396,11 +399,28 @@ HB_FUNC( GPRECTFGETBOTTOM )
    hb_retni(ptr->GetBottom());
 }
 
+HB_FUNC( GPRECTFGETBOUNDS )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF *p_rc = ( RectF * ) hb_parptr( 2 );
+   ptr->GetBounds( p_rc );
+   hb_ret();
+}
+
 HB_FUNC( GPRECTFGETLEFT )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
    hb_retni(ptr->GetLeft());
 }
+
+HB_FUNC( GPRECTFGETLOCATION )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   PointF *p_pt = ( PointF * ) hb_parptr( 2 );
+   ptr->GetLocation( p_pt );
+   hb_ret();
+}
+
 
 HB_FUNC( GPRECTFGETRIGHT )
 {
@@ -417,7 +437,8 @@ HB_FUNC( GPRECTFGETTOP )
 HB_FUNC( GPRECTFINFLATE )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
-   //ptr->Inflate( (REAL)hb_parnd(2), (REAL)hb_parnd(3) );
+   ptr->Inflate( (REAL)hb_parnd(2), (REAL)hb_parnd(3) );
+
    hb_ret();
 }
 
@@ -425,7 +446,9 @@ HB_FUNC( GPRECTFINFLATE )
 HB_FUNC( GPRECTFINFLATE2 )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
-   ptr->Inflate( (REAL)hb_parnd(2), (REAL)hb_parnd(3) );
+   PointF * p_pt = ( PointF * ) hb_parptr( 1 );
+   PointF pt1( p_pt->X, p_pt->Y );
+   ptr->Inflate( pt1 );
    hb_ret();
 }
 
@@ -457,13 +480,25 @@ HB_FUNC( GPRECTFSETY )
    hb_ret();
 }
 
-HB_FUNC( GPRECTFGETWIDTH )
+HB_FUNC( GPRECTFX )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   hb_retni( (int) ptr->X );
+}
+
+HB_FUNC( GPRECTFY )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   hb_retni( (int) ptr->Y );
+}
+
+HB_FUNC( GPRECTFWIDTH )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
    hb_retni( (int) ptr->Width );
 }
 
-HB_FUNC( GPRECTFGETHEIGHT )
+HB_FUNC( GPRECTFHEIGHT )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
    hb_retni( (int) ptr->Height );

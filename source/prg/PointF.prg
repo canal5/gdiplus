@@ -6,7 +6,7 @@ function PointF( ... )
    local aParams := hb_aparams()
    local oObj
    local nLen := Len( aParams )
-   
+
    switch nLen
       case 0
          oObj = GPPointF():New()
@@ -18,7 +18,7 @@ function PointF( ... )
          oObj = GPPointF():New( aParams[ 1 ], aParams[ 2 ] )
          exit
    endswitch
-   
+
 return oObj
 
 
@@ -30,6 +30,9 @@ CLASS GPPointF
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
+
+  METHOD X( nValue ) SETGET
+  METHOD Y( nValue ) SETGET
 
 //Constructor
 //PointF::PointF()
@@ -54,14 +57,14 @@ local iParams := PCount()
   switch( iParams )
      case 0
         ::handle := _GPPointF()
-        exit 
+        exit
      case 1
         if p1:IsKindOf( "GPPOINTF" )
            ::handle := _GPPointFFromPoint( p1 )
         elseif p1:IsKindOf( "GPSIZEF" )
            ::handle := _GPPointFFromSize( p1 )
-        endif 
-        exit 
+        endif
+        exit
      case 2
         ::handle := _GPPointF( p1, p2 )
   endswitch
@@ -75,6 +78,29 @@ return self
   ::handle := nil
 
 return nil
+
+*********************************************************************************************************
+  METHOD X( nValue ) CLASS GPPointF
+*********************************************************************************************************
+
+if pcount() > 0
+   return GPPointFX(::handle, nValue)
+endif
+
+return GPPointFX(::handle)
+
+
+*********************************************************************************************************
+  METHOD Y( nValue ) CLASS GPPointF
+*********************************************************************************************************
+
+if pcount() > 0
+   return GPPointFY(::handle, nValue)
+endif
+
+return GPPointFY(::handle)
+
+
 
 //*********************************************************************************************************
 //  METHOD () CLASS GPPointF
@@ -118,8 +144,9 @@ HB_FUNC( _GPPOINTF )
 
    if( iParams == 0 )
        ptr = new PointF();
+
    else if (iParams == 2 )
-       ptr = new PointF( (REAL) hb_parnd( 1 ), (REAL)hb_parnd( 2 ) );
+       ptr = new PointF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd( 2 ) );
 
    hb_retptr( (void*) ptr );
 }
@@ -129,7 +156,7 @@ HB_FUNC( _GPPOINTFFROMPOINT )
    PointF * ptr;
    PointF * par_Point = ( PointF * ) hb_parptr( 1 );
    PointF pf( par_Point->X, par_Point->Y );
-   
+
    ptr = new PointF( pf );
 
    hb_retptr( (void*) ptr );
@@ -140,11 +167,39 @@ HB_FUNC( _GPPOINTFFROMSIZE )
    PointF * ptr;
    SizeF * par_Size = ( SizeF * ) hb_parptr( 1 );
    SizeF sz( par_Size->Width, par_Size->Height );
-   
+
    ptr = new PointF( sz );
 
    hb_retptr( (void*) ptr );
 }
+
+HB_FUNC( GPPOINTFX )
+{
+   PointF * ptr = ( PointF * ) hb_parptr( 1 );
+
+   if( hb_pcount() > 1 )
+   {
+      ptr->X = (REAL) hb_parnd( 2 );
+   }
+
+   hb_retni( ptr->X );
+}
+
+HB_FUNC( GPPOINTFY )
+{
+   PointF * ptr = ( PointF * ) hb_parptr( 1 );
+
+   if( hb_pcount() > 1 )
+   {
+      ptr->Y = (REAL) hb_parnd( 2 );
+   }
+
+   hb_retni( ptr->Y );
+}
+
+
+
+
 
 HB_FUNC( DELETEPOINTF )
 {
