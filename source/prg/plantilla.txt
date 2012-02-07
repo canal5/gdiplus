@@ -1,5 +1,12 @@
 #include "fivewin.ch"
 
+//
+// GDIPLUS Plantilla de clases
+// Francisco García Fernández
+// Daniel García Gil
+// Marzo 2012
+// CopyRight Todos los Derechos Reservados Francisco García Fernández y Daniel García Gil 2012
+//
 
 function %%%%()
 
