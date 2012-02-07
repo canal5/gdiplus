@@ -70,7 +70,7 @@ local oRect3
       SEPARADOR( "RECTF" )
       TEST !empty(oRect:handle )          DESCRIPTION "Método New"
       TEST !empty(oRect2:handle )         DESCRIPTION "Metodo New( oPoint, oSize )"
-      TEST oRect:Contains( 20, 20 )       DESCRIPTION "Método Contains( x, y )"
+      TEST oRect:Contains( 20, 20 )       DESCRIPTION "Método Contains( X, Y )"
       TEST oRect:Contains2( oPoint )      DESCRIPTION "Método Contains2( pt )"
       TEST oRect:Contains3( oRect )       DESCRIPTION "Método Contains3( rc )"
       TEST oRect:Equals( oRect3 )         DESCRIPTION "Método Equals"
@@ -82,12 +82,183 @@ local oRect3
       TEST oRect:GetTop() == 10           DESCRIPTION "Método GetTop"
       TEST TestRectFInflate()             DESCRIPTION "Método Inflate( X, Y )"
       TEST TestRectFInflate2()            DESCRIPTION "Método Inflate2( pt )"
+      TEST TestRectFIntersect()           DESCRIPTION "Método Intersect( rc )"
+      TEST TestRectFIntersect2()          DESCRIPTION "Método Intersect( rc1,rc2,rc3 )"
+      TEST TestRectFIntersectsWith()      DESCRIPTION "Método IntersectsWith( rc )"
+      TEST TestRectFIsEmptyArea()         DESCRIPTION "Método IsEmptyArea()"
+      TEST TestRectFOffset()              DESCRIPTION "Método Offset( X, Y )"
+      TEST TestRectFOffset2()             DESCRIPTION "Método Offset(pt)"
+      TEST TestRectFUnion()               DESCRIPTION "Método Union(rc1,rc2,rc3)"
 
       SHOW RESULT
 
    ENDDEFINE
 
 return nil
+
+
+*********************************************************************************************************************
+  function TestRectFUnion()
+*********************************************************************************************************************
+local r1, r2, r3
+
+RectF r1( 0, 0, 0, 0 )
+RectF r2( 100, 100, 100, 100 )
+RectF r3( 150, 150, 100, 100 )
+
+// r1:x = 100
+// r1:y = 100
+// r1:Width = 150
+// r1:Height = 150
+
+r1:Union( r1, r2, r3 )
+
+return r1:X      == 100 .and.;
+       r1:y      == 100 .and.;
+       r1:Width  == 150 .and.;
+       r1:Height == 150
+
+*********************************************************************************************************************
+  function TestRectFOffset2()
+*********************************************************************************************************************
+local r1, pt
+local nTop  := 20
+local nLeft := 10
+local nWidth := 100
+local nHeight := 200
+local x := 5
+local y := 10
+
+
+RectF  r1( nLeft, nTop, nWidth, nHeight )
+PointF pt( x, y )
+
+r1:Offset2( pt )
+
+return r1:GetLeft() == nLeft + x .and.;
+       r1:GetTop() == nTop + y   .and.;
+       r1:GetRight() == nLeft + nWidth + x .and.;
+       r1:GetBottom() == nTop + nHeight + y
+
+*********************************************************************************************************************
+  function TestRectFOffset()
+*********************************************************************************************************************
+
+local r1, pt
+local nTop  := 20
+local nLeft := 10
+local nWidth := 100
+local nHeight := 200
+local x := 5
+local y := 10
+
+
+RectF  r1( nLeft, nTop, nWidth, nHeight )
+
+r1:Offset( x, y )
+
+return r1:GetLeft() == nLeft + x .and.;
+       r1:GetTop() == nTop + y   .and.;
+       r1:GetRight() == nLeft + nWidth + x .and.;
+       r1:GetBottom() == nTop + nHeight + y
+
+
+*********************************************************************************************************************
+  function TestRectFIsEmptyArea()
+*********************************************************************************************************************
+local r1, r2
+
+RectF r1( 0,0,0,0 )
+RectF r2( 10,10,10,10)
+
+return r1:IsEmptyArea() .and. !r2:IsEmptyArea()
+
+*********************************************************************************************************************
+  function TestRectFIntersectsWith()
+*********************************************************************************************************************
+local r1, r2, r3
+
+RectF r1( 10, 10, 100, 100 )
+RectF r2( 300, 300, 100, 100 )
+RectF r3( 310, 310, 100, 100 )
+
+return !r1:IntersectsWith( r2 ) .and. r2:IntersectsWith( r3 )
+
+*********************************************************************************************************************
+  function TestRectFIntersect2()
+*********************************************************************************************************************
+local r1, r2, r3, r4
+local lCross
+
+RectF r4( 0, 0, 0, 0 )
+RectF r1( 0, 0, 0, 0 )
+RectF r2( 300, 300, 100, 100 )
+RectF r3( 310, 320, 100, 100 )
+
+lCross := r4:Intersect2( r1, r2, r3 )
+
+return lCross .and. ;
+       r1:GetLeft()   == 310      .and. ;
+       r1:GetTop()    == 320      .and. ;
+       r1:GetRight()  == 400      .and. ;
+       r1:GetBottom() == 400
+
+*********************************************************************************************************************
+  function TestRectFIntersect()
+*********************************************************************************************************************
+local r1, r2
+
+RectF r1( 300, 300, 100, 100 )
+RectF r2( 310, 320, 100, 100 )
+
+return r1:Intersect( r2 )    .and. ;
+       r1:GetLeft()   == 310 .and. ;
+       r1:GetTop()    == 320 .and. ;
+       r1:GetRight()  == 400 .and. ;
+       r1:GetBottom() == 400
+
+********************************************************************************************************************
+  function TestRectFInflate2()
+*********************************************************************************************************************
+local oRect, oPoint
+local nTop  := 20
+local nLeft := 10
+local nWidth := 500
+local nHeight := 300
+local X := 10
+local Y := 20
+
+RectF oRect( nLeft, nTop, nWidth, nHeight )
+PointF oPoint( X, Y )
+
+oRect:Inflate2( oPoint )
+
+return oRect:GetLeft()   == nLeft          - X .and. ;
+       oRect:GetTop()    == nTop           - Y .and. ;
+       oRect:GetBottom() == nTop  + nHeight+ Y .and. ;
+       oRect:GetRight()  == nLeft + nWidth + X
+
+
+*********************************************************************************************************************
+  function TestRectFInflate()
+*********************************************************************************************************************
+local oRect
+local nTop  := 20
+local nLeft := 10
+local nWidth := 500
+local nHeight := 300
+local X := 10
+local Y := 20
+
+RectF oRect( nLeft, nTop, nWidth, nHeight )
+
+oRect:Inflate( X, Y )
+
+return oRect:GetLeft()   == nLeft          - X .and. ;
+       oRect:GetTop()    == nTop           - Y .and. ;
+       oRect:GetBottom() == nTop  + nHeight+ Y .and. ;
+       oRect:GetRight()  == nLeft + nWidth + X
+
 
 
 *********************************************************************************************************************
@@ -132,49 +303,6 @@ RectF rc2( nLeft2, nTop2, nWidth2, nHeight2 )
 rc1:GetBounds( rc2 )
 
 return rc2:GetLeft() == nLeft .and. rc2:GetTop() == nTop .and. rc2:Width() == nWidth .and. rc2:Height() == nHeight
-
-*********************************************************************************************************************
-  function TestRectFInflate()
-*********************************************************************************************************************
-local oRect
-local nTop  := 20
-local nLeft := 10
-local nWidth := 500
-local nHeight := 300
-local X := 10
-local Y := 20
-
-RectF oRect( nLeft, nTop, nWidth, nHeight )
-
-oRect:Inflate2( X, Y )
-
-return oRect:GetLeft()   == nLeft          - X .and. ;
-       oRect:GetTop()    == nTop           - Y .and. ;
-       oRect:GetBottom() == nTop  + nHeight+ Y .and. ;
-       oRect:GetRight()  == nLeft + nWidth + X
-
-*********************************************************************************************************************
-  function TestRectFInflate2()
-*********************************************************************************************************************
-local oRect, oPoint
-local nTop  := 20
-local nLeft := 10
-local nWidth := 500
-local nHeight := 300
-local X := 10
-local Y := 20
-
-RectF oRect( nLeft, nTop, nWidth, nHeight )
-PointF oPoint( X, Y )
-
-oRect:Inflate2( oPoint )
-
-return oRect:GetLeft()   == nLeft          - X .and. ;
-       oRect:GetTop()    == nTop           - Y .and. ;
-       oRect:GetBottom() == nTop  + nHeight+ Y .and. ;
-       oRect:GetRight()  == nLeft + nWidth + X
-
-
 
 *********************************************************************************************************************
   function TestConstructorDestructorGraphics()

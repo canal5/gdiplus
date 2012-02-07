@@ -56,10 +56,10 @@ CLASS GPRectF
   METHOD GetRight()
   METHOD GetSize()
   METHOD GetTop()
-  METHOD Inflate()
-  METHOD Inflate2( x, y )
-  METHOD Intersect()
-  METHOD Intersect2()
+  METHOD Inflate(x,y)
+  METHOD Inflate2(pt)
+  METHOD Intersect(rc)
+  METHOD Intersect2(rc1,rc2,rc3)
   METHOD IntersectsWith()
   METHOD IsEmptyArea()
   METHOD Offset()
@@ -167,34 +167,34 @@ return 0 //GPRectFGetSize(::handle)
 return GPRectFGetTop(::handle)
 
 *********************************************************************************************************
-  METHOD Inflate() CLASS GPRectF
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Inflate2( x, y ) CLASS GPRectF
+  METHOD Inflate(x,y) CLASS GPRectF
 *********************************************************************************************************
 
 return GPRectFInflate2(::handle, X, Y)
 
 *********************************************************************************************************
-  METHOD Intersect() CLASS GPRectF
+  METHOD Inflate2(pt) CLASS GPRectF
 *********************************************************************************************************
 
-return 0
+return GPRectFInflate2(::handle, pt:handle)
 
 *********************************************************************************************************
-  METHOD Intersect2() CLASS GPRectF
+  METHOD Intersect(rc) CLASS GPRectF
 *********************************************************************************************************
 
-return 0
+return GPRectFIntersect(::handle, rc:handle )
 
 *********************************************************************************************************
-  METHOD IntersectsWith() CLASS GPRectF
+  METHOD Intersect2(rc1, rc2, rc3) CLASS GPRectF
 *********************************************************************************************************
 
-return 0
+return GPRectFIntersect2(::handle, rc1:handle, rc2:handle, rc3:handle )
+
+*********************************************************************************************************
+  METHOD IntersectsWith(rc) CLASS GPRectF
+*********************************************************************************************************
+
+return GPRectFIntersectsWith(::handle, rc:handle )
 
 *********************************************************************************************************
   METHOD IsEmptyArea() CLASS GPRectF
@@ -203,22 +203,22 @@ return 0
 return GPRectFIsEmptyArea(::handle)
 
 *********************************************************************************************************
-  METHOD Offset() CLASS GPRectF
+  METHOD Offset(x,y) CLASS GPRectF
 *********************************************************************************************************
 
-return 0
+return GPRectFOffset(::handle,x,y)
 
 *********************************************************************************************************
-  METHOD Offset2() CLASS GPRectF
+  METHOD Offset2(pt) CLASS GPRectF
 *********************************************************************************************************
 
-return GPRectFOffset(::handle, X, Y)
+return GPRectFOffset2(::handle, pt:handle)
 
 *********************************************************************************************************
-  METHOD Union() CLASS GPRectF
+  METHOD Union(rc1,rc2,rc3) CLASS GPRectF
 *********************************************************************************************************
 
-return 0
+return GPRectFUnion(::handle, rc1:handle, rc2:handle, rc3:handle )
 
 *********************************************************************************************************
   METHOD X() CLASS GPRectF
@@ -344,14 +344,6 @@ HB_FUNC( _GPRECTF )
     hb_retptr( (void*) ptr );
 }
 
-
-HB_FUNC( DELETERECTF )
-{
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   delete (RectF*) ptr;
-   hb_ret();
-}
-
 HB_FUNC( GPRECTFCLONE )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
@@ -421,7 +413,6 @@ HB_FUNC( GPRECTFGETLOCATION )
    hb_ret();
 }
 
-
 HB_FUNC( GPRECTFGETRIGHT )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
@@ -442,7 +433,6 @@ HB_FUNC( GPRECTFINFLATE )
    hb_ret();
 }
 
-
 HB_FUNC( GPRECTFINFLATE2 )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
@@ -452,16 +442,70 @@ HB_FUNC( GPRECTFINFLATE2 )
    hb_ret();
 }
 
+HB_FUNC( GPRECTFINTERSECT )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF *p_rc = ( RectF * ) hb_parptr( 2 );
+
+   RectF rc1( p_rc->X, p_rc->Y, p_rc->Width, p_rc->Height );
+
+   hb_retl( ptr->Intersect( rc1 ));
+}
+
+HB_FUNC( GPRECTFINTERSECT2 )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF *p_rc1 = ( RectF * ) hb_parptr( 2 );
+   RectF *p_rc2 = ( RectF * ) hb_parptr( 3 );
+   RectF *p_rc3 = ( RectF * ) hb_parptr( 4 );
+   BOOL l = FALSE;
+
+   RectF rc1( p_rc1->X, p_rc1->Y, p_rc1->Width, p_rc1->Height );
+   RectF rc2( p_rc2->X, p_rc2->Y, p_rc2->Width, p_rc2->Height );
+   RectF rc3( p_rc3->X, p_rc3->Y, p_rc3->Width, p_rc3->Height );
+   l = ptr->Intersect( rc1, rc2, rc3 );
+
+   p_rc1->X = rc1.X;
+   p_rc1->Y = rc1.Y;
+   p_rc1->Width = rc1.Width;
+   p_rc1->Height = rc1.Height;
+
+   hb_retl(l);
+}
+
+HB_FUNC( GPRECTFINTERSECTSWITH )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF *p_rc1 = ( RectF * ) hb_parptr( 2 );
+
+   RectF rc1( p_rc1->X, p_rc1->Y, p_rc1->Width, p_rc1->Height );
+
+   hb_retl(ptr->IntersectsWith( rc1 ));
+}
+
 HB_FUNC( GPRECTFISEMPTYAREA )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
-   hb_retl( ptr->IsEmptyArea());
+   hb_retl(ptr->IsEmptyArea());
 }
+
 
 HB_FUNC( GPRECTFOFFSET )
 {
    RectF* ptr = (RectF*) hb_parptr( 1 );
    ptr->Offset( (REAL)hb_parnd(2), (REAL)hb_parnd(3) );
+   hb_ret();
+}
+
+HB_FUNC( GPRECTFOFFSET2 )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   PointF *p_pt = ( PointF * ) hb_parptr( 2 );
+
+   PointF pt1( p_pt->X, p_pt->Y );
+
+   ptr->Offset( pt1 );
+
    hb_ret();
 }
 
@@ -504,11 +548,26 @@ HB_FUNC( GPRECTFHEIGHT )
    hb_retni( (int) ptr->Height );
 }
 
+HB_FUNC( GPRECTFUNION )
+{
+   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF *p_rc1 = ( RectF * ) hb_parptr( 2 );
+   RectF *p_rc2 = ( RectF * ) hb_parptr( 3 );
+   RectF *p_rc3 = ( RectF * ) hb_parptr( 4 );
+   BOOL l = FALSE;
 
+   RectF rc1( p_rc1->X, p_rc1->Y, p_rc1->Width, p_rc1->Height );
+   RectF rc2( p_rc2->X, p_rc2->Y, p_rc2->Width, p_rc2->Height );
+   RectF rc3( p_rc3->X, p_rc3->Y, p_rc3->Width, p_rc3->Height );
 
-//HB_FUNC( GPRECTF... )
-//{
-//   RectF* ptr = (RectF*) hb_parptr( 1 );
-//}
+   l = ptr->Union( rc1, rc2, rc3 );
+
+   p_rc1->X = rc1.X;
+   p_rc1->Y = rc1.Y;
+   p_rc1->Width = rc1.Width;
+   p_rc1->Height = rc1.Height;
+
+   hb_retl(l);
+}
 
 #pragma ENDDUMP

@@ -174,7 +174,7 @@ DEFINE WINDOW oWnd FROM 1, 1 TO 700, 900 PIXEL TITLE cTitle
 
    oWnd:oClient := oLbx
 
-   ACTIVATE WINDOW oWnd ON INIT WndCenter(oWnd:hWnd)
+   ACTIVATE WINDOW oWnd MAXIMIZED
 
    AEval( aHBitmaps, { | hBmp | DeleteObject( hBmp ) } )
 
