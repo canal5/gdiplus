@@ -64,11 +64,11 @@ return nil
   SizeF  oSize2( 10, 90 )
 
   SEPARADOR( "SIZEF" )
-   
-  oSize3 = oSize1 + oSize2  
-   
-  ? "Width", GPSIZEFWIDTH( oSize3:handle ) 
-   
+
+  oSize3 = oSize1 + oSize2
+
+  ? "Width", GPSIZEFWIDTH( oSize3:handle )
+
   TEST !Empty( oSize3:handle )  DESCRIPTION "Operador +"
 
 return 0
@@ -116,6 +116,7 @@ return 0
 *********************************************************************************************************************
 
   local oColor
+
 
   Color oColor( 255, 10, 20, 30 )
 
