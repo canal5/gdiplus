@@ -44,51 +44,10 @@ local oRect3
       TEST oPen:SetAlignment( PenAlignment.Center ) == oPen:GetAlignment() ;
                                                              DESCRIPTION "SetAlignment, GetAlignMent"
 
-      SEPARADOR( "COLOR" )
-      // Color
-      TEST !Empty( oColor:handle )                           DESCRIPTION "Creación objeto GPColor"
-      TEST oColor:GetA() == 255                              DESCRIPTION "Obtener componente Alpha"
-      TEST oColor:GetAlpha() == 255                          DESCRIPTION "Obtener componente Alpha"
-      TEST oColor:GetR() == 10                               DESCRIPTION "Obtener componente Red"
-      TEST oColor:GetRed() == 10                             DESCRIPTION "Obtener componente Red"
-      TEST oColor:GetG() == 20                               DESCRIPTION "Obtener componente Green"
-      TEST oColor:GetGreen() == 20                           DESCRIPTION "Obtener componente Green"
-      TEST oColor:GetB() == 30                               DESCRIPTION "Obtener componente Blue"
-      TEST oColor:GetBlue() == 30                            DESCRIPTION "Obtener componente Blue"
-      TEST oColor:GetValue() == MakeARGB( 255, 10, 20, 30 )  DESCRIPTION "Metodo GetValue obtenemos el color ARGB"
-      TEST TestSetFromCOLORREF()                             DESCRIPTION "Test SetFromCOLORREF"
-      TEST TestSetValue()                                    DESCRIPTION "Test SetValue"
-      TEST TestToCOLORREF()                                  DESCRIPTION "Test ToCOLORREF"
-
-
-      SEPARADOR( "BRUSH" )
-      TEST !Empty( oBrush:handle )  DESCRIPTION "Creación objeto GPSolidBrush"
-
-      SEPARADOR( "FONT" )
-      TEST !Empty( oFont:handle  )  DESCRIPTION "Creación objeto GPFont"
-
-      SEPARADOR( "RECTF" )
-      TEST !empty(oRect:handle )          DESCRIPTION "Método New"
-      TEST !empty(oRect2:handle )         DESCRIPTION "Metodo New( oPoint, oSize )"
-      TEST oRect:Contains( 20, 20 )       DESCRIPTION "Método Contains( X, Y )"
-      TEST oRect:Contains2( oPoint )      DESCRIPTION "Método Contains2( pt )"
-      TEST oRect:Contains3( oRect )       DESCRIPTION "Método Contains3( rc )"
-      TEST oRect:Equals( oRect3 )         DESCRIPTION "Método Equals"
-      TEST TestGetBounds( )               DESCRIPTION "Método TestGetBounds"
-      TEST TestGetLocation()              DESCRIPTION "Método TestGetLocation"
-      TEST oRect:GetBottom() == 10 + 200  DESCRIPTION "Método GetBottom"
-      TEST oRect:GetLeft() == 10          DESCRIPTION "Método GetLeft"
-      TEST oRect:GetRight() == 10 + 200   DESCRIPTION "Método GetRight"
-      TEST oRect:GetTop() == 10           DESCRIPTION "Método GetTop"
-      TEST TestRectFInflate()             DESCRIPTION "Método Inflate( X, Y )"
-      TEST TestRectFInflate2()            DESCRIPTION "Método Inflate2( pt )"
-      TEST TestRectFIntersect()           DESCRIPTION "Método Intersect( rc )"
-      TEST TestRectFIntersect2()          DESCRIPTION "Método Intersect( rc1,rc2,rc3 )"
-      TEST TestRectFIntersectsWith()      DESCRIPTION "Método IntersectsWith( rc )"
-      TEST TestRectFIsEmptyArea()         DESCRIPTION "Método IsEmptyArea()"
-      TEST TestRectFOffset()              DESCRIPTION "Método Offset( X, Y )"
-      TEST TestRectFOffset2()             DESCRIPTION "Método Offset(pt)"
-      TEST TestRectFUnion()               DESCRIPTION "Método Union(rc1,rc2,rc3)"
+      TestsColor()
+      TestsBrush()
+      TestsFont()
+      TestsRectF()
 
       SHOW RESULT
 
@@ -96,6 +55,95 @@ local oRect3
 
 return nil
 
+*****************************************************************************************
+  function TestsRectF()
+*****************************************************************************************
+
+  local oRect, oRect2, oRect3, oPoint
+
+  RectF  oRect ( 10, 10, 200, 200 )
+  RectF oRect2 ( oPoint, oSize    )
+  RectF  oRect3( 10, 10, 200, 200 )
+  PointF oPoint( 13, 22 )
+
+  SEPARADOR( "RECTF" )
+
+  TEST !empty(oRect:handle )          DESCRIPTION "Método New"
+  TEST !empty(oRect2:handle )         DESCRIPTION "Metodo New( oPoint, oSize )"
+  TEST oRect:Contains( 20, 20 )       DESCRIPTION "Método Contains( X, Y )"
+  TEST oRect:Contains2( oPoint )      DESCRIPTION "Método Contains2( pt )"
+  TEST oRect:Contains3( oRect )       DESCRIPTION "Método Contains3( rc )"
+  TEST oRect:Equals( oRect3 )         DESCRIPTION "Método Equals"
+  TEST TestGetBounds( )               DESCRIPTION "Método TestGetBounds"
+  TEST TestGetLocation()              DESCRIPTION "Método TestGetLocation"
+  TEST oRect:GetBottom() == 10 + 200  DESCRIPTION "Método GetBottom"
+  TEST oRect:GetLeft() == 10          DESCRIPTION "Método GetLeft"
+  TEST oRect:GetRight() == 10 + 200   DESCRIPTION "Método GetRight"
+  TEST oRect:GetTop() == 10           DESCRIPTION "Método GetTop"
+  TEST TestRectFInflate()             DESCRIPTION "Método Inflate( X, Y )"
+  TEST TestRectFInflate2()            DESCRIPTION "Método Inflate2( pt )"
+  TEST TestRectFIntersect()           DESCRIPTION "Método Intersect( rc )"
+  TEST TestRectFIntersect2()          DESCRIPTION "Método Intersect( rc1,rc2,rc3 )"
+  TEST TestRectFIntersectsWith()      DESCRIPTION "Método IntersectsWith( rc )"
+  TEST TestRectFIsEmptyArea()         DESCRIPTION "Método IsEmptyArea()"
+  TEST TestRectFOffset()              DESCRIPTION "Método Offset( X, Y )"
+  TEST TestRectFOffset2()             DESCRIPTION "Método Offset(pt)"
+  TEST TestRectFUnion()               DESCRIPTION "Método Union(rc1,rc2,rc3)"
+
+return 0
+
+*********************************************************************************************************************
+  function TestsColor()
+*********************************************************************************************************************
+
+  local oColor
+
+  Color Color( 255, 10, 20, 30 )
+
+  SEPARADOR( "COLOR" )
+  // Color
+  TEST !Empty( oColor:handle )                           DESCRIPTION "Creación objeto GPColor"
+  TEST oColor:GetA() == 255                              DESCRIPTION "Obtener componente Alpha"
+  TEST oColor:GetAlpha() == 255                          DESCRIPTION "Obtener componente Alpha"
+  TEST oColor:GetR() == 10                               DESCRIPTION "Obtener componente Red"
+  TEST oColor:GetRed() == 10                             DESCRIPTION "Obtener componente Red"
+  TEST oColor:GetG() == 20                               DESCRIPTION "Obtener componente Green"
+  TEST oColor:GetGreen() == 20                           DESCRIPTION "Obtener componente Green"
+  TEST oColor:GetB() == 30                               DESCRIPTION "Obtener componente Blue"
+  TEST oColor:GetBlue() == 30                            DESCRIPTION "Obtener componente Blue"
+  TEST oColor:GetValue() == MakeARGB( 255, 10, 20, 30 )  DESCRIPTION "Metodo GetValue obtenemos el color ARGB"
+  TEST TestSetFromCOLORREF()                             DESCRIPTION "Test SetFromCOLORREF"
+  TEST TestSetValue()                                    DESCRIPTION "Test SetValue"
+  TEST TestToCOLORREF()                                  DESCRIPTION "Test ToCOLORREF"
+
+return 0
+
+*********************************************************************************************************************
+  function TestsBrush()
+*********************************************************************************************************************
+
+  local oColor, oBrush
+
+  oColor := Color( 255, 10, 20, 30 )
+  oBrush := SolidBrush( oColor )
+
+  SEPARADOR( "BRUSH" )
+  TEST !Empty( oBrush:handle )  DESCRIPTION "Creación objeto GPSolidBrush"
+
+return 0
+
+*********************************************************************************************************************
+  function TestsFont()
+*********************************************************************************************************************
+
+  local oFont
+
+      oFont  := Font( "Ms Sans Serif", 12 )
+
+      SEPARADOR( "FONT" )
+      TEST !Empty( oFont:handle  )  DESCRIPTION "Creación objeto GPFont"
+
+return 0
 
 *********************************************************************************************************************
   function TestRectFUnion()

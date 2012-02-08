@@ -6,7 +6,7 @@ function SizeF( ... )
    local aParams := hb_aparams()
    local oObj
    local nLen := Len( aParams )
-   
+
    switch nLen
       case 0
          oObj = GPSizeF():New()
@@ -18,7 +18,7 @@ function SizeF( ... )
          oObj = GPSizeF():New( aParams[ 1 ], aParams[ 2 ] )
          exit
    endswitch
-   
+
 return oObj
 
 CLASS GPSizeF
@@ -39,6 +39,9 @@ CLASS GPSizeF
 
   METHOD Empty()
   METHOD Equals()
+  METHOD Substract OPERATOR "-"
+  METHOD Add       OPERATOR "+"
+
 //operator-(SizeF&)
 //operator+(SizeF&)
 
@@ -52,17 +55,17 @@ ENDCLASS
 
 local iParams := PCount()
 
-   
-  switch( iParams ) 
+
+  switch( iParams )
      case 0
         ::handle := _GPSizeF()
         exit
      case 1
         ::handle := _GPSizeF( p1 )
-        exit            
+        exit
      case 2
         ::handle := _GPSizeF( p1, p2 )
-        exit 
+        exit
   endswitch
 
 return self
@@ -79,13 +82,25 @@ return nil
   METHOD Empty() CLASS GPSizeF
 *********************************************************************************************************
 
-return 0
+return GPSizeFEmpty(::handle)
 
 *********************************************************************************************************
-  METHOD Equals() CLASS GPSizeF
+  METHOD Equals( sz ) CLASS GPSizeF
 *********************************************************************************************************
 
-return 0
+return GPSizeFEquals(::handle, sz:handle )
+
+*********************************************************************************************************
+  METHOD Substract( sz ) CLASS GPSizeF
+*********************************************************************************************************
+
+return GPSizeFSubstract( ::handle, sz:handle )
+
+*********************************************************************************************************
+  METHOD Add( sz ) CLASS GPSizeF
+*********************************************************************************************************
+
+return GPSizeFAdd( ::handle, sz:handle )
 
 
 
@@ -119,10 +134,6 @@ return 0
 //Width           REAL    Horizontal measurement of the SizeF object.
 
 
-
-
-
-
 #pragma BEGINDUMP
 #include "windows.h"
 #include "hbapi.h"
@@ -134,33 +145,60 @@ HB_FUNC( _GPSIZEF )
 {
    SizeF* ptr;
    int iParams = hb_pcount();
-   
+
    switch( iParams )
    {
-      case 0:   
+      case 0:
          ptr = new SizeF();
          break;
       case 1:
          {
            SizeF * par_Size = ( SizeF * ) hb_parptr( 1 );
-           SizeF sz( par_Size->Width, par_Size->Height );         
-           ptr = new SizeF( sz );         
+           SizeF sz( par_Size->Width, par_Size->Height );
+           ptr = new SizeF( sz );
          }
          break;
       case 2:
          ptr = new SizeF( ( REAL ) hb_parnd( 1 ), ( REAL ) hb_parnd( 2 ) );
          break;
    }
-   
+
    hb_retptr( (void*) ptr );
 }
 
-HB_FUNC( DELETESIZEF )
+HB_FUNC( GPSIZEFEMPTY )
 {
-   //SizeF* clr = (SizeF*) hb_parptr( 1 );
-   //delete (SizeF*) clr;
-   //hb_ret();
+   SizeF* ptr = (SizeF*) hb_parptr( 1 );
+   hb_retl( ptr->Empty() );
 }
+
+HB_FUNC( GPSIZEFEQUALS )
+{
+   SizeF* ptr = (SizeF*) hb_parptr( 1 );
+   SizeF *p_sz1 = ( SizeF * ) hb_parptr( 2 );
+
+   SizeF sz1( p_sz1->Width, p_sz1->Height );
+   hb_retl(ptr->Equals( sz1 ));
+}
+
+HB_FUNC( GPSIZEFSUBSTRACT )
+{
+   SizeF* ptr = new SizeF();
+   SizeF* ptr1 = (SizeF*) hb_parptr( 1 );
+   SizeF* ptr2 = (SizeF*) hb_parptr( 2 );
+   ptr = ptr1 - ptr2;
+   hb_retptr( (void*) ptr );
+}
+
+HB_FUNC( GPSIZEFADD )
+{
+   SizeF* ptr = new SizeF();
+   SizeF* ptr1 = (SizeF*) hb_parptr( 1 );
+   SizeF* ptr2 = (SizeF*) hb_parptr( 2 );
+   ptr = ptr1 + ptr2;
+   hb_retptr( (void*) ptr );
+}
+
 
 //HB_FUNC( GPSIZEF... )
 //{
