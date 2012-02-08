@@ -43,12 +43,11 @@ local oRect3
       TEST !empty( Pen( oColor, 5 ):handle )                 DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
       TEST oPen:SetAlignment( PenAlignment.Center ) == oPen:GetAlignment() ;
                                                              DESCRIPTION "SetAlignment, GetAlignMent"
-
       TestsColor()
       TestsBrush()
       TestsFont()
       TestsRectF()
-
+      TestsSizeF()
       SHOW RESULT
 
    ENDDEFINE
@@ -56,15 +55,35 @@ local oRect3
 return nil
 
 *****************************************************************************************
+  function TestsSizeF()
+*****************************************************************************************
+
+  local oSize1, oSize2, oSize3
+
+  SizeF  oSize1( 50, 50 )
+  SizeF  oSize2( 10, 90 )
+
+  SEPARADOR( "SIZEF" )
+   
+  oSize3 = oSize1 + oSize2  
+   
+  ? "Width", GPSIZEFWIDTH( oSize3:handle ) 
+   
+  TEST !Empty( oSize3:handle )  DESCRIPTION "Operador +"
+
+return 0
+
+*****************************************************************************************
   function TestsRectF()
 *****************************************************************************************
 
   local oRect, oRect2, oRect3, oPoint
 
+  SizeF  oSize ( 50, 50 )
+  PointF oPoint( 13, 22 )
   RectF  oRect ( 10, 10, 200, 200 )
   RectF oRect2 ( oPoint, oSize    )
   RectF  oRect3( 10, 10, 200, 200 )
-  PointF oPoint( 13, 22 )
 
   SEPARADOR( "RECTF" )
 
@@ -98,7 +117,7 @@ return 0
 
   local oColor
 
-  Color Color( 255, 10, 20, 30 )
+  Color oColor( 255, 10, 20, 30 )
 
   SEPARADOR( "COLOR" )
   // Color

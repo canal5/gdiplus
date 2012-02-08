@@ -24,10 +24,27 @@
 
 */
 
+function Color( ... )
+   local aParams := hb_aparams()
+   local oColor
+   local nLen := Len( aParams )
 
-function Color( nA, nR, nG, nB )
+   switch nLen
+      case 0
+         oColor = GPColor():New()
+         exit
+      case 1
+         oColor = GPColor():New( aParams[ 1 ] )
+         exit
+      case 3
+         oColor = GPColor():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
+         exit
+      case 4
+         oColor = GPColor():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
+        exit
+   endswitch
 
-return GPColor():New( nA, nR, nG, nB )
+return oColor
 
 
 CLASS GPColor
@@ -59,17 +76,24 @@ ENDCLASS
 *********************************************************************************************************
 
 local iParams := PCount()
+local handle 
 
-
-  if iParams == 0
-     ::handle := _GPColor()
-  elseif iParams == 1
-     ::handle := _GPColor( nA ) // ARGB
-  elseif iParams == 3
-     ::handle := _GPColor( nA, nR, nG ) // R,G,B
-  else
-     ::handle := _GPColor( nA, nR, nG, nB ) // A,R,G,B
-  endif
+   switch iParams
+      case 0
+         handle = _GPColor()
+         exit
+      case 1
+         handle = _GPColor( nA )
+         exit
+      case 3
+         handle = _GPColor( nA, nR, nG )
+         exit
+      case 4
+         handle = _GPColor( nA, nR, nG, nB )
+        exit
+   endswitch
+   
+   ::handle = handle
 
 return self
 

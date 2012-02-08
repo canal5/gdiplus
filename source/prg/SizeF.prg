@@ -94,13 +94,23 @@ return GPSizeFEquals(::handle, sz:handle )
   METHOD Substract( sz ) CLASS GPSizeF
 *********************************************************************************************************
 
-return GPSizeFSubstract( ::handle, sz:handle )
+   local h := GPSizeFSubstract( ::handle, sz:handle )
+   local oSizeF := SizeF( h )
+   
+   GPSIZEFDELETE( h );
+   
+return oSizeF
 
 *********************************************************************************************************
   METHOD Add( sz ) CLASS GPSizeF
 *********************************************************************************************************
 
-return GPSizeFAdd( ::handle, sz:handle )
+   local h := GPSizeFAdd( ::handle, sz:handle )
+   local oSizeF := SizeF( h )
+   
+   GPSIZEFDELETE( h );
+   
+return oSizeF
 
 
 
@@ -166,6 +176,12 @@ HB_FUNC( _GPSIZEF )
    hb_retptr( (void*) ptr );
 }
 
+HB_FUNC( GPSIZEFDELETE )
+{
+	SizeF* ptr = (SizeF*) hb_parptr( 1 );
+	delete ( SizeF * ) ptr;
+}
+
 HB_FUNC( GPSIZEFEMPTY )
 {
    SizeF* ptr = (SizeF*) hb_parptr( 1 );
@@ -183,21 +199,45 @@ HB_FUNC( GPSIZEFEQUALS )
 
 HB_FUNC( GPSIZEFSUBSTRACT )
 {
-   SizeF* ptr = new SizeF();
+   SizeF* ptr;
    SizeF* ptr1 = (SizeF*) hb_parptr( 1 );
    SizeF* ptr2 = (SizeF*) hb_parptr( 2 );
-   ptr = ptr1 - ptr2;
+   
+   SizeF s1( ptr1->Width, ptr1->Height );
+   SizeF s2( ptr2->Width, ptr2->Height );
+   SizeF s3 = s1 - s2;
+   
+   ptr = new SizeF( s3 );
+   
    hb_retptr( (void*) ptr );
 }
 
 HB_FUNC( GPSIZEFADD )
 {
-   SizeF* ptr = new SizeF();
+   SizeF* ptr;
    SizeF* ptr1 = (SizeF*) hb_parptr( 1 );
    SizeF* ptr2 = (SizeF*) hb_parptr( 2 );
-   ptr = ptr1 + ptr2;
+   
+   SizeF s1( ptr1->Width, ptr1->Height );
+   SizeF s2( ptr2->Width, ptr2->Height );
+   SizeF s3 = s1 + s2;
+   
+   ptr = new SizeF( s3 );
+   
    hb_retptr( (void*) ptr );
+   
 }
+
+
+//solo para pruebas
+HB_FUNC( GPSIZEFWIDTH )
+{
+   SizeF* ptr = (SizeF*) hb_parptr( 1 );
+   
+   hb_retnd( (double) ptr->Width );
+   
+}
+
 
 
 //HB_FUNC( GPSIZEF... )
