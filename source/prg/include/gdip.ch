@@ -9,6 +9,8 @@
 #xcommand POINTF <oPointF>( [ <par1>[, <par2> ] ] ) => <oPointF> := PointF( [ <par1> ] [, <par2> ] )
 #xcommand SIZEF <oSizeF>( [<nWidth>[, <nHeight> ] ] ) => <oSizeF> := SizeF( [ <nWidth> ] [, <nHeight> ] )
 
+
+
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"
 #xtranslate guidStr.ImageFormatMemoryBMP      =>   "B96B3CAA-0728-11D3-9D7B-0000F81EF32E"
 #xtranslate guidStr.ImageFormatBMP            =>   "B96B3CAB-0728-11D3-9D7B-0000F81EF32E"
