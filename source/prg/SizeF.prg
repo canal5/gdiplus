@@ -97,8 +97,6 @@ return GPSizeFEquals(::handle, sz:handle )
    local h := GPSizeFSubstract( ::handle, sz:handle )
    local oSizeF := SizeF( h )
    
-   GPSIZEFDELETE( h );
-   
 return oSizeF
 
 *********************************************************************************************************
@@ -107,9 +105,7 @@ return oSizeF
 
    local h := GPSizeFAdd( ::handle, sz:handle )
    local oSizeF := SizeF( h )
-   
-   GPSIZEFDELETE( h );
-   
+
 return oSizeF
 
 
@@ -145,11 +141,7 @@ return oSizeF
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPSIZEF )
 {
@@ -163,7 +155,7 @@ HB_FUNC( _GPSIZEF )
          break;
       case 1:
          {
-           SizeF * par_Size = ( SizeF * ) hb_parptr( 1 );
+           SizeF * par_Size = hb_SizeF_par( 1 );
            SizeF sz( par_Size->Width, par_Size->Height );
            ptr = new SizeF( sz );
          }
@@ -173,25 +165,19 @@ HB_FUNC( _GPSIZEF )
          break;
    }
 
-   hb_retptr( (void*) ptr );
-}
-
-HB_FUNC( GPSIZEFDELETE )
-{
-	SizeF* ptr = (SizeF*) hb_parptr( 1 );
-	delete ( SizeF * ) ptr;
+   hb_SizeF_ret( ptr );
 }
 
 HB_FUNC( GPSIZEFEMPTY )
 {
-   SizeF* ptr = (SizeF*) hb_parptr( 1 );
+   SizeF* ptr = hb_SizeF_par( 1 );
    hb_retl( ptr->Empty() );
 }
 
 HB_FUNC( GPSIZEFEQUALS )
 {
-   SizeF* ptr = (SizeF*) hb_parptr( 1 );
-   SizeF *p_sz1 = ( SizeF * ) hb_parptr( 2 );
+   SizeF* ptr = hb_SizeF_par( 1 );
+   SizeF *p_sz1 = hb_SizeF_par( 2 );
 
    SizeF sz1( p_sz1->Width, p_sz1->Height );
    hb_retl(ptr->Equals( sz1 ));
@@ -200,8 +186,8 @@ HB_FUNC( GPSIZEFEQUALS )
 HB_FUNC( GPSIZEFSUBSTRACT )
 {
    SizeF* ptr;
-   SizeF* ptr1 = (SizeF*) hb_parptr( 1 );
-   SizeF* ptr2 = (SizeF*) hb_parptr( 2 );
+   SizeF* ptr1 = hb_SizeF_par( 1 );
+   SizeF* ptr2 = hb_SizeF_par( 2 );
    
    SizeF s1( ptr1->Width, ptr1->Height );
    SizeF s2( ptr2->Width, ptr2->Height );
@@ -209,14 +195,14 @@ HB_FUNC( GPSIZEFSUBSTRACT )
    
    ptr = new SizeF( s3 );
    
-   hb_retptr( (void*) ptr );
+   hb_SizeF_ret( ptr );
 }
 
 HB_FUNC( GPSIZEFADD )
 {
    SizeF* ptr;
-   SizeF* ptr1 = (SizeF*) hb_parptr( 1 );
-   SizeF* ptr2 = (SizeF*) hb_parptr( 2 );
+   SizeF* ptr1 = hb_SizeF_par( 1 );
+   SizeF* ptr2 = hb_SizeF_par( 2 );
    
    SizeF s1( ptr1->Width, ptr1->Height );
    SizeF s2( ptr2->Width, ptr2->Height );
@@ -224,7 +210,7 @@ HB_FUNC( GPSIZEFADD )
    
    ptr = new SizeF( s3 );
    
-   hb_retptr( (void*) ptr );
+   hb_SizeF_ret( ptr );
    
 }
 
@@ -232,7 +218,7 @@ HB_FUNC( GPSIZEFADD )
 //solo para pruebas
 HB_FUNC( GPSIZEFWIDTH )
 {
-   SizeF* ptr = (SizeF*) hb_parptr( 1 );
+   SizeF* ptr = hb_SizeF_par( 1 );
    
    hb_retnd( (double) ptr->Width );
    
@@ -242,7 +228,7 @@ HB_FUNC( GPSIZEFWIDTH )
 
 //HB_FUNC( GPSIZEF... )
 //{
-//   SizeF* ptr = (SizeF*) hb_parptr( 1 );
+//   SizeF* ptr = hb_SizeF_par( 1 );
 //}
 
 #pragma ENDDUMP

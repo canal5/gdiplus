@@ -1046,88 +1046,14 @@ return nil
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-#include <hbapierr.h>
 
+#include <gc.h>
 
-using namespace Gdiplus;
 
 GdiplusStartupInput gdiplusStartupInput;
+
 ULONG_PTR	gdiplusToken;
-
-//------------------------------------------------//
-
-
-static HB_GARBAGE_FUNC( GDI_Graphics_release )
-{
-   void ** ph = ( void ** ) Cargo;
-
-   /* Check if pointer is not NULL to avoid multiple freeing */
-   if( ph && * ph )
-   {
-      /* Destroy the object */
-      delete (Graphics*) * ph;
-
-      /* set pointer to NULL to avoid multiple freeing */
-      * ph = NULL;
-   }
-}
-
-#ifndef __XHARBOUR__
-const HB_GC_FUNCS s_gcMYSQLFuncs =
-{
-   GDI_Graphics_release,
-   hb_gcDummyMark
-};
-
-#endif //__XHARBOUR__
-
-//------------------------------------------------//
-
-static void hb_Graphics_ret( Graphics * p )
-{
-   if( p )
-   {
-#ifndef __XHARBOUR__
-      void ** ph = ( void ** ) hb_gcAllocate( sizeof( Graphics * ), &s_gcMYSQLFuncs );
-#else
-      void ** ph = ( void ** ) hb_gcAlloc( sizeof( Graphics * ), GDI_Graphics_release );
-#endif //__XHARBOUR__
-      * ph = p;
-
-      hb_retptrGC( ph );
-   }
-   else
-      hb_retptr( NULL );
-}
-
-static Graphics * hb_Graphics_par( int iParam )
-{
-#ifndef __XHARBOUR__
-   void ** ph = ( void ** ) hb_parptrGC( &s_gcMYSQLFuncs, iParam );
-#else
-   void ** ph = ( void ** ) hb_parptrGC( MYSQL_release, iParam );
-#endif //__XHARBOUR__
-
-   return ph ? ( Graphics * ) * ph : NULL;
-}
 
 
 HB_FUNC( GDIPLUSSTARTUP )

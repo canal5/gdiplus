@@ -170,7 +170,7 @@ return GPRectFGetTop(::handle)
   METHOD Inflate(x,y) CLASS GPRectF
 *********************************************************************************************************
 
-return GPRectFInflate2(::handle, X, Y)
+return GPRectFInflate(::handle, X, Y)
 
 *********************************************************************************************************
   METHOD Inflate2(pt) CLASS GPRectF
@@ -312,12 +312,8 @@ return GPRectFHeight(::handle)
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <hbapiitm.h>
-#include <gdiplus.h>
 
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPRECTF )
 {
@@ -328,8 +324,8 @@ HB_FUNC( _GPRECTF )
        ptr = new RectF();
     else if( iParams == 2 )
     {
-       PointF * p_pt = ( PointF * ) hb_parptr( 1 );
-       SizeF * p_sz = ( SizeF * ) hb_parptr( 2 );
+       PointF * p_pt = hb_PointF_par( 1 );
+       SizeF * p_sz = hb_SizeF_par( 2 );
 
        PointF pt( p_pt->X, p_pt->Y ) ;
 
@@ -341,25 +337,30 @@ HB_FUNC( _GPRECTF )
     else if( iParams == 4 )
        ptr = new RectF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd(2 ), (REAL) hb_parnd(3 ), (REAL) hb_parnd(4 ) );
 
-    hb_retptr( (void*) ptr );
+    hb_RectF_ret( ptr );
 }
 
 HB_FUNC( GPRECTFCLONE )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   hb_retptr( (void*) ptr->Clone() );
+   RectF* ptr = hb_RectF_par( 1 );
+   hb_RectF_ret( ptr->Clone() );
 }
 
 HB_FUNC( GPRECTFCONTAINS )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    hb_retl( ptr->Contains( (REAL) hb_parnd( 2 ), (REAL) hb_parnd( 3 )) );
+}
+
+extern "C"
+{
+LPSTR LToStr( LONG );
 }
 
 HB_FUNC( GPRECTFCONTAINS2 )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   PointF * p_pt = ( PointF * ) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
+   PointF * p_pt = hb_PointF_par( 2 );
    PointF pt1( p_pt->X, p_pt->Y );
 
    hb_retl( ptr->Contains( pt1 ) );
@@ -367,8 +368,8 @@ HB_FUNC( GPRECTFCONTAINS2 )
 
 HB_FUNC( GPRECTFCONTAINS3 )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   RectF *p_rc = ( RectF * ) hb_parptr( 2 );
+   RectF* ptr = hb_RectF_par( 1 );
+   RectF *p_rc = hb_RectF_par( 2 );
 
    RectF rc1( p_rc->X, p_rc->Y, p_rc->Width, p_rc->Height );
 
@@ -377,8 +378,8 @@ HB_FUNC( GPRECTFCONTAINS3 )
 
 HB_FUNC( GPRECTFEQUALS )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   RectF *p_rc = ( RectF * ) hb_parptr( 2 );
+   RectF* ptr = hb_RectF_par( 1 );
+   RectF *p_rc = hb_RectF_par( 2 );
 
    RectF rc1( p_rc->X, p_rc->Y, p_rc->Width, p_rc->Height );
 
@@ -387,47 +388,47 @@ HB_FUNC( GPRECTFEQUALS )
 
 HB_FUNC( GPRECTFGETBOTTOM )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    hb_retni(ptr->GetBottom());
 }
 
 HB_FUNC( GPRECTFGETBOUNDS )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   RectF *p_rc = ( RectF * ) hb_parptr( 2 );
+   RectF* ptr = hb_RectF_par( 1 );
+   RectF *p_rc = hb_RectF_par( 2 );
    ptr->GetBounds( p_rc );
    hb_ret();
 }
 
 HB_FUNC( GPRECTFGETLEFT )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    hb_retni(ptr->GetLeft());
 }
 
 HB_FUNC( GPRECTFGETLOCATION )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   PointF *p_pt = ( PointF * ) hb_parptr( 2 );
+   RectF* ptr = hb_RectF_par( 1 );
+   PointF *p_pt = hb_PointF_par( 2 );
    ptr->GetLocation( p_pt );
    hb_ret();
 }
 
 HB_FUNC( GPRECTFGETRIGHT )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    hb_retni(ptr->GetRight());
 }
 
 HB_FUNC( GPRECTFGETTOP )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    hb_retni(ptr->GetTop());
 }
 
 HB_FUNC( GPRECTFINFLATE )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    ptr->Inflate( (REAL)hb_parnd(2), (REAL)hb_parnd(3) );
 
    hb_ret();
@@ -435,8 +436,8 @@ HB_FUNC( GPRECTFINFLATE )
 
 HB_FUNC( GPRECTFINFLATE2 )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   PointF * p_pt = ( PointF * ) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
+   PointF * p_pt = hb_PointF_par( 2 );
    PointF pt1( p_pt->X, p_pt->Y );
    ptr->Inflate( pt1 );
    hb_ret();
@@ -444,8 +445,8 @@ HB_FUNC( GPRECTFINFLATE2 )
 
 HB_FUNC( GPRECTFINTERSECT )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   RectF *p_rc = ( RectF * ) hb_parptr( 2 );
+   RectF* ptr = hb_RectF_par( 1 );
+   RectF *p_rc = hb_RectF_par( 2 );
 
    RectF rc1( p_rc->X, p_rc->Y, p_rc->Width, p_rc->Height );
 
@@ -454,11 +455,11 @@ HB_FUNC( GPRECTFINTERSECT )
 
 HB_FUNC( GPRECTFINTERSECT2 )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   RectF *p_rc1 = ( RectF * ) hb_parptr( 2 );
-   RectF *p_rc2 = ( RectF * ) hb_parptr( 3 );
-   RectF *p_rc3 = ( RectF * ) hb_parptr( 4 );
-   BOOL l = FALSE;
+   RectF *ptr = hb_RectF_par( 1 );
+   RectF *p_rc1 = hb_RectF_par( 2 );
+   RectF *p_rc2 = hb_RectF_par( 3 );
+   RectF *p_rc3 = hb_RectF_par( 4 );
+   BOOL l;
 
    RectF rc1( p_rc1->X, p_rc1->Y, p_rc1->Width, p_rc1->Height );
    RectF rc2( p_rc2->X, p_rc2->Y, p_rc2->Width, p_rc2->Height );
@@ -475,8 +476,8 @@ HB_FUNC( GPRECTFINTERSECT2 )
 
 HB_FUNC( GPRECTFINTERSECTSWITH )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   RectF *p_rc1 = ( RectF * ) hb_parptr( 2 );
+   RectF* ptr = hb_RectF_par( 1 );
+   RectF *p_rc1 = hb_RectF_par( 2 );
 
    RectF rc1( p_rc1->X, p_rc1->Y, p_rc1->Width, p_rc1->Height );
 
@@ -485,22 +486,22 @@ HB_FUNC( GPRECTFINTERSECTSWITH )
 
 HB_FUNC( GPRECTFISEMPTYAREA )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    hb_retl(ptr->IsEmptyArea());
 }
 
 
 HB_FUNC( GPRECTFOFFSET )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    ptr->Offset( (REAL)hb_parnd(2), (REAL)hb_parnd(3) );
    hb_ret();
 }
 
 HB_FUNC( GPRECTFOFFSET2 )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   PointF *p_pt = ( PointF * ) hb_parptr( 2 );
+   RectF* ptr = hb_RectF_par( 1 );
+   PointF *p_pt = hb_PointF_par( 2 );
 
    PointF pt1( p_pt->X, p_pt->Y );
 
@@ -512,49 +513,49 @@ HB_FUNC( GPRECTFOFFSET2 )
 
 HB_FUNC( GPRECTFSETX )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    ptr->X = (REAL) hb_parnd( 2 );
    hb_ret();
 }
 
 HB_FUNC( GPRECTFSETY )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    ptr->Y = (REAL) hb_parnd( 2 );
    hb_ret();
 }
 
 HB_FUNC( GPRECTFX )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    hb_retni( (int) ptr->X );
 }
 
 HB_FUNC( GPRECTFY )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    hb_retni( (int) ptr->Y );
 }
 
 HB_FUNC( GPRECTFWIDTH )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    hb_retni( (int) ptr->Width );
 }
 
 HB_FUNC( GPRECTFHEIGHT )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
+   RectF* ptr = hb_RectF_par( 1 );
    hb_retni( (int) ptr->Height );
 }
 
 HB_FUNC( GPRECTFUNION )
 {
-   RectF* ptr = (RectF*) hb_parptr( 1 );
-   RectF *p_rc1 = ( RectF * ) hb_parptr( 2 );
-   RectF *p_rc2 = ( RectF * ) hb_parptr( 3 );
-   RectF *p_rc3 = ( RectF * ) hb_parptr( 4 );
-   BOOL l = FALSE;
+   RectF* ptr = hb_RectF_par( 1 );
+   RectF *p_rc1 = hb_RectF_par( 2 );
+   RectF *p_rc2 = hb_RectF_par( 3 );
+   RectF *p_rc3 = hb_RectF_par( 4 );
+   BOOL l;
 
    RectF rc1( p_rc1->X, p_rc1->Y, p_rc1->Width, p_rc1->Height );
    RectF rc2( p_rc2->X, p_rc2->Y, p_rc2->Width, p_rc2->Height );

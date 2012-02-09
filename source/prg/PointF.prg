@@ -131,11 +131,8 @@ return GPPointFY(::handle)
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
+#include <gc.h>
 
-using namespace Gdiplus;
 
 HB_FUNC( _GPPOINTF )
 {
@@ -148,34 +145,34 @@ HB_FUNC( _GPPOINTF )
    else if (iParams == 2 )
        ptr = new PointF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd( 2 ) );
 
-   hb_retptr( (void*) ptr );
+   hb_PointF_ret( ptr );
 }
 
 HB_FUNC( _GPPOINTFFROMPOINT )
 {
    PointF * ptr;
-   PointF * par_Point = ( PointF * ) hb_parptr( 1 );
+   PointF * par_Point = hb_PointF_par( 1 );
    PointF pf( par_Point->X, par_Point->Y );
 
    ptr = new PointF( pf );
 
-   hb_retptr( (void*) ptr );
+   hb_PointF_ret( ptr );
 }
 
 HB_FUNC( _GPPOINTFFROMSIZE )
 {
    PointF * ptr;
-   SizeF * par_Size = ( SizeF * ) hb_parptr( 1 );
+   SizeF * par_Size = hb_SizeF_par( 1 );
    SizeF sz( par_Size->Width, par_Size->Height );
 
    ptr = new PointF( sz );
 
-   hb_retptr( (void*) ptr );
+   hb_PointF_ret( ptr );
 }
 
 HB_FUNC( GPPOINTFX )
 {
-   PointF * ptr = ( PointF * ) hb_parptr( 1 );
+   PointF * ptr = hb_PointF_par( 1 );
 
    if( hb_pcount() > 1 )
    {
@@ -187,7 +184,7 @@ HB_FUNC( GPPOINTFX )
 
 HB_FUNC( GPPOINTFY )
 {
-   PointF * ptr = ( PointF * ) hb_parptr( 1 );
+   PointF * ptr = hb_PointF_par( 1 );
 
    if( hb_pcount() > 1 )
    {

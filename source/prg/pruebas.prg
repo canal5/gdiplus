@@ -81,9 +81,9 @@ return 0
 
   SizeF  oSize ( 50, 50 )
   PointF oPoint( 13, 22 )
-  RectF  oRect ( 10, 10, 200, 200 )
+  RectF oRect ( 10, 10, 200, 200 )
   RectF oRect2 ( oPoint, oSize    )
-  RectF  oRect3( 10, 10, 200, 200 )
+  RectF oRect3( 10, 10, 200, 200 )
 
   SEPARADOR( "RECTF" )
 

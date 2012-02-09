@@ -25,8 +25,9 @@ MAP_FILE      = NO
 
 APP_NAME         = unitarias  # (Your EXE name without extension)
 APP_PRG_DIR      = source\prg
+APP_CPP_DIR      = source\cpp
 APP_OBJ_DIR      = obj  # (create the app\obj directory first)
-APP_INCLUDE_DIR  = include
+APP_INCLUDE_DIR  = .\include
 APP_EXE_DIR      = .
 APP_RES_DIR      = res
 
@@ -41,7 +42,7 @@ APP_MAP  = $(APP_RES_DIR)\$(APP_NAME).map
 .path.hrb = $(APP_OBJ_DIR)
 .path.obj = $(APP_OBJ_DIR)
 .path.c   = $(APP_PRG_DIR)
-.path.cpp = $(APP_PRG_DIR)
+.path.cpp = $(APP_CPP_DIR)
 
 # Application PRG files (your PRG files go here) #############################
 
@@ -107,7 +108,9 @@ APP_PRG_LIST =                 \
     Tint.prg
 
 
-APP_CPPPP_LIST =
+APP_CPPPP_LIST =                    \
+    gc.cpp
+
 
 APP_C_LIST =
 
@@ -134,10 +137,10 @@ FIVEC_LIB = $(FIVEWIN_LIB_DIR)\fiveHC.lib
 
 # Harbour directories & flags ################################################
 
-HARBOUR_INCLUDE_DIR = $(HBDIR)\include;
+HARBOUR_INCLUDE_DIR = $(HBDIR)\include
 HARBOUR_EXE_DIR     = $(HBDIR)\bin
 HARBOUR_LIB_DIR     = $(HBDIR)\lib
-#HARBOUR_INCLUDE_DIR = $(XHBDIR)\include;
+#HARBOUR_INCLUDE_DIR = $(XHBDIR)\include
 #HARBOUR_EXE_DIR     = $(XHBDIR)\bin
 #HARBOUR_LIB_DIR     = $(XHBDIR)\lib
 
@@ -188,8 +191,8 @@ BORLANDC_LIB_DIR     = \bcc582\lib
 #BORLANDC_EXE_DIR     = \prg\bcc55\bin
 #BORLANDC_LIB_DIR     = \prg\bcc55\lib
 
-BORLANDC_COMP_FLAGS  = -P -c -O2 -I$(HARBOUR_INCLUDE_DIR);$(BORLANDC_INCLUDE_DIR)
-BORLANDC_COMP_FLAGS_CPP  = -P -c -O2 -I$(HARBOUR_INCLUDE_DIR);$(BORLANDC_INCLUDE_DIR)
+BORLANDC_COMP_FLAGS  = -P -c -O2 -I$(HARBOUR_INCLUDE_DIR);$(BORLANDC_INCLUDE_DIR);$(APP_INCLUDE_DIR)
+BORLANDC_COMP_FLAGS_CPP  = -P -c -O2 -I$(HARBOUR_INCLUDE_DIR);$(BORLANDC_INCLUDE_DIR);$(APP_INCLUDE_DIR)
 BORLANDC_COMP_EXE    = $(BORLANDC_EXE_DIR)\bcc32.exe
 BORLANDC_LINK_FLAGS  = -Gn -aa -Tpe -s -I$(APP_OBJ_DIR) -L$(BORLANDC_LIB_DIR)
 BORLANDC_LINK_EXE    = $(BORLANDC_EXE_DIR)\ilink32.exe
