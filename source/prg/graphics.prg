@@ -1047,7 +1047,10 @@ return nil
 
 
 #pragma BEGINDUMP
-
+#include "windows.h"
+#include "hbapi.h"
+#include <hbapiitm.h>
+#include <gdiplus.h>
 #include <gc.h>
 
 
