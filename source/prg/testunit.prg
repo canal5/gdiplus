@@ -1,4 +1,5 @@
 #include "fivewin.ch"
+#include "xbrowse.ch"
 
 CLASS TTestUnit
 
@@ -145,11 +146,13 @@ function zBrowse( cTitle, cListName, bNew, bModify, bDelete, bSearch, bList,;
 
    DEFAULT cTitle  := "Browse", cListName := "Fields"
 
-DEFINE WINDOW oWnd FROM 1, 1 TO 700, 900 PIXEL TITLE cTitle
+   DEFINE WINDOW oWnd FROM 1, 1 TO 700, 900 PIXEL TITLE cTitle
 
-   DEFINE BUTTONBAR oBar OF oBar 2007
 
-   @ 1, 1 LISTBOX oLbx FIELDS aHBitmaps[ if( result->RESULTADO == 0, 5, result->RESULTADO ) ],;
+   @ 10,10 XBROWSE oBrw SIZE -10,-10 PIXEL OF oWnd ;
+      ALIAS "RESULT" CELL LINES NOBORDER ;
+      FIELDS                  "",;
+                              result->RESULTADO,;
                               result->Descrip   ,;
                               result->test      ,;
                               result->errorcode ,;
@@ -157,24 +160,61 @@ DEFINE WINDOW oWnd FROM 1, 1 TO 700, 900 PIXEL TITLE cTitle
                               result->time      ,;
                               result->procname  ,;
                               result->procline  ;
-          FIELDSIZES 14, 280, 260, 280, 60, 60, 150, 70  ;
-      SIZE 284, 137  OF oWnd
+      HEADERS "", "Resultado", "Descripción", "Test", "Errorcode", "Fecha", "Hora", "Procname", "Procline" ;
+      FIELDSIZES 18, 48, 280, 260, 280, 60, 60, 150, 70  ;
 
-   oLbx:aActions   = Array( ( Alias() )->( FCount() ) )
-   oLbx:nClrText = nClrText
-   oLbx:nClrForeFocus = nClrForeFocus
 
-//   if aColSizes != nil
-//      oLbx:aColSizes = aColSizes
-//   endif
-//
-//   for n = 1 to Len( oLbx:aActions )
-//      oLbx:aActions[ n ] = { || MsgInfo( "Column action" ) }
-//   next
 
-   oWnd:oClient := oLbx
+
+
+
+   WITH OBJECT oBrw
+      :bClrSel       := { || { CLR_WHITE, CLR_GRAY } }
+      :nStretchCol   := STRETCHCOL_LAST
+      :nMarqueeStyle := 4
+      :CreateFromCode()
+   END
+
+
+   oBrw:aCols[ 1 ]:AddBitmap(".\bitmaps\Level1.bmp")
+   oBrw:aCols[ 1 ]:AddBitmap(".\bitmaps\Level2.bmp")
+   oBrw:aCols[ 1 ]:bBmpData   := { || iif( result->RESULTADO=1, 1, 2) }
+
+
+
 
    ACTIVATE WINDOW oWnd MAXIMIZED
+
+//DEFINE WINDOW oWnd FROM 1, 1 TO 700, 900 PIXEL TITLE cTitle
+//
+//   DEFINE BUTTONBAR oBar OF oBar 2007
+//
+//   @ 1, 1 LISTBOX oLbx FIELDS aHBitmaps[ if( result->RESULTADO == 0, 5, result->RESULTADO ) ],;
+//                              result->Descrip   ,;
+//                              result->test      ,;
+//                              result->errorcode ,;
+//                              dtoc(result->date),;
+//                              result->time      ,;
+//                              result->procname  ,;
+//                              result->procline  ;
+//          FIELDSIZES 14, 280, 260, 280, 60, 60, 150, 70  ;
+//      SIZE 284, 137  OF oWnd
+//
+//   oLbx:aActions   = Array( ( Alias() )->( FCount() ) )
+//   oLbx:nClrText = nClrText
+//   oLbx:nClrForeFocus = nClrForeFocus
+//
+////   if aColSizes != nil
+////      oLbx:aColSizes = aColSizes
+////   endif
+////
+////   for n = 1 to Len( oLbx:aActions )
+////      oLbx:aActions[ n ] = { || MsgInfo( "Column action" ) }
+////   next
+//
+//   oWnd:oClient := oLbx
+//
+//   ACTIVATE WINDOW oWnd MAXIMIZED
 
    AEval( aHBitmaps, { | hBmp | DeleteObject( hBmp ) } )
 
