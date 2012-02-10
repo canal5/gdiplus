@@ -48,11 +48,44 @@ local oRect3
       TestsFont()
       TestsRectF()
       TestsSizeF()
+      TestMatrix()
       SHOW RESULT
 
    ENDDEFINE
 
 return nil
+
+*****************************************************************************************
+  function TestMatrix
+*****************************************************************************************
+
+  local oMatrix, oMatrix2, oMatrix3, oClone
+  local aElements
+  local nStatus 
+  local oRect, oPoint 
+  
+  RectF oRect( 10,10,100,100 )
+  PointF oPoint( 50, 70 )
+  Matrix oMatrix()
+  Matrix oMatrix2( oRect, oPoint )
+  Matrix oMatrix3( 10, 10, 60, 70, 20, 30 ) 
+  SEPARADOR( "MATRIX" )
+
+  TEST ! empty( oMatrix:handle )                       DESCRIPTION "Constructor "  
+  TEST ! empty( oMatrix2:handle )                      DESCRIPTION "Constructor Matrix( RectF, PointF )"  
+  TEST ! empty( oMatrix3:handle )                      DESCRIPTION "Constructor Matrix( REAL, REAL, REAL, REAL, REAL, REAL )"    
+  TEST !Empty( ( oClone := oMatrix3:Clone() ):handle )  DESCRIPTION "Clone"
+  TEST oMatrix:Equals( oClone )                        DESCRIPTION "Equals"
+  TEST oMatrix3:GetElements( @aElements ) == 0          DESCRIPTION "GetElements"
+  xbrowse( aElements )
+  nStatus = oMatrix:GetLastStatus()
+  TEST hb_IsNumeric( oMatrix:GetLastStatus() )         DESCRIPTION "GetLastStatus is =" + str( nStatus )
+  TEST oMatrix3:Invert() == 0                          ESCRIPTION "Invert"
+
+
+return 0
+
+
 
 *****************************************************************************************
   function TestsSizeF()
@@ -67,7 +100,7 @@ return nil
 
   oSize3 = oSize1 + oSize2
 
-  ? "Width", GPSIZEFWIDTH( oSize3:handle )
+//  ? "Width", GPSIZEFWIDTH( oSize3:handle )
 
   TEST !Empty( oSize3:handle )  DESCRIPTION "Operador +"
 

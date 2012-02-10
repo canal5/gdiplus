@@ -357,7 +357,7 @@ return GPPenSetEndCap( ::handle, linecap )
   METHOD SetLineCap( startCap, dashCap, endCap) CLASS GPPen
 *********************************************************************************************************
 
-return GPPenSetLineCap( ::handle, startCap, endCap, dashCap )
+return 0//GPPenSetLineCap( ::handle, startCap, endCap, dashCap )
 
 *********************************************************************************************************
   METHOD SetLineJoin( linejoin ) CLASS GPPen
@@ -369,7 +369,7 @@ return GPPenSetLineJoin( ::handle, linejoin )
   METHOD SetMiterLimit() CLASS GPPen
 *********************************************************************************************************
 
-return GPPenSetMiterLimit(::handle)
+return 0//GPPenSetMiterLimit(::handle)
 
 *********************************************************************************************************
   METHOD SetStartCap( linecap ) CLASS GPPen
@@ -586,7 +586,7 @@ HB_FUNC( GPPENGETTRANSFORM )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    Matrix* m = (Matrix*) hb_parptr( 2 );
-   hb_retni( (int) p->GetTransform(m);
+   hb_retni( (int) p->GetTransform(m) );
 }
 
 HB_FUNC( GPPENGETWIDTH )

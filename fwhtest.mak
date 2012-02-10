@@ -168,7 +168,7 @@ HBWIN_LIB  = $(HARBOUR_LIB_DIR)\hbwin.lib
 HBCT_LIB     = $(HARBOUR_LIB_DIR)\hbct.lib
 CODEMAX_LIB = codemax.lib
 HBCPLR_LIB = $(HARBOUR_LIB_DIR)\hbcplr.lib
-
+XHB_LIB      = $(HARBOUR_LIB_DIR)\xhb.lib
 
 
 
@@ -266,6 +266,7 @@ $(APP_EXE) :: $(APP_OBJS)
    @echo $(HBWIN_LIB) + >> make.tmp
    @echo $(HBCT_LIB) + >> make.tmp
    @echo $(HBCPLR_LIB) + >> make.tmp
+   @echo $(XHB_LIB) + >> make.tmp   
 !if $(LNK_DBFNTX) == YES
    @echo $(DBFNTX_LIB) + >> make.tmp
 #  @echo $(DBFDBT_LIB) + >> make.tmp

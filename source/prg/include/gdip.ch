@@ -9,6 +9,8 @@
 #xcommand POINTF <oPointF>( [ <par1>[, <par2> ] ] ) => <oPointF> := PointF( [ <par1> ] [, <par2> ] )
 #xcommand SIZEF <oSizeF>( [<nWidth>[, <nHeight> ] ] ) => <oSizeF> := SizeF( [ <nWidth> ] [, <nHeight> ] )
 #xcommand COLOR <oColor>( [ <a>[,<r>, <g>[,<b> ] ] ] ) => <oColor> := Color( [<a>][,<r>][,<g>][,<b> ] )
+#xcommand MATRIX <oMatrix>( [ <par1> [, <par2> [, <par3>, <par4>, <par5>, <par6> ] ] ] ) => <oMatrix> := Matrix( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>][, <par6>] )
+
 
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"
