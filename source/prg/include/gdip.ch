@@ -7,6 +7,7 @@
 #xcommand PEN <oPen>( <oColor>[, <n> ] ) => <oPen> := Pen( <oColor>[, <n> ] )
 #xcommand RECTF <oRectF>( [<nX>[, <nY> [, <nWidth>, <nHeight> ] ] ] ) => <oRectF> := RectF( [ <nX> ] [, <nY> ] [, <nWidth> ] [, <nHeight> ] )
 #xcommand POINTF <oPointF>( [ <par1>[, <par2> ] ] ) => <oPointF> := PointF( [ <par1> ] [, <par2> ] )
+#xcommand POINT <oPoint>( [ <par1>[, <par2> ] ] ) => <oPoint> := Point( [ <par1> ] [, <par2> ] )
 #xcommand SIZEF <oSizeF>( [<nWidth>[, <nHeight> ] ] ) => <oSizeF> := SizeF( [ <nWidth> ] [, <nHeight> ] )
 #xcommand COLOR <oColor>( [ <a>[,<r>, <g>[,<b> ] ] ] ) => <oColor> := Color( [<a>][,<r>][,<g>][,<b> ] )
 #xcommand MATRIX <oMatrix>( [ <par1> [, <par2> [, <par3>, <par4>, <par5>, <par6> ] ] ] ) => <oMatrix> := Matrix( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>][, <par6>] )
@@ -1101,6 +1102,11 @@
 #xtranslate PropertyTag.GpsDestBear                       =>   0x0018
 #xtranslate PropertyTag.GpsDestDistRef                    =>   0x0019
 #xtranslate PropertyTag.GpsDestDist                       =>   0x001A
+
+#xtranslate MatrixOrder.MatrixOrderPrepend                => 0 
+#xtranslate MatrixOrder.MatrixOrderAppend                 => 1
+
+
 // ---------------------------------------------------------------------------
 #define GDIP_EMFPLUSFLAGS_DISPLAY     1
 // ---------------------------------------------------------------------------

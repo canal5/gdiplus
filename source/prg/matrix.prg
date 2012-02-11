@@ -45,10 +45,10 @@ CLASS GPMatrix
    METHOD Scale()
    METHOD SetElements()
    METHOD Shear()
-   //METHOD TransformPoints(Point*,INT)
-   METHOD TransformPoints(PointF, n)
-   //METHOD TransformVectors(Point*,INT)
-   METHOD TransformVectors(PointF,n)
+   METHOD TransformPoints( Point )
+   METHOD TransformPointsF( PointF )
+   METHOD TransformVectors(Point)
+   METHOD TransformVectorsF(PointF)
    METHOD Translate()
 
 
@@ -137,97 +137,126 @@ return _GPMatrixInvert( ::handle )
    METHOD IsIdentity() CLASS GPMatrix
 *******************************************************************************************
 
-return 0
+return _GPMatrixIsIdentity( ::handle )
 
 *******************************************************************************************
    METHOD IsInvertible() CLASS GPMatrix
 *******************************************************************************************
 
-return 0
+return _GPMatrixIsInvertible( ::handle )
 
 *******************************************************************************************
-   METHOD Multiply() CLASS GPMatrix
+   METHOD Multiply( oMatrix, nOrder ) CLASS GPMatrix
 *******************************************************************************************
+   local nStatus
+   
+   DEFAULT nOrder := 0
+   
+   nStatus = _GPMatrixMultiply( ::handle, oMatrix:handle, nOrder ) 
 
-return 0
+return nStatus
 
 *******************************************************************************************
    METHOD OffsetX() CLASS GPMatrix
 *******************************************************************************************
 
-return 0
+return _GPMatrixOffsetX( ::handle )
 
 *******************************************************************************************
    METHOD OffsetY() CLASS GPMatrix
 *******************************************************************************************
 
-return 0
+return _GPMatrixOffsetY( ::handle )
 
 *******************************************************************************************
    METHOD Reset() CLASS GPMatrix
 *******************************************************************************************
 
-return 0
+return _GPMatrixReset( ::handle )
 
 *******************************************************************************************
-   METHOD Rotate() CLASS GPMatrix
+   METHOD Rotate( nAngle, nOrder ) CLASS GPMatrix
 *******************************************************************************************
+   
+   DEFAULT nAngle := 0
+   DEFAULT nOrder := 0   
 
-return 0
 
-*******************************************************************************************
-   METHOD RotateAt() CLASS GPMatrix
-*******************************************************************************************
-
-return 0
+return _GPMatrixRotate( ::handle, nAngle, nOrder ) 
 
 *******************************************************************************************
-   METHOD Scale() CLASS GPMatrix
+   METHOD RotateAt( nAngle, oPointF, nOrder ) CLASS GPMatrix
 *******************************************************************************************
 
-return 0
+   	DEFAULT nAngle := 0
+   	DEFAULT nOrder := 0
+
+return _GPMatrixRotateAt( ::handle, nAngle, oPointF, nOrder )
 
 *******************************************************************************************
-   METHOD SetElements() CLASS GPMatrix
+   METHOD Scale( nScaleX, nScaleY, nOrder ) CLASS GPMatrix
 *******************************************************************************************
+   
+   DEFAULT nScaleX := 0
+   DEFAULT nScaleY := 0
+   DEFAULT nOrder  := 0
 
-return 0
+
+return _GPMatrixScale( ::handle, nScaleX, nScaleY, nOrder )
 
 *******************************************************************************************
-   METHOD Shear() CLASS GPMatrix
+   METHOD SetElements( m11, m12, m21, m22, dx, dy ) CLASS GPMatrix
 *******************************************************************************************
+   
+return _GPMatrixSetElements( ::handle, m11, m12, m21, m22, dx, dy )
 
-return 0
+*******************************************************************************************
+   METHOD Shear(nShearX, nShearY, nOrder ) CLASS GPMatrix
+*******************************************************************************************
+   
+   DEFAULT nShearX := 0
+   DEFAULT nShearY := 0
+   DEFAULT nOrder  := 0
+
+
+return _GPMatrixShear( ::handle, nShearX, nShearY, nOrder )
 
 //*******************************************************************************************
-//   //METHOD TransformPoints(Point*,INT) CLASS GPMatrix
+   METHOD TransformPoints( aPoint ) CLASS GPMatrix
 //*******************************************************************************************
-//
-//return 0
 
-*******************************************************************************************
-   METHOD TransformPoints(PointF, n) CLASS GPMatrix
-*******************************************************************************************
-
-return 0
+   
+return _GPmatrixTransformPoints( ::handle, aPoint )
 
 //*******************************************************************************************
-//   //METHOD TransformVectors(Point*,INT) CLASS GPMatrix
+   METHOD TransformPointsF( aPoint ) CLASS GPMatrix
 //*******************************************************************************************
-//
-//return 0
+   
+return _GPmatrixTransformPointsF( ::handle, aPoint )
+
 
 *******************************************************************************************
-   METHOD TransformVectors(PointF,n) CLASS GPMatrix
+   METHOD TransformVectors( aPoint ) CLASS GPMatrix
 *******************************************************************************************
 
-return 0
+return _GPmatrixTransformVectors( ::handle, aPoint )
 
 *******************************************************************************************
-   METHOD Translate() CLASS GPMatrix
+   METHOD TransformVectorsf( aPoint ) CLASS GPMatrix
 *******************************************************************************************
 
-return 0
+return _GPmatrixTransformVectorsf( ::handle, aPoint )
+
+*******************************************************************************************
+   METHOD Translate(nOffsetX, nOffsetY, nOrder ) CLASS GPMatrix
+*******************************************************************************************
+   
+   DEFAULT nOffsetX := 0
+   DEFAULT nOffsetY := 0
+   DEFAULT nOrder  := 0
+
+
+return _GPMatrixTranslate( ::handle, nOffsetX, nOffsetY, nOrder )
 
 // Constructors
 // Matrix::Matrix()	                         Creates and initializes a Matrix::Matrix object that represents the identity matrix.
@@ -267,6 +296,7 @@ return 0
 
 
 #pragma BEGINDUMP
+#include <hbvm.h> 
 #include <gc.h>
 
 
@@ -417,9 +447,351 @@ HB_FUNC( _GPMATRIXINVERT )
 
 //-----------------------------------------//
 
+HB_FUNC( _GPMATRIXISIDENTITY )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+
+	 if( ptr )
+	 {	 	 	    
+	    hb_retl( ( int ) ptr->IsIdentity() );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXISINVERTIBLE )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+
+	 if( ptr )
+	 {	 	 	    
+	    hb_retl( ( int ) ptr->IsInvertible() );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXMULTIPLY )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+	 Matrix * ptr2 = hb_Matrix_par( 2 );	 
+	 MatrixOrder order = ( MatrixOrder ) hb_parni( 3 );
+   Status sta;
+   
+	 if( ptr && ptr2 )
+	 {	 	 	    
+	    sta = ptr->Multiply( ptr2, order );
+	    hb_retni( sta );
+	    
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXOFFSETX )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+
+	 if( ptr )
+	 {	 	 	    
+	    hb_retnd( ( double ) ptr->OffsetX() );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXOFFSETY )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+
+	 if( ptr )
+	 {	 	 	    
+	    hb_retnd( ( double ) ptr->OffsetY() );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXRESET )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+
+	 if( ptr )
+	 {	 	 	    
+	    hb_retni( ( int ) ptr->Reset() );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXROTATE )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+	 REAL angle = ( REAL ) hb_parnd( 2 );
+	 MatrixOrder order = ( MatrixOrder ) hb_parni( 3 );	 
+
+	 if( ptr )
+	 {	 	 	    
+	    hb_retni( ( int ) ptr->Rotate( angle, order ) );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXROTATEAT )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+	 REAL angle = ( REAL ) hb_parnd( 2 );
+   PointF * center = hb_PointF_par( 3 );
+	 MatrixOrder order = ( MatrixOrder ) hb_parni( 4 );	 
+
+	 if( ptr )
+	 {	 	 	    
+	 	  PointF oPoint( center->X, center->Y );
+	    hb_retni( ( int ) ptr->RotateAt( angle, oPoint, order ) );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
 
 
+//-----------------------------------------//
 
+HB_FUNC( _GPMATRIXSCALE )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+   REAL scaleX = ( REAL ) hb_parnd( 2 );
+   REAL scaleY = ( REAL ) hb_parnd( 3 );
+	 MatrixOrder order = ( MatrixOrder ) hb_parni( 4 );	 
+
+	 if( ptr )
+	 {	 	 	    
+	    hb_retni( ( int ) ptr->Scale( scaleX, scaleY, order ) );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXSETELEMENTS )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+   REAL m11 = ( REAL ) hb_parnd( 2 );
+   REAL m12 = ( REAL ) hb_parnd( 3 );
+   REAL m21 = ( REAL ) hb_parnd( 4 );
+   REAL m22 = ( REAL ) hb_parnd( 5 );
+   REAL dx = ( REAL ) hb_parnd( 6 );
+   REAL dy = ( REAL ) hb_parnd( 7 );
+
+
+	 if( ptr )
+	 {	 	 	    
+	    hb_retni( ( int ) ptr->SetElements( m11, m12, m21, m22, dx, dy ) );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXSHEAR )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+   REAL shearX = ( REAL ) hb_parnd( 2 );
+   REAL shearY = ( REAL ) hb_parnd( 3 );
+	 MatrixOrder order = ( MatrixOrder ) hb_parni( 4 );	 
+
+	 if( ptr )
+	 {	 	 	    
+	    hb_retni( ( int ) ptr->Shear( shearX, shearY, order ) );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+extern "C"{
+LPSTR LToStr( long );
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXTRANSFORMPOINTS )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+	 Status sta;
+    
+	 if( ptr && HB_ISARRAY( 2 ) )
+	 {	
+	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+	 	  int iLen = hb_arrayLen( aPoint );	 	  
+	 	  int n;
+	    Point * pPoint = ( Point * ) hb_xgrab( sizeof( Point ) * iLen );
+	    
+	    for( n = 0; n < iLen; n++ ){
+	    	
+	    	PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );	 
+        hb_vmPushSymbol( hb_dynsymGetSymbol( "HANDLE" ) ); 
+        hb_vmPush( pItem );     
+        hb_vmFunction( 0 );
+        Point * pObj = hb_Point_par( -1 );
+        Point pDest( pObj->X, pObj->Y );	
+	    	pPoint[ n ] = pDest;    	
+	    	
+	    	sta = ptr->TransformPoints( pPoint, iLen );
+	    	
+	    	hb_retni( sta );
+	    		    	   	
+	    }
+	    
+	    
+	    hb_retni( 0 );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXTRANSFORMPOINTSF )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+	 Status sta;
+    
+	 if( ptr && HB_ISARRAY( 2 ) )
+	 {	
+	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+	 	  int iLen = hb_arrayLen( aPoint );	 	  
+	 	  int n;
+	    PointF * pPoint = ( PointF * ) hb_xgrab( sizeof( PointF ) * iLen );
+	    
+	    for( n = 0; n < iLen; n++ ){
+	    	
+	    	PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );	 
+        hb_vmPushSymbol( hb_dynsymGetSymbol( "HANDLE" ) ); 
+        hb_vmPush( pItem );     
+        hb_vmFunction( 0 );
+        PointF * pObj = hb_PointF_par( -1 );
+        PointF pDest( pObj->X, pObj->Y );	
+	    	pPoint[ n ] = pDest;    	
+	    	
+	    	sta = ptr->TransformPoints( pPoint, iLen );
+	    	
+	    	hb_retni( sta );
+	    		    	   	
+	    }
+	    
+	    
+	    hb_retni( 0 );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXTRANSFORMVECTORS )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+	 Status sta;
+    
+	 if( ptr && HB_ISARRAY( 2 ) )
+	 {	
+	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+	 	  int iLen = hb_arrayLen( aPoint );	 	  
+	 	  int n;
+	    Point * pPoint = ( Point * ) hb_xgrab( sizeof( Point ) * iLen );
+	    
+	    for( n = 0; n < iLen; n++ ){
+	    	
+	    	PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );	 
+        hb_vmPushSymbol( hb_dynsymGetSymbol( "HANDLE" ) ); 
+        hb_vmPush( pItem );     
+        hb_vmFunction( 0 );
+        Point * pObj = hb_Point_par( -1 );
+        Point pDest( pObj->X, pObj->Y );	
+	    	pPoint[ n ] = pDest;    	
+	    	
+	    	sta = ptr->TransformVectors( pPoint, iLen );
+	    	
+	    	hb_retni( sta );
+	    		    	   	
+	    }
+	    
+	    
+	    hb_retni( 0 );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXTRANSFORMVECTORSF )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+	 Status sta;
+    
+	 if( ptr && HB_ISARRAY( 2 ) )
+	 {	
+	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+	 	  int iLen = hb_arrayLen( aPoint );	 	  
+	 	  int n;
+	    PointF * pPoint = ( PointF * ) hb_xgrab( sizeof( PointF ) * iLen );
+	    
+	    for( n = 0; n < iLen; n++ ){
+	    	
+	    	PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );	 
+        hb_vmPushSymbol( hb_dynsymGetSymbol( "HANDLE" ) ); 
+        hb_vmPush( pItem );     
+        hb_vmFunction( 0 );
+        PointF * pObj = hb_PointF_par( -1 );
+        PointF pDest( pObj->X, pObj->Y );	
+	    	pPoint[ n ] = pDest;    	
+	    	
+	    	sta = ptr->TransformVectors( pPoint, iLen );
+	    	
+	    	hb_retni( sta );
+	    		    	   	
+	    }
+	    
+	    
+	    hb_retni( 0 );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
+
+//-----------------------------------------//
+
+HB_FUNC( _GPMATRIXTRANSLATE )
+{
+	 Matrix * ptr = hb_Matrix_par( 1 );
+   REAL scaleX = ( REAL ) hb_parnd( 2 );
+   REAL scaleY = ( REAL ) hb_parnd( 3 );
+	 MatrixOrder order = ( MatrixOrder ) hb_parni( 4 );	 
+
+	 if( ptr )
+	 {	 	 	    
+	    hb_retni( ( int ) ptr->Translate( scaleX, scaleY, order ) );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+}
 
 //-----------------------------------------//
 

@@ -31,6 +31,10 @@ Point * hb_Point_par( int iParam );
 void hb_SizeF_ret( SizeF * p );
 SizeF * hb_SizeF_par( int iParam );
 
+//Size
+void hb_Size_ret( Size * p );
+Size * hb_Size_par( int iParam );
+
 //Matrix
 void hb_Matrix_ret( Matrix * p );
 Matrix * hb_Matrix_par( int iParam );

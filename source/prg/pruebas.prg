@@ -59,16 +59,33 @@ return nil
   function TestMatrix
 *****************************************************************************************
 
-  local oMatrix, oMatrix2, oMatrix3, oClone
+  local oMatrix, oMatrix2, oMatrix3, oMatrix4, oClone
   local aElements
   local nStatus 
-  local oRect, oPoint 
+  local oRect, oPointF
+  local aPoint := {}
+  local aPointF := {}
   
   RectF oRect( 10,10,100,100 )
-  PointF oPoint( 50, 70 )
+  PointF oPointF( 50, 70 )
   Matrix oMatrix()
-  Matrix oMatrix2( oRect, oPoint )
-  Matrix oMatrix3( 10, 10, 60, 70, 20, 30 ) 
+  Matrix oMatrix2( oRect, oPointF )
+  Matrix oMatrix3( 3, 0, 0, 1, 0, 0 )
+  Matrix oMatrix4( 1, 0, 0, 1, 20, 40 )
+   
+  AAdd( aPoint, Point( 50, 100 ) )
+  AAdd( aPoint, Point( 100, 50 ) )
+  AAdd( aPoint, Point( 150, 125 ) )
+  AAdd( aPoint, Point( 200, 100 ) )
+  AAdd( aPoint, Point( 250, 150 ) )
+  
+  AAdd( aPointF, PointF( 50, 100 ) )
+  AAdd( aPointF, PointF( 100, 50 ) )
+  AAdd( aPointF, PointF( 150, 125 ) )
+  AAdd( aPointF, PointF( 200, 100 ) )
+  AAdd( aPointF, PointF( 250, 150 ) )  
+   
+   
   SEPARADOR( "MATRIX" )
 
   TEST ! empty( oMatrix:handle )                       DESCRIPTION "Constructor "  
@@ -77,12 +94,27 @@ return nil
   TEST !Empty( ( oClone := oMatrix3:Clone() ):handle )  DESCRIPTION "Clone"
   TEST oMatrix:Equals( oClone )                        DESCRIPTION "Equals"
   TEST oMatrix3:GetElements( @aElements ) == 0          DESCRIPTION "GetElements"
-  xbrowse( aElements )
   nStatus = oMatrix:GetLastStatus()
   TEST hb_IsNumeric( oMatrix:GetLastStatus() )         DESCRIPTION "GetLastStatus is =" + str( nStatus )
-  TEST oMatrix3:Invert() == 0                          ESCRIPTION "Invert"
-
-
+  TEST oMatrix3:Invert() == 0                          DESCRIPTION "Invert"
+  TEST oMatrix3:IsIdentity()                           DESCRIPTION "IsIdentity"
+  TEST oMatrix3:IsInvertible()                         DESCRIPTION "IsInvertible"
+  TEST oMatrix3:Multiply( oMatrix4, MatrixOrder.MatrixOrderAppend ) == 0           DESCRIPTION "Multiply"
+  TEST oMatrix4:OffsetX() == 20                        DESCRIPTION "OffsetX"
+  TEST oMatrix4:OffsetY() == 40                        DESCRIPTION "OffsetY"  
+  TEST oMatrix4:Reset() == 0                           DESCRIPTION "Reset" 
+  TEST oMatrix2:Rotate( 30, MatrixOrder.MatrixOrderAppend ) == 0 DESCRIPTION "Rotate" 
+  TEST oMatrix2:Rotate( 30, PointF(150, 100), MatrixOrder.MatrixOrderAppend ) == 0 DESCRIPTION "RotateAt" 
+  TEST oMatrix4:Scale( 3, 2, MatrixOrder.MatrixOrderAppend ) == 0  DESCRIPTION "Scale"
+  TEST oMatrix4:SetElements( 1, 0, 0, 1, 30, 50 ) == 0  DESCRIPTION "SetElements"
+  TEST oMatrix4:Shear( 3, 0, MatrixOrder.MatrixOrderAppend ) == 0  DESCRIPTION "Shear"
+  TEST oMatrix4:TransformPoints( aPoint ) == 0         DESCRIPTION "TransformPoints with Point Atrray"
+  TEST oMatrix4:TransformPointsF( aPointF ) == 0        DESCRIPTION "TransformPoints with PointF Atrray"
+  TEST oMatrix4:TransformVectors( aPoint ) == 0         DESCRIPTION "TransformVentors with Point Atrray"
+  TEST oMatrix4:TransformVectorsF( aPointF ) == 0       DESCRIPTION "TransformVectorsF with PointF Atrray"  
+  TEST oMatrix4:Translate( 150, 100, MatrixOrder.MatrixOrderAppend ) == 0 DESCRIPTION "Translate"  
+  
+  
 return 0
 
 

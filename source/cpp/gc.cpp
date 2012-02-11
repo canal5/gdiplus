@@ -354,6 +354,64 @@ SizeF * hb_SizeF_par( int iParam )
    return ph ? ( SizeF * ) * ph : NULL;
 }
 
+//------------------------------------------------//
+//Size
+//------------------------------------------------//
+
+static HB_GARBAGE_FUNC( GDI_Size_release )
+{
+   void ** ph = ( void ** ) Cargo;
+
+   /* Check if pointer is not NULL to avoid multiple freeing */
+   if( ph && * ph )
+   {
+      /* Destroy the object */
+      delete (Size*) * ph;
+
+      /* set pointer to NULL to avoid multiple freeing */
+      * ph = NULL;
+   }
+}
+
+
+#ifndef __XHARBOUR__
+const HB_GC_FUNCS s_gcSizeFuncs =
+{
+   GDI_Size_release,
+   hb_gcDummyMark
+};
+
+#endif //__XHARBOUR__
+
+
+void hb_Size_ret( Size * p )
+{
+   if( p )
+   {
+#ifndef __XHARBOUR__
+      void ** ph = ( void ** ) hb_gcAllocate( sizeof( Size * ), &s_gcSizeFuncs );
+#else
+      void ** ph = ( void ** ) hb_gcAlloc( sizeof( Size * ), GDI_Size_release );
+#endif //__XHARBOUR__
+      * ph = p;
+
+      hb_retptrGC( ph );
+   }
+   else
+      hb_retptr( NULL );
+}
+
+
+Size * hb_Size_par( int iParam )
+{
+#ifndef __XHARBOUR__
+   void ** ph = ( void ** ) hb_parptrGC( &s_gcSizeFuncs, iParam );
+#else
+   void ** ph = ( void ** ) hb_parptrGC( GDI_Size_release, iParam );
+#endif //__XHARBOUR__
+
+   return ph ? ( Size * ) * ph : NULL;
+}
 
 
 //------------------------------------------------//
