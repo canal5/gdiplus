@@ -124,7 +124,7 @@ return nil
    TEST oLGB:RotateTransform( 20, MatrixOrderAppend ) == 0             DESCRIPTION "RotateTransform" SAMPLE Example_RotateTrans()
    TEST oLGB:ScaleTransform( 2, 5, MatrixOrderAppend ) == 0            DESCRIPTION "ScaleTransform"
    TEST oLGB:SetBlendBellShape( 0.5, 1 ) == 0                          DESCRIPTION "SetBlendBellShape" SAMPLE Example_SetBlendBell()
-   TEST oLGB:SetBlendTriangularShape( 0.5, 1 ) == 0                    DESCRIPTION "SetBlendTriangularShape"
+   TEST oLGB:SetBlendTriangularShape( 0.5, 1 ) == 0                    DESCRIPTION "SetBlendTriangularShape" SAMPLE Example_SetBlendTri()
    TEST oLGB:SetLinearColors( oColor1, oColor2 ) == 0                  DESCRIPTION "SetLinearColors "    
    TEST oLGB:GetLinearColors( @aColor3 ) == 0                          DESCRIPTION "GetLinearColors " 
    TEST oLGB:TranslateTransform( 2, 5, MatrixOrderAppend ) == 0        DESCRIPTION "TranslateTransform"
@@ -683,6 +683,33 @@ function Example_SetBlendBell()
    exampleWindow( bPainted )  
   
 return nil
+
+function Example_SetBlendTri()
+   local bPainted := {| hDC |
+   	local myGraphics, linGrBrush
+   	
+      Graphics myGraphics(hdc)
+      
+      LinearGradientBrush linGrBrush(;
+         Point(0, 0),;
+         Point(500, 0),;
+         Color(255, 255, 0, 0),;   // red
+         Color(255, 0, 0, 255))  // blue
+      
+      linGrBrush:SetBlendTriangularShape(0.5, 0.6)
+      myGraphics:FillRectangle(linGrBrush, 0, 0, 500, 50)
+      
+      linGrBrush:SetBlendTriangularShape(0.5, 0.8)
+      myGraphics:FillRectangle(linGrBrush, 0, 75, 500, 50)
+      
+      linGrBrush:SetBlendTriangularShape(0.5, 1.0)
+   }
+   
+   exampleWindow( bPainted )  
+  
+return nil   
+   
+
 
 init procedure entrada
 
