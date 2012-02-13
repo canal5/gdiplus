@@ -119,7 +119,7 @@ return nil
    TEST oLGB:GetWrapMode( WrapModeTileFlipX ) == WrapModeTileFlipX     DESCRIPTION "GetWrapMode = " + Str( WrapModeTileFlipX ) 
    TEST oLGB:SetGammaCorrection() == 0                                 DESCRIPTION "SetGammaCorrection"
    TEST oLGB:GetGammaCorrection()                                      DESCRIPTION "GetGammaCorrection" 
-   TEST oLGB:MultiplyTransform( oMatrix3, MatrixOrderAppend ) == 0     DESCRIPTION "MultiplyTransform" 
+   TEST oLGB:MultiplyTransform( oMatrix3, MatrixOrderAppend ) == 0     DESCRIPTION "MultiplyTransform" SAMPLE Example_MultTrans()
    TEST oLGB:ResetTransform() == 0                                     DESCRIPTION "ResetTransform" 
    TEST oLGB:RotateTransform( 20, MatrixOrderAppend ) == 0             DESCRIPTION "RotateTransform" SAMPLE Example_RotateTrans()
    TEST oLGB:ScaleTransform( 2, 5, MatrixOrderAppend ) == 0            DESCRIPTION "ScaleTransform"
@@ -620,6 +620,45 @@ function  Example_RotateTrans()
 return nil
 
 
+function  Example_MultTrans()
+
+   local oWnd
+   
+   DEFINE WINDOW oWnd TITLE result->descrip
+   
+      oWnd:bPainted = { | hDC |
+      local myGraphics, S,T, linGrBrush 
+      Graphics myGraphics(hdc)
+      
+      Matrix S(2, 0, 0, 1, 0, 0)   // horizontal doubling
+      Matrix T(1, 0, 0, 1, 50, 0)  // horizontal translation of 50 units
+      
+      LinearGradientBrush linGrBrush(;
+         Rect(0, 0, 200, 100),;
+         Color(255, 255, 0, 0),;     // red
+         Color(255, 0, 0, 255), ;    // blue
+         LinearGradientModeHorizontal)
+      
+      // Fill a large area with the gradient brush (no transformation).
+      myGraphics:FillRectangle(linGrBrush, 0, 0, 800, 100)
+      
+      // Apply the scaling transformation.
+      linGrBrush:SetTransform(S)
+      
+      // Fill a large area with the scaled gradient brush.
+      myGraphics:FillRectangle(linGrBrush, 0, 150, 800, 100)
+      
+      // Form a composite transformation: first scale, then translate.
+      linGrBrush:MultiplyTransform(T, MatrixOrderAppend)
+      
+      // Fill a large area with the scaled and translated gradient brush.
+      myGraphics:FillRectangle(linGrBrush, 0, 300, 800, 100)
+      return nil
+   }
+
+    ACTIVATE WINDOW oWnd
+
+return nil
 
 
 init procedure entrada
