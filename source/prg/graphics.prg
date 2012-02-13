@@ -520,7 +520,9 @@ return 0
          nStatus = GP_FillRectangleLGB( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
       endif
    elseif nLen == 2 
-      //nStatus = GP_FillRectangleLGB( ::handle, aParams[ 1 ] /*Brush*/, aParams[ 2 ] /*Rect(F)*/ )
+      if aParams[ 1 ]:isKindof( "GPLINEARGRADIENTBRUSH" )
+         nStatus = GP_FillRectangleLGBR( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ]:handle /*Rect(F)*/ )
+      endif
    endif 
    /*   
   if oPen == nil
@@ -1508,6 +1510,22 @@ HB_FUNC( GP_FILLRECTANGLELGB )
     {
        g->FillRectangle( pLGB, x, y, width, height );
     }
+    else
+       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+HB_FUNC( GP_FILLRECTANGLELGBR )
+{
+    Graphics *g = hb_Graphics_par( 1 );
+    LinearGradientBrush * pLGB = hb_LGB_par( 2 );
+    Rect * rect = hb_Rect_par( 3 );
+               
+    if( g && pLGB && rect )
+    {  
+    	 Rect oRect( rect->X, rect->Y, rect->Width, rect->Height );
+       g->FillRectangle( pLGB, oRect );
+    }
+    
     else
        hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }

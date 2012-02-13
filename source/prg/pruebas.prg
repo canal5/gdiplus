@@ -108,7 +108,7 @@ return nil
    TEST ! Empty( oLGBL2:handle )        DESCRIPTION "Constructor Rect, Color, Color, angle, isAngleScalable"
    TEST ! Empty( oLGBLF2:handle )       DESCRIPTION "Constructor RectF, Color, Color, angle, isAngleScalable"   
    TEST oLGB:GetBlendCount() > 0        DESCRIPTION "GetBlendCount = " + Str( oLGB:GetBlendCount() )
-   TEST oLGB:SetBlend({ 0.0, 0.4, 0.6, 1.0}, {0.0, 0.2, 0.8, 1.0 } ) == 0 DESCRIPTION "SetBlend" 
+   TEST oLGB:SetBlend({ 0.0, 0.4, 0.6, 1.0}, {0.0, 0.2, 0.8, 1.0 } ) == 0 DESCRIPTION "SetBlend" SAMPLE Example_SetBlend()
    TEST oLGB:SetInterpolationColors ( aColor, ablendPositions ) == 0      DESCRIPTION "SetInterpolationColors " 
    TEST oLGB:GetInterpolationColorCount() > 0                             DESCRIPTION "GetInterpolationColorCount = " + str( oLGB:GetInterpolationColorCount() ) 
    TEST oLGB:GetInterpolationColors ( @aColor2, @ablendPositions2 ) == 0  DESCRIPTION "GetInterpolationColors " 
@@ -708,7 +708,30 @@ function Example_SetBlendTri()
    exampleWindow( bPainted )  
   
 return nil   
+
+
+function  Example_SetBlend()
    
+   local bPainted := { | hDC |
+   	  local myGraphics, linGrBrush, rect
+      Graphics myGraphics(hdc)
+      
+      Rect rect(0, 0, 300, 100)
+      
+      LinearGradientBrush linGrBrush(;
+         rect,;
+         Color(255, 255, 0, 0), ; // red
+         Color(255, 0, 0, 255),;  // blue
+         LinearGradientModeHorizontal)
+      
+      linGrBrush:SetBlend({0.0, 0.4, 0.6, 1.0}, {0.0, 0.2, 0.8, 1.0})
+      myGraphics:FillRectangle(linGrBrush, rect)
+      return nil
+   }
+   
+   exampleWindow( bPainted )  
+  
+return nil   
 
 
 init procedure entrada
