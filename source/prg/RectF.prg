@@ -66,6 +66,9 @@ CLASS GPRectF
   METHOD Offset2()
   METHOD Union()
 
+  METHOD convertRectFHandle( h )
+
+
 ENDCLASS
 
 *********************************************************************************************************
@@ -244,6 +247,12 @@ return GPRectFWidth(::handle)
 
 return GPRectFHeight(::handle)
 
+*********************************************************************************************************
+METHOD convertRectFHandle( h ) CLASS GPRectF
+*********************************************************************************************************
+   ::handle = _getRectFHandle( h )
+return nil
+
 
 
 
@@ -314,6 +323,13 @@ return GPRectFHeight(::handle)
 #pragma BEGINDUMP
 
 #include <gc.h>
+
+HB_FUNC( _GETRECTFHANDLE )
+{
+	RectF * c = ( RectF * ) hb_parptr( 1 );
+	hb_RectF_ret( c );	
+}
+
 
 HB_FUNC( _GPRECTF )
 {
@@ -528,25 +544,25 @@ HB_FUNC( GPRECTFSETY )
 HB_FUNC( GPRECTFX )
 {
    RectF* ptr = hb_RectF_par( 1 );
-   hb_retni( (int) ptr->X );
+   hb_retnd( (double) ptr->X );
 }
 
 HB_FUNC( GPRECTFY )
 {
    RectF* ptr = hb_RectF_par( 1 );
-   hb_retni( (int) ptr->Y );
+   hb_retnd( (double) ptr->Y );
 }
 
 HB_FUNC( GPRECTFWIDTH )
 {
    RectF* ptr = hb_RectF_par( 1 );
-   hb_retni( (int) ptr->Width );
+   hb_retnd( (double) ptr->Width );
 }
 
 HB_FUNC( GPRECTFHEIGHT )
 {
    RectF* ptr = hb_RectF_par( 1 );
-   hb_retni( (int) ptr->Height );
+   hb_retnd( (double) ptr->Height );
 }
 
 HB_FUNC( GPRECTFUNION )

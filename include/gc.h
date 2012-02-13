@@ -6,6 +6,11 @@
 
 using namespace Gdiplus;
 
+extern "C"
+{
+LPSTR LToStr( long );	
+}
+
 //graphics
 void hb_Graphics_ret( Graphics * p );
 Graphics * hb_Graphics_par( int iParam );
@@ -38,4 +43,11 @@ Size * hb_Size_par( int iParam );
 //Matrix
 void hb_Matrix_ret( Matrix * p );
 Matrix * hb_Matrix_par( int iParam );
- 
+
+//Color
+void hb_Color_ret( Color * p );
+Color * hb_Color_par( int iParam ); 
+
+//LinearGradientBrush
+void hb_LGB_ret( LinearGradientBrush * p );
+LinearGradientBrush * hb_LGB_par( int iParam );

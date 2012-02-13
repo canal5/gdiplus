@@ -49,11 +49,101 @@ local oRect3
       TestsRectF()
       TestsSizeF()
       TestMatrix()
+      
+      TestLinearGB()
       SHOW RESULT
 
    ENDDEFINE
 
 return nil
+
+*****************************************************************************************
+  function TestLinearGB() //LinearGradientBrush
+*****************************************************************************************
+  
+   local oPoint1, oPoint2, oColor1, oColor2
+   local oPoint3, oPoint4
+   local oLGB, oLGBF, oLGBL, oLGBLF, oLGBL2, oLGBLF2
+   local oRect, oRectF, aFactor, aPositions
+   local aColor := {}
+   local ablendPositions := {}
+   local aColor2, ablendPositions2, aColor3
+   local oRect2
+   local oMatrix, oMatrix2, oMatrix3
+   local aElements
+   
+   Point oPoint1(50, 50)
+   Point oPoint2(200, 100)
+
+   PointF oPoint3(50, 50)
+   PointF oPoint4(200, 100)
+      
+   Color oColor1(255, 255, 0, 0)
+   Color oColor2(255, 0, 0, 255)
+   Rect oRect(20, 10, 200, 100)
+   Rect oRectF(20, 10, 200, 100)
+
+   AAdd( aColor, Color(255, 255, 0, 0) )
+   AAdd( aColor, Color(255, 0, 0, 255) )
+   AAdd( aColor, Color(255, 0, 255, 0) )
+
+   AAdd( ablendPositions, 0.0 )
+   AAdd( ablendPositions, 0.3 )
+   AAdd( ablendPositions, 1.0 )
+   
+   Matrix oMatrix2(2.0, 0, 0, 1, 0, 0)
+   Matrix oMatrix3(1, 0, 0, 1, 50, 0)
+
+   LinearGradientBrush oLGB( oPoint1, oPoint2, oColor1, oColor2 )
+   LinearGradientBrush oLGBF( oPoint3, oPoint4, oColor1, oColor2 )
+   LinearGradientBrush oLGBL( oRect, oColor1, oColor2, LinearGradientModeVertical )
+   LinearGradientBrush oLGBLF( oRect, oColor1, oColor2, LinearGradientModeVertical )
+   LinearGradientBrush oLGBL2( oRectF, oColor1, oColor2, 30, .T. )
+   LinearGradientBrush oLGBLF2( oRect, oColor1, oColor2, 30, .T. )
+   
+   TEST ! Empty( oLGB:handle )          DESCRIPTION "Constructor Point, Point, Color, Color"  
+   TEST ! Empty( oLGBF:handle )         DESCRIPTION "Constructor PointF, PointF, Color, Color"
+   TEST ! Empty( oLGBL:handle )         DESCRIPTION "Constructor Rect, Color, Color, LinearGradientMode"
+   TEST ! Empty( oLGBLF:handle )        DESCRIPTION "Constructor RectF, Color, Color, LinearGradientMode"
+   TEST ! Empty( oLGBL2:handle )        DESCRIPTION "Constructor Rect, Color, Color, angle, isAngleScalable"
+   TEST ! Empty( oLGBLF2:handle )       DESCRIPTION "Constructor RectF, Color, Color, angle, isAngleScalable"   
+   TEST oLGB:GetBlendCount() > 0        DESCRIPTION "GetBlendCount = " + Str( oLGB:GetBlendCount() )
+   TEST oLGB:SetBlend({ 0.0, 0.4, 0.6, 1.0}, {0.0, 0.2, 0.8, 1.0 } ) == 0 DESCRIPTION "SetBlend" 
+   TEST oLGB:SetInterpolationColors ( aColor, ablendPositions ) == 0      DESCRIPTION "SetInterpolationColors " 
+   TEST oLGB:GetInterpolationColorCount() > 0                             DESCRIPTION "GetInterpolationColorCount = " + str( oLGB:GetInterpolationColorCount() ) 
+   TEST oLGB:GetInterpolationColors ( @aColor2, @ablendPositions2 ) == 0  DESCRIPTION "GetInterpolationColors " 
+   TEST oLGB:GetRectangle( @oRect2 ) == 0                             DESCRIPTION "GetRectangle" 
+   TEST oLGB:SetTransform( @oMatrix2 ) == 0                            DESCRIPTION "SetTransform" 
+   TEST oLGB:GetTransform( @oMatrix ) == 0                             DESCRIPTION "GetTransform" 
+   TEST oLGB:SetWrapMode( WrapModeTileFlipX ) == 0                     DESCRIPTION "SetWrapMode = WrapModeTileFlipX" 
+   TEST oLGB:GetWrapMode( WrapModeTileFlipX ) == WrapModeTileFlipX     DESCRIPTION "GetWrapMode = " + Str( WrapModeTileFlipX ) 
+   TEST oLGB:SetGammaCorrection() == 0                                 DESCRIPTION "SetGammaCorrection"
+   TEST oLGB:GetGammaCorrection()                                      DESCRIPTION "GetGammaCorrection" 
+   TEST oLGB:MultiplyTransform( oMatrix3, MatrixOrderAppend ) == 0     DESCRIPTION "MultiplyTransform" 
+   TEST oLGB:ResetTransform() == 0                                     DESCRIPTION "ResetTransform" 
+   TEST oLGB:RotateTransform( 20, MatrixOrderAppend ) == 0             DESCRIPTION "RotateTransform" 
+   TEST oLGB:ScaleTransform( 2, 5, MatrixOrderAppend ) == 0            DESCRIPTION "ScaleTransform"
+   TEST oLGB:SetBlendBellShape( 0.5, 1 ) == 0                          DESCRIPTION "SetBlendBellShape"
+   TEST oLGB:SetBlendTriangularShape( 0.5, 1 ) == 0                    DESCRIPTION "SetBlendTriangularShape"
+   TEST oLGB:SetLinearColors( oColor1, oColor2 ) == 0                  DESCRIPTION "SetLinearColors "    
+   TEST oLGB:GetLinearColors( @aColor3 ) == 0                          DESCRIPTION "GetLinearColors " 
+   TEST oLGB:TranslateTransform( 2, 5, MatrixOrderAppend ) == 0        DESCRIPTION "TranslateTransform"
+
+//   xbrowse( aFactor )
+//   xbrowse( aPositions )
+
+//   xbrowse( aColor2 )
+//   xbrowse( ablendPositions2 )
+
+//   xbrowse( aColor3 )
+//   ? aColor3[ 1 ]:GetRed()
+     
+//     ? oRect2:X(), oRect2:Y(), oRect2:Width(), oRect2:Height()
+//   oMatrix:GetElements( @aElements )
+//   xbrowse( aElements )
+
+
+return 0
 
 *****************************************************************************************
   function TestMatrix
@@ -99,20 +189,20 @@ return nil
   TEST oMatrix3:Invert() == 0                          DESCRIPTION "Invert"
   TEST oMatrix3:IsIdentity()                           DESCRIPTION "IsIdentity"
   TEST oMatrix3:IsInvertible()                         DESCRIPTION "IsInvertible"
-  TEST oMatrix3:Multiply( oMatrix4, MatrixOrder.MatrixOrderAppend ) == 0           DESCRIPTION "Multiply"
+  TEST oMatrix3:Multiply( oMatrix4, MatrixOrderAppend ) == 0           DESCRIPTION "Multiply"
   TEST oMatrix4:OffsetX() == 20                        DESCRIPTION "OffsetX"
   TEST oMatrix4:OffsetY() == 40                        DESCRIPTION "OffsetY"  
   TEST oMatrix4:Reset() == 0                           DESCRIPTION "Reset" 
-  TEST oMatrix2:Rotate( 30, MatrixOrder.MatrixOrderAppend ) == 0 DESCRIPTION "Rotate" 
-  TEST oMatrix2:Rotate( 30, PointF(150, 100), MatrixOrder.MatrixOrderAppend ) == 0 DESCRIPTION "RotateAt" 
-  TEST oMatrix4:Scale( 3, 2, MatrixOrder.MatrixOrderAppend ) == 0  DESCRIPTION "Scale"
+  TEST oMatrix2:Rotate( 30, MatrixOrderAppend ) == 0 DESCRIPTION "Rotate" 
+  TEST oMatrix2:Rotate( 30, PointF(150, 100), MatrixOrderAppend ) == 0 DESCRIPTION "RotateAt" 
+  TEST oMatrix4:Scale( 3, 2, MatrixOrderAppend ) == 0  DESCRIPTION "Scale"
   TEST oMatrix4:SetElements( 1, 0, 0, 1, 30, 50 ) == 0  DESCRIPTION "SetElements"
-  TEST oMatrix4:Shear( 3, 0, MatrixOrder.MatrixOrderAppend ) == 0  DESCRIPTION "Shear"
+  TEST oMatrix4:Shear( 3, 0, MatrixOrderAppend ) == 0  DESCRIPTION "Shear"
   TEST oMatrix4:TransformPoints( aPoint ) == 0         DESCRIPTION "TransformPoints with Point Atrray"
   TEST oMatrix4:TransformPointsF( aPointF ) == 0        DESCRIPTION "TransformPoints with PointF Atrray"
   TEST oMatrix4:TransformVectors( aPoint ) == 0         DESCRIPTION "TransformVentors with Point Atrray"
   TEST oMatrix4:TransformVectorsF( aPointF ) == 0       DESCRIPTION "TransformVectorsF with PointF Atrray"  
-  TEST oMatrix4:Translate( 150, 100, MatrixOrder.MatrixOrderAppend ) == 0 DESCRIPTION "Translate"  
+  TEST oMatrix4:Translate( 150, 100, MatrixOrderAppend ) == 0 DESCRIPTION "Translate"  
   
   
 return 0

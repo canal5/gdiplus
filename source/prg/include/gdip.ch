@@ -6,11 +6,13 @@
 
 #xcommand PEN <oPen>( <oColor>[, <n> ] ) => <oPen> := Pen( <oColor>[, <n> ] )
 #xcommand RECTF <oRectF>( [<nX>[, <nY> [, <nWidth>, <nHeight> ] ] ] ) => <oRectF> := RectF( [ <nX> ] [, <nY> ] [, <nWidth> ] [, <nHeight> ] )
+#xcommand RECT <oRect>( [<nX>[, <nY> [, <nWidth>, <nHeight> ] ] ] ) => <oRect> := Rect( [ <nX> ] [, <nY> ] [, <nWidth> ] [, <nHeight> ] )
 #xcommand POINTF <oPointF>( [ <par1>[, <par2> ] ] ) => <oPointF> := PointF( [ <par1> ] [, <par2> ] )
 #xcommand POINT <oPoint>( [ <par1>[, <par2> ] ] ) => <oPoint> := Point( [ <par1> ] [, <par2> ] )
 #xcommand SIZEF <oSizeF>( [<nWidth>[, <nHeight> ] ] ) => <oSizeF> := SizeF( [ <nWidth> ] [, <nHeight> ] )
 #xcommand COLOR <oColor>( [ <a>[,<r>, <g>[,<b> ] ] ] ) => <oColor> := Color( [<a>][,<r>][,<g>][,<b> ] )
 #xcommand MATRIX <oMatrix>( [ <par1> [, <par2> [, <par3>, <par4>, <par5>, <par6> ] ] ] ) => <oMatrix> := Matrix( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>][, <par6>] )
+#xcommand LINEARGRADIENTBRUSH <ogb>( <par1>, <par2>, <par3>, <par4>[, <par5> ]  ) => <ogb> := LinearGradientBrush( <par1>, <par2>, <par3>, <par4>[, <par5>] )
 
 
 
@@ -1103,9 +1105,19 @@
 #xtranslate PropertyTag.GpsDestDistRef                    =>   0x0019
 #xtranslate PropertyTag.GpsDestDist                       =>   0x001A
 
-#xtranslate MatrixOrder.MatrixOrderPrepend                => 0 
-#xtranslate MatrixOrder.MatrixOrderAppend                 => 1
+#xtranslate MatrixOrderPrepend                            => 0 
+#xtranslate MatrixOrderAppend                             => 1
 
+#xtranslate LinearGradientModeHorizontal                  => 0
+#xtranslate LinearGradientModeVertical                    => 1
+#xtranslate LinearGradientModeForwardDiagonal             => 2
+#xtranslate LinearGradientModeBackwardDiagonal            => 3
+
+#xtranslate WrapModeTile                                  => 0
+#xtranslate WrapModeTileFlipX                             => 1
+#xtranslate WrapModeTileFlipY                             => 2
+#xtranslate WrapModeTileFlipXY                            => 3
+#xtranslate WrapModeClamp                                 => 4
 
 // ---------------------------------------------------------------------------
 #define GDIP_EMFPLUSFLAGS_DISPLAY     1

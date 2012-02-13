@@ -472,3 +472,121 @@ Matrix * hb_Matrix_par( int iParam )
 
    return ph ? ( Matrix * ) * ph : NULL;
 }
+
+//------------------------------------------------//
+//Color
+//------------------------------------------------//
+
+static HB_GARBAGE_FUNC( GDI_Color_release )
+{
+   void ** ph = ( void ** ) Cargo;
+
+   /* Check if pointer is not NULL to avoid multiple freeing */
+   if( ph && * ph )
+   {
+      /* Destroy the object */
+      delete (Color*) * ph;
+
+      /* set pointer to NULL to avoid multiple freeing */
+      * ph = NULL;
+   }
+}
+
+
+#ifndef __XHARBOUR__
+const HB_GC_FUNCS s_gcColorFuncs =
+{
+   GDI_Color_release,
+   hb_gcDummyMark
+};
+
+#endif //__XHARBOUR__
+
+
+void hb_Color_ret( Color * p )
+{
+   if( p )
+   {
+#ifndef __XHARBOUR__
+      void ** ph = ( void ** ) hb_gcAllocate( sizeof( Color * ), &s_gcColorFuncs );
+#else
+      void ** ph = ( void ** ) hb_gcAlloc( sizeof( Color * ), GDI_Color_release );
+#endif //__XHARBOUR__
+      * ph = p;
+
+      hb_retptrGC( ph );
+   }
+   else
+      hb_retptr( NULL );
+}
+
+
+Color * hb_Color_par( int iParam )
+{
+#ifndef __XHARBOUR__
+   void ** ph = ( void ** ) hb_parptrGC( &s_gcColorFuncs, iParam );
+#else
+   void ** ph = ( void ** ) hb_parptrGC( GDI_Color_release, iParam );
+#endif //__XHARBOUR__
+
+   return ph ? ( Color * ) * ph : NULL;
+}
+
+//------------------------------------------------//
+//LinearGradientBrush
+//------------------------------------------------//
+
+static HB_GARBAGE_FUNC( GDI_LGB_release )
+{
+   void ** ph = ( void ** ) Cargo;
+
+   /* Check if pointer is not NULL to avoid multiple freeing */
+   if( ph && * ph )
+   {
+      /* Destroy the object */
+      delete (LinearGradientBrush*) * ph;
+
+      /* set pointer to NULL to avoid multiple freeing */
+      * ph = NULL;
+   }
+}
+
+
+#ifndef __XHARBOUR__
+const HB_GC_FUNCS s_gcLGBFuncs =
+{
+   GDI_LGB_release,
+   hb_gcDummyMark
+};
+
+#endif //__XHARBOUR__
+
+
+void hb_LGB_ret( LinearGradientBrush * p )
+{
+   if( p )
+   {
+#ifndef __XHARBOUR__
+      void ** ph = ( void ** ) hb_gcAllocate( sizeof( LinearGradientBrush * ), &s_gcLGBFuncs );
+#else
+      void ** ph = ( void ** ) hb_gcAlloc( sizeof( LinearGradientBrush * ), GDI_LGB_release );
+#endif //__XHARBOUR__
+      * ph = p;
+
+      hb_retptrGC( ph );
+   }
+   else
+      hb_retptr( NULL );
+}
+
+
+LinearGradientBrush * hb_LGB_par( int iParam )
+{
+#ifndef __XHARBOUR__
+   void ** ph = ( void ** ) hb_parptrGC( &s_gcLGBFuncs, iParam );
+#else
+   void ** ph = ( void ** ) hb_parptrGC( GDI_LGB_release, iParam );
+#endif //__XHARBOUR__
+
+   return ph ? ( LinearGradientBrush * ) * ph : NULL;
+}

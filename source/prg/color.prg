@@ -68,6 +68,8 @@ CLASS GPColor
   METHOD SetFromCOLORREF()
   METHOD SetValue( argbColor )
   METHOD ToCOLORREF()
+  
+  METHOD convertColorHandle( h ) 
 
 ENDCLASS
 
@@ -179,6 +181,11 @@ return GPColorSetValue(::handle, argbColor)
 return GPColorToCOLORREF(::handle)
 
 
+METHOD convertColorHandle( h ) CLASS GPColor
+   ::handle = _getColorHandle( h )
+return nil
+
+
 // Color::GetA	             The Color::GetA method gets the alpha component of this Color object.
 // Color::GetAlpha	     The Color::GetAlpha method gets the alpha component of this Color object.
 // Color::GetB	             The Color::GetB method gets the blue component of this Color object.
@@ -195,11 +202,13 @@ return GPColorToCOLORREF(::handle)
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
+#include <gc.h>
 
-using namespace Gdiplus;
+HB_FUNC( _GETCOLORHANDLE )
+{
+	Color * c = ( Color * ) hb_parptr( 1 );
+	hb_Color_ret( c );	
+}
 
 HB_FUNC( _GPCOLOR )
 {
@@ -215,87 +224,80 @@ HB_FUNC( _GPCOLOR )
    else
        clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
 
-   hb_retptr( (void*) clr );
-}
-
-HB_FUNC( DELETECOLOR )
-{
-   Color* clr = (Color*) hb_parptr( 1 );
-   delete (Color*) clr;
-   hb_ret();
+   hb_Color_ret( clr );
 }
 
 HB_FUNC( GPCOLORGETA )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    hb_retni( clr->GetA() );
 }
 
 HB_FUNC( GPCOLORGETALPHA )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    hb_retni( clr->GetAlpha() );
 }
 
 HB_FUNC( GPCOLORGETB )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    hb_retni( clr->GetB() );
 }
 
 HB_FUNC( GPCOLORGETBLUE )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    hb_retni( clr->GetBlue() );
 }
 
 HB_FUNC( GPCOLORGETG )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    hb_retni( clr->GetG() );
 }
 
 HB_FUNC( GPCOLORGETGREEN )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    hb_retni( clr->GetGreen() );
 }
 
 HB_FUNC( GPCOLORGETR )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    hb_retni( clr->GetR() );
 }
 
 HB_FUNC( GPCOLORGETRED )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    hb_retni( clr->GetRed() );
 }
 
 HB_FUNC( GPCOLORGETVALUE )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    hb_retni( clr->GetValue() );
 }
 
 HB_FUNC( GPCOLORSETFROMCOLORREF )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    clr->SetFromCOLORREF( (COLORREF) hb_parnl( 2 ) );
    hb_ret();
 }
 
 HB_FUNC( GPCOLORSETVALUE )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    clr->SetValue( (ARGB) hb_parnl( 2 ) );
    hb_ret();
 }
 
 HB_FUNC( GPCOLORTOCOLORREF )
 {
-   Color* clr = (Color*) hb_parptr( 1 );
+   Color* clr = (Color*) hb_Color_par( 1 );
    hb_retnl( (long) clr->ToCOLORREF() );
 }
 

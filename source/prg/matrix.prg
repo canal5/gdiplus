@@ -50,6 +50,9 @@ CLASS GPMatrix
    METHOD TransformVectors(Point)
    METHOD TransformVectorsF(PointF)
    METHOD Translate()
+   
+   
+   METHOD convertMatrixHandle( h )
 
 
 // Constructors
@@ -258,6 +261,14 @@ return _GPmatrixTransformVectorsf( ::handle, aPoint )
 
 return _GPMatrixTranslate( ::handle, nOffsetX, nOffsetY, nOrder )
 
+
+*********************************************************************************************************
+METHOD convertMatrixHandle( h ) CLASS GPMatrix
+*********************************************************************************************************
+   ::handle = _getMatrixHandle( h )
+return nil
+
+
 // Constructors
 // Matrix::Matrix()	                         Creates and initializes a Matrix::Matrix object that represents the identity matrix.
 // Matrix::Matrix(REAL,REAL,REAL,REAL,REAL,REAL) Creates and initializes a Matrix::Matrix object based on six numbers that define an affine transformation.
@@ -298,6 +309,12 @@ return _GPMatrixTranslate( ::handle, nOffsetX, nOffsetY, nOrder )
 #pragma BEGINDUMP
 #include <hbvm.h> 
 #include <gc.h>
+
+HB_FUNC( _GETMATRIXHANDLE )
+{
+	Matrix * c = ( Matrix * ) hb_parptr( 1 );
+	hb_Matrix_ret( c );	
+}
 
 
 HB_FUNC( _GPMATRIX )
@@ -652,14 +669,16 @@ HB_FUNC( _GPMATRIXTRANSFORMPOINTS )
         Point pDest( pObj->X, pObj->Y );	
 	    	pPoint[ n ] = pDest;    	
 	    	
-	    	sta = ptr->TransformPoints( pPoint, iLen );
-	    	
-	    	hb_retni( sta );
+
 	    		    	   	
 	    }
 	    
+	    hb_xfree( ( void*) pPoint );
+	    sta = ptr->TransformPoints( pPoint, iLen );
+	    	
+	    hb_retni( sta );
 	    
-	    hb_retni( 0 );
+	    
 	 }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 	 
@@ -688,15 +707,13 @@ HB_FUNC( _GPMATRIXTRANSFORMPOINTSF )
         PointF * pObj = hb_PointF_par( -1 );
         PointF pDest( pObj->X, pObj->Y );	
 	    	pPoint[ n ] = pDest;    	
-	    	
-	    	sta = ptr->TransformPoints( pPoint, iLen );
-	    	
-	    	hb_retni( sta );
-	    		    	   	
 	    }
 	    
-	    
-	    hb_retni( 0 );
+	    hb_xfree( ( void*) pPoint );
+	    sta = ptr->TransformPoints( pPoint, iLen );
+	    	
+	    hb_retni( sta );
+
 	 }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 	 
@@ -725,15 +742,15 @@ HB_FUNC( _GPMATRIXTRANSFORMVECTORS )
         Point * pObj = hb_Point_par( -1 );
         Point pDest( pObj->X, pObj->Y );	
 	    	pPoint[ n ] = pDest;    	
-	    	
-	    	sta = ptr->TransformVectors( pPoint, iLen );
-	    	
-	    	hb_retni( sta );
-	    		    	   	
+	    		    		    	   	
 	    }
-	    
-	    
-	    hb_retni( 0 );
+
+	    sta = ptr->TransformVectors( pPoint, iLen );
+
+	    hb_xfree( ( void*) pPoint );
+	    	
+	    hb_retni( sta );
+	    	    
 	 }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 	 
@@ -762,15 +779,14 @@ HB_FUNC( _GPMATRIXTRANSFORMVECTORSF )
         PointF * pObj = hb_PointF_par( -1 );
         PointF pDest( pObj->X, pObj->Y );	
 	    	pPoint[ n ] = pDest;    	
-	    	
-	    	sta = ptr->TransformVectors( pPoint, iLen );
-	    	
-	    	hb_retni( sta );
 	    		    	   	
 	    }
+
+	    sta = ptr->TransformVectors( pPoint, iLen );
 	    
-	    
-	    hb_retni( 0 );
+	    hb_xfree( (void*) pPoint );
+	    hb_retni( sta );	    
+
 	 }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 	 
