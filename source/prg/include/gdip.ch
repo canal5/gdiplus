@@ -13,7 +13,7 @@
 #xcommand COLOR <oColor>( [ <a>[,<r>, <g>[,<b> ] ] ] ) => <oColor> := Color( [<a>][,<r>][,<g>][,<b> ] )
 #xcommand MATRIX <oMatrix>( [ <par1> [, <par2> [, <par3>, <par4>, <par5>, <par6> ] ] ] ) => <oMatrix> := Matrix( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>][, <par6>] )
 #xcommand LINEARGRADIENTBRUSH <ogb>( <par1>, <par2>, <par3>, <par4>[, <par5> ]  ) => <ogb> := LinearGradientBrush( <par1>, <par2>, <par3>, <par4>[, <par5>] )
-
+#xcommand GRAPHICS <o>( <par1> ) =>  <o> := Graphics( <par1> )
 
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"

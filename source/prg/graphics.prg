@@ -208,10 +208,20 @@
 
 #include "fivewin.ch"
 
+function Graphics( ... )
 
+   local aParams := hb_aparams()
+   local oObj
+   local nLen := Len( aParams )
+   
+   //TODO resto de parametros
+   switch nLen
+      case 1
+         oObj := GPGraphics():New( aParams[ 1 ] )         
+         exit
+   endswitch
 
-function Graphics( hDC )
-return GPGraphics():New( hDC )
+return oObj
 
 
 CLASS GPGraphics
@@ -496,19 +506,29 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD FillRectangle( rc, oBrush, oPen ) CLASS GPGraphics
+  METHOD FillRectangle( ... ) CLASS GPGraphics
 **********************************************************************************************************
 
-  DEFAULT oBrush := ::oBrush
-  DEFAULT oPen   := ::oPen
-
-
+   local aParams := hb_aparams()
+   local nLen := Len( aParams )
+   local nStatus
+   
+    
+   if nLen == 5 
+      //TODO faltan los demas tipos de BRUSH
+      if aParams[ 1 ]:isKindof( "GPLINEARGRADIENTBRUSH" )
+         nStatus = GP_FillRectangleLGB( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
+      endif
+   elseif nLen == 2 
+      //nStatus = GP_FillRectangleLGB( ::handle, aParams[ 1 ] /*Brush*/, aParams[ 2 ] /*Rect(F)*/ )
+   endif 
+   /*   
   if oPen == nil
      GP_FillRect( ::handle, {rc[1],rc[2], rc[4]-rc[2], rc[3]-rc[1]}, oBrush:handle )
   else
      GP_FillRect( ::handle, {rc[1],rc[2], rc[4]-rc[2], rc[3]-rc[1]}, oBrush:handle, oPen:handle )
   endif
-
+*/
 return 0
 
 **********************************************************************************************************
@@ -1472,6 +1492,24 @@ HB_FUNC( GP_FILLPATH )
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
     hb_ret();
+}
+
+
+HB_FUNC( GP_FILLRECTANGLELGB )
+{
+    Graphics *g = hb_Graphics_par( 1 );
+    LinearGradientBrush * pLGB = hb_LGB_par( 2 );
+    REAL x = ( REAL ) hb_parnd( 3 );
+    REAL y = ( REAL ) hb_parnd( 4 );
+    REAL width = ( REAL ) hb_parnd( 5 );
+    REAL height = ( REAL ) hb_parnd( 6 );
+               
+    if( g && pLGB )
+    {
+       g->FillRectangle( pLGB, x, y, width, height );
+    }
+    else
+       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GP_FILLRECT )

@@ -4,8 +4,9 @@
 
 #xcommand TEST <uAction,...>  ;
           [ DESCRIPTION <cDescription> ] ;
+          [ SAMPLE <uDisplay> ];
        => ;
-          ThisTest():Assert( ProcName(), ProcLine(), <(uAction)>, {|This|<uAction>}, <cDescription> )
+          ThisTest():Assert( ProcName(), ProcLine(), <(uAction)>, {|This|<uAction>}, <cDescription>, [\{ |This| <uDisplay> \}] )
 
 #xcommand SEPARADOR <cDescription>  ;
        => ;

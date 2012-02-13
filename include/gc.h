@@ -51,3 +51,7 @@ Color * hb_Color_par( int iParam );
 //LinearGradientBrush
 void hb_LGB_ret( LinearGradientBrush * p );
 LinearGradientBrush * hb_LGB_par( int iParam );
+
+//Brush
+void hb_Brush_ret( Brush * p );
+Brush * hb_Brush_par( int iParam );

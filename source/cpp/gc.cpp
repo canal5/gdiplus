@@ -590,3 +590,62 @@ LinearGradientBrush * hb_LGB_par( int iParam )
 
    return ph ? ( LinearGradientBrush * ) * ph : NULL;
 }
+
+//------------------------------------------------//
+//Brush
+//------------------------------------------------//
+
+static HB_GARBAGE_FUNC( GDI_Brush_release )
+{
+   void ** ph = ( void ** ) Cargo;
+
+   /* Check if pointer is not NULL to avoid multiple freeing */
+   if( ph && * ph )
+   {
+      /* Destroy the object */
+      delete (Brush*) * ph;
+
+      /* set pointer to NULL to avoid multiple freeing */
+      * ph = NULL;
+   }
+}
+
+
+#ifndef __XHARBOUR__
+const HB_GC_FUNCS s_gcBrushFuncs =
+{
+   GDI_Brush_release,
+   hb_gcDummyMark
+};
+
+#endif //__XHARBOUR__
+
+
+void hb_Brush_ret( Brush * p )
+{
+   if( p )
+   {
+#ifndef __XHARBOUR__
+      void ** ph = ( void ** ) hb_gcAllocate( sizeof( Brush * ), &s_gcBrushFuncs );
+#else
+      void ** ph = ( void ** ) hb_gcAlloc( sizeof( Brush * ), GDI_Brush_release );
+#endif //__XHARBOUR__
+      * ph = p;
+
+      hb_retptrGC( ph );
+   }
+   else
+      hb_retptr( NULL );
+}
+
+
+Brush * hb_Brush_par( int iParam )
+{
+#ifndef __XHARBOUR__
+   void ** ph = ( void ** ) hb_parptrGC( &s_gcBrushFuncs, iParam );
+#else
+   void ** ph = ( void ** ) hb_parptrGC( GDI_Brush_release, iParam );
+#endif //__XHARBOUR__
+
+   return ph ? ( Brush * ) * ph : NULL;
+}

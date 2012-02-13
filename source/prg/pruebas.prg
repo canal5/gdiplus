@@ -17,8 +17,6 @@ local oSize
 local oPoint
 local oRect3
 
-
-
    DEFINE SUITTEST oTest
 
       oColor := Color( 255, 10, 20, 30 )
@@ -38,7 +36,7 @@ local oRect3
 
       SEPARADOR( "PEN" )
 
-      TEST !empty( Pen( oPen ):handle )                      DESCRIPTION "Constructor Pen. Pen( oPen )"
+      TEST !empty( Pen( oPen ):handle )                      DESCRIPTION "Constructor Pen. Pen( oPen )"  
       TEST !empty( Pen( oBrush, 5 ):handle )                 DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
       TEST !empty( Pen( oColor, 5 ):handle )                 DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
       TEST oPen:SetAlignment( PenAlignment.Center ) == oPen:GetAlignment() ;
@@ -101,7 +99,9 @@ return nil
    LinearGradientBrush oLGBL2( oRectF, oColor1, oColor2, 30, .T. )
    LinearGradientBrush oLGBLF2( oRect, oColor1, oColor2, 30, .T. )
    
-   TEST ! Empty( oLGB:handle )          DESCRIPTION "Constructor Point, Point, Color, Color"  
+   SEPARADOR( "LINEARGRADIENTBRUSH" )
+   
+   TEST ! Empty( oLGB:handle )          DESCRIPTION "Constructor Point, Point, Color, Color"  SAMPLE TestLinearGB1( )
    TEST ! Empty( oLGBF:handle )         DESCRIPTION "Constructor PointF, PointF, Color, Color"
    TEST ! Empty( oLGBL:handle )         DESCRIPTION "Constructor Rect, Color, Color, LinearGradientMode"
    TEST ! Empty( oLGBLF:handle )        DESCRIPTION "Constructor RectF, Color, Color, LinearGradientMode"
@@ -121,7 +121,7 @@ return nil
    TEST oLGB:GetGammaCorrection()                                      DESCRIPTION "GetGammaCorrection" 
    TEST oLGB:MultiplyTransform( oMatrix3, MatrixOrderAppend ) == 0     DESCRIPTION "MultiplyTransform" 
    TEST oLGB:ResetTransform() == 0                                     DESCRIPTION "ResetTransform" 
-   TEST oLGB:RotateTransform( 20, MatrixOrderAppend ) == 0             DESCRIPTION "RotateTransform" 
+   TEST oLGB:RotateTransform( 20, MatrixOrderAppend ) == 0             DESCRIPTION "RotateTransform" SAMPLE Example_RotateTrans()
    TEST oLGB:ScaleTransform( 2, 5, MatrixOrderAppend ) == 0            DESCRIPTION "ScaleTransform"
    TEST oLGB:SetBlendBellShape( 0.5, 1 ) == 0                          DESCRIPTION "SetBlendBellShape"
    TEST oLGB:SetBlendTriangularShape( 0.5, 1 ) == 0                    DESCRIPTION "SetBlendTriangularShape"
@@ -565,10 +565,59 @@ return oColor:GetValue() == oColor2:GetValue()
 
 return oColor:ToCOLORREF() == RGB( 255, 255, 255 )
 
+   
+
+function TestLinearGB1( )
+
+   local oWnd
+   
+   DEFINE WINDOW oWnd TITLE result->descrip
+   
+   oWnd:bPainted = { | hDC |
+   	                  local myGraphics
+   	                  local linGrBrush
+                      Graphics myGraphics( hDC )    
+                      LinearGradientBrush linGrBrush(  Point(50, 50),  Point(200, 100),  Color(255, 255, 0, 0),  Color(255, 0, 0, 255) )  // blue
+                      myGraphics:FillRectangle( linGrBrush, 0, 0, 300, 200)
+                      return nil
+                     }   
+   
+   ACTIVATE WINDOW oWnd
 
 
+return nil
 
 
+function  Example_RotateTrans()
+   local oWnd
+   
+   DEFINE WINDOW oWnd TITLE result->descrip
+   
+   
+   oWnd:bPainted = { | hDC | 
+   	  local myGraphics, linGrBrush
+      Graphics myGraphics( hDC )
+      
+      LinearGradientBrush linGrBrush( ;
+         Rect(0, 0, 80, 40),;
+         Color(255, 255, 0, 0),;  // red
+         Color(255, 0, 0, 255),;  // blue
+         LinearGradientModeHorizontal )
+      
+      // Fill a large area with the linear gradient brush (no transformation).
+      myGraphics:FillRectangle( linGrBrush, 0, 0, 800, 150)
+      
+      // Apply a composite transformation: first scale, then rotate.
+      linGrBrush:ScaleTransform(2, 1)                    // horizontal doubling
+      linGrBrush:RotateTransform(20, MatrixOrderAppend)  // 20-degree rotation
+      
+      // Fill a large area with the transformed linear gradient brush.
+      myGraphics:FillRectangle( linGrBrush, 0, 200, 800, 150)
+   }
+    
+   ACTIVATE WINDOW oWnd
+   
+return nil
 
 
 

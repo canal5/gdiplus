@@ -1,14 +1,20 @@
 #include "fivewin.ch"
 #include "xbrowse.ch"
 
+static oSelf
+
 CLASS TTestUnit
 
       DATA bRun
+      DATA aDisplay
+      DATA cDescription
+      DATA cSeparator
+
 
       METHOD New() CONSTRUCTOR
       METHOD End()
 
-      METHOD Assert( cProcName, cProcLine, cValue,  bAction, cDescription )
+      METHOD Assert( cProcName, cProcLine, cValue,  bAction, cDescription, bDisplay )
       METHOD Show()
       METHOD OnError( oError )
       METHOD Separator( cHeader )
@@ -34,7 +40,9 @@ ENDCLASS
                              {"PROCNAME" , "C", 100, 0 },;
                              {"PROCLINE" , "C",  10, 0 } } )
    USE result ALIAS result
-
+   ::aDisplay = {}
+   oSelf = self
+   
 return self
 
 ************************************************************************
@@ -67,12 +75,13 @@ DEFAULT cDescription := ""
 
 result->(DbAppend())
 result->descrip := left(cDescription, 160)
-
+AAdd( ::aDisplay, NIL )
+::cSeparator = cDescription
 
 return 0
 
 *****************************************************************************************
-  METHOD Assert( cProcname, cProcline, cValue, bAction, cDescription ) CLASS TTestUnit
+  METHOD Assert( cProcname, cProcline, cValue, bAction, cDescription, bDisplay ) CLASS TTestUnit
 *****************************************************************************************
 
 Local oValor
@@ -91,10 +100,22 @@ result->descrip = left(cDescription,160)
 result->procname = left(Procname(1),100)
 result->procline = left(str(procline(1)),10)
 
+::cDescription = cDescription
+
 if eval( bAction )
    result->Resultado := 1
+   if hb_IsBlock( bDisplay )
+      AAdd( ::aDisplay, bDisplay )
+   else
+      AAdd( ::aDisplay, NIL )
+   endif 
 else
    result->Resultado := 2
+   if hb_IsBlock( bDisplay )
+      AAdd( ::aDisplay, {| | MsgInfo( "No se puede ejecutar" + CRLF + "Se genero un error" ) } )
+   else 
+      AAdd( ::aDisplay, NIL )
+   endif    
 endif
 
 
@@ -151,7 +172,7 @@ function zBrowse( cTitle, cListName, bNew, bModify, bDelete, bSearch, bList,;
 
    @ 10,10 XBROWSE oBrw SIZE -10,-10 PIXEL OF oWnd ;
       ALIAS "RESULT" CELL LINES NOBORDER ;
-      FIELDS                  "",;
+      FIELDS                  "", "",;
                               result->RESULTADO,;
                               result->Descrip   ,;
                               result->test      ,;
@@ -160,8 +181,8 @@ function zBrowse( cTitle, cListName, bNew, bModify, bDelete, bSearch, bList,;
                               result->time      ,;
                               result->procname  ,;
                               result->procline  ;
-      HEADERS "", "Resultado", "Descripción", "Test", "Errorcode", "Fecha", "Hora", "Procname", "Procline" ;
-      FIELDSIZES 18, 48, 280, 260, 280, 60, 60, 150, 70  ;
+      HEADERS "", "Sample", "Resultado", "Descripción", "Test", "Errorcode", "Fecha", "Hora", "Procname", "Procline" ;
+      FIELDSIZES 18, 18, 48, 280, 260, 280, 60, 60, 150, 70  ;
 
 
 
@@ -171,6 +192,7 @@ function zBrowse( cTitle, cListName, bNew, bModify, bDelete, bSearch, bList,;
    WITH OBJECT oBrw
       :bClrSel       := { || { CLR_WHITE, CLR_GRAY } }
       :nStretchCol   := STRETCHCOL_LAST
+      :bLDblClick    := { | nRow, nCol, nKeyFlags, o | If( oSelf:aDisplay[ o:KeyNo() ] != NIL, Eval( oSelf:aDisplay[ o:KeyNo() ], oSelf ), NIL ) }
       :nMarqueeStyle := 4
       :CreateFromCode()
    END
@@ -178,7 +200,10 @@ function zBrowse( cTitle, cListName, bNew, bModify, bDelete, bSearch, bList,;
 
    oBrw:aCols[ 1 ]:AddBitmap(".\bitmaps\Level1.bmp")
    oBrw:aCols[ 1 ]:AddBitmap(".\bitmaps\Level2.bmp")
-   oBrw:aCols[ 1 ]:bBmpData   := { || iif( result->RESULTADO=1, 1, 2) }
+   oBrw:aCols[ 1 ]:bBmpData   := { || If( result->RESULTADO=1, 1, 2) }
+   
+   oBrw:aCols[ 2 ]:AddBitmap(".\bitmaps\checked.bmp")
+   oBrw:aCols[ 2 ]:bBmpData   := { || If( oSelf:aDisplay[ oBrw:KeyNo() ] != NIL, 1, 0 ) }   
 
 
 
