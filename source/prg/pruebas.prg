@@ -123,7 +123,7 @@ return nil
    TEST oLGB:ResetTransform() == 0                                     DESCRIPTION "ResetTransform" 
    TEST oLGB:RotateTransform( 20, MatrixOrderAppend ) == 0             DESCRIPTION "RotateTransform" SAMPLE Example_RotateTrans()
    TEST oLGB:ScaleTransform( 2, 5, MatrixOrderAppend ) == 0            DESCRIPTION "ScaleTransform"
-   TEST oLGB:SetBlendBellShape( 0.5, 1 ) == 0                          DESCRIPTION "SetBlendBellShape"
+   TEST oLGB:SetBlendBellShape( 0.5, 1 ) == 0                          DESCRIPTION "SetBlendBellShape" SAMPLE Example_SetBlendBell()
    TEST oLGB:SetBlendTriangularShape( 0.5, 1 ) == 0                    DESCRIPTION "SetBlendTriangularShape"
    TEST oLGB:SetLinearColors( oColor1, oColor2 ) == 0                  DESCRIPTION "SetLinearColors "    
    TEST oLGB:GetLinearColors( @aColor3 ) == 0                          DESCRIPTION "GetLinearColors " 
@@ -566,14 +566,20 @@ return oColor:GetValue() == oColor2:GetValue()
 return oColor:ToCOLORREF() == RGB( 255, 255, 255 )
 
    
+function exampleWindow( bCode )
+
+   DEFINE WINDOW oWnd TITLE result->descrip
+   
+   oWnd:bPainted = bCode
+   
+   ACTIVATE WINDOW oWnd
+
+return nil
 
 function TestLinearGB1( )
 
-   local oWnd
    
-   DEFINE WINDOW oWnd TITLE result->descrip
-   
-   oWnd:bPainted = { | hDC |
+   local bPainted := { | hDC |
    	                  local myGraphics
    	                  local linGrBrush
                       Graphics myGraphics( hDC )    
@@ -581,20 +587,16 @@ function TestLinearGB1( )
                       myGraphics:FillRectangle( linGrBrush, 0, 0, 300, 200)
                       return nil
                      }   
-   
-   ACTIVATE WINDOW oWnd
 
+   exampleWindow( bPainted )
 
 return nil
 
 
 function  Example_RotateTrans()
-   local oWnd
-   
-   DEFINE WINDOW oWnd TITLE result->descrip
    
    
-   oWnd:bPainted = { | hDC | 
+    local bPainted := { | hDC | 
    	  local myGraphics, linGrBrush
       Graphics myGraphics( hDC )
       
@@ -615,18 +617,14 @@ function  Example_RotateTrans()
       myGraphics:FillRectangle( linGrBrush, 0, 200, 800, 150)
    }
     
-   ACTIVATE WINDOW oWnd
+   exampleWindow( bPainted ) 
    
 return nil
 
 
 function  Example_MultTrans()
 
-   local oWnd
-   
-   DEFINE WINDOW oWnd TITLE result->descrip
-   
-      oWnd:bPainted = { | hDC |
+    local bPainted := { | hDC |
       local myGraphics, S,T, linGrBrush 
       Graphics myGraphics(hdc)
       
@@ -656,10 +654,35 @@ function  Example_MultTrans()
       return nil
    }
 
-    ACTIVATE WINDOW oWnd
+    exampleWindow( bPainted )
 
 return nil
 
+function Example_SetBlendBell()
+
+   local bPainted := { | hDC |
+   	 local myGraphics, linGrBrush 
+     Graphics myGraphics(hdc)
+     
+     LinearGradientBrush linGrBrush(;
+        Point(0, 0),;
+        Point(500, 0),;
+        Color(255, 255, 0, 0),;   // red
+        Color(255, 0, 0, 255))  // blue
+     
+     linGrBrush:SetBlendBellShape(0.5, 0.6)
+     myGraphics:FillRectangle(linGrBrush, 0, 0, 500, 50)
+     
+     linGrBrush:SetBlendBellShape(0.5, 0.8)
+     myGraphics:FillRectangle(linGrBrush, 0, 75, 500, 50)
+     
+     linGrBrush:SetBlendBellShape(0.5, 1.0)
+     myGraphics:FillRectangle(linGrBrush, 0, 150, 500, 50)
+   }
+  
+   exampleWindow( bPainted )  
+  
+return nil
 
 init procedure entrada
 
