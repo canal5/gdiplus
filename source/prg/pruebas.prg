@@ -36,7 +36,7 @@ local oRect3
 
       SEPARADOR( "PEN" )
 
-      TEST !empty( Pen( oPen ):handle )                      DESCRIPTION "Constructor Pen. Pen( oPen )"  
+      TEST !empty( Pen( oPen ):handle )                      DESCRIPTION "Constructor Pen. Pen( oPen )"
       TEST !empty( Pen( oBrush, 5 ):handle )                 DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
       TEST !empty( Pen( oColor, 5 ):handle )                 DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
       TEST oPen:SetAlignment( PenAlignment.Center ) == oPen:GetAlignment() ;
@@ -47,7 +47,7 @@ local oRect3
       TestsRectF()
       TestsSizeF()
       TestMatrix()
-      
+
       TestLinearGB()
       SHOW RESULT
 
@@ -58,7 +58,7 @@ return nil
 *****************************************************************************************
   function TestLinearGB() //LinearGradientBrush
 *****************************************************************************************
-  
+
    local oPoint1, oPoint2, oColor1, oColor2
    local oPoint3, oPoint4
    local oLGB, oLGBF, oLGBL, oLGBLF, oLGBL2, oLGBLF2
@@ -69,13 +69,13 @@ return nil
    local oRect2
    local oMatrix, oMatrix2, oMatrix3
    local aElements
-   
+
    Point oPoint1(50, 50)
    Point oPoint2(200, 100)
 
    PointF oPoint3(50, 50)
    PointF oPoint4(200, 100)
-      
+
    Color oColor1(255, 255, 0, 0)
    Color oColor2(255, 0, 0, 255)
    Rect oRect(20, 10, 200, 100)
@@ -88,7 +88,7 @@ return nil
    AAdd( ablendPositions, 0.0 )
    AAdd( ablendPositions, 0.3 )
    AAdd( ablendPositions, 1.0 )
-   
+
    Matrix oMatrix2(2.0, 0, 0, 1, 0, 0)
    Matrix oMatrix3(1, 0, 0, 1, 50, 0)
 
@@ -98,35 +98,35 @@ return nil
    LinearGradientBrush oLGBLF( oRect, oColor1, oColor2, LinearGradientModeVertical )
    LinearGradientBrush oLGBL2( oRectF, oColor1, oColor2, 30, .T. )
    LinearGradientBrush oLGBLF2( oRect, oColor1, oColor2, 30, .T. )
-   
+
    SEPARADOR( "LINEARGRADIENTBRUSH" )
-   
+
    TEST ! Empty( oLGB:handle )          DESCRIPTION "Constructor Point, Point, Color, Color"  SAMPLE TestLinearGB1( )
    TEST ! Empty( oLGBF:handle )         DESCRIPTION "Constructor PointF, PointF, Color, Color"
    TEST ! Empty( oLGBL:handle )         DESCRIPTION "Constructor Rect, Color, Color, LinearGradientMode"
    TEST ! Empty( oLGBLF:handle )        DESCRIPTION "Constructor RectF, Color, Color, LinearGradientMode"
    TEST ! Empty( oLGBL2:handle )        DESCRIPTION "Constructor Rect, Color, Color, angle, isAngleScalable"
-   TEST ! Empty( oLGBLF2:handle )       DESCRIPTION "Constructor RectF, Color, Color, angle, isAngleScalable"   
+   TEST ! Empty( oLGBLF2:handle )       DESCRIPTION "Constructor RectF, Color, Color, angle, isAngleScalable"
    TEST oLGB:GetBlendCount() > 0        DESCRIPTION "GetBlendCount = " + Str( oLGB:GetBlendCount() )
    TEST oLGB:SetBlend({ 0.0, 0.4, 0.6, 1.0}, {0.0, 0.2, 0.8, 1.0 } ) == 0 DESCRIPTION "SetBlend" SAMPLE Example_SetBlend()
-   TEST oLGB:SetInterpolationColors ( aColor, ablendPositions ) == 0      DESCRIPTION "SetInterpolationColors " 
-   TEST oLGB:GetInterpolationColorCount() > 0                             DESCRIPTION "GetInterpolationColorCount = " + str( oLGB:GetInterpolationColorCount() ) 
-   TEST oLGB:GetInterpolationColors ( @aColor2, @ablendPositions2 ) == 0  DESCRIPTION "GetInterpolationColors " 
-   TEST oLGB:GetRectangle( @oRect2 ) == 0                             DESCRIPTION "GetRectangle" 
-   TEST oLGB:SetTransform( @oMatrix2 ) == 0                            DESCRIPTION "SetTransform" 
-   TEST oLGB:GetTransform( @oMatrix ) == 0                             DESCRIPTION "GetTransform" 
-   TEST oLGB:SetWrapMode( WrapModeTileFlipX ) == 0                     DESCRIPTION "SetWrapMode = WrapModeTileFlipX" 
-   TEST oLGB:GetWrapMode( WrapModeTileFlipX ) == WrapModeTileFlipX     DESCRIPTION "GetWrapMode = " + Str( WrapModeTileFlipX ) 
+   TEST oLGB:SetInterpolationColors ( aColor, ablendPositions ) == 0      DESCRIPTION "SetInterpolationColors "
+   TEST oLGB:GetInterpolationColorCount() > 0                             DESCRIPTION "GetInterpolationColorCount = " + str( oLGB:GetInterpolationColorCount() )
+   TEST oLGB:GetInterpolationColors ( @aColor2, @ablendPositions2 ) == 0  DESCRIPTION "GetInterpolationColors "
+   TEST oLGB:GetRectangle( @oRect2 ) == 0                             DESCRIPTION "GetRectangle"
+   TEST oLGB:SetTransform( @oMatrix2 ) == 0                            DESCRIPTION "SetTransform"
+   TEST oLGB:GetTransform( @oMatrix ) == 0                             DESCRIPTION "GetTransform"
+   TEST oLGB:SetWrapMode( WrapModeTileFlipX ) == 0                     DESCRIPTION "SetWrapMode = WrapModeTileFlipX"
+   TEST oLGB:GetWrapMode( WrapModeTileFlipX ) == WrapModeTileFlipX     DESCRIPTION "GetWrapMode = " + Str( WrapModeTileFlipX )
    TEST oLGB:SetGammaCorrection() == 0                                 DESCRIPTION "SetGammaCorrection"
-   TEST oLGB:GetGammaCorrection()                                      DESCRIPTION "GetGammaCorrection" 
+   TEST oLGB:GetGammaCorrection()                                      DESCRIPTION "GetGammaCorrection"
    TEST oLGB:MultiplyTransform( oMatrix3, MatrixOrderAppend ) == 0     DESCRIPTION "MultiplyTransform" SAMPLE Example_MultTrans()
-   TEST oLGB:ResetTransform() == 0                                     DESCRIPTION "ResetTransform" 
+   TEST oLGB:ResetTransform() == 0                                     DESCRIPTION "ResetTransform"
    TEST oLGB:RotateTransform( 20, MatrixOrderAppend ) == 0             DESCRIPTION "RotateTransform" SAMPLE Example_RotateTrans()
    TEST oLGB:ScaleTransform( 2, 5, MatrixOrderAppend ) == 0            DESCRIPTION "ScaleTransform"
    TEST oLGB:SetBlendBellShape( 0.5, 1 ) == 0                          DESCRIPTION "SetBlendBellShape" SAMPLE Example_SetBlendBell()
    TEST oLGB:SetBlendTriangularShape( 0.5, 1 ) == 0                    DESCRIPTION "SetBlendTriangularShape" SAMPLE Example_SetBlendTri()
-   TEST oLGB:SetLinearColors( oColor1, oColor2 ) == 0                  DESCRIPTION "SetLinearColors "    
-   TEST oLGB:GetLinearColors( @aColor3 ) == 0                          DESCRIPTION "GetLinearColors " 
+   TEST oLGB:SetLinearColors( oColor1, oColor2 ) == 0                  DESCRIPTION "SetLinearColors "  SAMPLE Example_SetLinColors()
+   TEST oLGB:GetLinearColors( @aColor3 ) == 0                          DESCRIPTION "GetLinearColors "
    TEST oLGB:TranslateTransform( 2, 5, MatrixOrderAppend ) == 0        DESCRIPTION "TranslateTransform"
 
 //   xbrowse( aFactor )
@@ -137,7 +137,7 @@ return nil
 
 //   xbrowse( aColor3 )
 //   ? aColor3[ 1 ]:GetRed()
-     
+
 //     ? oRect2:X(), oRect2:Y(), oRect2:Width(), oRect2:Height()
 //   oMatrix:GetElements( @aElements )
 //   xbrowse( aElements )
@@ -151,36 +151,36 @@ return 0
 
   local oMatrix, oMatrix2, oMatrix3, oMatrix4, oClone
   local aElements
-  local nStatus 
+  local nStatus
   local oRect, oPointF
   local aPoint := {}
   local aPointF := {}
-  
+
   RectF oRect( 10,10,100,100 )
   PointF oPointF( 50, 70 )
   Matrix oMatrix()
   Matrix oMatrix2( oRect, oPointF )
   Matrix oMatrix3( 3, 0, 0, 1, 0, 0 )
   Matrix oMatrix4( 1, 0, 0, 1, 20, 40 )
-   
+
   AAdd( aPoint, Point( 50, 100 ) )
   AAdd( aPoint, Point( 100, 50 ) )
   AAdd( aPoint, Point( 150, 125 ) )
   AAdd( aPoint, Point( 200, 100 ) )
   AAdd( aPoint, Point( 250, 150 ) )
-  
+
   AAdd( aPointF, PointF( 50, 100 ) )
   AAdd( aPointF, PointF( 100, 50 ) )
   AAdd( aPointF, PointF( 150, 125 ) )
   AAdd( aPointF, PointF( 200, 100 ) )
-  AAdd( aPointF, PointF( 250, 150 ) )  
-   
-   
+  AAdd( aPointF, PointF( 250, 150 ) )
+
+
   SEPARADOR( "MATRIX" )
 
-  TEST ! empty( oMatrix:handle )                       DESCRIPTION "Constructor "  
-  TEST ! empty( oMatrix2:handle )                      DESCRIPTION "Constructor Matrix( RectF, PointF )"  
-  TEST ! empty( oMatrix3:handle )                      DESCRIPTION "Constructor Matrix( REAL, REAL, REAL, REAL, REAL, REAL )"    
+  TEST ! empty( oMatrix:handle )                       DESCRIPTION "Constructor "
+  TEST ! empty( oMatrix2:handle )                      DESCRIPTION "Constructor Matrix( RectF, PointF )"
+  TEST ! empty( oMatrix3:handle )                      DESCRIPTION "Constructor Matrix( REAL, REAL, REAL, REAL, REAL, REAL )"
   TEST !Empty( ( oClone := oMatrix3:Clone() ):handle )  DESCRIPTION "Clone"
   TEST oMatrix:Equals( oClone )                        DESCRIPTION "Equals"
   TEST oMatrix3:GetElements( @aElements ) == 0          DESCRIPTION "GetElements"
@@ -191,20 +191,20 @@ return 0
   TEST oMatrix3:IsInvertible()                         DESCRIPTION "IsInvertible"
   TEST oMatrix3:Multiply( oMatrix4, MatrixOrderAppend ) == 0           DESCRIPTION "Multiply"
   TEST oMatrix4:OffsetX() == 20                        DESCRIPTION "OffsetX"
-  TEST oMatrix4:OffsetY() == 40                        DESCRIPTION "OffsetY"  
-  TEST oMatrix4:Reset() == 0                           DESCRIPTION "Reset" 
-  TEST oMatrix2:Rotate( 30, MatrixOrderAppend ) == 0 DESCRIPTION "Rotate" 
-  TEST oMatrix2:Rotate( 30, PointF(150, 100), MatrixOrderAppend ) == 0 DESCRIPTION "RotateAt" 
+  TEST oMatrix4:OffsetY() == 40                        DESCRIPTION "OffsetY"
+  TEST oMatrix4:Reset() == 0                           DESCRIPTION "Reset"
+  TEST oMatrix2:Rotate( 30, MatrixOrderAppend ) == 0 DESCRIPTION "Rotate"
+  TEST oMatrix2:Rotate( 30, PointF(150, 100), MatrixOrderAppend ) == 0 DESCRIPTION "RotateAt"
   TEST oMatrix4:Scale( 3, 2, MatrixOrderAppend ) == 0  DESCRIPTION "Scale"
   TEST oMatrix4:SetElements( 1, 0, 0, 1, 30, 50 ) == 0  DESCRIPTION "SetElements"
   TEST oMatrix4:Shear( 3, 0, MatrixOrderAppend ) == 0  DESCRIPTION "Shear"
   TEST oMatrix4:TransformPoints( aPoint ) == 0         DESCRIPTION "TransformPoints with Point Atrray"
   TEST oMatrix4:TransformPointsF( aPointF ) == 0        DESCRIPTION "TransformPoints with PointF Atrray"
   TEST oMatrix4:TransformVectors( aPoint ) == 0         DESCRIPTION "TransformVentors with Point Atrray"
-  TEST oMatrix4:TransformVectorsF( aPointF ) == 0       DESCRIPTION "TransformVectorsF with PointF Atrray"  
-  TEST oMatrix4:Translate( 150, 100, MatrixOrderAppend ) == 0 DESCRIPTION "Translate"  
-  
-  
+  TEST oMatrix4:TransformVectorsF( aPointF ) == 0       DESCRIPTION "TransformVectorsF with PointF Atrray"
+  TEST oMatrix4:Translate( 150, 100, MatrixOrderAppend ) == 0 DESCRIPTION "Translate"
+
+
 return 0
 
 
@@ -565,28 +565,28 @@ return oColor:GetValue() == oColor2:GetValue()
 
 return oColor:ToCOLORREF() == RGB( 255, 255, 255 )
 
-   
+
 function exampleWindow( bCode )
 
    DEFINE WINDOW oWnd TITLE result->descrip
-   
+
    oWnd:bPainted = bCode
-   
+
    ACTIVATE WINDOW oWnd
 
 return nil
 
 function TestLinearGB1( )
 
-   
+
    local bPainted := { | hDC |
    	                  local myGraphics
    	                  local linGrBrush
-                      Graphics myGraphics( hDC )    
+                      Graphics myGraphics( hDC )
                       LinearGradientBrush linGrBrush(  Point(50, 50),  Point(200, 100),  Color(255, 255, 0, 0),  Color(255, 0, 0, 255) )  // blue
                       myGraphics:FillRectangle( linGrBrush, 0, 0, 300, 200)
                       return nil
-                     }   
+                     }
 
    exampleWindow( bPainted )
 
@@ -594,61 +594,61 @@ return nil
 
 
 function  Example_RotateTrans()
-   
-   
-    local bPainted := { | hDC | 
+
+
+    local bPainted := { | hDC |
    	  local myGraphics, linGrBrush
       Graphics myGraphics( hDC )
-      
+
       LinearGradientBrush linGrBrush( ;
          Rect(0, 0, 80, 40),;
          Color(255, 255, 0, 0),;  // red
          Color(255, 0, 0, 255),;  // blue
          LinearGradientModeHorizontal )
-      
+
       // Fill a large area with the linear gradient brush (no transformation).
       myGraphics:FillRectangle( linGrBrush, 0, 0, 800, 150)
-      
+
       // Apply a composite transformation: first scale, then rotate.
       linGrBrush:ScaleTransform(2, 1)                    // horizontal doubling
       linGrBrush:RotateTransform(20, MatrixOrderAppend)  // 20-degree rotation
-      
+
       // Fill a large area with the transformed linear gradient brush.
       myGraphics:FillRectangle( linGrBrush, 0, 200, 800, 150)
    }
-    
-   exampleWindow( bPainted ) 
-   
+
+   exampleWindow( bPainted )
+
 return nil
 
 
 function  Example_MultTrans()
 
     local bPainted := { | hDC |
-      local myGraphics, S,T, linGrBrush 
+      local myGraphics, S,T, linGrBrush
       Graphics myGraphics(hdc)
-      
+
       Matrix S(2, 0, 0, 1, 0, 0)   // horizontal doubling
       Matrix T(1, 0, 0, 1, 50, 0)  // horizontal translation of 50 units
-      
+
       LinearGradientBrush linGrBrush(;
          Rect(0, 0, 200, 100),;
          Color(255, 255, 0, 0),;     // red
          Color(255, 0, 0, 255), ;    // blue
          LinearGradientModeHorizontal)
-      
+
       // Fill a large area with the gradient brush (no transformation).
       myGraphics:FillRectangle(linGrBrush, 0, 0, 800, 100)
-      
+
       // Apply the scaling transformation.
       linGrBrush:SetTransform(S)
-      
+
       // Fill a large area with the scaled gradient brush.
       myGraphics:FillRectangle(linGrBrush, 0, 150, 800, 100)
-      
+
       // Form a composite transformation: first scale, then translate.
       linGrBrush:MultiplyTransform(T, MatrixOrderAppend)
-      
+
       // Fill a large area with the scaled and translated gradient brush.
       myGraphics:FillRectangle(linGrBrush, 0, 300, 800, 100)
       return nil
@@ -661,77 +661,111 @@ return nil
 function Example_SetBlendBell()
 
    local bPainted := { | hDC |
-   	 local myGraphics, linGrBrush 
+   	 local myGraphics, linGrBrush
      Graphics myGraphics(hdc)
-     
+
      LinearGradientBrush linGrBrush(;
         Point(0, 0),;
         Point(500, 0),;
         Color(255, 255, 0, 0),;   // red
         Color(255, 0, 0, 255))  // blue
-     
+
      linGrBrush:SetBlendBellShape(0.5, 0.6)
      myGraphics:FillRectangle(linGrBrush, 0, 0, 500, 50)
-     
+
      linGrBrush:SetBlendBellShape(0.5, 0.8)
      myGraphics:FillRectangle(linGrBrush, 0, 75, 500, 50)
-     
+
      linGrBrush:SetBlendBellShape(0.5, 1.0)
      myGraphics:FillRectangle(linGrBrush, 0, 150, 500, 50)
    }
-  
-   exampleWindow( bPainted )  
-  
+
+   exampleWindow( bPainted )
+
 return nil
 
 function Example_SetBlendTri()
    local bPainted := {| hDC |
    	local myGraphics, linGrBrush
-   	
+
       Graphics myGraphics(hdc)
-      
+
       LinearGradientBrush linGrBrush(;
          Point(0, 0),;
          Point(500, 0),;
          Color(255, 255, 0, 0),;   // red
          Color(255, 0, 0, 255))  // blue
-      
+
       linGrBrush:SetBlendTriangularShape(0.5, 0.6)
       myGraphics:FillRectangle(linGrBrush, 0, 0, 500, 50)
-      
+
       linGrBrush:SetBlendTriangularShape(0.5, 0.8)
       myGraphics:FillRectangle(linGrBrush, 0, 75, 500, 50)
-      
+
       linGrBrush:SetBlendTriangularShape(0.5, 1.0)
    }
-   
-   exampleWindow( bPainted )  
-  
-return nil   
+
+   exampleWindow( bPainted )
+
+return nil
 
 
 function  Example_SetBlend()
-   
+
    local bPainted := { | hDC |
    	  local myGraphics, linGrBrush, rect
       Graphics myGraphics(hdc)
-      
+
       Rect rect(0, 0, 300, 100)
-      
+
       LinearGradientBrush linGrBrush(;
          rect,;
          Color(255, 255, 0, 0), ; // red
          Color(255, 0, 0, 255),;  // blue
          LinearGradientModeHorizontal)
-      
+
       linGrBrush:SetBlend({0.0, 0.4, 0.6, 1.0}, {0.0, 0.2, 0.8, 1.0})
       myGraphics:FillRectangle(linGrBrush, rect)
       return nil
    }
-   
-   exampleWindow( bPainted )  
-  
-return nil   
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+
+
+
+
+function Example_SetLinColors()
+
+   local bPainted := { | hDC |
+   	  local myGraphics, linGrBrush, rect
+   Graphics myGraphics(hdc)
+
+   LinearGradientBrush linGrBrush( ;
+      Rect(0, 0, 100, 50),;
+      Color(255, 255, 0, 0),;  // red
+      Color(255, 0, 0, 255),;  // blue
+      LinearGradientModeHorizontal )
+
+   myGraphics:FillRectangle(linGrBrush, 0, 0, 100, 50)
+
+   linGrBrush:SetLinearColors( ;
+      Color(255, 0, 0, 255),;   // blue
+      Color(255, 0, 255, 0))  // green
+
+   myGraphics:FillRectangle(linGrBrush, 0, 75, 100, 50)
+}
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+
+
 
 
 init procedure entrada
