@@ -31,6 +31,19 @@ CLASS GPImage
          METHOD GetFrameDimensionsCount()
          METHOD GetFrameDimensionsList()
 
+  METHOD Clone( oImage ) CONSTRUCTOR
+  METHOD FindFirstItem()
+  METHOD FindNextItem()
+  METHOD FromFile( cFileName, bParam )
+  METHOD FromStream()
+  METHOD GetAllPropertyItems()
+  METHOD GetBounds()
+  METHOD GetEncoderParameterList()
+  METHOD GetEncoderParameterListSize()
+  METHOD GetFlags()
+  METHOD GetFrameCount()
+  METHOD GetFrameDimensionsCount()
+  METHOD GetFrameDimensionsList()
   METHOD GetHeight()
   METHOD GetHorizontalResolution()
 
@@ -96,46 +109,43 @@ DEFAULT cFileName := ::cFileName
 return ::Save( cFileName )
 
 *********************************************************************************************************
-  METHOD Clone() CLASS GPImage
+  METHOD Clone( oImage ) CLASS GPImage
 *********************************************************************************************************
 
-return 0
+::handle := GPImageClone( oImage:handle )
+
+return self
 
 *********************************************************************************************************
   METHOD FindFirstItem() CLASS GPImage
 *********************************************************************************************************
-
 return 0
 
 *********************************************************************************************************
   METHOD FindNextItem() CLASS GPImage
 *********************************************************************************************************
-
 return 0
 
 *********************************************************************************************************
-  METHOD FromFile() CLASS GPImage
+  METHOD FromFile( cFileName, bUseEmbeddedColorManagement ) CLASS GPImage
 *********************************************************************************************************
-
-return 0
+return Self
 
 *********************************************************************************************************
   METHOD FromStream() CLASS GPImage
 *********************************************************************************************************
-
 return 0
 
 *********************************************************************************************************
   METHOD GetAllPropertyItems() CLASS GPImage
 *********************************************************************************************************
-
 return 0
 
 *********************************************************************************************************
-  METHOD GetBounds() CLASS GPImage
+  METHOD GetBounds( oRect, units ) CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetBounds( ::handle, oRect:handle, @units )
 
 *********************************************************************************************************
   METHOD GetEncoderParameterList() CLASS GPImage
@@ -450,11 +460,20 @@ HB_FUNC( _GPIMAGE )
 }
 
 
-HB_FUNC( GPIMAGEGETHEIGHT )
+HB_FUNC( GPIMAGECLONE )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retni( cimg->GetHeight() );
+
+   Image* ptr = (Image*) hb_parptr( 1 );
+   hb_retptr( (void*) ptr->Clone() );
+
 }
+
+//GPImageGetBounds( ::handle, oRect:handle, @units )
+HB_FUNC( GPIMAGEGETBOUNDS )
+{
+}
+
+
 
 HB_FUNC( GPIMAGEGETHORIZONTALRESOLUTION )
 {
