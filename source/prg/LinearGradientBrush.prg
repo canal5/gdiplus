@@ -27,7 +27,7 @@ CLASS GPLinearGradientBrush
 
    METHOD     Destroy()
    DESTRUCTOR Destroy()
-   
+
 //Constructors
 //
 //The LinearGradientBrush class has the following constructors.
@@ -80,23 +80,23 @@ ENDCLASS
            ::handle := _GPLGB( p1:handle, p2:handle, p3:handle, p4:handle )
         elseif p1:IsKindOf( "GPPointF" ) .and.  p2:IsKindOf( "GPPointF" ) .and.  p3:IsKindOf( "GPColor" ) .and. p4:IsKindOf( "GPColor" )
            ::handle := _GPLGBF( p1:handle, p2:handle, p3:handle, p4:handle )
-        elseif p1:IsKindOf( "GPRect" ) .and.  p2:IsKindOf( "GPColor" ) .and.  p3:IsKindOf( "GPColor" ) 
+        elseif p1:IsKindOf( "GPRect" ) .and.  p2:IsKindOf( "GPColor" ) .and.  p3:IsKindOf( "GPColor" )
            ::handle := _GPLGBL( p1:handle, p2:handle, p3:handle, p4 )
-        elseif p1:IsKindOf( "GPRectF" ) .and.  p2:IsKindOf( "GPColor" ) .and.  p3:IsKindOf( "GPColor" ) 
+        elseif p1:IsKindOf( "GPRectF" ) .and.  p2:IsKindOf( "GPColor" ) .and.  p3:IsKindOf( "GPColor" )
            ::handle := _GPLGBLF( p1:handle, p2:handle, p3:handle, p4 )
-        endif     
+        endif
         exit
      case 5
          DEFAULT p4 := 0
          DEFAULT p5 := .F.
-         if p1:IsKindOf( "GPRect" ) .and.  p2:IsKindOf( "GPColor" ) .and.  p3:IsKindOf( "GPColor" ) 
-           ::handle := _GPLGBL2( p1:handle, p2:handle, p3:handle, p4, p5 ) 
-         elseif  p1:IsKindOf( "GPRectF" ) .and.  p2:IsKindOf( "GPColor" ) .and.  p3:IsKindOf( "GPColor" ) 
-           ::handle := _GPLGBLF2( p1:handle, p2:handle, p3:handle, p4, p5 ) 
+         if p1:IsKindOf( "GPRect" ) .and.  p2:IsKindOf( "GPColor" ) .and.  p3:IsKindOf( "GPColor" )
+           ::handle := _GPLGBL2( p1:handle, p2:handle, p3:handle, p4, p5 )
+         elseif  p1:IsKindOf( "GPRectF" ) .and.  p2:IsKindOf( "GPColor" ) .and.  p3:IsKindOf( "GPColor" )
+           ::handle := _GPLGBLF2( p1:handle, p2:handle, p3:handle, p4, p5 )
         endif
         exit
-  endswitch   
-   
+  endswitch
+
 
 return self
 
@@ -112,7 +112,7 @@ return nil
 *********************************************************************************************************
   METHOD GetBlend( aFactor, aPosition ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
-  
+
 return _GPLGBGETBLEND( ::handle, @aFactor, @aPosition )
 
 *********************************************************************************************************
@@ -319,13 +319,13 @@ return _GPLGBTranslateTransform( ::handle, nX, nY, nOrder )
 
 
 #pragma BEGINDUMP
-#include <hbvm.h> 
+#include <hbvm.h>
 #include <gc.h>
 #include <hbapicls.h>
 
 HB_FUNC( _GPLGB )
 {
-	 LinearGradientBrush * pLGB;
+   LinearGradientBrush * pLGB;
    Point * point1 = hb_Point_par( 1 );
    Point * point2 = hb_Point_par( 2 );
    Color * color1 = hb_Color_par( 3 );
@@ -335,91 +335,91 @@ HB_FUNC( _GPLGB )
       Point oPoint1( point1->X, point1->Y );
       Point oPoint2( point2->X, point2->Y );
       Color oColor1( color1->GetValue() );
-   	  Color oColor2( color2->GetValue() );
-   	  
-   	  pLGB = new LinearGradientBrush( oPoint1, oPoint2, oColor1, oColor2 );
+      Color oColor2( color2->GetValue() );
+
+      pLGB = new LinearGradientBrush( oPoint1, oPoint2, oColor1, oColor2 );
       hb_LGB_ret( pLGB );
-   	     	  
-   }else 
-     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
+   } else
+        hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
 HB_FUNC( _GPLGBF )
 {
-	 LinearGradientBrush * pLGB ;
+   LinearGradientBrush * pLGB ;
    PointF * point1 = hb_PointF_par( 1 );
    PointF * point2 = hb_PointF_par( 2 );
    Color * color1 = hb_Color_par( 3 );
    Color * color2 = hb_Color_par( 4 );
 
    if( point1 && point2 &&color1 && color2 ){
-      PointF oPoint1( point1->X, point1->Y );
-      PointF oPoint2( point2->X, point2->Y );
-      Color oColor1( color1->GetValue() );
-   	  Color oColor2( color2->GetValue() );
-   	  
-   	  pLGB = new LinearGradientBrush( oPoint1, oPoint2, oColor1, oColor2 );
-      hb_LGB_ret( pLGB );
-   	     	  
-   }else 
-     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+       PointF oPoint1( point1->X, point1->Y );
+       PointF oPoint2( point2->X, point2->Y );
+       Color oColor1( color1->GetValue() );
+       Color oColor2( color2->GetValue() );
+
+       pLGB = new LinearGradientBrush( oPoint1, oPoint2, oColor1, oColor2 );
+       hb_LGB_ret( pLGB );
+
+   }else
+       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 
 }
 
 HB_FUNC( _GPLGBL )
 {
-	 LinearGradientBrush * pLGB;
+   LinearGradientBrush * pLGB;
    Rect * rect = hb_Rect_par( 1 );
    Color * color1 = hb_Color_par( 2 );
    Color * color2 = hb_Color_par( 3 );
    LinearGradientMode mode = ( LinearGradientMode ) hb_parni( 4 );
-   
+
 
    if( rect && color1 && color2 ){
-      Rect oRect( rect->X, rect->Y, rect->Width, rect->Height );
-      Color oColor1( color1->GetValue() );
-   	  Color oColor2( color2->GetValue() );
-   	  
-   	  pLGB = new LinearGradientBrush( oRect, oColor1, oColor2, mode );
-      hb_LGB_ret( pLGB );
-   	     	  
-   }else 
+       Rect oRect( rect->X, rect->Y, rect->Width, rect->Height );
+       Color oColor1( color1->GetValue() );
+       Color oColor2( color2->GetValue() );
+
+       pLGB = new LinearGradientBrush( oRect, oColor1, oColor2, mode );
+       hb_LGB_ret( pLGB );
+
+   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 
 }
 
 HB_FUNC( _GPLGBLF )
 {
-	 LinearGradientBrush * pLGB;
+         LinearGradientBrush * pLGB;
    RectF * rect = hb_RectF_par( 1 );
    Color * color1 = hb_Color_par( 2 );
    Color * color2 = hb_Color_par( 3 );
    LinearGradientMode mode = (LinearGradientMode ) hb_parni( 4 );
-   
+
 
    if( rect && color1 && color2 ){
       RectF oRect( rect->X, rect->Y, rect->Width, rect->Height );
       Color oColor1( color1->GetValue() );
-   	  Color oColor2( color2->GetValue() );
-   	  
-   	  pLGB = new LinearGradientBrush( oRect, oColor1, oColor2, mode );
-   	   
+          Color oColor2( color2->GetValue() );
+
+          pLGB = new LinearGradientBrush( oRect, oColor1, oColor2, mode );
+
       hb_LGB_ret( pLGB );
-   	     	  
-   }else 
+
+   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 
 }
 
 
 HB_FUNC( _GPLGBL2 )
 {
-	 LinearGradientBrush * pLGB;
+         LinearGradientBrush * pLGB;
    Rect * rect = hb_Rect_par( 1 );
    Color * color1 = hb_Color_par( 2 );
    Color * color2 = hb_Color_par( 3 );
@@ -429,19 +429,19 @@ HB_FUNC( _GPLGBL2 )
    if( rect && color1 && color2 ){
       Rect oRect( rect->X, rect->Y, rect->Width, rect->Height );
       Color oColor1( color1->GetValue() );
-   	  Color oColor2( color2->GetValue() );
-   	  
-   	  pLGB = new LinearGradientBrush( oRect, oColor1, oColor2, angle, isAngleScalable );
+          Color oColor2( color2->GetValue() );
+
+          pLGB = new LinearGradientBrush( oRect, oColor1, oColor2, angle, isAngleScalable );
       hb_LGB_ret( pLGB );
-   	     	  
-   }else 
+
+   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 }
 
 HB_FUNC( _GPLGBLF2 )
 {
-	 LinearGradientBrush * pLGB;
+         LinearGradientBrush * pLGB;
    RectF * rect = hb_RectF_par( 1 );
    Color * color1 = hb_Color_par( 2 );
    Color * color2 = hb_Color_par( 3 );
@@ -451,14 +451,14 @@ HB_FUNC( _GPLGBLF2 )
    if( rect && color1 && color2 ){
       RectF oRect( rect->X, rect->Y, rect->Width, rect->Height );
       Color oColor1( color1->GetValue() );
-   	  Color oColor2( color2->GetValue() );
-   	  
-   	  pLGB = new LinearGradientBrush( oRect, oColor1, oColor2, angle, isAngleScalable );
+          Color oColor2( color2->GetValue() );
+
+          pLGB = new LinearGradientBrush( oRect, oColor1, oColor2, angle, isAngleScalable );
       hb_LGB_ret( pLGB );
-   	     	  
-   }else 
+
+   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 
 }
 
@@ -466,306 +466,304 @@ HB_FUNC( _GPLGBLF2 )
 
 HB_FUNC( _GPLGBGETBLEND )
 {
-	
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
 
-	if( linGrBrush ){
-		int blendCount = linGrBrush->GetBlendCount();
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+
+        if( linGrBrush ){
+                int blendCount = linGrBrush->GetBlendCount();
     REAL * factors  ;
     REAL * positions;
-    PHB_ITEM itemFactor, itemPositions;   
-    
-		if( blendCount > 0 ){
-			 int j;
-			 Status sta; 
+    PHB_ITEM itemFactor, itemPositions;
+
+                if( blendCount > 0 ){
+                         int j;
+                         Status sta;
        factors   = ( REAL * ) hb_xgrab( sizeof( REAL ) * blendCount );
        positions = ( REAL * ) hb_xgrab( sizeof( REAL ) * blendCount );
-       
+
        itemFactor = hb_itemArrayNew( blendCount );
        itemPositions = hb_itemArrayNew( blendCount );
-       
+
        sta = linGrBrush->GetBlend(factors, positions, blendCount);
-       
-       for( j=0; j<blendCount; j++ ){       
-          hb_arraySetND( itemFactor, j+1, ( double )factors[ j ] );	
-          hb_arraySetND( itemPositions, j+1, ( double )positions[ j ] );       	
+
+       for( j=0; j<blendCount; j++ ){
+          hb_arraySetND( itemFactor, j+1, ( double )factors[ j ] );
+          hb_arraySetND( itemPositions, j+1, ( double )positions[ j ] );
        }
        if( !hb_itemParamStoreRelease( 2, itemFactor ) && itemFactor )
             hb_itemRelease( itemFactor );
-            
+
        if( !hb_itemParamStoreRelease( 3, itemPositions ) && itemPositions )
-            hb_itemRelease( itemPositions );  
+            hb_itemRelease( itemPositions );
 
        hb_xfree( factors );
        hb_xfree( positions );
-            
-       hb_retni( sta );     
-	  }
-		
-	}else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	
+
+       hb_retni( sta );
+          }
+
+        }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBGETGAMMACORRECTION )
 {
-	
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
 
-	if( linGrBrush ){
-       hb_retl( linGrBrush->GetGammaCorrection() );     	
-	}else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+
+        if( linGrBrush ){
+       hb_retl( linGrBrush->GetGammaCorrection() );
+        }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBGETBLENDCOUNT )
 {
-	
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
 
-	if( linGrBrush ){
-       hb_retni( linGrBrush->GetBlendCount() );     	
-	}else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+
+        if( linGrBrush ){
+       hb_retni( linGrBrush->GetBlendCount() );
+        }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
 HB_FUNC( _GPLGBSETBLEND )
 {
-	
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
 
-	if( linGrBrush && HB_ISARRAY( 2 ) && HB_ISARRAY( 3 ) ) {
-  
-     PHB_ITEM itemFactor = hb_param( 2, HB_IT_ARRAY );
-     PHB_ITEM itemPositions = hb_param( 3, HB_IT_ARRAY );  
-     int iLen = hb_arrayLen( itemFactor );
-     int j;
-     REAL * factors = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
-     REAL * positions = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
-     Status sta;
-     
-     for( j = 0; j < iLen; j++ ){
+     LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
 
-     	  if( hb_arrayGetType( itemFactor, j + 1 ) == HB_IT_DOUBLE )
-           factors[ j ] = ( REAL ) hb_arrayGetND( itemFactor, j + 1 );
-     	  else 
-           factors[ j ] = ( REAL ) hb_arrayGetNI( itemFactor, j + 1 );
+     if( linGrBrush && HB_ISARRAY( 2 ) && HB_ISARRAY( 3 ) ) {
 
-     	  if( hb_arrayGetType( itemPositions, j + 1 ) == HB_IT_DOUBLE )
-     	  	 positions[ j ] = ( REAL ) hb_arrayGetND( itemPositions, j + 1 );
-     	  else 
-     	  	 positions[ j ] = ( REAL ) hb_arrayGetNI( itemPositions, j + 1 );     	      	  
-     }
-     
-     sta = linGrBrush->SetBlend( factors, positions, iLen );
-     
-     hb_xfree( factors );
-     hb_xfree( positions );
-     
-     hb_retni( sta );
-     
-          	
-	}else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	
+         PHB_ITEM itemFactor = hb_param( 2, HB_IT_ARRAY );
+         PHB_ITEM itemPositions = hb_param( 3, HB_IT_ARRAY );
+         int iLen = hb_arrayLen( itemFactor );
+         int j;
+         REAL * factors = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
+         REAL * positions = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
+         Status sta;
+
+         for( j = 0; j < iLen; j++ ){
+
+              if( hb_arrayGetType( itemFactor, j + 1 ) == HB_IT_DOUBLE )
+               factors[ j ] = ( REAL ) hb_arrayGetND( itemFactor, j + 1 );
+              else
+               factors[ j ] = ( REAL ) hb_arrayGetNI( itemFactor, j + 1 );
+
+              if( hb_arrayGetType( itemPositions, j + 1 ) == HB_IT_DOUBLE )
+                     positions[ j ] = ( REAL ) hb_arrayGetND( itemPositions, j + 1 );
+              else
+                     positions[ j ] = ( REAL ) hb_arrayGetNI( itemPositions, j + 1 );
+         }
+
+         sta = linGrBrush->SetBlend( factors, positions, iLen );
+
+         hb_xfree( factors );
+         hb_xfree( positions );
+
+         hb_retni( sta );
+
+     }else
+         hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
 HB_FUNC( _GPLGBGETINTERPOLATIONCOLORCOUNT )
 {
-	
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
 
-	if( linGrBrush ){
-       hb_retni( linGrBrush->GetInterpolationColorCount() );     	
-	}else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+
+        if( linGrBrush ){
+       hb_retni( linGrBrush->GetInterpolationColorCount() );
+        }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
 HB_FUNC( _GPLGBSETINTERPOLATIONCOLORS )
 {
-	
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
 
-	if( linGrBrush && HB_ISARRAY( 2 ) && HB_ISARRAY( 3 ) && hb_arrayLen( hb_param( 2, HB_IT_ARRAY ) ) == hb_arrayLen( hb_param( 3, HB_IT_ARRAY ) ) ) {
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+
+        if( linGrBrush && HB_ISARRAY( 2 ) && HB_ISARRAY( 3 ) && hb_arrayLen( hb_param( 2, HB_IT_ARRAY ) ) == hb_arrayLen( hb_param( 3, HB_IT_ARRAY ) ) ) {
 
       PHB_ITEM aColor = hb_param( 2, HB_IT_ARRAY );
       PHB_ITEM aReal = hb_param( 3, HB_IT_ARRAY );
-	 	  int iLen = hb_arrayLen( aColor );
-	 	  int n;
-	 	  Status sta;
+                  int iLen = hb_arrayLen( aColor );
+                  int n;
+                  Status sta;
 
-	 	  if( iLen > 0 ) {
-	 	  	 Color * color1 = ( Color * ) hb_xgrab( sizeof( Color ) * iLen );
-	 	  	 REAL * blendPositions = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
+                  if( iLen > 0 ) {
+                         Color * color1 = ( Color * ) hb_xgrab( sizeof( Color ) * iLen );
+                         REAL * blendPositions = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
          for( n = 0; n < iLen; n++ ){
-	       	 PHB_ITEM pItem = hb_arrayGetItemPtr( aColor, n + 1 );	       	 
-           hb_vmPushSymbol( hb_dynsymGetSymbol( "HANDLE" ) ); 
-           hb_vmPush( pItem );     
+                 PHB_ITEM pItem = hb_arrayGetItemPtr( aColor, n + 1 );
+           hb_vmPushSymbol( hb_dynsymGetSymbol( "HANDLE" ) );
+           hb_vmPush( pItem );
            hb_vmFunction( 0 );
            Color * pColor = hb_Color_par( -1 );
-           Color oColor1( pColor->GetValue() );	
+           Color oColor1( pColor->GetValue() );
            if( hb_arrayGetType( aReal, n + 1 ) == HB_IT_DOUBLE )
-     	  	    blendPositions[ n ] = ( REAL ) hb_arrayGetND( aReal, n + 1 );
-     	     else 
-     	  	    blendPositions[ n ] = ( REAL ) hb_arrayGetNI( aReal, n + 1 );	       	   		       	 
-	       }
-	       sta = linGrBrush->SetInterpolationColors( color1, blendPositions, iLen );
-	       
-	       hb_xfree( (void*) color1 );
-	       hb_xfree( (void*) blendPositions );
-	       hb_retni( sta );	       
+                    blendPositions[ n ] = ( REAL ) hb_arrayGetND( aReal, n + 1 );
+             else
+                    blendPositions[ n ] = ( REAL ) hb_arrayGetNI( aReal, n + 1 );
+               }
+               sta = linGrBrush->SetInterpolationColors( color1, blendPositions, iLen );
+
+               hb_xfree( (void*) color1 );
+               hb_xfree( (void*) blendPositions );
+               hb_retni( sta );
       }else
          hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-      
-	}else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	
+
+        }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
 HB_FUNC( _GPLGBGETINTERPOLATIONCOLORS )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	if( linGrBrush ){
-		 int j;
-	   int colorCount = linGrBrush->GetInterpolationColorCount();
-	   Status sta = Ok;
-	   if( colorCount > 0 )
-	   {
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        if( linGrBrush ){
+                 int j;
+           int colorCount = linGrBrush->GetInterpolationColorCount();
+           Status sta = Ok;
+           if( colorCount > 0 )
+           {
 
-    	   Color * colors = ( Color * ) hb_xgrab( sizeof( Color ) * colorCount );
-    	   REAL * positions = ( REAL * ) hb_xgrab( sizeof( REAL ) * colorCount );	
-    	   PHB_ITEM aColor, aposition;
-    	   PHB_ITEM pitemColor;
-    	   PHB_ITEM pHandle = hb_itemNew( NULL );
-    	  
-    	   sta = linGrBrush->GetInterpolationColors( colors, positions, colorCount );
-    	      aColor = hb_itemArrayNew( colorCount );
-    	      aposition = hb_itemArrayNew( colorCount );
-    	   
-    		 for( j = 0; j < colorCount; j++ ){
-    		 	  Color * hColor = new Color( colors[ j ].GetValue() ); 
-    		    pitemColor = hb_itemDoC( "GPCOLOR", 0 );
-    		    
-    		    hb_itemPutPtr( pHandle, hColor );
-    		    
-    		    hb_objSendMsg( pitemColor, "CONVERTCOLORHANDLE", 1, pHandle );
-            
+           Color * colors = ( Color * ) hb_xgrab( sizeof( Color ) * colorCount );
+           REAL * positions = ( REAL * ) hb_xgrab( sizeof( REAL ) * colorCount );
+           PHB_ITEM aColor, aposition;
+           PHB_ITEM pitemColor;
+           PHB_ITEM pHandle = hb_itemNew( NULL );
+
+           sta = linGrBrush->GetInterpolationColors( colors, positions, colorCount );
+              aColor = hb_itemArrayNew( colorCount );
+              aposition = hb_itemArrayNew( colorCount );
+
+                 for( j = 0; j < colorCount; j++ ){
+                          Color * hColor = new Color( colors[ j ].GetValue() );
+                    pitemColor = hb_itemDoC( "GPCOLOR", 0 );
+
+                    hb_itemPutPtr( pHandle, hColor );
+
+                    hb_objSendMsg( pitemColor, "CONVERTCOLORHANDLE", 1, pHandle );
+
             hb_arraySet( aColor, j + 1, pitemColor );
-            hb_arraySetND( aposition, j + 1, ( double ) positions[ j ] );   
-            hb_itemRelease( pitemColor );            	    		    
-    		 }
-         
+            hb_arraySetND( aposition, j + 1, ( double ) positions[ j ] );
+            hb_itemRelease( pitemColor );
+                 }
+
          hb_itemRelease( pHandle );
-             		     		 	
+
          if( !hb_itemParamStoreRelease( 2, aColor ) && aColor )
               hb_itemRelease( aColor );
-              
+
          if( !hb_itemParamStoreRelease( 3, aposition ) && aposition )
-              hb_itemRelease( aposition );		 	  
-          		 	  
-    		 hb_xfree( ( void * ) colors );
-    		 hb_xfree( ( void * ) positions );	
-    		    
+              hb_itemRelease( aposition );
+
+                 hb_xfree( ( void * ) colors );
+                 hb_xfree( ( void * ) positions );
+
     }
      hb_retni( sta );
-		
-	}else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	
+
+        }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBGETLINEARCOLORS )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	if( linGrBrush ){
-		
-		 int j;
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        if( linGrBrush ){
+
+                 int j;
      Status sta;
      PHB_ITEM pitemColor;
      PHB_ITEM aColor = hb_itemArrayNew( 2 );
-		 Color * colors = ( Color * ) hb_xgrab( sizeof( Color ) * 2 );
+                 Color * colors = ( Color * ) hb_xgrab( sizeof( Color ) * 2 );
      PHB_ITEM pHandle = hb_itemNew( NULL );
 
-		 sta = linGrBrush->GetLinearColors( colors );
+                 sta = linGrBrush->GetLinearColors( colors );
 
      for( j = 0; j < 2; j++ ){
-     	  Color * hColor = new Color( colors[ j ].GetValue() ); 
+          Color * hColor = new Color( colors[ j ].GetValue() );
 
-     	  hb_itemPutPtr( pHandle, hColor );     	  
+          hb_itemPutPtr( pHandle, hColor );
         pitemColor = hb_itemDoC( "GPCOLOR", 0 );
         hb_objSendMsg( pitemColor, "CONVERTCOLORHANDLE", 1, pHandle );
-        hb_arraySet( aColor, j + 1, pitemColor );       
-        hb_itemRelease( pitemColor );            	    		    
-     }		 
+        hb_arraySet( aColor, j + 1, pitemColor );
+        hb_itemRelease( pitemColor );
+     }
 
      hb_itemRelease( pHandle );
 
      if( !hb_itemParamStoreRelease( 2, aColor ) && aColor )
           hb_itemRelease( aColor );
-          
+
      hb_xfree( ( void * ) colors );
      hb_retni( sta );
-     	 
+
   }else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
 
 HB_FUNC( _GPLGBGETRECTANGLE2 )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	if( linGrBrush ){
-		
-		 int j;
-     Status sta;
-     PHB_ITEM pitemRect;
-		 Rect * rect = ( Rect * ) hb_xgrab( sizeof( Rect ) * 2 );
-     PHB_ITEM pHandle = hb_itemNew( NULL );
+   LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+   if( linGrBrush )
+   {
+       int j;
+       Status sta;
+       PHB_ITEM pitemRect;
+       Rect * rect = ( Rect * ) hb_xgrab( sizeof( Rect ) * 2 );
+       PHB_ITEM pHandle = hb_itemNew( NULL );
+       sta = linGrBrush->GetRectangle( rect );
 
-		 sta = linGrBrush->GetRectangle( rect );
+       Rect * hRect = new Rect( rect->X, rect->Y, rect->Width, rect->Height );
 
-     Rect * hRect = new Rect( rect->X, rect->Y, rect->Width, rect->Height ); 
-     
-     hb_itemPutPtr( pHandle, hRect );     	  
-     pitemRect = hb_itemDoC( "GPRECT", 0 );
-     hb_objSendMsg( pitemRect, "CONVERTRECTHANDLE", 1, pHandle );
+       hb_itemPutPtr( pHandle, hRect );
+       pitemRect = hb_itemDoC( "GPRECT", 0 );
+       hb_objSendMsg( pitemRect, "CONVERTRECTHANDLE", 1, pHandle );
 
-     hb_itemRelease( pHandle );
+       hb_itemRelease( pHandle );
 
-     if( !hb_itemParamStoreRelease( 2, pitemRect ) && pitemRect )
-          hb_itemRelease( pitemRect );
-          
-     hb_xfree( ( void * ) rect );
-     hb_retni( sta );
-     	 
-  }else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+       if( !hb_itemParamStoreRelease( 2, pitemRect ) && pitemRect )
+            hb_itemRelease( pitemRect );
+
+       hb_xfree( ( void * ) rect );
+       hb_retni( sta );
+
+   } else
+       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
 HB_FUNC( _GPLGBGETRECTANGLE  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	if( linGrBrush ){
-		
-		 int j;
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        if( linGrBrush ){
+
+                 int j;
      Status sta;
      PHB_ITEM pitemRect;
-		 RectF * rect = ( RectF * ) hb_xgrab( sizeof( RectF )  );
+                 RectF * rect = ( RectF * ) hb_xgrab( sizeof( RectF )  );
      PHB_ITEM pHandle = hb_itemNew( NULL );
 
-		 sta = linGrBrush->GetRectangle( rect );
-     RectF * hRect = new RectF( rect->X, rect->Y, rect->Width, rect->Height ); 
-     
-     hb_itemPutPtr( pHandle, hRect );     	  
+                 sta = linGrBrush->GetRectangle( rect );
+     RectF * hRect = new RectF( rect->X, rect->Y, rect->Width, rect->Height );
+
+     hb_itemPutPtr( pHandle, hRect );
      pitemRect = hb_itemDoC( "GPRECTF", 0 );
      hb_objSendMsg( pitemRect, "CONVERTRECTFHANDLE", 1, pHandle );
 
@@ -773,37 +771,37 @@ HB_FUNC( _GPLGBGETRECTANGLE  )
 
      if( !hb_itemParamStoreRelease( 2, pitemRect ) && pitemRect )
           hb_itemRelease( pitemRect );
-          
+
      hb_xfree( ( void * ) rect );
      hb_retni( sta );
-     	 
+
   }else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
 
 HB_FUNC( _GPLGBGETTRANSFORM  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	if( linGrBrush ){
-		
-		 int j;
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        if( linGrBrush ){
+
+                 int j;
      Status sta;
      PHB_ITEM pitemRect;
-		 Matrix matrix;
+                 Matrix matrix;
      PHB_ITEM pHandle = hb_itemNew( NULL );
      REAL * m = ( REAL * ) hb_xgrab( sizeof( REAL ) * 6 );
-    
-		 sta = linGrBrush->GetTransform( &matrix );
 
-		 matrix.GetElements( m );
-		 
-     Matrix * hMatrix = new Matrix( m[ 0 ], m[ 1 ], m[ 2 ], m[ 3 ], m[ 4 ], m[ 5 ]  ); 
-     
+                 sta = linGrBrush->GetTransform( &matrix );
+
+                 matrix.GetElements( m );
+
+     Matrix * hMatrix = new Matrix( m[ 0 ], m[ 1 ], m[ 2 ], m[ 3 ], m[ 4 ], m[ 5 ]  );
+
      hb_xfree( m );
-     
-     hb_itemPutPtr( pHandle, hMatrix );     	  
+
+     hb_itemPutPtr( pHandle, hMatrix );
      pitemRect = hb_itemDoC( "GPMATRIX", 0 );
      hb_objSendMsg( pitemRect, "CONVERTMATRIXHANDLE", 1, pHandle );
 
@@ -811,191 +809,191 @@ HB_FUNC( _GPLGBGETTRANSFORM  )
 
      if( !hb_itemParamStoreRelease( 2, pitemRect ) && pitemRect )
           hb_itemRelease( pitemRect );
-          
+
      hb_retni( sta );
-     	 
+
   }else
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
 HB_FUNC( _GPLGBSETTRANSFORM  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	Matrix * matrix = hb_Matrix_par( 2 );
-	if( linGrBrush && matrix ){
-		 Status sta;
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        Matrix * matrix = hb_Matrix_par( 2 );
+        if( linGrBrush && matrix ){
+                 Status sta;
      REAL * m = ( REAL * ) hb_xgrab( sizeof( REAL ) * 6 );
-		 matrix->GetElements( m );
-		 Matrix oMatrix( m[ 0 ], m[ 1 ], m[ 2 ], m[ 3 ], m[ 4 ], m[ 5 ] );
-		 hb_xfree( m );
-		 sta = linGrBrush->SetTransform( &oMatrix );
-		 hb_retni( sta );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+                 matrix->GetElements( m );
+                 Matrix oMatrix( m[ 0 ], m[ 1 ], m[ 2 ], m[ 3 ], m[ 4 ], m[ 5 ] );
+                 hb_xfree( m );
+                 sta = linGrBrush->SetTransform( &oMatrix );
+                 hb_retni( sta );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBSETWRAPMODE  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	WrapMode wrapmode  = ( WrapMode ) hb_parni( 2 );
-	if( linGrBrush  ){
-		 Status sta;
-		 sta = linGrBrush->SetWrapMode( wrapmode );
-		 hb_retni( sta );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        WrapMode wrapmode  = ( WrapMode ) hb_parni( 2 );
+        if( linGrBrush  ){
+                 Status sta;
+                 sta = linGrBrush->SetWrapMode( wrapmode );
+                 hb_retni( sta );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBGETWRAPMODE  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	if( linGrBrush  ){
-		 WrapMode wrapmode;
-		 wrapmode = linGrBrush->GetWrapMode();
-		 hb_retni( wrapmode );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        if( linGrBrush  ){
+                 WrapMode wrapmode;
+                 wrapmode = linGrBrush->GetWrapMode();
+                 hb_retni( wrapmode );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBSETGAMMACORRECTION  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	BOOL useGammaCorrection  = hb_parl( 2 );
-	if( linGrBrush  ){
-		 Status sta;
-		 sta = linGrBrush->SetGammaCorrection( useGammaCorrection );
-		 hb_retni( sta );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        BOOL useGammaCorrection  = hb_parl( 2 );
+        if( linGrBrush  ){
+                 Status sta;
+                 sta = linGrBrush->SetGammaCorrection( useGammaCorrection );
+                 hb_retni( sta );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
 HB_FUNC( _GPLGBMULTIPLYTRANSFORM  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	Matrix * matrix = hb_Matrix_par( 2 );
-	MatrixOrder order = ( MatrixOrder ) hb_parni( 3 );
-	if( linGrBrush && matrix ){
-		 Status sta;     
-		 sta = linGrBrush->MultiplyTransform(matrix, order);
-		 hb_retni( sta );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        Matrix * matrix = hb_Matrix_par( 2 );
+        MatrixOrder order = ( MatrixOrder ) hb_parni( 3 );
+        if( linGrBrush && matrix ){
+                 Status sta;
+                 sta = linGrBrush->MultiplyTransform(matrix, order);
+                 hb_retni( sta );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBRESETTRANSFORM )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	if( linGrBrush ){
-		 Status sta;     
-		 sta = linGrBrush->ResetTransform();
-		 hb_retni( sta );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        if( linGrBrush ){
+                 Status sta;
+                 sta = linGrBrush->ResetTransform();
+                 hb_retni( sta );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBROTATETRANSFORM  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	REAL angle = ( REAL ) hb_parnd( 2 );
-	MatrixOrder order = ( MatrixOrder ) hb_parni( 3 );
-	if( linGrBrush ){
-		 Status sta;     
-		 sta = linGrBrush->RotateTransform(angle, order);
-		 hb_retni( sta );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        REAL angle = ( REAL ) hb_parnd( 2 );
+        MatrixOrder order = ( MatrixOrder ) hb_parni( 3 );
+        if( linGrBrush ){
+                 Status sta;
+                 sta = linGrBrush->RotateTransform(angle, order);
+                 hb_retni( sta );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBSCALETRANSFORM  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	REAL sx = ( REAL ) hb_parnd( 2 );
-	REAL sy = ( REAL ) hb_parnd( 3 );
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        REAL sx = ( REAL ) hb_parnd( 2 );
+        REAL sy = ( REAL ) hb_parnd( 3 );
 
-	MatrixOrder order = ( MatrixOrder ) hb_parni( 4 );
+        MatrixOrder order = ( MatrixOrder ) hb_parni( 4 );
 
-	if( linGrBrush ){
-		 Status sta;     
-		 sta = linGrBrush->ScaleTransform(sx, sy, order);
-		 hb_retni( sta );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+        if( linGrBrush ){
+                 Status sta;
+                 sta = linGrBrush->ScaleTransform(sx, sy, order);
+                 hb_retni( sta );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBSETBLENDBELLSHAPE  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	REAL focus = ( REAL ) hb_parnd( 2 );
-	REAL scale = ( REAL ) hb_parnd( 3 );
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        REAL focus = ( REAL ) hb_parnd( 2 );
+        REAL scale = ( REAL ) hb_parnd( 3 );
 
-	if( linGrBrush ){
-		 Status sta;     
-		 sta = linGrBrush->SetBlendBellShape(focus, scale );
-		 hb_retni( sta );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+        if( linGrBrush ){
+                 Status sta;
+                 sta = linGrBrush->SetBlendBellShape(focus, scale );
+                 hb_retni( sta );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBSETBLENDTRIANGULARSHAPE  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	REAL focus = ( REAL ) hb_parnd( 2 );
-	REAL scale = ( REAL ) hb_parnd( 3 );
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        REAL focus = ( REAL ) hb_parnd( 2 );
+        REAL scale = ( REAL ) hb_parnd( 3 );
 
-	if( linGrBrush ){
-		 Status sta;     
-		 sta = linGrBrush->SetBlendTriangularShape(focus, scale );
-		 hb_retni( sta );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+        if( linGrBrush ){
+                 Status sta;
+                 sta = linGrBrush->SetBlendTriangularShape(focus, scale );
+                 hb_retni( sta );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( _GPLGBSETLINEARCOLORS )
 {
-	 LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+         LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
    Color * color1 = hb_Color_par( 2 );
    Color * color2 = hb_Color_par( 3 );
 
-	 if( linGrBrush && color1 && color2 ){
+         if( linGrBrush && color1 && color2 ){
 
       Color oColor1( color1->GetValue() );
-   	  Color oColor2( color2->GetValue() );
-      Status sta;     
-		  sta = linGrBrush->SetLinearColors(oColor1, oColor2 );
-		  hb_retni( sta );   	  
-   	     	  
-   }else 
+          Color oColor2( color2->GetValue() );
+      Status sta;
+                  sta = linGrBrush->SetLinearColors(oColor1, oColor2 );
+                  hb_retni( sta );
+
+   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 }
 
 HB_FUNC( _GPLGBTRANSLATETRANSFORM  )
 {
-	LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
-	REAL sx = ( REAL ) hb_parnd( 2 );
-	REAL sy = ( REAL ) hb_parnd( 3 );
+        LinearGradientBrush * linGrBrush = hb_LGB_par( 1 );
+        REAL sx = ( REAL ) hb_parnd( 2 );
+        REAL sy = ( REAL ) hb_parnd( 3 );
 
-	MatrixOrder order = ( MatrixOrder ) hb_parni( 4 );
+        MatrixOrder order = ( MatrixOrder ) hb_parni( 4 );
 
-	if( linGrBrush ){
-		 Status sta;     
-		 sta = linGrBrush->TranslateTransform(sx, sy, order);
-		 hb_retni( sta );
-  }else 
-	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+        if( linGrBrush ){
+                 Status sta;
+                 sta = linGrBrush->TranslateTransform(sx, sy, order);
+                 hb_retni( sta );
+  }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
