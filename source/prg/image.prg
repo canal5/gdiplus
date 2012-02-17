@@ -473,6 +473,11 @@ HB_FUNC( GPIMAGEGETBOUNDS )
 {
 }
 
+HB_FUNC( GPIMAGEGETHEIGHT )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   hb_retni( cimg->GetHeight() );
+}
 
 
 HB_FUNC( GPIMAGEGETHORIZONTALRESOLUTION )
