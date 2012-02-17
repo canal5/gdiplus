@@ -13,8 +13,8 @@ CLASS GPImage
    METHOD Destroy()
    DESTRUCTOR Destroy()
 
-   METHOD nWidth()   INLINE GetWidthImg ( ::handle )
-   METHOD nHeight()  INLINE GetHeightImg( ::handle )
+   METHOD nWidth()   INLINE ::GetWidth()
+   METHOD nHeight()  INLINE ::GetHeight()
 
    METHOD SaveAs( cFileName )
 
@@ -172,13 +172,13 @@ return 0
   METHOD GetHeight() CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetHeight(::handle)
 
 *********************************************************************************************************
   METHOD GetHorizontalResolution() CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetHorizontalResolution(::handle)
 
 *********************************************************************************************************
   METHOD GetItemData() CLASS GPImage
@@ -190,7 +190,7 @@ return 0
   METHOD GetLastStatus() CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetLastStatus(::handle)
 
 *********************************************************************************************************
   METHOD GetPalette() CLASS GPImage
@@ -202,25 +202,25 @@ return 0
   METHOD GetPaletteSize() CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetPaletteSize(::handle)
 
 *********************************************************************************************************
   METHOD GetPhysicalDimension() CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetPhysicalDimension(::handle, oSize )
 
 *********************************************************************************************************
   METHOD GetPixelFormat() CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetPixelFormat(::handle)
 
 *********************************************************************************************************
   METHOD GetPropertyCount() CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetPropertyCount(::handle)
 
 *********************************************************************************************************
   METHOD GetPropertyIdList() CLASS GPImage
@@ -262,19 +262,19 @@ return 0
   METHOD GetType() CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetType(::handle)
 
 *********************************************************************************************************
   METHOD GetVerticalResolution() CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetVerticalResolution(::handle)
 
 *********************************************************************************************************
   METHOD GetWidth() CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageGetWidth(::handle)
 
 *********************************************************************************************************
   METHOD RemovePropertyItem() CLASS GPImage
@@ -283,16 +283,16 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD RotateFlip() CLASS GPImage
+  METHOD RotateFlip( rotateFlipType ) CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageRotateFlip(::handle, rotateFlipType)
 
 *********************************************************************************************************
-  METHOD Save() CLASS GPImage
+  METHOD Save(cFileName) CLASS GPImage
 *********************************************************************************************************
 
-return 0
+return GPImageSave(::handle, cFileName)
 
 *********************************************************************************************************
   METHOD Save2() CLASS GPImage
@@ -456,33 +456,82 @@ HB_FUNC( _GPIMAGE )
 
 }
 
-HB_FUNC( DELETEIMAGE )
-{
-   Image* img = (Image*) hb_parptr( 1 );
-   delete (Image*) img;
-   hb_ret();
-}
 
-HB_FUNC( GETWIDTHIMG )
-{
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retni( cimg->GetWidth() );
-}
-
-HB_FUNC( GETHEIGHTIMG )
+HB_FUNC( GPIMAGEGETHEIGHT )
 {
    Image* cimg = (Image*) hb_parptr( 1 );
    hb_retni( cimg->GetHeight() );
 }
 
-HB_FUNC( GPSAVEIMAGE )
+HB_FUNC( GPIMAGEGETHORIZONTALRESOLUTION )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   hb_retnd( cimg->GetHorizontalResolution() );
+}
+
+HB_FUNC( GPIMAGEGETLASTSTATUS )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   hb_retnd( cimg->GetLastStatus() );
+}
+
+HB_FUNC( GPIMAGEGETPALETTESIZE )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   hb_retni( cimg->GetPaletteSize() );
+}
+
+HB_FUNC( GPIMAGEGETPHYSICALDIMENSION )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   SizeF* csize = (SizeF*) hb_parptr( 2 );
+   hb_retni( cimg->GetPhysicalDimension(csize) );
+}
+
+HB_FUNC( GPIMAGEGETPIXELFORMAT )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   hb_retni( cimg->GetPixelFormat() );
+}
+
+HB_FUNC( GPIMAGEGETPROPERTYCOUNT )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   hb_retni( cimg->GetPropertyCount() );
+}
+
+HB_FUNC( GPIMAGEGETTYPE )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   hb_retni( cimg->GetType() );
+}
+
+HB_FUNC( GPIMAGEGETVERTICALRESOLUTION )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   hb_retnd( cimg->GetVerticalResolution() );
+}
+
+HB_FUNC( GPIMAGEGETWIDTH )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   hb_retni( (int)cimg->GetWidth() );
+}
+
+HB_FUNC( GPIMAGEROTATEFLIP )
+{
+   Image* cimg = (Image*) hb_parptr( 1 );
+   hb_retni( cimg->RotateFlip( (RotateFlipType) hb_parni(2) ) );
+}
+
+HB_FUNC( GPIMAGESAVE )
 {
 //  Status Save(
 //    [in]  const WCHAR *filename,
 //    [in]  const CLSID *clsidEncoder,
 //    [in]  const EncoderParameters *encoderParams
 //  );
-/*
+
   Image* img = (Image*) hb_parptr( 1 );
   WCHAR* filename;
   CLSID clsidEncoder;
@@ -493,7 +542,7 @@ HB_FUNC( GPSAVEIMAGE )
   GpStatus h;
   _splitpath( szFile, NULL, NULL, NULL, ext );
 
-  filename = AnsiToWide( szFile );
+  filename = hb_mbtowc( szFile );
 
   if( !strcmp( ext, ".bmp" ) )
   {
@@ -535,7 +584,7 @@ HB_FUNC( GPSAVEIMAGE )
   h = img->Save( filename, &clsidEncoder, encoderParams );
 
   hb_retni( h );
-*/
+
 }
 
 
