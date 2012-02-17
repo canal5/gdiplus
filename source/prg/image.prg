@@ -6,63 +6,67 @@ return GPImage():New( cFileName )
 
 CLASS GPImage
 
-   DATA handle
+  DATA handle
+  DATA cFileName
 
-   METHOD New( cFileName ) CONSTRUCTOR
+  METHOD New( cFileName ) CONSTRUCTOR
 
-   METHOD Destroy()
-   DESTRUCTOR Destroy()
+  METHOD Destroy()
+  DESTRUCTOR Destroy()
 
-   METHOD nWidth()   INLINE ::GetWidth()
-   METHOD nHeight()  INLINE ::GetHeight()
+  METHOD nWidth()   INLINE ::GetWidth()
+  METHOD nHeight()  INLINE ::GetHeight()
 
-   METHOD SaveAs( cFileName )
+         METHOD Clone()
+         METHOD FindFirstItem()
+         METHOD FindNextItem()
+         METHOD FromFile()
+         METHOD FromStream()
+         METHOD GetAllPropertyItems()
+         METHOD GetBounds()
+         METHOD GetEncoderParameterList()
+         METHOD GetEncoderParameterListSize()
+         METHOD GetFlags()
+         METHOD GetFrameCount()
+         METHOD GetFrameDimensionsCount()
+         METHOD GetFrameDimensionsList()
 
-//Constructor
-//Image::Image(IStream*,BOOL)
-//Image::Image(WCHAR*,BOOL)
-
-  METHOD Clone()
-  METHOD FindFirstItem()
-  METHOD FindNextItem()
-  METHOD FromFile()
-  METHOD FromStream()
-  METHOD GetAllPropertyItems()
-  METHOD GetBounds()
-  METHOD GetEncoderParameterList()
-  METHOD GetEncoderParameterListSize()
-  METHOD GetFlags()
-  METHOD GetFrameCount()
-  METHOD GetFrameDimensionsCount()
-  METHOD GetFrameDimensionsList()
   METHOD GetHeight()
   METHOD GetHorizontalResolution()
-  METHOD GetItemData()
+
+         METHOD GetItemData()
+
   METHOD GetLastStatus()
-  METHOD GetPalette()
+
+         METHOD GetPalette()
+
   METHOD GetPaletteSize()
   METHOD GetPhysicalDimension()
   METHOD GetPixelFormat()
   METHOD GetPropertyCount()
-  METHOD GetPropertyIdList()
-  METHOD GetPropertyItem()
-  METHOD GetPropertyItemSize()
-  METHOD GetPropertySize()
-  METHOD GetRawFormat()
-  METHOD GetThumbnailImage()
+
+         METHOD GetPropertyIdList()
+         METHOD GetPropertyItem()
+         METHOD GetPropertyItemSize()
+         METHOD GetPropertySize()
+         METHOD GetRawFormat()
+         METHOD GetThumbnailImage()
+
   METHOD GetType()
   METHOD GetVerticalResolution()
   METHOD GetWidth()
-  METHOD RemovePropertyItem()
+
+         METHOD RemovePropertyItem()
+
   METHOD RotateFlip()
   METHOD Save()
-  METHOD Save2()
-  METHOD SaveAdd()
-  METHOD SaveAdd2()
-  METHOD SelectActiveFrame()
-  METHOD SetAbort()
-  METHOD SetPalette()
-  METHOD SetPropertyItem()
+  METHOD SaveAs( cFileName )
+
+         METHOD SaveAdd()
+         METHOD SelectActiveFrame()
+         METHOD SetAbort()
+         METHOD SetPalette()
+         METHOD SetPropertyItem()
 
 ENDCLASS
 
@@ -70,7 +74,8 @@ ENDCLASS
   METHOD New( cFileName ) CLASS GPImage
 *********************************************************************************************************
 
-  ::handle := _GPImage( cFileName )
+  ::cFileName := cFileName
+  ::handle    := _GPImage( cFileName )
 
 return self
 
@@ -86,9 +91,9 @@ return nil
    METHOD SaveAs( cFileName ) CLASS GPImage
 *********************************************************************************************************
 
-local cExt := upper( right( cFileName, 3 ) )
+DEFAULT cFileName := ::cFileName
 
-return nil
+return ::Save( cFileName )
 
 *********************************************************************************************************
   METHOD Clone() CLASS GPImage
@@ -295,19 +300,7 @@ return GPImageRotateFlip(::handle, rotateFlipType)
 return GPImageSave(::handle, cFileName)
 
 *********************************************************************************************************
-  METHOD Save2() CLASS GPImage
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
   METHOD SaveAdd() CLASS GPImage
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD SaveAdd2() CLASS GPImage
 *********************************************************************************************************
 
 return 0
