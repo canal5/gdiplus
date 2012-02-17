@@ -1,0 +1,8 @@
+1 24 "/fwh/samples/WinXP/WindowsXP.Manifest"
+
+1 ICON .\testunit.ico
+
+LED1   BITMAP "BITMAPS\level1.bmp"
+LED2   BITMAP "BITMAPS\level2.bmp"
+NOLED  BITMAP "BITMAPS\level5.bmp"
+

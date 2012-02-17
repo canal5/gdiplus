@@ -13,7 +13,7 @@
 
 # Flags for modules to include: YES | NO (must be UPPERCASE)##################
 
-RES_FILE      = NO
+RES_FILE      = YES
 LNK_DBFNTX    = YES
 LNK_DBFCDX    = NO
 LNK_DEBUG     = NO
@@ -32,8 +32,8 @@ APP_EXE_DIR      = .
 APP_RES_DIR      = res
 
 APP_EXE  = $(APP_EXE_DIR)\$(APP_NAME).exe
-APP_RC   = $(APP_RES_DIR)\gdiplus.rc
-APP_RES  = $(APP_RES_DIR)\gdiplus.res
+APP_RC   = $(APP_RES_DIR)\unitarias.rc
+APP_RES  = $(APP_RES_DIR)\unitarias.res
 APP_MAP  = $(APP_RES_DIR)\$(APP_NAME).map
 
 # Paths for dependent files ##################################################
