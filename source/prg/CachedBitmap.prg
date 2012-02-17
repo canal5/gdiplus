@@ -1,47 +1,29 @@
 #include "fivewin.ch"
 
 
-function CachedBitmap()
+function CachedBitmap(oBitmap, graphics)
 
-return GPCachedBitmap():New()
+return GPCachedBitmap():New(oBitmap, graphics)
 
 
 CLASS GPCachedBitmap
 
   DATA handle
 
-  METHOD New() CONSTRUCTOR
+  METHOD New(oBitmap, graphics) CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-//  METHOD
   METHOD GetLastStatus()
 
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New() CLASS GPCachedBitmap
+  METHOD New(oBitmap, graphics) CLASS GPCachedBitmap
 *********************************************************************************************************
 
-local iParams := PCount()
-
-
-  if iParams == 0
-     ::handle := _GPCachedBitmap()
-  elseif iParams == 1
-     ::handle := _GPCachedBitmap( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPCachedBitmap( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPCachedBitmap( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPCachedBitmap( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPCachedBitmap( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPCachedBitmap( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
+  ::handle := _GPCachedBitmap(oBitmap:handle, graphics:handle)
 
 return self
 
@@ -57,38 +39,7 @@ return nil
   METHOD GetLastStatus() CLASS GPCachedBitmap
 *********************************************************************************************************
 
-return 0
-
-
-
-
-//Constructors
-//
-//The CachedBitmap class has the following constructors.
-//
-//Constructor	                         Description
-//CachedBitmap::CachedBitmap	         Creates a CachedBitmap::CachedBitmap object based on a Bitmap object and a Graphics object. The cached bitmap takes the pixel data from the Bitmap object and stores it in a format that is optimized for the display device associated with the Graphics object.
-//
-//
-//Methods
-//
-//The CachedBitmap class has the following methods.
-//
-//Method	                                 Description
-//CachedBitmap::GetLastStatus	         The CachedBitmap::GetLastStatus method returns a value that indicates whether this CachedBitmap object was constructed successfully.
-
-
-
-
-
-
-
-
-
-
-
-
-
+return GPCachedBitmapGetLastStatus(::handle)
 
 
 
@@ -101,33 +52,19 @@ using namespace Gdiplus;
 
 HB_FUNC( _GPCACHEDBITMAP )
 {
-   //CachedBitmap* clr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    clr = new CachedBitmap();
-   //else if (iParams == 1 )
-   //    clr = new CachedBitmap( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    clr = new CachedBitmap( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    clr = new CachedBitmap( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*)  );
+   Bitmap* bmp = (Bitmap*) hb_parptr( 1 );
+   Graphics* gr = (Graphics*) hb_parptr( 2 );
+
+   CachedBitmap* cbmp = new CachedBitmap( bmp, gr);
+
+   hb_retptr( (void*) cbmp );
 }
 
-HB_FUNC( DELETECACHEDBITMAP )
+HB_FUNC( GPCACHEDBITMAPGETLASTSTATUS )
 {
-   //CachedBitmap* clr = (CachedBitmap*) hb_parptr( 1 );
-   //delete (CachedBitmap*) clr;
-   //hb_ret();
+   CachedBitmap* ptr = (CachedBitmap*) hb_parptr( 1 );
+   hb_retni( ptr->GetLastStatus() );
 }
-
-//HB_FUNC( GPCachedBitmap... )
-//{
-//   CachedBitmap* ptr = (CachedBitmap*) hb_parptr( 1 );
-//   hb_retni( ptr->GetA() );
-//}
 
 #pragma ENDDUMP
 
