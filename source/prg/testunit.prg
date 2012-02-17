@@ -42,7 +42,7 @@ ENDCLASS
    USE result ALIAS result
    ::aDisplay = {}
    oSelf = self
-   
+
 return self
 
 ************************************************************************
@@ -108,14 +108,14 @@ if eval( bAction )
       AAdd( ::aDisplay, bDisplay )
    else
       AAdd( ::aDisplay, NIL )
-   endif 
+   endif
 else
    result->Resultado := 2
    if hb_IsBlock( bDisplay )
       AAdd( ::aDisplay, {| | MsgInfo( "No se puede ejecutar" + CRLF + "Se genero un error" ) } )
-   else 
+   else
       AAdd( ::aDisplay, NIL )
-   endif    
+   endif
 endif
 
 
@@ -158,19 +158,18 @@ function zBrowse( cTitle, cListName, bNew, bModify, bDelete, bSearch, bList,;
    local oWnd, oLbx, oFont, oBar
    local btnNew, btnModify, btnDelete, btnSearch, btnList, btnEnd
    local n
-   local aHBitMaps:= { ReadBitmap( 0, ".\bitmaps\Level1.bmp" ), ;
-                       ReadBitmap( 0, ".\bitmaps\Level2.bmp" ), ;
-                       ReadBitmap( 0, ".\bitmaps\Level3.bmp" ), ;
-                       ReadBitmap( 0, ".\bitmaps\Level4.bmp" ), ;
-                       ReadBitmap( 0, ".\bitmaps\Level5.bmp" ) }
-
+   local oIcon
 
    DEFAULT cTitle  := "Browse", cListName := "Fields"
 
-   DEFINE WINDOW oWnd FROM 1, 1 TO 700, 900 PIXEL TITLE cTitle
+   DEFINE ICON oIcon NAME 1
 
+   DEFINE WINDOW oWnd FROM 1, 1 TO 700, 900 PIXEL TITLE cTitle ICON oIcon
+
+   DEFINE FONT oFont NAME "Tahoma" SIZE 0,-12
 
    @ 10,10 XBROWSE oBrw SIZE -10,-10 PIXEL OF oWnd ;
+      FONT oFont ;
       ALIAS "RESULT" CELL LINES NOBORDER ;
       FIELDS                  "", "",;
                               result->RESULTADO,;
@@ -182,7 +181,7 @@ function zBrowse( cTitle, cListName, bNew, bModify, bDelete, bSearch, bList,;
                               result->procname  ,;
                               result->procline  ;
       HEADERS "", "Sample", "Resultado", "Descripción", "Test", "Errorcode", "Fecha", "Hora", "Procname", "Procline" ;
-      FIELDSIZES 18, 18, 48, 280, 260, 280, 60, 60, 150, 70  ;
+      FIELDSIZES 25, 18, 48, 280, 260, 280, 60, 60, 150, 70  ;
 
 
 
@@ -194,16 +193,20 @@ function zBrowse( cTitle, cListName, bNew, bModify, bDelete, bSearch, bList,;
       :nStretchCol   := STRETCHCOL_LAST
       :bLDblClick    := { | nRow, nCol, nKeyFlags, o | If( oSelf:aDisplay[ o:KeyNo() ] != NIL, Eval( oSelf:aDisplay[ o:KeyNo() ], oSelf ), NIL ) }
       :nMarqueeStyle := 4
+      :nRowHeight    := 20
+      :nColDividerStyle := 0
+      :nRowDividerStyle := 0
       :CreateFromCode()
    END
 
 
-   oBrw:aCols[ 1 ]:AddBitmap(".\bitmaps\Level1.bmp")
-   oBrw:aCols[ 1 ]:AddBitmap(".\bitmaps\Level2.bmp")
-   oBrw:aCols[ 1 ]:bBmpData   := { || If( result->RESULTADO=1, 1, 2) }
-   
+   oBrw:aCols[ 1 ]:AddBitmap("LED1")
+   oBrw:aCols[ 1 ]:AddBitmap("LED2")
+   oBrw:aCols[ 1 ]:AddBitmap("NOLED")
+   oBrw:aCols[ 1 ]:bBmpData   := { || If( result->RESULTADO==1, 1, If( result->RESULTADO==2,2,3) ) }
+
    oBrw:aCols[ 2 ]:AddBitmap(".\bitmaps\checked.bmp")
-   oBrw:aCols[ 2 ]:bBmpData   := { || If( oSelf:aDisplay[ oBrw:KeyNo() ] != NIL, 1, 0 ) }   
+   oBrw:aCols[ 2 ]:bBmpData   := { || If( oSelf:aDisplay[ oBrw:KeyNo() ] != NIL, 1, 0 ) }
 
 
 

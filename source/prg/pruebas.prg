@@ -4,56 +4,27 @@
 
 function main()
 Local oTest
-local oColor
-local oPen
-local oPen2
-local oBrush
-local oFont
-local rgbColor := RGB( 100, 120, 130 )
-local g
-local oRect
-local oRect2
-local oSize
-local oPoint
-local oRect3
 
    DEFINE SUITTEST oTest
 
-      oColor := Color( 255, 10, 20, 30 )
-      oBrush := SolidBrush( oColor )
-      oPen   := Pen( oBrush, 5 )
-      oPen2  := Pen( oColor, 5 )
-      oFont  := Font( "Ms Sans Serif", 12 )
-
-      RectF  oRect ( 10, 10, 200, 200 )
-      RectF  oRect3( 10, 10, 200, 200 )
-      PointF oPoint( 13, 22 )
-      SizeF  oSize ( 50, 50 )
-      RectF oRect2( oPoint, oSize )
-
-      SEPARADOR( "GRAPHICS" )
-      TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
-
-      SEPARADOR( "PEN" )
-
-      TEST !empty( Pen( oPen ):handle )                      DESCRIPTION "Constructor Pen. Pen( oPen )"
-      TEST !empty( Pen( oBrush, 5 ):handle )                 DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
-      TEST !empty( Pen( oColor, 5 ):handle )                 DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
-      TEST oPen:SetAlignment( PenAlignment.Center ) == oPen:GetAlignment() ;
-                                                             DESCRIPTION "SetAlignment, GetAlignMent"
+      TestsGraphics()
+      TestsPen()
       TestsColor()
       TestsBrush()
       TestsFont()
       TestsRectF()
       TestsSizeF()
       TestMatrix()
-
       TestLinearGB()
+
       SHOW RESULT
 
    ENDDEFINE
 
 return nil
+
+
+
 
 *****************************************************************************************
   function TestLinearGB() //LinearGradientBrush
@@ -207,8 +178,6 @@ return 0
 
 return 0
 
-
-
 *****************************************************************************************
   function TestsSizeF()
 *****************************************************************************************
@@ -227,6 +196,7 @@ return 0
   TEST !Empty( oSize3:handle )  DESCRIPTION "Operador +"
 
 return 0
+
 
 *****************************************************************************************
   function TestsRectF()
@@ -267,6 +237,34 @@ return 0
 return 0
 
 *********************************************************************************************************************
+  function TestsFont()
+*********************************************************************************************************************
+
+  local oFont
+
+      oFont  := Font( "Ms Sans Serif", 12 )
+
+      SEPARADOR( "FONT" )
+      TEST !Empty( oFont:handle  )  DESCRIPTION "Creación objeto GPFont"
+
+return 0
+
+********************************************************************************************************************
+  function TestsBrush()
+*********************************************************************************************************************
+
+  local oColor, oBrush
+
+  oColor := Color( 255, 10, 20, 30 )
+  oBrush := SolidBrush( oColor )
+
+  SEPARADOR( "BRUSH" )
+  TEST !Empty( oBrush:handle )  DESCRIPTION "Creación objeto GPSolidBrush"
+
+return 0
+
+
+*********************************************************************************************************************
   function TestsColor()
 *********************************************************************************************************************
 
@@ -294,31 +292,34 @@ return 0
 return 0
 
 *********************************************************************************************************************
-  function TestsBrush()
+  function TestsPen()
 *********************************************************************************************************************
 
-  local oColor, oBrush
+local oColor := Color( 255, 10, 20, 30 )
+local oBrush := SolidBrush( oColor )
+local oPen   := Pen( oBrush, 5 )
 
-  oColor := Color( 255, 10, 20, 30 )
-  oBrush := SolidBrush( oColor )
 
-  SEPARADOR( "BRUSH" )
-  TEST !Empty( oBrush:handle )  DESCRIPTION "Creación objeto GPSolidBrush"
+   SEPARADOR( "PEN" )
+
+   TEST !empty( Pen( oPen ):handle )                                    DESCRIPTION "Constructor Pen. Pen( oPen )"
+   TEST !empty( Pen( oBrush, 5 ):handle )                               DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
+   TEST !empty( Pen( oColor, 5 ):handle )                               DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
+   TEST oPen:SetAlignment( PenAlignment.Center ) == oPen:GetAlignment() DESCRIPTION "SetAlignment, GetAlignMent"
 
 return 0
 
+
 *********************************************************************************************************************
-  function TestsFont()
+  function TestsGraphics()
 *********************************************************************************************************************
 
-  local oFont
-
-      oFont  := Font( "Ms Sans Serif", 12 )
-
-      SEPARADOR( "FONT" )
-      TEST !Empty( oFont:handle  )  DESCRIPTION "Creación objeto GPFont"
+      SEPARADOR( "GRAPHICS" )
+      TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
 
 return 0
+
+
 
 *********************************************************************************************************************
   function TestRectFUnion()
@@ -591,6 +592,11 @@ function TestLinearGB1( )
    exampleWindow( bPainted )
 
 return nil
+
+
+
+
+
 
 
 function  Example_RotateTrans()
