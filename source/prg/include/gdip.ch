@@ -15,6 +15,7 @@
 #xcommand LINEARGRADIENTBRUSH <ogb>    ( <par1>, <par2>, <par3>, <par4>[, <par5> ]  )                 => <ogb>     := LinearGradientBrush( <par1>, <par2>, <par3>, <par4>[, <par5>] )
 #xcommand GRAPHICS            <o>      ( <par1> )                                                     =>  <o>      := Graphics           ( <par1> )
 #xcommand IMAGE               <oImage> ( <cImage> )                                                   => <oImage>  := Image              ( <cImage> )
+#xcommand IMAGE <o>( <par1> ) =>  <o> := Image( <par1> )
 
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"
