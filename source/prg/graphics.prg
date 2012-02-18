@@ -213,11 +213,11 @@ function Graphics( ... )
    local aParams := hb_aparams()
    local oObj
    local nLen := Len( aParams )
-   
+
    //TODO resto de parametros
    switch nLen
       case 1
-         oObj := GPGraphics():New( aParams[ 1 ] )         
+         oObj := GPGraphics():New( aParams[ 1 ] )
          exit
    endswitch
 
@@ -261,7 +261,7 @@ CLASS GPGraphics
       METHOD EnumerateMetafile      ( )
       METHOD ExcludeClip            ( )
       METHOD FillClosedCurve        ( )
-      METHOD FillEllipse            ( nTop, nLeft, nwidth, nHeight )
+      METHOD FillEllipse            ( oBrush, nTop, nLeft, nwidth, nHeight )
       METHOD FillPath               ( oPath )
       METHOD FillPie                ( )
       METHOD FillPolygon            ( )
@@ -468,8 +468,10 @@ return 0
 return 0
 
 **********************************************************************************************************
-  METHOD FillEllipse( nTop, nLeft, nwidth, nHeight ) CLASS GPGraphics
+  METHOD FillEllipse( oBrush, nTop, nLeft, nwidth, nHeight ) CLASS GPGraphics
 **********************************************************************************************************
+
+  DEFAULT oBrush := ::oBrush
 
   if valtype( nTop ) == "A"
      nLeft   := nTop[2]
@@ -478,7 +480,7 @@ return 0
      nTop    := nTop[1]
   endif
 
-  GP_FillEllipse( ::handle, ::oBrush:handle, nTop, nLeft, nwidth, nHeight )
+  GP_FillEllipse( ::handle, oBrush:handle, nTop, nLeft, nwidth, nHeight )
 
 return 0
 
@@ -512,19 +514,19 @@ return 0
    local aParams := hb_aparams()
    local nLen := Len( aParams )
    local nStatus
-   
-    
-   if nLen == 5 
+
+
+   if nLen == 5
       //TODO faltan los demas tipos de BRUSH
       if aParams[ 1 ]:isKindof( "GPLINEARGRADIENTBRUSH" )
          nStatus = GP_FillRectangleLGB( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
       endif
-   elseif nLen == 2 
+   elseif nLen == 2
       if aParams[ 1 ]:isKindof( "GPLINEARGRADIENTBRUSH" )
          nStatus = GP_FillRectangleLGBR( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ]:handle /*Rect(F)*/ )
       endif
-   endif 
-   /*   
+   endif
+   /*
   if oPen == nil
      GP_FillRect( ::handle, {rc[1],rc[2], rc[4]-rc[2], rc[3]-rc[1]}, oBrush:handle )
   else
@@ -1505,7 +1507,7 @@ HB_FUNC( GP_FILLRECTANGLELGB )
     REAL y = ( REAL ) hb_parnd( 4 );
     REAL width = ( REAL ) hb_parnd( 5 );
     REAL height = ( REAL ) hb_parnd( 6 );
-               
+
     if( g && pLGB )
     {
        g->FillRectangle( pLGB, x, y, width, height );
@@ -1519,13 +1521,13 @@ HB_FUNC( GP_FILLRECTANGLELGBR )
     Graphics *g = hb_Graphics_par( 1 );
     LinearGradientBrush * pLGB = hb_LGB_par( 2 );
     Rect * rect = hb_Rect_par( 3 );
-               
+
     if( g && pLGB && rect )
-    {  
+    {
     	 Rect oRect( rect->X, rect->Y, rect->Width, rect->Height );
        g->FillRectangle( pLGB, oRect );
     }
-    
+
     else
        hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
