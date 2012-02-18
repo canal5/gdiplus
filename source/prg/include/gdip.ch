@@ -16,6 +16,7 @@
 #xcommand GRAPHICS            <o>      ( <par1> )                                                     =>  <o>      := Graphics           ( <par1> )
 #xcommand IMAGE               <oImage> ( <cImage> )                                                   => <oImage>  := Image              ( <cImage> )
 #xcommand IMAGE <o>( <par1> ) =>  <o> := Image( <par1> )
+#xcommand SOLIDBRUSH          <oBrush> (  <oColor> )                                                  => <oBrush>  := SolidBrush         ( <oColor> )
 
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"
