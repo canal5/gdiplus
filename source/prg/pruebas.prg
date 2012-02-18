@@ -16,6 +16,7 @@ Local oTest
       TestsSizeF()
       TestMatrix()
       TestLinearGB()
+      TestImage()
 
       SHOW RESULT
 
@@ -24,6 +25,19 @@ Local oTest
 return nil
 
 
+*****************************************************************************************
+  function TestImage()
+*****************************************************************************************
+
+local oImage
+
+Image oImage("images\mosaic.png")
+
+   SEPARADOR( "IMAGE" )
+
+   TEST ! Empty( oImage:handle )          DESCRIPTION "Constructor Image. No guarda bien los cambios del ejemplo"  SAMPLE Example_SaveFile()
+
+return 0
 
 
 *****************************************************************************************
@@ -569,7 +583,7 @@ return oColor:ToCOLORREF() == RGB( 255, 255, 255 )
 
 function exampleWindow( bCode )
 
-   DEFINE WINDOW oWnd TITLE result->descrip
+   DEFINE WINDOW oWnd TITLE alltrim(result->descrip)
 
    oWnd:bPainted = bCode
 
@@ -769,6 +783,46 @@ function Example_SetLinColors()
 
 return nil
 
+
+function Example_SaveFile()
+
+   local bPainted := { | hDC |
+
+         local graphics, image, imageGraphics, brush
+         Graphics graphics(hdc)
+
+         // Create an Image object based on a PNG file.
+         Image  image("images\Mosaic.png")
+
+         // Draw the image.
+         graphics:DrawImage(image, 10, 10)
+
+         // Construct a Graphics object based on the image.
+         Graphics imageGraphics(image)
+
+         // Alter the image.
+         SolidBrush brush(Color(255, 255, 0, 0))
+         imageGraphics:FillEllipse( brush, 10, 10, 100, 100)
+
+         // Draw the altered image.
+         graphics:DrawImage(image, 10, 10)
+
+         // Save the altered image.
+         //CLSID pngClsid;
+         //GetEncoderClsid(L"image/png", &pngClsid);
+         if file("images\Mosaic2.png")
+            DeleteFile( "images\Mosaic2.png" )
+         endif
+
+         image:Save("images\Mosaic2.png")
+
+         // El método save si funciona, lo que no funciona es modificar la imagen con un nuevo Graphics basado en esa imagen
+
+}
+
+ exampleWindow( bPainted )
+
+return nil
 
 
 
