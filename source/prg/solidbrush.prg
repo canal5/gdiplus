@@ -70,15 +70,11 @@ return 0
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPSOLIDBRUSH )
 {
-   Color* c = (Color*) hb_parptr( 1 );
+   Color* c = hb_Color_par( 1 );
    SolidBrush* b = new SolidBrush( *c );
    hb_retptr( (void*) b );
 }

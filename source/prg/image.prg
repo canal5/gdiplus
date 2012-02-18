@@ -17,19 +17,19 @@ CLASS GPImage
   METHOD nWidth()   INLINE ::GetWidth()
   METHOD nHeight()  INLINE ::GetHeight()
 
-         METHOD Clone()
-         METHOD FindFirstItem()
-         METHOD FindNextItem()
-         METHOD FromFile()
-         METHOD FromStream()
-         METHOD GetAllPropertyItems()
-         METHOD GetBounds()
-         METHOD GetEncoderParameterList()
-         METHOD GetEncoderParameterListSize()
-         METHOD GetFlags()
-         METHOD GetFrameCount()
-         METHOD GetFrameDimensionsCount()
-         METHOD GetFrameDimensionsList()
+  METHOD Clone()
+  METHOD FindFirstItem()
+  METHOD FindNextItem()
+  METHOD FromFile()
+  METHOD FromStream()
+  METHOD GetAllPropertyItems()
+  METHOD GetBounds()
+  METHOD GetEncoderParameterList()
+  METHOD GetEncoderParameterListSize()
+  METHOD GetFlags()
+  METHOD GetFrameCount()
+  METHOD GetFrameDimensionsCount()
+  METHOD GetFrameDimensionsList()
 
   METHOD Clone( oImage ) CONSTRUCTOR
   METHOD FindFirstItem()
@@ -47,39 +47,39 @@ CLASS GPImage
   METHOD GetHeight()
   METHOD GetHorizontalResolution()
 
-         METHOD GetItemData()
+  METHOD GetItemData()
 
   METHOD GetLastStatus()
 
-         METHOD GetPalette()
+  METHOD GetPalette()
 
   METHOD GetPaletteSize()
   METHOD GetPhysicalDimension()
   METHOD GetPixelFormat()
   METHOD GetPropertyCount()
 
-         METHOD GetPropertyIdList()
-         METHOD GetPropertyItem()
-         METHOD GetPropertyItemSize()
-         METHOD GetPropertySize()
-         METHOD GetRawFormat()
-         METHOD GetThumbnailImage()
+  METHOD GetPropertyIdList()
+  METHOD GetPropertyItem()
+  METHOD GetPropertyItemSize()
+  METHOD GetPropertySize()
+  METHOD GetRawFormat()
+  METHOD GetThumbnailImage()
 
   METHOD GetType()
   METHOD GetVerticalResolution()
   METHOD GetWidth()
 
-         METHOD RemovePropertyItem()
+  METHOD RemovePropertyItem()
 
   METHOD RotateFlip()
   METHOD Save()
   METHOD SaveAs( cFileName )
 
-         METHOD SaveAdd()
-         METHOD SelectActiveFrame()
-         METHOD SetAbort()
-         METHOD SetPalette()
-         METHOD SetPropertyItem()
+  METHOD SaveAdd()
+  METHOD SelectActiveFrame()
+  METHOD SetAbort()
+  METHOD SetPalette()
+  METHOD SetPropertyItem()
 
 ENDCLASS
 

@@ -480,9 +480,7 @@ return 0
      nTop    := nTop[1]
   endif
 
-  GP_FillEllipse( ::handle, oBrush:handle, nTop, nLeft, nwidth, nHeight )
-
-return 0
+return GP_FillEllipse( ::handle, oBrush:handle, nTop, nLeft, nwidth, nHeight )
 
 
 **********************************************************************************************************
@@ -1473,12 +1471,11 @@ HB_FUNC( GP_FILLELLIPSE )
 
    if( g && b && hb_pcount() > 5 )
    {
-    g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 ));
+    hb_retni( g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 )) );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-    hb_ret();
 }
 
 
