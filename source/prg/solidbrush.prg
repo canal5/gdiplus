@@ -114,25 +114,13 @@ HB_FUNC( _GPSOLIDBRUSHGETCOLOR )
    if( GP_IS_SOLIDBRUSH( pBrush ) )
    {  
      PHB_ITEM pitemColor;
-     PHB_ITEM pHandle = hb_itemNew( NULL );
      Color c, *hColor;
      Status sta;
      SolidBrush* b = ( SolidBrush * ) pBrush->pObject;
-     GDIPLUS * pClr = gdiplus_new( GP_IT_COLOR ); 
      sta = b->GetColor( &c );
-     pitemColor = hb_itemDoC( "GPCOLOR", 0 );
-     
-     hColor = new Color( c.GetValue() ); 
-     pClr->pObject = hColor;
-     hb_itemPutPtr( pHandle, pClr );
-     
-     pitemColor = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitemColor, pHandle );
-
-     hb_itemRelease( pHandle );
-
+     pitemColor = GPNewColorObject( c );
      if( !hb_itemParamStoreRelease( 2, pitemColor ))
         hb_itemRelease( pitemColor );
-     
      hb_retni( sta );
   
   }else

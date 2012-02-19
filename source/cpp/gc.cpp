@@ -5,7 +5,6 @@
 //GDIPLUS
 //------------------------------------------------//
 
-
 static HB_GARBAGE_FUNC( GDI_GDIPLUS_release )
 {
    void ** ph = ( void ** ) Cargo;

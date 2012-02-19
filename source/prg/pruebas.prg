@@ -8,7 +8,7 @@ Local oTest
    DEFINE SUITTEST oTest
 
 //      TestsGraphics()
-//      TestsPen()
+      TestsPen()
 //      TestsColor()
 //      TestsBrush()
 //      TestsFont()
@@ -330,15 +330,22 @@ return 0
 
 local oColor := Color( 255, 10, 20, 30 )
 local oBrush := SolidBrush( oColor )
-local oPen   := Pen( oBrush, 5 )
+local oPen   
 
+   Pen oPen( oBrush, 5 )
 
    SEPARADOR( "PEN" )
 
-   TEST !empty( Pen( oPen ):handle )                                    DESCRIPTION "Constructor Pen. Pen( oPen )"
-   TEST !empty( Pen( oBrush, 5 ):handle )                               DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
-   TEST !empty( Pen( oColor, 5 ):handle )                               DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
-   TEST oPen:SetAlignment( PenAlignment.Center ) == oPen:GetAlignment() DESCRIPTION "SetAlignment, GetAlignMent"
+   TEST !empty( Pen( oPen ):handle )                   DESCRIPTION "Constructor Pen. Pen( oPen )"
+   TEST !empty( Pen( oBrush, 5 ):handle )              DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
+   TEST !empty( Pen( oColor, 5 ):handle )              DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
+   TEST oPen:SetColor( oColor ) == 0                   DESCRIPTION "SetColor( oColor )" SAMPLE Example_PenSetColor()
+   TEST oPen:SetBrush( oBrush ) == 0                   DESCRIPTION "SetBrush( oBrush )" SAMPLE Example_PenSetBrush()
+   TEST oPen:ScaleTransform( 8, 4 ) == 0               DESCRIPTION "ScaleTransform( 8, 4 )" SAMPLE Example_PenScaleTransform()
+   TEST oPen:SetAlignment( PenAlignmentInset ) == 0    DESCRIPTION "oPen:SetAlignment( PenAlignmentInset )" SAMPLE Example_PenSetAlignment()
+   
+   
+//   TEST oPen:SetAlignment( PenAlignment.Center ) == oPen:GetAlignment() DESCRIPTION "SetAlignment, GetAlignMent"
 
 return 0
 
@@ -818,7 +825,7 @@ function Example_SaveFile()
 
          // Construct a Graphics object based on the image.
          Graphics imageGraphics(image)
-
+/*
          // Alter the image.
          SolidBrush brush(Color(255, 255, 0, 0))
          imageGraphics:FillEllipse( brush, 10, 10, 100, 100)
@@ -834,7 +841,7 @@ function Example_SaveFile()
          endif
 
          image:Save("images\Mosaic2.png")
-
+*/
          // El método save si funciona, lo que no funciona es modificar la imagen con un nuevo Graphics basado en esa imagen
 
 }
@@ -847,7 +854,7 @@ function Example_GetColor()
    local bPainted :=  {| hDC |
    
    local oColor     
-   Graphics graphics(hdc);
+   Graphics graphics(hdc)
 
    // Create a solid brush, and use it to fill a rectangle.
    SolidBrush solidBrush(Color(255, 0, 0, 255))  // blue
@@ -872,17 +879,17 @@ return nil
 function Example_SetColor()
    local bPainted := { | hdc |
 
-   Graphics graphics(hdc)
-
-   // Create a solid brush, and use it to fill a rectangle.
-   SolidBrush solidBrush(Color(255, 0, 0, 255))  // blue
-
-   graphics:FillRectangle(solidBrush, 10, 10, 200, 100)
-
-   // Change the color of the brush, and fill another rectangle.
-   solidBrush:SetColor(Color(255, 255, 0, 0))    // red
-   
-   graphics:FillRectangle(solidBrush, 220, 10, 200, 100)
+      Graphics graphics(hdc)
+      
+      // Create a solid brush, and use it to fill a rectangle.
+      SolidBrush solidBrush(Color(255, 0, 0, 255))  // blue
+      
+      graphics:FillRectangle(solidBrush, 10, 10, 200, 100)
+      
+      // Change the color of the brush, and fill another rectangle.
+      solidBrush:SetColor(Color(255, 255, 0, 0))    // red
+      
+      graphics:FillRectangle(solidBrush, 220, 10, 200, 100)
    
    }
 
@@ -891,6 +898,101 @@ function Example_SetColor()
 return nil   
 
 
+function Example_PenSetBrush( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      
+      // Create a HatchBrush object.
+      SolidBrush solidBrush(Color(255, 0, 0, 255))  // blue
+      
+      // Create a pen, and set the brush for the pen.
+      Pen pen(Color(255, 255, 0, 0), 10)
+      pen:SetBrush(solidBrush)
+      
+      // Draw a line with the pen.
+      graphics:DrawLine( pen, 0, 0, 200, 100)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_PenSetColor( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      
+      // Create a red pen, and use it to draw a line.
+      Pen pen(Color(255, 255, 0, 0), 5)
+      graphics:DrawLine(pen, 0, 0, 200, 100)
+      
+      // Change the pen's color to blue, and draw a second line.
+      pen:SetColor(Color(255, 0, 0, 255))
+      graphics:DrawLine(pen, 0, 40, 200, 140)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_PenScaleTransform( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      // Create a pen, and use it to draw a rectangle.
+      Pen pen(Color(255, 0, 0, 255), 2)
+      graphics:DrawRectangle(pen, 50, 50, 150, 100)
+      
+      // Apply a scaling transformation to the pen.
+      pen:ScaleTransform(8, 4)
+      
+      // Draw a rectangle with the transformed pen.
+      graphics:DrawRectangle(pen, 250, 50, 150, 100)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_PenSetAlignment( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a black and a green pen.
+      Pen blackPen(Color(255, 0, 0, 0), 1)
+      Pen greenPen(Color(255, 0, 255, 0), 15)
+      
+      // Set the alignment of the green pen.
+      greenPen:SetAlignment(PenAlignmentInset)
+      
+      // Draw two lines using each pen.
+      graphics:DrawEllipse(greenPen, 0, 0, 100, 200)
+      graphics:DrawEllipse(blackPen, 0, 0, 100, 200)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+/*prototype
+function Example_( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+*/
 init procedure entrada
 
   gdiplusstartup()

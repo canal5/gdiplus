@@ -112,10 +112,8 @@ local iParams := pcount()
 
   if o:isKindOf( GPPen() )
      ::handle := ::Clone( o )                // Clonar un Pen
-  elseif o:isKindOf( GPColor() )
-     ::handle := GPPenA( o:handle, nWidth )  // Color y ancho
   else
-     ::handle := GPPenB( o:handle, nWidth )  // Brush y ancho
+     ::handle := _GPPen( o:handle, nWidth ) 
   endif
 
 return self
@@ -143,16 +141,16 @@ return nil
 return GPPenGetAlignment( ::handle )
 
 *********************************************************************************************************
-  METHOD GetBrush() CLASS GPPen
+  METHOD GetBrush( oBrush ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPenGetBrush( ::handle )
+return GPPenGetBrush( ::handle, @oBrush )
 
 *********************************************************************************************************
   METHOD GetColor( oColor ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPenGetColor(::handle, oColor:handle )
+return GPPenGetColor(::handle, @oColor )
 
 *********************************************************************************************************
   METHOD GetCompoundArray( compoundarray ) CLASS GPPen
@@ -395,63 +393,102 @@ return GPPenSetWidth( ::handle, nWidth )
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <hbapiitm.h>
-#include <gdiplus.h>
+#include <gc.h>
 
-using namespace Gdiplus;
-
-HB_FUNC( GPPENA )
+HB_FUNC( _GPPEN )
 {
-   Color* c = (Color*) hb_parptr( 1 );
-   Pen* clr = new Pen( *c, (REAL)hb_parnd( 2 ));
-   hb_retptr( (void*) clr );
+   GDIPLUS * pObj = gdiplus_new( GP_IT_PEN ); 
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
 
+   switch( GP_OBJECT_TYPE( p ) ){
+      Pen* pen ;
+      case GP_IT_COLOR:{
+         Color* c = (Color*) GP_GET( p );
+         pen = new Pen( *c, (REAL)hb_parnd( 2 ));
+         GP_SET( pObj, pen );
+         break;
+      }
+      //TODO colocar el resto de los brush posibles
+      case GP_IT_SOLIDBRUSH:{
+         Brush* b = (Brush*) p->pObject;
+         pen = new Pen( b, (REAL)hb_parnd( 2 ));
+         GP_SET( pObj, pen );
+         break;   
+      }
+   }
+   
+   hb_GDIPLUS_ret( pObj );   
 }
-
-HB_FUNC( GPPENB )
-{
-   Brush* b = (Brush*) hb_parptr( 1 );
-   Pen* p = new Pen( b, (REAL) hb_parnd( 2 ));
-   hb_retptr( (void*) p );
-}
-
-
-HB_FUNC( DELETEPEN )
-{
-
-   Pen* p = (Pen*) hb_parptr( 1 );
-   delete (Pen*) p;
-   hb_ret();
-
-}
-
 
 HB_FUNC( GPPENCLONE )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retptr( (void*) p->Clone() );
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( p ) ){
+      Pen* pen = (Pen*) GP_GET( p );
+      Pen * clone;
+      GDIPLUS * pObj = gdiplus_new( GP_IT_PEN ); 
+      clone = pen->Clone();
+      GP_SET( pObj, clone );
+      hb_GDIPLUS_ret( pObj );
+  }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPPENGETALIGNMENT )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   PenAlignment pa = p->GetAlignment();
-   hb_retni( pa );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      PenAlignment pa = p->GetAlignment();
+      hb_retni( pa );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          
 }
 
 HB_FUNC( GPPENGETBRUSH )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retptr( (Brush*) p->GetBrush() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      BrushType type;
+      Pen* p = (Pen*) GP_GET( pObj );
+      Brush * b = p->GetBrush();
+      PHB_ITEM pitem;
+      
+      type = b->GetType();
+      switch( type ){
+         case BrushTypeSolidColor:
+            pitem = GPNewSolidBrushObject( *(( SolidBrush *) b) );
+            if( !hb_itemParamStoreRelease( 2, pitem ))
+               hb_itemRelease( pitem );
+            break;                  
+      }
+      
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
 }
 
 HB_FUNC( GPPENGETCOLOR )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   Color* c = (Color*) hb_parptr( 2 );
-   hb_retni( (int) p->GetColor( c ));
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      BrushType type;
+      Pen* p = (Pen*) GP_GET( pObj );
+      Color c;
+      PHB_ITEM pitem;
+      Status sta;
+      
+      p->GetColor( &c );
+      pitem = GPNewColorObject( c );
+      if( !hb_itemParamStoreRelease( 2, pitem ))
+        hb_itemRelease( pitem );
+        
+      hb_retni( sta );      
+      
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( GPPENGETCOMPOUNDARRAY )
@@ -620,30 +657,55 @@ HB_FUNC( GPPENROTATETRANSFORM )
 
 HB_FUNC( GPPENSCALETRANSFORM )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->ScaleTransform((REAL)hb_parnd(2),(REAL)hb_parnd(3),(MatrixOrder)hb_parnl(4)) );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      hb_retni( (int) p->ScaleTransform((REAL)hb_parnd(2),(REAL)hb_parnd(3),(MatrixOrder)hb_parni(4)) );   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );   
+      
 }
 
 HB_FUNC( GPPENSETALIGNMENT )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   PenAlignment pa = (PenAlignment) hb_parni( 2 );
-   hb_retni( (int) p->SetAlignment( pa ) );
-
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      PenAlignment pa = (PenAlignment) hb_parni( 2 );
+      hb_retni( (int) p->SetAlignment( pa ) );
+   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
 }
 
 HB_FUNC( GPPENSETBRUSH )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   Brush* b = (Brush*) hb_parptr( 2 );
-   hb_retni( (int) p->SetBrush( b ) );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pB   = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_PEN( pObj ) && GP_IS_BRUSH( pB ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      Brush * b = ( Brush * ) GP_GET( pB );
+      hb_retni( p->SetBrush( b ) );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPPENSETCOLOR )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   Color* c = (Color*) hb_parptr( 2 );
-   hb_retni( (int) p->SetColor( c->GetValue() ) );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pB   = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_PEN( pObj ) && GP_IS_COLOR( pB ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      Color * b = ( Color * ) GP_GET( pB );
+      hb_retni( p->SetColor( *b ) );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 

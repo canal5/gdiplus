@@ -1126,6 +1126,9 @@
 #xtranslate WrapModeTileFlipXY                            => 3
 #xtranslate WrapModeClamp                                 => 4
 
+#xtranslate PenAlignmentCenter                            => 0
+#xtranslate PenAlignmentInset                             => 1
+
 // ---------------------------------------------------------------------------
 #define GDIP_EMFPLUSFLAGS_DISPLAY     1
 // ---------------------------------------------------------------------------

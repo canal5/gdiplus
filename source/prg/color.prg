@@ -230,7 +230,7 @@ HB_FUNC( _GPCOLOR )
           clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
           break;
    }
-   pObj->pObject = clr;
+   GP_SET( pObj, clr );
    hb_GDIPLUS_ret( pObj );
 }
 
@@ -238,7 +238,7 @@ HB_FUNC( GPCOLORGETA )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetA() );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -249,7 +249,7 @@ HB_FUNC( GPCOLORGETALPHA )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetAlpha() );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -260,7 +260,7 @@ HB_FUNC( GPCOLORGETB )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetB() );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -270,7 +270,7 @@ HB_FUNC( GPCOLORGETBLUE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetBlue() );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -280,7 +280,7 @@ HB_FUNC( GPCOLORGETG )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetG() );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -291,7 +291,7 @@ HB_FUNC( GPCOLORGETGREEN )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetGreen() );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -302,7 +302,7 @@ HB_FUNC( GPCOLORGETR )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetR() );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -313,7 +313,7 @@ HB_FUNC( GPCOLORGETRED )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetRed() );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -323,7 +323,7 @@ HB_FUNC( GPCOLORGETVALUE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetValue() );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -334,7 +334,7 @@ HB_FUNC( GPCOLORSETFROMCOLORREF )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       clr->SetFromCOLORREF( (COLORREF) hb_parnl( 2 ) );
       hb_ret();
    }else 
@@ -346,7 +346,7 @@ HB_FUNC( GPCOLORSETVALUE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       clr->SetValue( (ARGB) hb_parnl( 2 ) );
       hb_ret();
    }else 
@@ -359,7 +359,7 @@ HB_FUNC( GPCOLORTOCOLORREF )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
-      Color* clr = ( Color * ) pObj->pObject;
+      Color* clr = ( Color * ) GP_GET( pObj );
       hb_retnl( (long) clr->ToCOLORREF() );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );

@@ -109,7 +109,8 @@ APP_PRG_LIST =                 \
 
 
 APP_CPPPP_LIST =                    \
-    gc.cpp
+    gc.cpp                          \
+    generic.cpp
 
 
 APP_C_LIST =
