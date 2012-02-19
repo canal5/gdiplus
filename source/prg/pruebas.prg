@@ -6,18 +6,19 @@ function main()
 Local oTest
 
    DEFINE SUITTEST oTest
-/*
-      TestsGraphics()
-      TestsPen()
-      TestsColor()
-      TestsBrush()
-      TestsFont()
-      TestsRectF()
-      TestsSizeF()
-      TestMatrix()
-      TestLinearGB()*/
+
+//      TestsGraphics()
+//      TestsPen()
+//      TestsColor()
+//      TestsBrush()
+//      TestsFont()
+//      TestsRectF()
+//      TestsSizeF()
+//      TestMatrix()
+//      TestLinearGB()
+      
       TestImage()
-//      TestSolidBrush()
+      TestSolidBrush()
 
       SHOW RESULT
 
@@ -613,8 +614,8 @@ function TestLinearGB1( )
 
 
    local bPainted := { | hDC |
-   	                  local myGraphics
-   	                  local linGrBrush
+                      local myGraphics
+                      local linGrBrush
                       Graphics myGraphics( hDC )
                       LinearGradientBrush linGrBrush(  Point(50, 50),  Point(200, 100),  Color(255, 255, 0, 0),  Color(255, 0, 0, 255) )  // blue
                       myGraphics:FillRectangle( linGrBrush, 0, 0, 300, 200)
@@ -635,7 +636,7 @@ function  Example_RotateTrans()
 
 
     local bPainted := { | hDC |
-   	  local myGraphics, linGrBrush
+      local myGraphics, linGrBrush
       Graphics myGraphics( hDC )
 
       LinearGradientBrush linGrBrush( ;
@@ -699,7 +700,7 @@ return nil
 function Example_SetBlendBell()
 
    local bPainted := { | hDC |
-   	 local myGraphics, linGrBrush
+     local myGraphics, linGrBrush
      Graphics myGraphics(hdc)
 
      LinearGradientBrush linGrBrush(;
@@ -724,7 +725,7 @@ return nil
 
 function Example_SetBlendTri()
    local bPainted := {| hDC |
-   	local myGraphics, linGrBrush
+    local myGraphics, linGrBrush
 
       Graphics myGraphics(hdc)
 
@@ -751,7 +752,7 @@ return nil
 function  Example_SetBlend()
 
    local bPainted := { | hDC |
-   	  local myGraphics, linGrBrush, rect
+      local myGraphics, linGrBrush, rect
       Graphics myGraphics(hdc)
 
       Rect rect(0, 0, 300, 100)
@@ -779,7 +780,7 @@ return nil
 function Example_SetLinColors()
 
    local bPainted := { | hDC |
-   	  local myGraphics, linGrBrush, rect
+      local myGraphics, linGrBrush, rect
    Graphics myGraphics(hdc)
 
    LinearGradientBrush linGrBrush( ;
@@ -845,7 +846,7 @@ return nil
 function Example_GetColor()
    local bPainted :=  {| hDC |
    
-   local oColor   	
+   local oColor     
    Graphics graphics(hdc);
 
    // Create a solid brush, and use it to fill a rectangle.
@@ -870,15 +871,19 @@ return nil
 
 function Example_SetColor()
    local bPainted := { | hdc |
+
    Graphics graphics(hdc)
 
    // Create a solid brush, and use it to fill a rectangle.
    SolidBrush solidBrush(Color(255, 0, 0, 255))  // blue
+
    graphics:FillRectangle(solidBrush, 10, 10, 200, 100)
 
    // Change the color of the brush, and fill another rectangle.
    solidBrush:SetColor(Color(255, 255, 0, 0))    // red
+   
    graphics:FillRectangle(solidBrush, 220, 10, 200, 100)
+   
    }
 
    exampleWindow( bPainted )

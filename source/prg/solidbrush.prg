@@ -72,55 +72,62 @@ return _GPSolidBrushSetColor( ::handle, oColor:handle )
 #pragma BEGINDUMP
 #include <hbvm.h>
 #include <gc.h>
-#include <hbapicls.h>
 
 HB_FUNC( _GPSOLIDBRUSH )
 {
-   Color* c = hb_Color_par( 1 );
-   SolidBrush* b = new SolidBrush( *c );
-   hb_SolidBrush_ret( b );
+
+   GDIPLUS * pObj = gdiplus_new( GP_IT_SOLIDBRUSH ); 
+   GDIPLUS * pObjClr = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObjClr ) ){
+      Color * c = ( Color * ) pObjClr->pObject;
+      Color c2( c->GetValue() );
+      SolidBrush* b = new SolidBrush( c2 );
+      pObj->pObject = ( void * ) b;
+      hb_GDIPLUS_ret( pObj );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
 HB_FUNC( _GPSOLIDBRUSHSETCOLOR )
 {
-  
-  SolidBrush* b = hb_SolidBrush_par( 1 );
-  Color * c =  hb_Color_par( 2 );
-  
-  if( b && c )
-  {
+   GDIPLUS * pBrush = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pColor = hb_GDIPLUS_par( 2 );
+     
+   if( GP_IS_COLOR( pColor ) && GP_IS_SOLIDBRUSH( pBrush ) ){
+     Color * c = ( Color * ) pColor->pObject;
      Color hColor( c->GetValue() );
+     SolidBrush* b = ( SolidBrush * ) pBrush->pObject;
      hb_retni( b->SetColor( hColor ) );
   
   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	 
-   
 
 }
 
 
 HB_FUNC( _GPSOLIDBRUSHGETCOLOR )
 {
-  
-  SolidBrush* b = hb_SolidBrush_par( 1 );
-  
-  if( b )
-  {  
+   GDIPLUS * pBrush = hb_GDIPLUS_par( 1 );
+
+   if( GP_IS_SOLIDBRUSH( pBrush ) )
+   {  
      PHB_ITEM pitemColor;
      PHB_ITEM pHandle = hb_itemNew( NULL );
      Color c, *hColor;
      Status sta;
+     SolidBrush* b = ( SolidBrush * ) pBrush->pObject;
+     GDIPLUS * pClr = gdiplus_new( GP_IT_COLOR ); 
      sta = b->GetColor( &c );
      pitemColor = hb_itemDoC( "GPCOLOR", 0 );
      
      hColor = new Color( c.GetValue() ); 
+     pClr->pObject = hColor;
+     hb_itemPutPtr( pHandle, pClr );
      
-     hb_itemPutPtr( pHandle, hColor );
+     pitemColor = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitemColor, pHandle );
 
-     hb_objSendMsg( pitemColor, "CONVERTCOLORHANDLE", 1, pHandle );
-     
      hb_itemRelease( pHandle );
 
      if( !hb_itemParamStoreRelease( 2, pitemColor ))
@@ -130,7 +137,7 @@ HB_FUNC( _GPSOLIDBRUSHGETCOLOR )
   
   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	 
+   
    
 
 }

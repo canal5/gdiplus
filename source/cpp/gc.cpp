@@ -16,9 +16,9 @@ static HB_GARBAGE_FUNC( GDI_GDIPLUS_release )
       /* Destroy the object */
 //      delete (Graphics*) * ph;
       switch( GP_OBJECT_TYPE( ( GDIPLUS *)*ph ) ){
-      	case GP_IT_IMAGE:
+        case GP_IT_IMAGE:
            delete (Image *) (( GDIPLUS *)*ph )->pObject;
-      	   break;
+           break;
       }
       hb_xfree( (void *) *ph );
 
@@ -69,12 +69,12 @@ GDIPLUS * hb_GDIPLUS_par( int iParam )
 
 GDIPLUS * gdiplus_new( int type )
 {
-	 GDIPLUS * p = ( GDIPLUS * ) hb_xgrab( sizeof( GDIPLUS ) );
+   GDIPLUS * p = ( GDIPLUS * ) hb_xgrab( sizeof( GDIPLUS ) );
 
-	 if( type )
-	    p->type = type;
-	    
-	 return p;
+   if( type )
+      p->type = type;
+      
+   return p;
 }
 
 //------------------------------------------------//

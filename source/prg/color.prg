@@ -186,19 +186,19 @@ METHOD convertColorHandle( h ) CLASS GPColor
 return nil
 
 
-// Color::GetA	             The Color::GetA method gets the alpha component of this Color object.
-// Color::GetAlpha	     The Color::GetAlpha method gets the alpha component of this Color object.
-// Color::GetB	             The Color::GetB method gets the blue component of this Color object.
-// Color::GetBlue	     The Color::GetBlue method gets the blue component of this Color object.
-// Color::GetG	             The Color::GetG method gets the green component of this Color object.
-// Color::GetGreen	     The Color::GetGreen method gets the green component of this Color object.
-// Color::GetR	             The Color::GetR method gets the red component of this Color object.
-// Color::GetRed	     The Color::GetRed method gets the red component of this Color object.
-// Color::GetValue	     The Color::GetValue method gets the ARGB value of this Color object.
-// Color::MakeARGB	     The Color::MakeARGB method creates a 32-bit value that consolidates the specified alpha, red, green, and blue components.
+// Color::GetA               The Color::GetA method gets the alpha component of this Color object.
+// Color::GetAlpha       The Color::GetAlpha method gets the alpha component of this Color object.
+// Color::GetB               The Color::GetB method gets the blue component of this Color object.
+// Color::GetBlue      The Color::GetBlue method gets the blue component of this Color object.
+// Color::GetG               The Color::GetG method gets the green component of this Color object.
+// Color::GetGreen       The Color::GetGreen method gets the green component of this Color object.
+// Color::GetR               The Color::GetR method gets the red component of this Color object.
+// Color::GetRed       The Color::GetRed method gets the red component of this Color object.
+// Color::GetValue       The Color::GetValue method gets the ARGB value of this Color object.
+// Color::MakeARGB       The Color::MakeARGB method creates a 32-bit value that consolidates the specified alpha, red, green, and blue components.
 // Color::SetFromCOLORREF    The Color::SetFromCOLORREF method uses a GDICOLORREF value to set the ARGB value of this Color object.
-// Color::SetValue	     The Color::SetValue method sets the color of this Color object.
-// Color::ToCOLORREF	     The Color::ToCOLORREF method converts this Color object's ARGB value to a GDICOLORREF value.
+// Color::SetValue       The Color::SetValue method sets the color of this Color object.
+// Color::ToCOLORREF       The Color::ToCOLORREF method converts this Color object's ARGB value to a GDICOLORREF value.
 
 
 #pragma BEGINDUMP
@@ -206,105 +206,169 @@ return nil
 
 HB_FUNC( _GETCOLORHANDLE )
 {
-	Color * c = ( Color * ) hb_parptr( 1 );
-	hb_Color_ret( c );	
+  Color * c = ( Color * ) hb_parptr( 1 );
+  hb_Color_ret( c );  
 }
 
 HB_FUNC( _GPCOLOR )
 {
    Color* clr;
+   GDIPLUS *  pObj = gdiplus_new( GP_IT_COLOR );
    int iParams = hb_pcount();
-
-   if( iParams == 0 )
-       clr = new Color();
-   else if (iParams == 1 )
-       clr = new Color( (ARGB) hb_parnl( 1 ) );
-   else if (iParams == 3 )
-       clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   else
-       clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-
-   hb_Color_ret( clr );
+   
+   switch (iParams){
+      case 0:
+          clr = new Color();
+          break;
+      case 1:
+          clr = new Color( (ARGB) hb_parnl( 1 ) );
+          break;
+      case 3:
+          clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
+          break;
+      case 4:
+          clr = new Color( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
+          break;
+   }
+   pObj->pObject = clr;
+   hb_GDIPLUS_ret( pObj );
 }
 
 HB_FUNC( GPCOLORGETA )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   hb_retni( clr->GetA() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      hb_retni( clr->GetA() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
 }
 
 HB_FUNC( GPCOLORGETALPHA )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   hb_retni( clr->GetAlpha() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      hb_retni( clr->GetAlpha() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( GPCOLORGETB )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   hb_retni( clr->GetB() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      hb_retni( clr->GetB() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPCOLORGETBLUE )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   hb_retni( clr->GetBlue() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      hb_retni( clr->GetBlue() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPCOLORGETG )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   hb_retni( clr->GetG() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      hb_retni( clr->GetG() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPCOLORGETGREEN )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   hb_retni( clr->GetGreen() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      hb_retni( clr->GetGreen() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPCOLORGETR )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   hb_retni( clr->GetR() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      hb_retni( clr->GetR() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPCOLORGETRED )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   hb_retni( clr->GetRed() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      hb_retni( clr->GetRed() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPCOLORGETVALUE )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   hb_retni( clr->GetValue() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      hb_retni( clr->GetValue() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPCOLORSETFROMCOLORREF )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   clr->SetFromCOLORREF( (COLORREF) hb_parnl( 2 ) );
-   hb_ret();
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      clr->SetFromCOLORREF( (COLORREF) hb_parnl( 2 ) );
+      hb_ret();
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( GPCOLORSETVALUE )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   clr->SetValue( (ARGB) hb_parnl( 2 ) );
-   hb_ret();
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      clr->SetValue( (ARGB) hb_parnl( 2 ) );
+      hb_ret();
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
+   
 }
 
 HB_FUNC( GPCOLORTOCOLORREF )
 {
-   Color* clr = (Color*) hb_Color_par( 1 );
-   hb_retnl( (long) clr->ToCOLORREF() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_COLOR( pObj ) ){
+      Color* clr = ( Color * ) pObj->pObject;
+      hb_retnl( (long) clr->ToCOLORREF() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( MAKEARGB )
 {
    hb_retnl( (long) Color::MakeARGB( hb_parnl( 1 ), hb_parnl( 2 ),hb_parnl( 3 ),hb_parnl( 4 ) ));
-
 }
 
 

@@ -1061,7 +1061,9 @@ return 0
 return nil
 
 
-
+function _GPConvertHandle( o, h )
+   o:handle = getGdiplusHandle( h )
+return o
 
 #pragma BEGINDUMP
 #include "windows.h"
@@ -1073,8 +1075,13 @@ return nil
 
 GdiplusStartupInput gdiplusStartupInput;
 
-ULONG_PTR	gdiplusToken;
+ULONG_PTR gdiplusToken;
 
+HB_FUNC( GETGDIPLUSHANDLE )
+{
+  GDIPLUS * o = ( GDIPLUS * ) hb_parptr( 1 );
+  hb_GDIPLUS_ret( o );
+}
 
 HB_FUNC( GDIPLUSSTARTUP )
 {
@@ -1114,16 +1121,20 @@ HB_FUNC( GDIPLUSSHUTDOWN )
 
 HB_FUNC( GDIPLUSNEWGRAPHICS )
 {
+   GDIPLUS * pG = gdiplus_new( GP_IT_GRAPHICS ); 
    Graphics *g = new Graphics( (HDC) hb_parnl(1));
-   hb_Graphics_ret( g );
+   pG->pObject = g;
+   hb_GDIPLUS_ret( pG );
 }
 
 HB_FUNC( GDIPLUSNEWGRAPHICSFROMBITMAP )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 if( GP_IS_IMAGE( pObj ) ){	
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_IMAGE( pObj ) ){ 
+      GDIPLUS * pG = gdiplus_new( GP_IT_GRAPHICS ); 
       Graphics *g = new Graphics( (Image*) pObj->pObject );
-      hb_Graphics_ret( g );
+      pG->pObject = g;
+      hb_GDIPLUS_ret( pG );
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );      
 }
@@ -1200,7 +1211,7 @@ HB_FUNC( GPBEGINCONTAINER )
 HB_FUNC( GP_BITBLT )
 {
    Graphics *g = hb_Graphics_par( 1 );
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
 
    if( g && GP_IS_IMAGE( pObj ) && hb_pcount() > 8 )
    {
@@ -1303,11 +1314,11 @@ HB_FUNC( GP_DRAWELLIPSE )
 HB_FUNC( GP_DRAWIMAGE )
 {
    Graphics *g = hb_Graphics_par( 1 );
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
 
    if( g && GP_IS_IMAGE( pObj ) && hb_pcount() > 5 )
    {
-   	   Image * c = ( Image * ) pObj->pObject; 
+       Image * c = ( Image * ) pObj->pObject; 
        hb_retni( g->DrawImage( c, hb_parni(3), hb_parni(4), hb_parni(5), hb_parni(6) ) );
    }
    else
@@ -1462,16 +1473,15 @@ HB_FUNC( GP_DRAWSTRING )
 
 HB_FUNC( GP_FILLELLIPSE )
 {
-    Graphics *g = hb_Graphics_par( 1 );
-    void ** pPtr = ( void **) hb_parptr( 2 );
-    Brush* b = (Brush*)*pPtr;
-
-   if( g && b && hb_pcount() > 5 )
+   Graphics *g = hb_Graphics_par( 1 );
+   GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
+   if( g && GP_IS_BRUSH( pBrush ) && hb_pcount() > 5 )
    {
-    hb_retni( g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 )) );
+     Brush* b = (Brush*) pBrush->pObject;
+     hb_retni( g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 )) );
    }
    else
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
@@ -1496,14 +1506,14 @@ HB_FUNC( GP_FILLPATH )
 HB_FUNC( GP_FILLRECTANGLE )
 {
     Graphics *g = hb_Graphics_par( 1 );
-    void ** pPtr = ( void**) hb_parptr( 2 );
-    Brush * brush = ( Brush *) *pPtr;
+    GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
+    Brush * brush = ( Brush *) pBrush->pObject;
     REAL x = ( REAL ) hb_parnd( 3 );
     REAL y = ( REAL ) hb_parnd( 4 );
     REAL width = ( REAL ) hb_parnd( 5 );
     REAL height = ( REAL ) hb_parnd( 6 );
 
-    if( g && brush )
+    if( g && GP_IS_BRUSH( pBrush ) )
     {
        g->FillRectangle( brush, x, y, width, height );
     }
@@ -1520,7 +1530,7 @@ HB_FUNC( GP_FILLRECTANGLER )
 
     if( g && brush && rect )
     {
-    	 Rect oRect( rect->X, rect->Y, rect->Width, rect->Height );
+       Rect oRect( rect->X, rect->Y, rect->Width, rect->Height );
        g->FillRectangle( brush, oRect );
     }
 

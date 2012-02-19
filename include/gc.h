@@ -6,24 +6,29 @@
 
 typedef struct __gdiplus
 {
-	void * pObject;
-	int type;
+  void * pObject;
+  int type;
 } GDIPLUS, * PGDIPLUS, *PTR_GDIPLUS;
 
 using namespace Gdiplus;
 
 #define GP_OBJECT_TYPE( p )      ( ( p )->type )
-#define GP_OBJECT_OBJ( p )           ( ( p )->pObject )
+#define GP_OBJECT_OBJ( p )       ( ( p )->pObject )
 
 #define GP_IT_GRAPHICS   ( ( int ) 0x00001 )
 #define GP_IT_RECTF      ( ( int ) 0x00002 )
-#define GP_IT_RECT       ( ( int ) 0x00004 )
-#define GP_IT_IMAGE      ( ( int ) 0x00008 )
+#define GP_IT_RECT       ( ( int ) 0x00003 )
+#define GP_IT_IMAGE      ( ( int ) 0x00004 )
+#define GP_IT_COLOR      ( ( int ) 0x00005 )
+#define GP_IT_SOLIDBRUSH ( ( int ) 0x00006 )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
 #define GP_IS_RECT( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECT )     ) 
 #define GP_IS_IMAGE( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_IMAGE )    )
+#define GP_IS_COLOR( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_COLOR)     )
+#define GP_IS_SOLIDBRUSH( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_SOLIDBRUSH ) )
+#define GP_IS_BRUSH( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_SOLIDBRUSH ) )
 
 
 GDIPLUS * gdiplus_new( int type );
@@ -34,7 +39,7 @@ GDIPLUS * hb_GDIPLUS_par( int iParam );
 
 extern "C"
 {
-LPSTR LToStr( long );	
+LPSTR LToStr( long ); 
 }
 
 
