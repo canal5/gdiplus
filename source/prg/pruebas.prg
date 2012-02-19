@@ -825,7 +825,7 @@ function Example_SaveFile()
 
          // Construct a Graphics object based on the image.
          Graphics imageGraphics(image)
-/*
+
          // Alter the image.
          SolidBrush brush(Color(255, 255, 0, 0))
          imageGraphics:FillEllipse( brush, 10, 10, 100, 100)
@@ -840,8 +840,8 @@ function Example_SaveFile()
             DeleteFile( "images\Mosaic2.png" )
          endif
 
-         image:Save("images\Mosaic2.png")
-*/
+//         image:Save("images\Mosaic2.png")
+
          // El método save si funciona, lo que no funciona es modificar la imagen con un nuevo Graphics basado en esa imagen
 
 }

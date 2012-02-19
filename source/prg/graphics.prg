@@ -1462,11 +1462,12 @@ HB_FUNC( GP_DRAWSTRING )
 
 HB_FUNC( GP_FILLELLIPSE )
 {
-   Graphics *g = hb_Graphics_par( 1 );
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
-   if( g && GP_IS_BRUSH( pBrush ) && hb_pcount() > 5 )
+   if( GP_IS_GRAPHICS( pG ) && GP_IS_BRUSH( pBrush ) && hb_pcount() > 5 )
    {
-     Brush* b = (Brush*) pBrush->pObject;
+     Graphics *g = ( Graphics * ) GP_GET( pG );
+     Brush* b = (Brush*) GP_GET( pBrush );
      hb_retni( g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 )) );
    }
    else

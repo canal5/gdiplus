@@ -82,7 +82,7 @@ HB_FUNC( _GPSOLIDBRUSH )
       Color * c = ( Color * ) pObjClr->pObject;
       Color c2( c->GetValue() );
       SolidBrush* b = new SolidBrush( c2 );
-      pObj->pObject = ( void * ) b;
+      GP_SET( pObj, b );
       hb_GDIPLUS_ret( pObj );
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -98,7 +98,7 @@ HB_FUNC( _GPSOLIDBRUSHSETCOLOR )
    if( GP_IS_COLOR( pColor ) && GP_IS_SOLIDBRUSH( pBrush ) ){
      Color * c = ( Color * ) pColor->pObject;
      Color hColor( c->GetValue() );
-     SolidBrush* b = ( SolidBrush * ) pBrush->pObject;
+     SolidBrush* b = ( SolidBrush * ) GP_GET( pBrush);
      hb_retni( b->SetColor( hColor ) );
   
   }else
@@ -116,7 +116,7 @@ HB_FUNC( _GPSOLIDBRUSHGETCOLOR )
      PHB_ITEM pitemColor;
      Color c, *hColor;
      Status sta;
-     SolidBrush* b = ( SolidBrush * ) pBrush->pObject;
+     SolidBrush* b = ( SolidBrush * ) GP_GET( pBrush);
      sta = b->GetColor( &c );
      pitemColor = GPNewColorObject( c );
      if( !hb_itemParamStoreRelease( 2, pitemColor ))
