@@ -409,9 +409,7 @@ return 0
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
+#include <gc.h>
 
 using namespace Gdiplus;
 
@@ -420,13 +418,13 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
    UINT  num = 0;          // number of image encoders
    UINT  size = 0;         // size of the image encoder array in bytes
    UINT j;
-   ImageCodecInfo* pImageCodecInfo = NULL;
+   ImageCodecInfo* pImageCodecInfo;
 
    GetImageEncodersSize(&num, &size);
    if(size == 0)
       return -1;  // Failure
 
-   pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+   pImageCodecInfo = (ImageCodecInfo*) hb_xgrab( size );
 
    if(pImageCodecInfo == NULL)
       return -1;  // Failure
@@ -438,11 +436,11 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
       if( wcscmp(pImageCodecInfo[j].MimeType, format) == 0 )
       {
          *pClsid = pImageCodecInfo[j].Clsid;
-         free(pImageCodecInfo);
+          hb_xfree( ( void * ) pImageCodecInfo );
          return j;  // Success
       }
    }
-   free(pImageCodecInfo);
+   hb_xfree( ( void * ) pImageCodecInfo );
    return -1;  // Failure
 }
 
@@ -452,19 +450,28 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 HB_FUNC( _GPIMAGE )
 {
    LPWSTR cFileName = hb_mbtowc( (LPSTR) hb_parc( 1 ));
+   GDIPLUS *  pObj = gdiplus_new( GP_IT_IMAGE );
    Image* cimg = new Image( cFileName );
+   
+   pObj->pObject = ( void * ) cimg;   
 
    hb_xfree( cFileName );
-   hb_retptr( (void*) cimg );
+   hb_GDIPLUS_ret( pObj );
 
 }
 
 
 HB_FUNC( GPIMAGECLONE )
 {
-
-   Image* ptr = (Image*) hb_parptr( 1 );
-   hb_retptr( (void*) ptr->Clone() );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* ptr = ( Image * ) pObj->pObject;
+      GDIPLUS * pObjClone = gdiplus_new( GP_IT_IMAGE );
+      pObjClone->pObject = ( void * ) ptr->Clone(); 
+      hb_GDIPLUS_ret( pObjClone );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 
 }
 
@@ -475,70 +482,131 @@ HB_FUNC( GPIMAGEGETBOUNDS )
 
 HB_FUNC( GPIMAGEGETHEIGHT )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retni( cimg->GetHeight() );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+      hb_retni( cimg->GetHeight() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
 HB_FUNC( GPIMAGEGETHORIZONTALRESOLUTION )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retnd( cimg->GetHorizontalResolution() );
+
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+      hb_retnd( cimg->GetHorizontalResolution() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+
+   
 }
 
 HB_FUNC( GPIMAGEGETLASTSTATUS )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retnd( cimg->GetLastStatus() );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+     hb_retnd( cimg->GetLastStatus() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+      	
 }
 
 HB_FUNC( GPIMAGEGETPALETTESIZE )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retni( cimg->GetPaletteSize() );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+      hb_retni( cimg->GetPaletteSize() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+
+   
 }
 
 HB_FUNC( GPIMAGEGETPHYSICALDIMENSION )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   SizeF* csize = (SizeF*) hb_parptr( 2 );
-   hb_retni( cimg->GetPhysicalDimension(csize) );
+
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+      SizeF* csize = hb_SizeF_par( 2 );
+      
+      hb_retni( cimg->GetPhysicalDimension(csize) );
+      
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+   
 }
 
 HB_FUNC( GPIMAGEGETPIXELFORMAT )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retni( cimg->GetPixelFormat() );
+	
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+      hb_retni( cimg->GetPixelFormat() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+   
 }
 
 HB_FUNC( GPIMAGEGETPROPERTYCOUNT )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retni( cimg->GetPropertyCount() );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+      hb_retni( cimg->GetPropertyCount() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+   
 }
 
 HB_FUNC( GPIMAGEGETTYPE )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retni( cimg->GetType() );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+      hb_retni( cimg->GetType() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+   
 }
 
 HB_FUNC( GPIMAGEGETVERTICALRESOLUTION )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retnd( cimg->GetVerticalResolution() );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+      hb_retnd( cimg->GetVerticalResolution() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );		
+   
 }
 
 HB_FUNC( GPIMAGEGETWIDTH )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retni( (int)cimg->GetWidth() );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+      hb_retni( (int)cimg->GetWidth() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );		
 }
 
 HB_FUNC( GPIMAGEROTATEFLIP )
 {
-   Image* cimg = (Image*) hb_parptr( 1 );
-   hb_retni( cimg->RotateFlip( (RotateFlipType) hb_parni(2) ) );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){
+      Image* cimg = ( Image * ) pObj->pObject;
+      hb_retni( cimg->RotateFlip( (RotateFlipType) hb_parni(2) ) );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );		
+   
 }
 
 HB_FUNC( GPIMAGESAVE )
@@ -549,7 +617,12 @@ HB_FUNC( GPIMAGESAVE )
 //    [in]  const EncoderParameters *encoderParams
 //  );
 
-  Image* img = (Image*) hb_parptr( 1 );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( ! GP_IS_IMAGE( pObj ) )
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+  
+  Image* img = ( Image * ) pObj->pObject;
+
   WCHAR* filename;
   CLSID clsidEncoder;
   EncoderParameters* encoderParams = NULL;

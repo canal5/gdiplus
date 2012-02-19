@@ -17,6 +17,10 @@
 #xcommand IMAGE               <oImage> ( <cImage> )                                                   => <oImage>  := Image              ( <cImage> )
 #xcommand IMAGE <o>( <par1> ) =>  <o> := Image( <par1> )
 #xcommand SOLIDBRUSH          <oBrush> (  <oColor> )                                                  => <oBrush>  := SolidBrush         ( <oColor> )
+#xcommand TEXTUREBRUSH        <oBrush> (  <par1>,<par2>[,<par3>[,<par4>,<par5>,<par6> ] ] )           => <oBrush>  := TextureBrush       ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>][, <par6>] )
+
+
+
 
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"

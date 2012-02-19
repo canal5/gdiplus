@@ -36,16 +36,16 @@ return nil
 
 
 *********************************************************************************************************
-  METHOD GetColor() CLASS GPSolidBrush
+  METHOD GetColor( oColor ) CLASS GPSolidBrush
 *********************************************************************************************************
 
-return 0
+return _GPSolidBrushGetColor( ::handle, @oColor )
 
 *********************************************************************************************************
-  METHOD SetColor() CLASS GPSolidBrush
+  METHOD SetColor( oColor ) CLASS GPSolidBrush
 *********************************************************************************************************
 
-return 0
+return _GPSolidBrushSetColor( ::handle, oColor:handle )
 
 
 
@@ -70,20 +70,69 @@ return 0
 
 
 #pragma BEGINDUMP
+#include <hbvm.h>
 #include <gc.h>
+#include <hbapicls.h>
 
 HB_FUNC( _GPSOLIDBRUSH )
 {
    Color* c = hb_Color_par( 1 );
    SolidBrush* b = new SolidBrush( *c );
-   hb_retptr( (void*) b );
+   hb_SolidBrush_ret( b );
 }
 
-HB_FUNC( DELETESOLIDBRUSH )
+
+HB_FUNC( _GPSOLIDBRUSHSETCOLOR )
 {
-   SolidBrush* b = (SolidBrush*) hb_parptr( 1 );
-   delete (SolidBrush*) b;
-   hb_ret();
+  
+  SolidBrush* b = hb_SolidBrush_par( 1 );
+  Color * c =  hb_Color_par( 2 );
+  
+  if( b && c )
+  {
+     Color hColor( c->GetValue() );
+     hb_retni( b->SetColor( hColor ) );
+  
+  }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+   
+
+}
+
+
+HB_FUNC( _GPSOLIDBRUSHGETCOLOR )
+{
+  
+  SolidBrush* b = hb_SolidBrush_par( 1 );
+  
+  if( b )
+  {  
+     PHB_ITEM pitemColor;
+     PHB_ITEM pHandle = hb_itemNew( NULL );
+     Color c, *hColor;
+     Status sta;
+     sta = b->GetColor( &c );
+     pitemColor = hb_itemDoC( "GPCOLOR", 0 );
+     
+     hColor = new Color( c.GetValue() ); 
+     
+     hb_itemPutPtr( pHandle, hColor );
+
+     hb_objSendMsg( pitemColor, "CONVERTCOLORHANDLE", 1, pHandle );
+     
+     hb_itemRelease( pHandle );
+
+     if( !hb_itemParamStoreRelease( 2, pitemColor ))
+        hb_itemRelease( pitemColor );
+     
+     hb_retni( sta );
+  
+  }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
+   
+
 }
 
 #pragma ENDDUMP

@@ -1,5 +1,82 @@
 #include <gc.h>
 
+
+//------------------------------------------------//
+//GDIPLUS
+//------------------------------------------------//
+
+
+static HB_GARBAGE_FUNC( GDI_GDIPLUS_release )
+{
+   void ** ph = ( void ** ) Cargo;
+
+   /* Check if pointer is not NULL to avoid multiple freeing */
+   if( ph && * ph )
+   {
+      /* Destroy the object */
+//      delete (Graphics*) * ph;
+      switch( GP_OBJECT_TYPE( ( GDIPLUS *)*ph ) ){
+      	case GP_IT_IMAGE:
+           delete (Image *) (( GDIPLUS *)*ph )->pObject;
+      	   break;
+      }
+      hb_xfree( (void *) *ph );
+
+      /* set pointer to NULL to avoid multiple freeing */
+      * ph = NULL;
+   }
+}
+
+#ifndef __XHARBOUR__
+const HB_GC_FUNCS s_gcGDIPLUSFuncs =
+{
+   GDI_GDIPLUS_release,
+   hb_gcDummyMark
+};
+
+#endif //__XHARBOUR__
+
+//------------------------------------------------//
+
+void hb_GDIPLUS_ret( GDIPLUS * p )
+{
+   if( p )
+   {
+#ifndef __XHARBOUR__
+      void ** ph = ( void ** ) hb_gcAllocate( sizeof( GDIPLUS * ), &s_gcGDIPLUSFuncs );
+#else
+      void ** ph = ( void ** ) hb_gcAlloc( sizeof( GDIPLUS * ), GDI_GDIPLUS_release );
+#endif //__XHARBOUR__
+      * ph = p;
+
+      hb_retptrGC( ph );
+   }
+   else
+      hb_retptr( NULL );
+}
+
+GDIPLUS * hb_GDIPLUS_par( int iParam )
+{
+#ifndef __XHARBOUR__
+   void ** ph = ( void ** ) hb_parptrGC( &s_gcGDIPLUSFuncs, iParam );
+#else
+   void ** ph = ( void ** ) hb_parptrGC( GDI_GDIPLUS_release, iParam );
+#endif //__XHARBOUR__
+
+   return ph ? ( GDIPLUS * ) * ph : NULL;
+}
+
+
+GDIPLUS * gdiplus_new( int type )
+{
+	 GDIPLUS * p = ( GDIPLUS * ) hb_xgrab( sizeof( GDIPLUS ) );
+
+	 if( type )
+	    p->type = type;
+	    
+	 return p;
+}
+
 //------------------------------------------------//
 //graphics
 //------------------------------------------------//
@@ -648,4 +725,122 @@ Brush * hb_Brush_par( int iParam )
 #endif //__XHARBOUR__
 
    return ph ? ( Brush * ) * ph : NULL;
+}
+
+//------------------------------------------------//
+//SolidBrush
+//------------------------------------------------//
+
+static HB_GARBAGE_FUNC( GDI_SolidBrush_release )
+{
+   void ** ph = ( void ** ) Cargo;
+
+   /* Check if pointer is not NULL to avoid multiple freeing */
+   if( ph && * ph )
+   {
+      /* Destroy the object */
+      delete (SolidBrush*) * ph;
+
+      /* set pointer to NULL to avoid multiple freeing */
+      * ph = NULL;
+   }
+}
+
+
+#ifndef __XHARBOUR__
+const HB_GC_FUNCS s_gcSolidBrushFuncs =
+{
+   GDI_SolidBrush_release,
+   hb_gcDummyMark
+};
+
+#endif //__XHARBOUR__
+
+
+void hb_SolidBrush_ret( SolidBrush * p )
+{
+   if( p )
+   {
+#ifndef __XHARBOUR__
+      void ** ph = ( void ** ) hb_gcAllocate( sizeof( SolidBrush * ), &s_gcSolidBrushFuncs );
+#else
+      void ** ph = ( void ** ) hb_gcAlloc( sizeof( SolidBrush * ), GDI_SolidBrush_release );
+#endif //__XHARBOUR__
+      * ph = p;
+
+      hb_retptrGC( ph );
+   }
+   else
+      hb_retptr( NULL );
+}
+
+
+SolidBrush * hb_SolidBrush_par( int iParam )
+{
+#ifndef __XHARBOUR__
+   void ** ph = ( void ** ) hb_parptrGC( &s_gcSolidBrushFuncs, iParam );
+#else
+   void ** ph = ( void ** ) hb_parptrGC( GDI_SolidBrush_release, iParam );
+#endif //__XHARBOUR__
+
+   return ph ? ( SolidBrush * ) * ph : NULL;
+}
+
+//------------------------------------------------//
+//Image
+//------------------------------------------------//
+
+static HB_GARBAGE_FUNC( GDI_Image_release )
+{
+   void ** ph = ( void ** ) Cargo;
+
+   /* Check if pointer is not NULL to avoid multiple freeing */
+   if( ph && * ph )
+   {
+      /* Destroy the object */
+      delete (Image*) * ph;
+
+      /* set pointer to NULL to avoid multiple freeing */
+      * ph = NULL;
+   }
+}
+
+
+#ifndef __XHARBOUR__
+const HB_GC_FUNCS s_gcImageFuncs =
+{
+   GDI_Image_release,
+   hb_gcDummyMark
+};
+
+#endif //__XHARBOUR__
+
+
+void hb_Image_ret( Image * p )
+{
+   if( p )
+   {
+#ifndef __XHARBOUR__
+      void ** ph = ( void ** ) hb_gcAllocate( sizeof( Image * ), &s_gcImageFuncs );
+#else
+      void ** ph = ( void ** ) hb_gcAlloc( sizeof( Image * ), GDI_Image_release );
+#endif //__XHARBOUR__
+      * ph = p;
+
+      hb_retptrGC( ph );
+   }
+   else
+      hb_retptr( NULL );
+}
+
+
+Image * hb_Image_par( int iParam )
+{
+#ifndef __XHARBOUR__
+   void ** ph = ( void ** ) hb_parptrGC( &s_gcImageFuncs, iParam );
+#else
+   void ** ph = ( void ** ) hb_parptrGC( GDI_Image_release, iParam );
+#endif //__XHARBOUR__
+
+   return ph ? ( Image * ) * ph : NULL;
 }

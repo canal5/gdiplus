@@ -1,8 +1,24 @@
 #include "fivewin.ch"
 
-function TextureBrush()
-return GPTextureBrush():New()
+function TextureBrush( ... )
 
+   local aParams := hb_aparams()
+   local oObj
+   local nLen := Len( aParams )
+
+   switch nLen
+      case 2 
+         oObj = GPTextureBrush():New( aParams[ 1 ], aParams[ 2 ] )
+         exit      
+      case 3
+         oObj = GPTextureBrush():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
+         exit
+      case 6
+         oObj = GPTextureBrush():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ], aParams[ 6 ] )
+         exit
+   endswitch
+
+return oObj
 
 CLASS GPTextureBrush
 
@@ -36,28 +52,20 @@ CLASS GPTextureBrush
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New() CLASS GPTextureBrush
+  METHOD New( p1, p2, p3, p4, p5, p6 ) CLASS GPTextureBrush
 *********************************************************************************************************
 
 local iParams := PCount()
 
-
-  if iParams == 0
-     ::handle := _GPTextureBrush()
-  elseif iParams == 1
-     ::handle := _GPTextureBrush( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPTextureBrush( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPTextureBrush( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPTextureBrush( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPTextureBrush( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPTextureBrush( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
-
+   
+   switch iParams
+      case 2
+        ::handle := _GPTextureBrush_1( p1, p2 )
+        exit
+      case 3     
+      case 6
+   endswitch
+   
 return self
 
 *********************************************************************************************************
@@ -170,7 +178,7 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPTEXTUREBRUSH )
+HB_FUNC( _GPTEXTUREBRUSH_1 )
 {
    //TextureBrush* ptr;
    //int iParams = hb_pcount();

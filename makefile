@@ -3,7 +3,7 @@ APPNAME=test.exe
 #
 PRG_SOURCE_PATH=.\source\prg
 C_SOURCE_PATH=
-CPP_SOURCE_PATH=
+CPP_SOURCE_PATH=.\source\cpp
 OBJ_PATH=.\obj
 OBJ_EXT=obj
 HBLIB=$(HBDIR)\lib\win\msvc
@@ -11,13 +11,19 @@ FWLIB=$(FWDIR)\lib
 LD=link
 CC=cl
 LD_FLAGS=/NOLOGO /SUBSYSTEM:WINDOWS /FORCE:MULTIPLE /NODEFAULTLIB:libc /MACHINE:X86 /OUT:$(APPNAME)
-CC_FLAGS=-nologo -c -TP -W3 -GA -I$(HBDIR)\include -I$(FWDIR)\include -I.\include -I$(VCDIR)\include
+CC_FLAGS=-nologo -c -TP -W3 -GA -I$(HBDIR)\include -I$(FWDIR)\include -I.\include -I$(VCDIR)\include -DGDIPVER=0x0110
 
 #should use tabs to indent lines
 #we dont need extention
-SRC_FILES_PRG=graphics color CustomLineCap font fontfamily gdiplus GraphicsPath HueSaturationLightness image LinearGradientBrush matrix metafile metafileheader pathgradient pathgradientbrush pen solidbrush stringformat TextureBrush 
+SRC_FILES_PRG=pruebas testunit AdjustableArrowCap Bitmap BitmapData Blur BrightnessContrast Brush CachedBitmap CharacterRange \
+Color ColorBalance ColorCurve ColorLUT ColorMatrixEffect CustomLineCap Effect EncoderParameter EncoderParameters \
+Font FontCollection Fontfamily Gdiplus GdiplusBase Graphics GraphicsPath GraphicsPathIterator HatchBrush HueSaturationLightness \
+Image ImageAttributes ImageCodecInfo ImageItemData InstalledFontCollection Levels LinearGradientBrush Matrix \
+Metafile Metafileheader PathData Pathgradientbrush Pen Point PointF PrivateFontCollection PropertyItem Rect RectF \
+RedEyeCorrection Region Sharpen Size SizeF Solidbrush Stringformat TextureBrush Tint 
+
 SRC_FILES_C=
-SRC_FILES_CPP=
+SRC_FILES_CPP=gc
 
 #seting libs without extention and path
 GUI_LIBS=FiveHC32 FiveH32
@@ -47,7 +53,7 @@ OBJ_FILES = $(addprefix $(OBJ_PATH)\,$(notdir $(addsuffix .$(OBJ_EXT),$(SRC_FILE
 RES_FILE=
 
 LD_CMD=$(LD) $(OBJ_FILES) $(RES_FILE) $(LIBS) $(LD_FLAGS) > link.log
-PRG_COMP_CMD=$(HBDIR)\bin\harbour $< /q0 /n /W /p /O$(OBJ_PATH)\ /i$(FWDIR)\include;$(HBDIR)\include;.\include;$(DOLPHIN)\include -D__SUPERVISOR -DDEVEL
+PRG_COMP_CMD=$(HBDIR)\bin\harbour $< /q0 /n /W /p /O$(OBJ_PATH)\ /i$(FWDIR)\include;$(HBDIR)\include;.\include;.\source\prg\include;$(DOLPHIN)\include -D__SUPERVISOR -DDEVEL -DGDIPVER=0x0110
 
 define BUILD_APP
 	@echo $(LD_CMD) >> make.log
@@ -90,9 +96,9 @@ $(OBJ_PATH)%.$(OBJ_EXT): $(OBJ_PATH)%.c
 	@echo ========================================= >> make.log
 
 $(OBJ_PATH)%.$(OBJ_EXT): $(C_SOURCE_PATH)%.c
-	@echo $(CC) $(CC_FLAGS) -Fo$(OBJ_PATH)\$@ src\c\$&.c  >> make.log
-	@$(CC) $(CC_FLAGS) -Fo$(OBJ_PATH)\$@ src\c\$&.c  >> make.log
+	@echo $(CC) $(CC_FLAGS) -Fo$@ src\c\$&.c  >> make.log
+	@$(CC) $(CC_FLAGS) -Fo$@ src\c\$&.c  >> make.log
 
 $(OBJ_PATH)%.$(OBJ_EXT): $(CPP_SOURCE_PATH)%.cpp
-	@echo $(CC) $(CC_FLAGS) -Fo$(OBJ_PATH)\$& src\c\$&.cpp  >> make.log
-	@$(CC) $(CC_FLAGS) -Fo$(OBJ_PATH)\$& src\c\$&.cpp  >> make.log
+	@echo $(CC) $(CC_FLAGS) -Fo$@ $<  >> make.log
+	@$(CC) $(CC_FLAGS) -Fo$@ $<  >> make.log

@@ -4,12 +4,40 @@
 #include "hbapierr.h"
 #include <gdiplus.h>
 
+typedef struct __gdiplus
+{
+	void * pObject;
+	int type;
+} GDIPLUS, * PGDIPLUS, *PTR_GDIPLUS;
+
 using namespace Gdiplus;
+
+#define GP_OBJECT_TYPE( p )      ( ( p )->type )
+#define GP_OBJECT_OBJ( p )           ( ( p )->pObject )
+
+#define GP_IT_GRAPHICS   ( ( int ) 0x00001 )
+#define GP_IT_RECTF      ( ( int ) 0x00002 )
+#define GP_IT_RECT       ( ( int ) 0x00004 )
+#define GP_IT_IMAGE      ( ( int ) 0x00008 )
+
+#define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
+#define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
+#define GP_IS_RECT( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECT )     ) 
+#define GP_IS_IMAGE( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_IMAGE )    )
+
+
+GDIPLUS * gdiplus_new( int type );
+
+//graphics
+void hb_GDIPLUS_ret( GDIPLUS * p );
+GDIPLUS * hb_GDIPLUS_par( int iParam );
 
 extern "C"
 {
 LPSTR LToStr( long );	
 }
+
+
 
 //graphics
 void hb_Graphics_ret( Graphics * p );
@@ -55,3 +83,11 @@ LinearGradientBrush * hb_LGB_par( int iParam );
 //Brush
 void hb_Brush_ret( Brush * p );
 Brush * hb_Brush_par( int iParam );
+
+//SolidBrush
+void hb_SolidBrush_ret( SolidBrush * p );
+SolidBrush * hb_SolidBrush_par( int iParam );
+
+//Image
+void hb_Image_ret( Image * p );
+Image * hb_Image_par( int iParam );

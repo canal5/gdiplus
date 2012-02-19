@@ -515,14 +515,9 @@ return 0
 
 
    if nLen == 5
-      //TODO faltan los demas tipos de BRUSH
-      if aParams[ 1 ]:isKindof( "GPLINEARGRADIENTBRUSH" )
-         nStatus = GP_FillRectangleLGB( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
-      endif
+      nStatus = GP_FillRectangle( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
    elseif nLen == 2
-      if aParams[ 1 ]:isKindof( "GPLINEARGRADIENTBRUSH" )
-         nStatus = GP_FillRectangleLGBR( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ]:handle /*Rect(F)*/ )
-      endif
+      nStatus = GP_FillRectangleR( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ]:handle /*Rect(F)*/ )
    endif
    /*
   if oPen == nil
@@ -1125,8 +1120,12 @@ HB_FUNC( GDIPLUSNEWGRAPHICS )
 
 HB_FUNC( GDIPLUSNEWGRAPHICSFROMBITMAP )
 {
-   Graphics *g = new Graphics( (Image*) hb_parptr(1) );
-   hb_Graphics_ret( g );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_IMAGE( pObj ) ){	
+      Graphics *g = new Graphics( (Image*) pObj->pObject );
+      hb_Graphics_ret( g );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );      
 }
 
 
@@ -1201,18 +1200,17 @@ HB_FUNC( GPBEGINCONTAINER )
 HB_FUNC( GP_BITBLT )
 {
    Graphics *g = hb_Graphics_par( 1 );
-   Image* img = (Image*) hb_parptr( 2 );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
 
-   if( g && img && hb_pcount() > 8 )
+   if( g && GP_IS_IMAGE( pObj ) && hb_pcount() > 8 )
    {
-    //TODO Garbage Collector for IMAGE
-    Unit u = (Unit) hb_parnl( 9 );
-    g->DrawImage( img, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 6 ), hb_parni( 5 ), hb_parni( 7 ), hb_parni( 8 ), u );
+       Image * img = ( Image * ) pObj->pObject; 
+       Unit u = (Unit) hb_parnl( 9 );
+       hb_retni( g->DrawImage( img, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 6 ), hb_parni( 5 ), hb_parni( 7 ), hb_parni( 8 ), u ) );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-   hb_ret();
 }
 
 HB_FUNC( GP_CLEAR )
@@ -1304,19 +1302,17 @@ HB_FUNC( GP_DRAWELLIPSE )
 
 HB_FUNC( GP_DRAWIMAGE )
 {
-    Graphics *g = hb_Graphics_par( 1 );
-    Image* c = (Image*) hb_parptr( 2 );
+   Graphics *g = hb_Graphics_par( 1 );
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
 
-   if( g && c && hb_pcount() > 5 )
+   if( g && GP_IS_IMAGE( pObj ) && hb_pcount() > 5 )
    {
-    //TODO Garbage Collector for IMAGE
-    g->DrawImage( c, hb_parni(3), hb_parni(4), hb_parni(5), hb_parni(6) );
+   	   Image * c = ( Image * ) pObj->pObject; 
+       hb_retni( g->DrawImage( c, hb_parni(3), hb_parni(4), hb_parni(5), hb_parni(6) ) );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-
-
-    hb_ret();
+      
 }
 
 
@@ -1467,7 +1463,8 @@ HB_FUNC( GP_DRAWSTRING )
 HB_FUNC( GP_FILLELLIPSE )
 {
     Graphics *g = hb_Graphics_par( 1 );
-    Brush* b = (Brush*) hb_parptr( 2 );
+    void ** pPtr = ( void **) hb_parptr( 2 );
+    Brush* b = (Brush*)*pPtr;
 
    if( g && b && hb_pcount() > 5 )
    {
@@ -1496,33 +1493,35 @@ HB_FUNC( GP_FILLPATH )
 }
 
 
-HB_FUNC( GP_FILLRECTANGLELGB )
+HB_FUNC( GP_FILLRECTANGLE )
 {
     Graphics *g = hb_Graphics_par( 1 );
-    LinearGradientBrush * pLGB = hb_LGB_par( 2 );
+    void ** pPtr = ( void**) hb_parptr( 2 );
+    Brush * brush = ( Brush *) *pPtr;
     REAL x = ( REAL ) hb_parnd( 3 );
     REAL y = ( REAL ) hb_parnd( 4 );
     REAL width = ( REAL ) hb_parnd( 5 );
     REAL height = ( REAL ) hb_parnd( 6 );
 
-    if( g && pLGB )
+    if( g && brush )
     {
-       g->FillRectangle( pLGB, x, y, width, height );
+       g->FillRectangle( brush, x, y, width, height );
     }
     else
        hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GP_FILLRECTANGLELGBR )
+HB_FUNC( GP_FILLRECTANGLER )
 {
     Graphics *g = hb_Graphics_par( 1 );
-    LinearGradientBrush * pLGB = hb_LGB_par( 2 );
+    void ** pPtr = ( void**) hb_parptr( 2 );
+    Brush * brush = ( Brush *) *pPtr;
     Rect * rect = hb_Rect_par( 3 );
 
-    if( g && pLGB && rect )
+    if( g && brush && rect )
     {
     	 Rect oRect( rect->X, rect->Y, rect->Width, rect->Height );
-       g->FillRectangle( pLGB, oRect );
+       g->FillRectangle( brush, oRect );
     }
 
     else
@@ -1532,7 +1531,7 @@ HB_FUNC( GP_FILLRECTANGLELGBR )
 HB_FUNC( GP_FILLRECT )
 {
     Graphics *g = hb_Graphics_par( 1 );
-    SolidBrush* brush = (SolidBrush*) hb_parptr(3);
+    SolidBrush* brush = hb_SolidBrush_par( 3 );
 
    if( g && brush )
    {

@@ -6,7 +6,7 @@ function main()
 Local oTest
 
    DEFINE SUITTEST oTest
-
+/*
       TestsGraphics()
       TestsPen()
       TestsColor()
@@ -15,8 +15,9 @@ Local oTest
       TestsRectF()
       TestsSizeF()
       TestMatrix()
-      TestLinearGB()
+      TestLinearGB()*/
       TestImage()
+//      TestSolidBrush()
 
       SHOW RESULT
 
@@ -37,6 +38,23 @@ Image oImage("images\mosaic.png")
 
    TEST ! Empty( oImage:handle )          DESCRIPTION "Constructor Image. No guarda bien los cambios del ejemplo"  SAMPLE Example_SaveFile()
 
+return 0
+
+*****************************************************************************************
+  function TestSolidBrush()
+*****************************************************************************************
+
+local oSB, oColor
+
+   SolidBrush oSB( Color(255, 0, 0, 255) )
+
+   SEPARADOR( "SOLID BRUSH" )
+
+   TEST ! Empty( oSB:handle )          DESCRIPTION "Constructor Solid Brush"  
+   TEST oSB:GetColor( @oColor ) == 0   DESCRIPTION "GetColor" SAMPLE Example_GetColor()   
+   TEST oSB:SetColor( oColor ) == 0    DESCRIPTION "SetColor" SAMPLE Example_SetColor()
+   
+   
 return 0
 
 
@@ -824,8 +842,48 @@ function Example_SaveFile()
 
 return nil
 
+function Example_GetColor()
+   local bPainted :=  {| hDC |
+   
+   local oColor   	
+   Graphics graphics(hdc);
+
+   // Create a solid brush, and use it to fill a rectangle.
+   SolidBrush solidBrush(Color(255, 0, 0, 255))  // blue
+   graphics:FillRectangle(solidBrush, 10, 10, 200, 100)
+
+   // Get the color of the solid brush.
+   solidBrush:GetColor( @oColor )
+
+   // Create a second solid brush with that same color.
+   SolidBrush solidBrush2(oColor)
+
+   // Paint a second rectangle with the second solid brush.
+   graphics:FillRectangle(solidBrush2, 220, 10, 200, 100)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
 
 
+
+function Example_SetColor()
+   local bPainted := { | hdc |
+   Graphics graphics(hdc)
+
+   // Create a solid brush, and use it to fill a rectangle.
+   SolidBrush solidBrush(Color(255, 0, 0, 255))  // blue
+   graphics:FillRectangle(solidBrush, 10, 10, 200, 100)
+
+   // Change the color of the brush, and fill another rectangle.
+   solidBrush:SetColor(Color(255, 255, 0, 0))    // red
+   graphics:FillRectangle(solidBrush, 220, 10, 200, 100)
+   }
+
+   exampleWindow( bPainted )
+   
+return nil   
 
 
 init procedure entrada
