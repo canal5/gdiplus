@@ -12,7 +12,6 @@ Local oTest
 //      TestsColor()
 //      TestsBrush()
 //      TestsFont()
-//      TestsRectF()
 //      TestsSizeF()
 //      TestMatrix()
 //      TestLinearGB()
@@ -21,7 +20,8 @@ Local oTest
 //      TestSolidBrush()
 //      TestPoint()
 //      TestPointF()
-      TestsRectF()
+//      TestsRectF()
+      TestsRect()
       
       SHOW RESULT
 
@@ -299,8 +299,8 @@ return 0
   TEST oRect:Contains( oRect )       DESCRIPTION "Método Contains3( rc )"
   TEST oRect:Equals( oRect3 )         DESCRIPTION "Método Equals"
 
-  TEST TestGetBounds( )               DESCRIPTION "Método TestGetBounds" SAMPLE Example_GetBounds()
-  TEST TestGetLocation()              DESCRIPTION "Método TestGetLocation" SAMPLE Example_GetLocation()
+  TEST TestGetBoundsF( )               DESCRIPTION "Método TestGetBounds" SAMPLE Example_GetBoundsF()
+  TEST TestGetLocationF()              DESCRIPTION "Método TestGetLocation" SAMPLE Example_GetLocationF()
   TEST oRect:GetBottom() == 10 + 200  DESCRIPTION "Método GetBottom"
   TEST oRect:GetLeft() == 10          DESCRIPTION "Método GetLeft"
   TEST oRect:GetRight() == 10 + 200   DESCRIPTION "Método GetRight"
@@ -308,12 +308,49 @@ return 0
   TEST TestRectFInflate()             DESCRIPTION "Método Inflate( X, Y )" SAMPLE Example_InflatePointF()
   TEST TestRectFInflate2()            DESCRIPTION "Método Inflate( pt )" SAMPLE Example_InflatePointF2()
   TEST TestRectFIntersect()           DESCRIPTION "Método Intersect( rc )" SAMPLE Example_IntersectRectF()
-  TEST TestRectFIntersect2()          DESCRIPTION "Método Intersect( rc1,rc2,rc3 )" SAMPLE Example_IntersectABC()
-  TEST TestRectFIntersectsWith()      DESCRIPTION "Método IntersectsWith( rc )"  SAMPLE Example_IntersectsWith()
+  TEST TestRectFIntersect2()          DESCRIPTION "Método Intersect( rc1,rc2,rc3 )" SAMPLE Example_IntersectABCF()
+  TEST TestRectFIntersectsWith()      DESCRIPTION "Método IntersectsWith( rc )"  SAMPLE Example_IntersectsWithF()
   TEST TestRectFIsEmptyArea()         DESCRIPTION "Método IsEmptyArea()"
-  TEST TestRectFOffset()              DESCRIPTION "Método Offset( X, Y )" SAMPLE Example_OffsetPointAB()
+  TEST TestRectFOffset()              DESCRIPTION "Método Offset( X, Y )" SAMPLE Example_OffsetPointABF()
   TEST TestRectFOffset2()             DESCRIPTION "Método Offset(pt)" SAMPLE Example_OffsetPointF()
-  TEST TestRectFUnion()               DESCRIPTION "Método Union(rc1,rc2,rc3)" SAMPLE Example_UnionABC()
+  TEST TestRectFUnion()               DESCRIPTION "Método Union(rc1,rc2,rc3)" SAMPLE Example_UnionABCF()
+
+return 0
+
+*****************************************************************************************
+  function TestsRect()
+*****************************************************************************************
+
+  local oRect, oRect2, oRect3, oPoint
+
+  Size  oSize ( 50, 50 )
+  Point oPoint( 13, 22 )
+  Rect oRect ( 10, 10, 200, 200 )
+  Rect oRect2 ( oPoint, oSize )
+  Rect oRect3( 10, 10, 200, 200 )
+
+  SEPARADOR( "RECT" )
+  TEST !empty(oRect:handle )          DESCRIPTION "Método New"
+  TEST !empty(oRect2:handle )         DESCRIPTION "Metodo New( oPoint, oSize )"
+  TEST oRect:Contains( 20, 20 )       DESCRIPTION "Método Contains( X, Y )"
+  TEST oRect:Contains( oPoint )      DESCRIPTION "Método Contains2( pt )"
+  TEST oRect:Contains( oRect )       DESCRIPTION "Método Contains3( rc )"
+  TEST oRect:Equals( oRect3 )         DESCRIPTION "Método Equals"
+  TEST TestGetBounds( )               DESCRIPTION "Método TestGetBounds" SAMPLE Example_GetBounds()
+  TEST TestGetLocation()              DESCRIPTION "Método TestGetLocation" SAMPLE Example_GetLocation()
+  TEST oRect:GetBottom() == 10 + 200  DESCRIPTION "Método GetBottom"
+  TEST oRect:GetLeft() == 10          DESCRIPTION "Método GetLeft"
+  TEST oRect:GetRight() == 10 + 200   DESCRIPTION "Método GetRight"
+  TEST oRect:GetTop() == 10           DESCRIPTION "Método GetTop"
+  TEST TestRectInflate()             DESCRIPTION "Método Inflate( X, Y )" SAMPLE Example_InflatePointF()
+  TEST TestRectInflate2()            DESCRIPTION "Método Inflate( pt )" SAMPLE Example_InflatePointF2()
+  TEST TestRectIntersect()           DESCRIPTION "Método Intersect( rc )" SAMPLE Example_IntersectRectF()
+  TEST TestRectIntersect2()          DESCRIPTION "Método Intersect( rc1,rc2,rc3 )" SAMPLE Example_IntersectABC()
+  TEST TestRectIntersectsWith()      DESCRIPTION "Método IntersectsWith( rc )"  SAMPLE Example_IntersectsWith()
+  TEST TestRectIsEmptyArea()         DESCRIPTION "Método IsEmptyArea()"
+  TEST TestRectOffset()              DESCRIPTION "Método Offset( X, Y )" SAMPLE Example_OffsetPointAB()
+  TEST TestRectOffset2()             DESCRIPTION "Método Offset(pt)" SAMPLE Example_OffsetPointF()
+  TEST TestRectUnion()               DESCRIPTION "Método Union(rc1,rc2,rc3)" SAMPLE Example_UnionABC()
 
 return 0
 
@@ -508,11 +545,11 @@ RectF r3( 310, 320, 100, 100 )
 
 lCross := r4:Intersect( @r1, r2, r3 )
 
-return .t. /*lCross .and. ;
+return lCross .and. ;
        r1:GetLeft()   == 310      .and. ;
        r1:GetTop()    == 320      .and. ;
        r1:GetRight()  == 400      .and. ;
-       r1:GetBottom() == 400*/
+       r1:GetBottom() == 400
 *********************************************************************************************************************
   function TestRectFIntersect()
 *********************************************************************************************************************
@@ -572,7 +609,7 @@ return oRect:GetLeft()   == nLeft          - X .and. ;
 
 
 *********************************************************************************************************************
-  function TestGetLocation()
+  function TestGetLocationF()
 *********************************************************************************************************************
 local rc1, pt2
 
@@ -585,6 +622,214 @@ local nTop2    := 110
 local nLeft2   := 120
 
 RectF  rc1( nLeft, nTop, nWidth, nHeight )
+
+rc1:GetLocation( @pt2 )
+
+return pt2:X == nLeft .and. pt2:Y == nTop
+
+
+*********************************************************************************************************************
+  function TestGetBoundsF()
+*********************************************************************************************************************
+local rc1, rc2
+
+local nTop     := 10
+local nLeft    := 20
+local nWidth   := 300
+local nHeight  := 400
+
+local nTop2    := 110
+local nLeft2   := 120
+local nWidth2  := 1300
+local nHeight2 := 1400
+
+RectF rc1( nLeft, nTop, nWidth, nHeight )
+
+
+rc1:GetBounds( @rc2 )
+
+return rc2:GetLeft() == nLeft .and. rc2:GetTop() == nTop .and. rc2:Width() == nWidth .and. rc2:Height() == nHeight
+
+
+
+////
+
+*********************************************************************************************************************
+  function TestRectUnion()
+*********************************************************************************************************************
+local r1, r2, r3, rRes
+
+Rect r1( 0, 0, 0, 0 )
+Rect r2( 100, 100, 100, 100 )
+Rect r3( 150, 150, 100, 100 )
+
+// r1:x = 100
+// r1:y = 100
+// r1:Width = 150
+// r1:Height = 150
+
+r1:Union( @r1, r2, r3 )
+
+return r1:X      == 100 .and.;
+       r1:y      == 100 .and.;
+       r1:Width  == 150 .and.;
+       r1:Height == 150
+
+*********************************************************************************************************************
+  function TestRectOffset2()
+*********************************************************************************************************************
+local r1, pt
+local nTop  := 20
+local nLeft := 10
+local nWidth := 100
+local nHeight := 200
+local x := 5
+local y := 10
+
+
+Rect  r1( nLeft, nTop, nWidth, nHeight )
+Point pt( x, y )
+
+r1:Offset( pt )
+
+return r1:GetLeft() == nLeft + x .and.;
+       r1:GetTop() == nTop + y   .and.;
+       r1:GetRight() == nLeft + nWidth + x .and.;
+       r1:GetBottom() == nTop + nHeight + y
+
+*********************************************************************************************************************
+  function TestRectOffset()
+*********************************************************************************************************************
+
+local r1, pt
+local nTop  := 20
+local nLeft := 10
+local nWidth := 100
+local nHeight := 200
+local x := 5
+local y := 10
+
+
+Rect  r1( nLeft, nTop, nWidth, nHeight )
+
+r1:Offset( x, y )
+
+return r1:GetLeft() == nLeft + x .and.;
+       r1:GetTop() == nTop + y   .and.;
+       r1:GetRight() == nLeft + nWidth + x .and.;
+       r1:GetBottom() == nTop + nHeight + y
+
+
+*********************************************************************************************************************
+  function TestRectIsEmptyArea()
+*********************************************************************************************************************
+local r1, r2
+
+Rect r1( 0,0,0,0 )
+Rect r2( 10,10,10,10)
+
+return r1:IsEmptyArea() .and. !r2:IsEmptyArea()
+
+*********************************************************************************************************************
+  function TestRectIntersectsWith()
+*********************************************************************************************************************
+local r1, r2, r3
+
+Rect r1( 10, 10, 100, 100 )
+Rect r2( 300, 300, 100, 100 )
+Rect r3( 310, 310, 100, 100 )
+
+return !r1:IntersectsWith( r2 ) .and. r2:IntersectsWith( r3 )
+
+*********************************************************************************************************************
+  function TestRectIntersect2()
+*********************************************************************************************************************
+local r1, r2, r3, r4
+local lCross
+
+Rect r4( 0, 0, 0, 0 )
+Rect r2( 300, 300, 100, 100 )
+Rect r3( 310, 320, 100, 100 )
+
+lCross := r4:Intersect( @r1, r2, r3 )
+
+return lCross .and. ;
+       r1:GetLeft()   == 310      .and. ;
+       r1:GetTop()    == 320      .and. ;
+       r1:GetRight()  == 400      .and. ;
+       r1:GetBottom() == 400
+*********************************************************************************************************************
+  function TestRectIntersect()
+*********************************************************************************************************************
+local r1, r2
+
+Rect r1( 300, 300, 100, 100 )
+Rect r2( 310, 320, 100, 100 )
+
+return r1:Intersect( r2 )    .and. ;
+       r1:GetLeft()   == 310 .and. ;
+       r1:GetTop()    == 320 .and. ;
+       r1:GetRight()  == 400 .and. ;
+       r1:GetBottom() == 400
+
+********************************************************************************************************************
+  function TestRectInflate2()
+*********************************************************************************************************************
+local oRect, oPoint
+local nTop  := 20
+local nLeft := 10
+local nWidth := 500
+local nHeight := 300
+local X := 10
+local Y := 20
+
+Rect oRect( nLeft, nTop, nWidth, nHeight )
+Point oPoint( X, Y )
+       
+oRect:Inflate( oPoint )
+
+return oRect:GetLeft()   == nLeft          - X .and. ;
+       oRect:GetTop()    == nTop           - Y .and. ;
+       oRect:GetBottom() == nTop  + nHeight+ Y .and. ;
+       oRect:GetRight()  == nLeft + nWidth + X
+
+
+*********************************************************************************************************************
+  function TestRectInflate()
+*********************************************************************************************************************
+local oRect
+local nTop  := 20
+local nLeft := 10
+local nWidth := 500
+local nHeight := 300
+local X := 10
+local Y := 20
+
+Rect oRect( nLeft, nTop, nWidth, nHeight )
+
+oRect:Inflate( X, Y )
+
+return oRect:GetLeft()   == nLeft          - X .and. ;
+       oRect:GetTop()    == nTop           - Y .and. ;
+       oRect:GetBottom() == nTop  + nHeight+ Y .and. ;
+       oRect:GetRight()  == nLeft + nWidth + X
+
+
+
+*********************************************************************************************************************
+  function TestGetLocation()
+*********************************************************************************************************************
+local rc1, pt2
+
+local nTop     := 10
+local nLeft    := 20
+local nWidth   := 100
+local nHeight  := 200
+
+local nTop2    := 110
+local nLeft2   := 120
+
+Rect  rc1( nLeft, nTop, nWidth, nHeight )
 
 rc1:GetLocation( @pt2 )
 
@@ -606,7 +851,7 @@ local nLeft2   := 120
 local nWidth2  := 1300
 local nHeight2 := 1400
 
-RectF rc1( nLeft, nTop, nWidth, nHeight )
+Rect rc1( nLeft, nTop, nWidth, nHeight )
 
 
 rc1:GetBounds( @rc2 )
@@ -1025,7 +1270,7 @@ function Example_PenSetAlignment( )
    
 return nil 
 
-function Example_GetBounds( )
+function Example_GetBoundsF( )
    local bPainted := { | hdc |
       local rect2
       Graphics graphics(hdc)
@@ -1044,7 +1289,7 @@ function Example_GetBounds( )
    
 return nil 
 
-function Example_GetLocation( )
+function Example_GetLocationF( )
    local bPainted := { | hdc |
       
       local pen, location, rect
@@ -1103,7 +1348,7 @@ function Example_InflatePointF2( )
    
 return nil 
 
-function Example_IntersectABC( )
+function Example_IntersectABCF( )
    local bPainted := { | hdc |
       local graphics, pGreenPen, rectA, rectB, rectC, blackPen
       Graphics graphics(hdc)
@@ -1159,7 +1404,7 @@ function Example_IntersectRectF( )
 return nil
 
 
-function Example_IntersectsWith( )
+function Example_IntersectsWithF( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
@@ -1180,7 +1425,7 @@ function Example_IntersectsWith( )
    
 return nil 
 
-function Example_OffsetPointAB( )
+function Example_OffsetPointABF( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
@@ -1226,7 +1471,7 @@ function Example_OffsetPointF( )
 return nil 
 
 
-function Example_UnionABC( )
+function Example_UnionABCF( )
    local bPainted := { | hdc |
       local rectRes
       
@@ -1254,6 +1499,239 @@ function Example_UnionABC( )
    exampleWindow( bPainted )
    
 return nil 
+
+///
+
+function Example_GetBounds( )
+   local bPainted := { | hdc |
+      local rect2
+      Graphics graphics(hdc)
+      Rect rect1(50, 40, 200, 100)
+      rect1:Offset(30, 20)
+      
+      
+      rect1:GetBounds(@rect2)
+
+      
+      Pen pen(Color(255, 0, 0, 255))
+      graphics:DrawRectangle(pen, rect2)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_GetLocation( )
+   local bPainted := { | hdc |
+      
+      local pen, location, rect
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 255))
+      Rect rect(50, 40, 200, 50)
+      
+      // Get the location of the upper-left corner of the rectangle.
+      rect:GetLocation(@location)
+
+      // Draw the rectangle.
+      graphics:DrawRectangle(pen, rect)
+      
+      // Draw a line from the upper-left corner of the rectangle to (0, 0).
+      graphics:DrawLine(pen, location, PointF(0, 0))
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+
+function Example_InflatePoint( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 0))
+      Point point(20, 10)
+      
+      Rect rect(100, 100, 80, 40)
+      graphics:DrawRectangle(pen, rect)
+
+      rect:Inflate(point)
+      graphics:DrawRectangle(pen, rect)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_InflatePoint2( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 0))
+      
+      Rect rect(100, 100, 80, 40)
+      graphics:DrawRectangle(pen, rect)
+
+      rect:Inflate( 40, 40 )
+      graphics:DrawRectangle(pen, rect)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_IntersectABC( )
+   local bPainted := { | hdc |
+      local graphics, pGreenPen, rectA, rectB, rectC, blackPen
+      Graphics graphics(hdc)
+      
+      // Create three RectF objects.
+      Rect rectA(50, 50, 200, 100)
+      Rect rectB(70, 20, 100, 200)
+      
+      // Draw rectA and rectB with a thin black pen.
+      Pen blackPen(Color(255, 0, 0, 0), 1)
+      graphics:DrawRectangle(blackPen, rectA)
+      graphics:DrawRectangle(blackPen, rectB)
+      
+      // Draw the rectangle that indicates the intersection of the two rectangles.
+      if(rectA:Intersect(@rectC, rectA, rectB))
+//         // rectC is not empty.
+//         // Draw the intersection with a thick green pen.
+         Pen pGreenPen(Color(255, 0, 255, 0), 7)
+         graphics:DrawRectangle(pGreenPen, rectC)
+      endif
+
+      return nil
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_IntersectRect( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      // Create two RectF objects.
+      Rect rect1(50, 50, 200, 100)
+      Rect rect2(70, 20, 100, 200)
+      
+      // Draw rect1 and rect2 with a thin black pen.
+      Pen blackPen(Color(255, 0, 0, 0), 1)
+      graphics:DrawRectangle(blackPen, rect1)
+      graphics:DrawRectangle(blackPen, rect2)
+      
+      // Form the intersection of rect1 and rect2, and store
+      // the result in rect1.
+      rect1:Intersect(rect2)
+      
+      // Draw the new rect1 with a thick green pen.
+      Pen greenPen(Color(255, 0, 255, 0), 7)
+      graphics:DrawRectangle(greenPen, rect1)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_IntersectsWith( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 0), 1)
+   
+      // Create two RectF objects.
+      Rect rect1(50, 50, 200, 100)
+      Rect rect2(70, 20, 100, 200)
+    
+      // Draw rect1.   graphics.DrawRectangle(&pen, rect1);
+      // If rect1 intersects with rect2 then draw rect2.
+      if(rect2:IntersectsWith(rect1))
+         graphics:DrawRectangle(pen, rect2)
+      endif
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_OffsetPointAB( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 0))
+      
+      // Create a RectF object, and draw the rectangle.
+      Rect rect(100, 100, 80, 40)
+      graphics:DrawRectangle(pen, rect)
+      
+      // Offset the rectangle by the PointF object.
+      rect:Offset( 30, 20 )
+      
+      // Redraw the rectangle.
+      graphics:DrawRectangle(pen, rect)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_OffsetPoint( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 0))
+      
+      // Create a PointF object.
+      Point point(30, 20)
+      
+      // Create a RectF object, and draw the rectangle.
+      Rect rect(100, 100, 80, 40)
+      graphics:DrawRectangle(pen, rect)
+      
+      // Offset the rectangle by the PointF object.
+      rect:Offset(point)
+      
+      // Redraw the rectangle.
+      graphics:DrawRectangle(pen, rect)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_UnionABC( )
+   local bPainted := { | hdc |
+      local rectRes
+      
+      Graphics graphics(hdc)
+            
+      // Create three RectF objects.
+      Rect rectA(50, 50, 400, 100)
+      Rect rectB(70, 20, 100, 200)
+      Rect rectC()
+      
+      // Determine the union of rectA and rectB, and store the result in rectC.
+      if(rectC:Union(@rectRes, rectA, rectB))
+         // rectC is not empty.
+         // Draw the union with a thick green pen.
+         Pen pGreenPen(Color(255, 0, 255, 0), 7)
+         graphics:DrawRectangle(pGreenPen, rectRes)         
+      endif
+      // Draw rectA and rectB with a thin black pen.
+      Pen blackPen(Color(255, 0, 0, 0), 1)
+      graphics:DrawRectangle(blackPen, rectA)
+      graphics:DrawRectangle(blackPen, rectB)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
 
 /*prototype
 function Example_( )
