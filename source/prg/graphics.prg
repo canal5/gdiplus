@@ -1519,26 +1519,26 @@ HB_FUNC( GP_FILLRECTANGLE )
            int x      = hb_parni( 3 );
            int y      = hb_parni( 4 );
            int width  = hb_parni( 5 );
-           int height = hb_parni( 6 );         	
+           int height = hb_parni( 6 );          
            if( GP_IS_GRAPHICS( pG )  && GP_IS_BRUSH( pBrush ) )
            {
               hb_retni( g->FillRectangle( brush, x, y, width, height ) );
            }
            else
-              hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );          	
+              hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );           
          } 
    
     }else if( hb_pcount() > 1 ) { 
-       GDIPLUS * pRect = hb_GDIPLUS_par( 3 );	  
+       GDIPLUS * pRect = hb_GDIPLUS_par( 3 );   
        Graphics *g = ( Graphics *) GP_GET( pG );
        Brush * brush = ( Brush *) GP_GET( pBrush );       
        
        if( GP_IS_GRAPHICS( pG ) &&  GP_IS_RECT( pRect ) && GP_IS_BRUSH( pBrush ) ){
-       	   Rect * rect = ( Rect *) GP_GET( pRect );       	   
+           Rect * rect = ( Rect *) GP_GET( pRect );            
            hb_retni( g->FillRectangle( brush, *rect ) );
        }
        else if( GP_IS_GRAPHICS( pG ) &&  GP_IS_RECTF( pRect ) && GP_IS_BRUSH( pBrush ) ){
-       	   RectF * rect = ( RectF * ) GP_GET( pRect );       	   
+           RectF * rect = ( RectF * ) GP_GET( pRect );           
            hb_retni( g->FillRectangle( brush, *rect ) );
        }else
            hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    

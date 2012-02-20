@@ -153,29 +153,29 @@ return GPPointFEquals( ::handle, p:handle )
 
 HB_FUNC( _GPPOINTF )
 {
-   GDIPLUS * pObj = gdiplus_new( GP_IT_RECTF ); 	
+   GDIPLUS * pObj = gdiplus_new( GP_IT_POINTF );  
    PointF* ptr;
    int iParams = hb_pcount();
 
    switch( iParams ){
-      case 0:	
-   	     ptr = new PointF();
-   	     break;
-   	  case 1:
-   	   {
-   	     GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-   	     if( GP_IS_POINTF( p2 ) ){
-   	     	  PointF * point = ( PointF * ) GP_GET( p2 );
-   	        ptr =  new PointF( *point );	
-   	     } else if( GP_IS_SIZE( p2 ) ){
-   	     	  SizeF * size = ( SizeF * ) GP_GET( p2 );
-   	        ptr =  new PointF( *size );	   	     	
-   	     }
-   	     break;
-   	   }
-   	  case 2:
-   	     ptr = new PointF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd( 2 ) );
-   	     break;   	  
+      case 0: 
+         ptr = new PointF();
+         break;
+      case 1:
+       {
+         GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+         if( GP_IS_POINTF( p2 ) ){
+            PointF * point = ( PointF * ) GP_GET( p2 );
+            ptr =  new PointF( *point );  
+         } else if( GP_IS_SIZE( p2 ) ){
+            SizeF * size = ( SizeF * ) GP_GET( p2 );
+            ptr =  new PointF( *size );           
+         }
+         break;
+       }
+      case 2:
+         ptr = new PointF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd( 2 ) );
+         break;       
    }
 
    GP_SET( pObj, ptr );
@@ -186,82 +186,80 @@ HB_FUNC( _GPPOINTF )
 
 HB_FUNC( GPPOINTFX )
 {
-	
-	 GDIPLUS * p = hb_GDIPLUS_par( 1 );
-	 if( GP_IS_POINTF( p ) ){
-      Point * ptr = ( Point * ) GP_GET( p );
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_POINTF( p ) ){
+      PointF * ptr = ( PointF * ) GP_GET( p );
       
       if( hb_pcount() > 1 )
-	       ptr->X = (REAL) hb_parnd( 2 );
-	       
-	    hb_retnd( ( double ) ptr->X );
-	 }else
+         ptr->X = (REAL) hb_parnd( 2 );
+         
+      hb_retnd( ( double ) ptr->X );
+   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   
 }
 
 HB_FUNC( GPPOINTFY )
 {
-	
-	 GDIPLUS * p = hb_GDIPLUS_par( 1 );
-	 if( GP_IS_POINTF( p ) ){
-      Point * ptr = ( Point * ) GP_GET( p );
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_POINTF( p ) ){
+      PointF * ptr = ( PointF * ) GP_GET( p );
 
       if( hb_pcount() > 1 )
-	       ptr->Y = (REAL) hb_parnd( 2 );
+         ptr->Y = (REAL) hb_parnd( 2 );
 
-	     hb_retnd( ( double ) ptr->Y );
-	 }else
+       hb_retnd( ( double ) ptr->Y );
+   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPPOINTFSUBSTRACT )
-{	
-	 GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
-	 GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-	 
-	 if( GP_IS_POINTF( p1 ) && GP_IS_POINTF( p2 ) ){
-	 	  PHB_ITEM pitem;
-      Point * ptr1 = ( Point * ) GP_GET( p1 );
-      Point * ptr2 = ( Point * ) GP_GET( p2 );
-      Point point3 = *ptr1 - *ptr2;
-      pitem = GPNewPointObject( point3 );
+{ 
+   GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_POINTF( p1 ) && GP_IS_POINTF( p2 ) ){
+      PHB_ITEM pitem;
+      PointF * ptr1 = ( PointF * ) GP_GET( p1 );
+      PointF * ptr2 = ( PointF * ) GP_GET( p2 );
+      PointF point3 = *ptr1 - *ptr2;
+      pitem = GPNewPointFObject( point3 );
       
-      if( !hb_itemParamStoreRelease( 2, pitem ))
-        hb_itemRelease( pitem );
+      hb_itemReturnRelease( pitem );
               
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPPOINTFADD )
-{	
-	 GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
-	 GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-	 
-	 if( GP_IS_POINTF( p1 ) && GP_IS_POINTF( p2 ) ){
-	 	  PHB_ITEM pitem;
-      Point * ptr1 = ( Point * ) GP_GET( p1 );
-      Point * ptr2 = ( Point * ) GP_GET( p2 );
-      Point point3 = *ptr1 + *ptr2;
-      pitem = GPNewPointObject( point3 );
+{ 
+   GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_POINTF( p1 ) && GP_IS_POINTF( p2 ) ){
+      PHB_ITEM pitem;
+      PointF * ptr1 = ( PointF * ) GP_GET( p1 );
+      PointF * ptr2 = ( PointF * ) GP_GET( p2 );
+      PointF point3 = *ptr1 + *ptr2;
+      pitem = GPNewPointFObject( point3 );
       
-      if( !hb_itemParamStoreRelease( 2, pitem ))
-        hb_itemRelease( pitem );
+      hb_itemReturnRelease( pitem );
               
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPPOINTFEQUALS )
-{	
-	 GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
-	 GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-	 
-	 if( GP_IS_POINTF( p1 ) && GP_IS_POINTF( p2 ) ){
-	 	  PHB_ITEM pitem;
-      Point * ptr1 = ( Point * ) GP_GET( p1 );
-      Point * ptr2 = ( Point * ) GP_GET( p2 );
+{ 
+   GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_POINTF( p1 ) && GP_IS_POINTF( p2 ) ){
+      PHB_ITEM pitem;
+      PointF * ptr1 = ( PointF * ) GP_GET( p1 );
+      PointF * ptr2 = ( PointF * ) GP_GET( p2 );
       
       hb_retl( ptr1->Equals( *ptr2 ) ); 
                      

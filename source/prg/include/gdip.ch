@@ -10,6 +10,7 @@
 #xcommand POINTF              <oPointF>( [ <par1>[, <par2> ] ] )                                      => <oPointF> := PointF             ( [ <par1> ] [, <par2> ] )
 #xcommand POINT               <oPoint> ( [ <par1>[, <par2> ] ] )                                      => <oPoint>  := Point              ( [ <par1> ] [, <par2> ] )
 #xcommand SIZEF               <oSizeF> ( [<nWidth>[, <nHeight> ] ] )                                  => <oSizeF>  := SizeF              ( [ <nWidth> ] [, <nHeight> ] )
+#xcommand SIZE                <oSize>  ( [<nWidth>[, <nHeight> ] ] )                                  => <oSizeF>  := Size               ( [ <nWidth> ] [, <nHeight> ] )
 #xcommand COLOR               <oColor> ( [ <a>[,<r>, <g>[,<b> ] ] ] )                                 => <oColor>  := Color              ( [<a>][,<r>][,<g>][,<b> ] )
 #xcommand MATRIX              <oMatrix>( [ <par1> [, <par2> [, <par3>, <par4>, <par5>, <par6> ] ] ] ) => <oMatrix> := Matrix             ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>][, <par6>] )
 #xcommand LINEARGRADIENTBRUSH <ogb>    ( <par1>, <par2>, <par3>, <par4>[, <par5> ]  )                 => <ogb>     := LinearGradientBrush( <par1>, <par2>, <par3>, <par4>[, <par5>] )

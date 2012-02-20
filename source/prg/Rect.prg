@@ -237,7 +237,7 @@ return nil
   METHOD Union(rc1,rc2,rc3) CLASS GPRect
 *********************************************************************************************************
 
-return GPRectUnion(::handle, rc1:handle, rc2:handle, rc3:handle )
+return GPRectUnion(::handle, @rc1, rc2:handle, rc3:handle )
 
 *********************************************************************************************************
   METHOD X() CLASS GPRect
@@ -328,14 +328,14 @@ return nil
 
 HB_FUNC( _GETRECTHANDLE )
 {
-	Rect * c = ( Rect * ) hb_parptr( 1 );
-	hb_Rect_ret( c );	
+  Rect * c = ( Rect * ) hb_parptr( 1 );
+  hb_Rect_ret( c ); 
 }
 
 
 HB_FUNC( _GPRECT )
 {
-    GDIPLUS * pObj = gdiplus_new( GP_IT_RECT ); 	
+    GDIPLUS * pObj = gdiplus_new( GP_IT_RECT );   
     Rect * ptr;
     int iParams = hb_pcount();
 
@@ -638,48 +638,77 @@ HB_FUNC( GPRECTSETY )
 
 HB_FUNC( GPRECTX )
 {
-   Rect * ptr = hb_Rect_par( 1 );
-   hb_retni( (int) ptr->X );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_RECT( pObj ) ){
+      Rect * ptr = ( Rect * ) GP_GET( pObj );
+      hb_retni( (int) ptr->X );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPRECTY )
 {
-   Rect * ptr = hb_Rect_par( 1 );
-   hb_retni( (int) ptr->Y );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_RECT( pObj ) ){
+      Rect * ptr = ( Rect * ) GP_GET( pObj );
+      hb_retni( (int) ptr->Y );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPRECTWIDTH )
 {
-   Rect * ptr = hb_Rect_par( 1 );
-   hb_retni( (int) ptr->Width );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_RECT( pObj ) ){
+      Rect * ptr = ( Rect * ) GP_GET( pObj );
+      hb_retni( (int) ptr->Width );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPRECTHEIGHT )
 {
-   Rect * ptr = hb_Rect_par( 1 );
-   hb_retni( (int) ptr->Height );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_RECT( pObj ) ){
+      Rect * ptr = ( Rect * ) GP_GET( pObj );
+      hb_retni( (int) ptr->Height );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPRECTUNION )
 {
-   Rect * ptr = hb_Rect_par( 1 );
-   Rect * p_rc1 = hb_Rect_par( 2 );
-   Rect * p_rc2 = hb_Rect_par( 3 );
-   Rect * p_rc3 = hb_Rect_par( 4 );
-   BOOL l;
+   GDIPLUS * pObj1 = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pObj2 = hb_GDIPLUS_par( 2 );
+   GDIPLUS * pObj3 = hb_GDIPLUS_par( 3 );
+            
+   if( GP_IS_RECT( pObj1 ) && GP_IS_RECT( pObj2 ) && GP_IS_RECT( pObj3 ) ){
+      Rect * ptr1 = ( Rect * ) GP_GET( pObj1 );
+      Rect * ptr2 = ( Rect * ) GP_GET( pObj2 );
+      Rect * ptr3 = ( Rect * ) GP_GET( pObj3 );
+      Rect out;
+      BOOL lRet;
+      PHB_ITEM pitem;
 
-   Rect rc1( p_rc1->X, p_rc1->Y, p_rc1->Width, p_rc1->Height );
-   Rect rc2( p_rc2->X, p_rc2->Y, p_rc2->Width, p_rc2->Height );
-   Rect rc3( p_rc3->X, p_rc3->Y, p_rc3->Width, p_rc3->Height );
+      lRet = ptr1->Union( out, *ptr2, *ptr3 );
+      
+      pitem = GPNewRectObject( out );
+      
+      if( !hb_itemParamStoreRelease( 2, pitem ))
+        hb_itemRelease( pitem );
+        
+      hb_retl( lRet );         
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-   l = ptr->Union( rc1, rc2, rc3 );
-
-   p_rc1->X = rc1.X;
-   p_rc1->Y = rc1.Y;
-   p_rc1->Width = rc1.Width;
-   p_rc1->Height = rc1.Height;
-
-   hb_retl(l);
 }
 
 #pragma ENDDUMP

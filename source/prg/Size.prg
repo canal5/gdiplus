@@ -1,10 +1,25 @@
 #include "fivewin.ch"
 
 
-function Size()
+function Size( ... )
 
-return GPSize():New()
+   local aParams := hb_aparams()
+   local oObj
+   local nLen := Len( aParams )
 
+   switch nLen
+      case 0
+         oObj = GPSize():New()
+         exit
+      case 1
+         oObj = GPSize():New( aParams[ 1 ] )
+         exit
+      case 2
+         oObj = GPSize():New( aParams[ 1 ], aParams[ 2 ] )
+         exit
+   endswitch
+
+return oObj
 
 CLASS GPSize
 
@@ -19,39 +34,39 @@ CLASS GPSize
 
 //Constructor
 //Size::Size()
-//Size::Size(INT,INT)
+//Size::Size(REAL,REAL)
 //Size::Size(Size&)
 
   METHOD Empty()
   METHOD Equals()
+  METHOD Substract OPERATOR "-"
+  METHOD Add       OPERATOR "+"
+
 //operator-(Size&)
 //operator+(Size&)
+
 
 
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New() CLASS GPSize
+  METHOD New(p1, p2, p3, p4, p5, p6, p7) CLASS GPSize
 *********************************************************************************************************
 
 local iParams := PCount()
 
 
-  if iParams == 0
-     ::handle := _GPSize()
-  elseif iParams == 1
-     ::handle := _GPSize( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPSize( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPSize( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPSize( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPSize( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPSize( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
+  switch( iParams )
+     case 0
+        ::handle := _GPSize()
+        exit
+     case 1
+        ::handle := _GPSize( p1 )
+        exit
+     case 2
+        ::handle := _GPSize( p1, p2 )
+        exit
+  endswitch
 
 return self
 
@@ -67,34 +82,47 @@ return nil
   METHOD Empty() CLASS GPSize
 *********************************************************************************************************
 
-return 0
+return GPSizeEmpty(::handle)
 
 *********************************************************************************************************
-  METHOD Equals() CLASS GPSize
+  METHOD Equals( sz ) CLASS GPSize
 *********************************************************************************************************
 
-return 0
+return GPSizeEquals(::handle, sz:handle )
+
+*********************************************************************************************************
+  METHOD Substract( sz ) CLASS GPSize
+*********************************************************************************************************
+   
+return GPSizeSubstract( ::handle, @sz )
+
+*********************************************************************************************************
+  METHOD Add( sz ) CLASS GPSize
+*********************************************************************************************************
+
+return GPSizeAdd( ::handle, @sz )
+
 
 
 //Constructors
 //
 //The Size class has the following constructors.
 //
-//Constructor                          Description
-//Size::Size()                         Creates a new Size object and initializes the members to zero. This is the default constructor.
-//Size::Size(INT,INT)                  Creates a Size object and initializes its Width and Height data members.
-//Size::Size(Size&)                    Creates a Size object and initializes its members by copying the members of another Size object.
+//Constructor                        Description
+//Size::Size()                     Creates a Size object and initializes the members to zero. This is the default constructor.
+//Size::Size(REAL,REAL)            Creates a Size object and initializes its Width and Height data members.
+//Size::Size(Size&)               Creates a Size object and initializes its members by copying the members of another Size object.
 //
 //
 //Methods
 //
 //The Size class has the following methods.
 //
-//Method                               Description
-//Size::Empty                          The Size::Empty method determines whether a Size object is empty.
-//Size::Equals                         The Size::Equals method determines whether two Size objects are equal.
-//Size::operator-(Size&)               The Size::operator- method subtracts the Width and Height data members of two Size objects.
-//Size::operator+(Size&)               The Size::operator+ method adds the Width and Height data members of two Size objects.
+//Method                             Description
+//Size::Empty                       The Size::Empty method determines whether a Size object is empty.
+//Size::Equals                      The Size::Equals method determines whether two Size objects are equal.
+//Size::operator-(Size&)           The Size::operator- method subtracts the Width and Height data members of two Size objects.
+//Size::operator+(Size&)           The Size::operator+ method adds the Width and Height data members of two Size objects.
 //
 //
 //Data Members
@@ -102,62 +130,106 @@ return 0
 //The following table lists the members exposed by the Size object.
 //
 //Data Members    Type    Description
-//Height          INT     Vertical measurement of the Size object.
-//Width           INT     Horizontal measurement of the Size object.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//Height          REAL    Vertical measurement of the Size object.
+//Width           REAL    Horizontal measurement of the Size object.
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPSIZE )
 {
-   //Size* ptr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    ptr = new Size();
-   //else if (iParams == 1 )
-   //    ptr = new Size( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    ptr = new Size( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    ptr = new Size( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*) ptr );
+   GDIPLUS * pObj = gdiplus_new( GP_IT_SIZE );  
+   Size * ptr;
+   int iParams = hb_pcount();
+
+   switch( iParams ){
+      case 0: 
+         ptr = new Size();
+         break;
+      case 1:
+       {
+         GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+         if( GP_IS_SIZE( p2 ) ){
+            Size * point = ( Size * ) GP_GET( p2 );
+            ptr =  new Size( *point );  
+         }
+         break;
+       }
+      case 2:
+         ptr = new Size( hb_parni( 1 ), hb_parni( 2 ) );
+         break;       
+   }
+
+   GP_SET( pObj, ptr );
+
+   hb_GDIPLUS_ret( pObj );
 }
 
-HB_FUNC( DELETESIZE )
+HB_FUNC( GPSIZEEMPTY )
 {
-   //Size* clr = (Size*) hb_parptr( 1 );
-   //delete (Size*) clr;
-   //hb_ret();
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_SIZE( p ) ){
+      Size * ptr = ( Size * ) GP_GET( p );
+         
+      hb_retl( ptr->Empty() );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
 }
 
-//HB_FUNC( GPSIZE... )
-//{
-//   Size* ptr = (Size*) hb_parptr( 1 );
-//}
+HB_FUNC( GPSIZESUBSTRACT )
+{ 
+   GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_SIZE( p1 ) && GP_IS_SIZE( p2 ) ){
+      PHB_ITEM pitem;
+      Size * ptr1 = ( Size * ) GP_GET( p1 );
+      Size * ptr2 = ( Size * ) GP_GET( p2 );
+      Size point3 = *ptr1 - *ptr2;
+      pitem = GPNewSizeObject( point3 );
+      
+      hb_itemReturnRelease( pitem );
+              
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+HB_FUNC( GPSIZEADD )
+{ 
+   GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_SIZE( p1 ) && GP_IS_SIZE( p2 ) ){
+      PHB_ITEM pitem;
+      Size * ptr1 = ( Size * ) GP_GET( p1 );
+      Size * ptr2 = ( Size * ) GP_GET( p2 );
+      Size point3 = *ptr1 + *ptr2;
+      pitem = GPNewSizeObject( point3 );
+      
+      hb_itemReturnRelease( pitem );
+              
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+HB_FUNC( GPSIZEEQUALS )
+{ 
+   GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_SIZE( p1 ) && GP_IS_SIZE( p2 ) ){
+      PHB_ITEM pitem;
+      Size * ptr1 = ( Size * ) GP_GET( p1 );
+      Size * ptr2 = ( Size * ) GP_GET( p2 );
+      
+      hb_retl( ptr1->Equals( *ptr2 ) ); 
+                     
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
 
 #pragma ENDDUMP
 

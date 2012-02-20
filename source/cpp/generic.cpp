@@ -78,6 +78,27 @@ PHB_ITEM GPNewPointObject( Point& c ){
    return pitem;
 } 
 
+PHB_ITEM GPNewPointFObject( PointF& c ){
+  
+   PHB_ITEM pitem;
+   PointF * h;
+   GDIPLUS * p = gdiplus_new( GP_IT_POINT ); 
+   PHB_ITEM pHandle = hb_itemNew( NULL );
+       
+   pitem = hb_itemDoC( "GPPOINTF", 0 );
+   
+   h = new PointF( c ); 
+   GP_SET( p, h );
+   
+   hb_itemPutPtr( pHandle, p );
+   
+   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   
+   hb_itemRelease( pHandle );
+   
+   return pitem;
+} 
+
 PHB_ITEM GPNewRectObject( Rect& c ){
   
    PHB_ITEM pitem;
@@ -88,6 +109,69 @@ PHB_ITEM GPNewRectObject( Rect& c ){
    pitem = hb_itemDoC( "GPRECT", 0 );
    
    h = new Rect( c.X, c.Y, c.Width, c.Height ); 
+   GP_SET( p, h );
+   
+   hb_itemPutPtr( pHandle, p );
+   
+   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   
+   hb_itemRelease( pHandle );
+   
+   return pitem;
+} 
+
+PHB_ITEM GPNewRectFObject( RectF& c ){
+  
+   PHB_ITEM pitem;
+   RectF * h;
+   GDIPLUS * p = gdiplus_new( GP_IT_RECTF ); 
+   PHB_ITEM pHandle = hb_itemNew( NULL );
+       
+   pitem = hb_itemDoC( "GPRECTF", 0 );
+   
+   h = new RectF( c.X, c.Y, c.Width, c.Height ); 
+   GP_SET( p, h );
+   
+   hb_itemPutPtr( pHandle, p );
+   
+   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   
+   hb_itemRelease( pHandle );
+   
+   return pitem;
+} 
+
+PHB_ITEM GPNewSizeObject( Size& c ){
+  
+   PHB_ITEM pitem;
+   Size * h;
+   GDIPLUS * p = gdiplus_new( GP_IT_SIZE ); 
+   PHB_ITEM pHandle = hb_itemNew( NULL );
+       
+   pitem = hb_itemDoC( "GPSIZE", 0 );
+   
+   h = new Size( c ); 
+   GP_SET( p, h );
+   
+   hb_itemPutPtr( pHandle, p );
+   
+   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   
+   hb_itemRelease( pHandle );
+   
+   return pitem;
+} 
+
+PHB_ITEM GPNewSizeFObject( SizeF& c ){
+  
+   PHB_ITEM pitem;
+   SizeF * h;
+   GDIPLUS * p = gdiplus_new( GP_IT_SIZE ); 
+   PHB_ITEM pHandle = hb_itemNew( NULL );
+       
+   pitem = hb_itemDoC( "GPSIZEF", 0 );
+   
+   h = new SizeF( c ); 
    GP_SET( p, h );
    
    hb_itemPutPtr( pHandle, p );
