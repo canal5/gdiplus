@@ -13,7 +13,7 @@ Local oTest
 //      TestsBrush()
 //      TestsFont()
 //      TestsSizeF()
-//      TestMatrix()
+      TestMatrix()
 //      TestLinearGB()
       
 //      TestImage()
@@ -21,7 +21,7 @@ Local oTest
 //      TestPoint()
 //      TestPointF()
 //      TestsRectF()
-      TestsRect()
+//      TestsRect()
       
       SHOW RESULT
 
@@ -233,28 +233,29 @@ return 0
   TEST ! empty( oMatrix:handle )                       DESCRIPTION "Constructor "
   TEST ! empty( oMatrix2:handle )                      DESCRIPTION "Constructor Matrix( RectF, PointF )"
   TEST ! empty( oMatrix3:handle )                      DESCRIPTION "Constructor Matrix( REAL, REAL, REAL, REAL, REAL, REAL )"
+  
   TEST !Empty( ( oClone := oMatrix3:Clone() ):handle )  DESCRIPTION "Clone"
-  TEST oMatrix:Equals( oClone )                        DESCRIPTION "Equals"
-  TEST oMatrix3:GetElements( @aElements ) == 0          DESCRIPTION "GetElements"
-  nStatus = oMatrix:GetLastStatus()
-  TEST hb_IsNumeric( oMatrix:GetLastStatus() )         DESCRIPTION "GetLastStatus is =" + str( nStatus )
-  TEST oMatrix3:Invert() == 0                          DESCRIPTION "Invert"
-  TEST oMatrix3:IsIdentity()                           DESCRIPTION "IsIdentity"
-  TEST oMatrix3:IsInvertible()                         DESCRIPTION "IsInvertible"
-  TEST oMatrix3:Multiply( oMatrix4, MatrixOrderAppend ) == 0           DESCRIPTION "Multiply"
-  TEST oMatrix4:OffsetX() == 20                        DESCRIPTION "OffsetX"
-  TEST oMatrix4:OffsetY() == 40                        DESCRIPTION "OffsetY"
-  TEST oMatrix4:Reset() == 0                           DESCRIPTION "Reset"
-  TEST oMatrix2:Rotate( 30, MatrixOrderAppend ) == 0 DESCRIPTION "Rotate"
-  TEST oMatrix2:Rotate( 30, PointF(150, 100), MatrixOrderAppend ) == 0 DESCRIPTION "RotateAt"
-  TEST oMatrix4:Scale( 3, 2, MatrixOrderAppend ) == 0  DESCRIPTION "Scale"
-  TEST oMatrix4:SetElements( 1, 0, 0, 1, 30, 50 ) == 0  DESCRIPTION "SetElements"
-  TEST oMatrix4:Shear( 3, 0, MatrixOrderAppend ) == 0  DESCRIPTION "Shear"
-  TEST oMatrix4:TransformPoints( aPoint ) == 0         DESCRIPTION "TransformPoints with Point Atrray"
-  TEST oMatrix4:TransformPointsF( aPointF ) == 0        DESCRIPTION "TransformPoints with PointF Atrray"
-  TEST oMatrix4:TransformVectors( aPoint ) == 0         DESCRIPTION "TransformVentors with Point Atrray"
-  TEST oMatrix4:TransformVectorsF( aPointF ) == 0       DESCRIPTION "TransformVectorsF with PointF Atrray"
-  TEST oMatrix4:Translate( 150, 100, MatrixOrderAppend ) == 0 DESCRIPTION "Translate"
+//  TEST oMatrix:Equals( oClone )                        DESCRIPTION "Equals"
+//  TEST oMatrix3:GetElements( @aElements ) == 0          DESCRIPTION "GetElements"
+//  nStatus = oMatrix:GetLastStatus()
+//  TEST hb_IsNumeric( oMatrix:GetLastStatus() )         DESCRIPTION "GetLastStatus is =" + str( nStatus )
+//  TEST oMatrix3:Invert() == 0                          DESCRIPTION "Invert"
+//  TEST oMatrix3:IsIdentity()                           DESCRIPTION "IsIdentity"
+//  TEST oMatrix3:IsInvertible()                         DESCRIPTION "IsInvertible"
+//  TEST oMatrix3:Multiply( oMatrix4, MatrixOrderAppend ) == 0           DESCRIPTION "Multiply"
+//  TEST oMatrix4:OffsetX() == 20                        DESCRIPTION "OffsetX"
+//  TEST oMatrix4:OffsetY() == 40                        DESCRIPTION "OffsetY"
+//  TEST oMatrix4:Reset() == 0                           DESCRIPTION "Reset"
+//  TEST oMatrix2:Rotate( 30, MatrixOrderAppend ) == 0 DESCRIPTION "Rotate"
+//  TEST oMatrix2:Rotate( 30, PointF(150, 100), MatrixOrderAppend ) == 0 DESCRIPTION "RotateAt"
+//  TEST oMatrix4:Scale( 3, 2, MatrixOrderAppend ) == 0  DESCRIPTION "Scale"
+//  TEST oMatrix4:SetElements( 1, 0, 0, 1, 30, 50 ) == 0  DESCRIPTION "SetElements"
+//  TEST oMatrix4:Shear( 3, 0, MatrixOrderAppend ) == 0  DESCRIPTION "Shear"
+//  TEST oMatrix4:TransformPoints( aPoint ) == 0         DESCRIPTION "TransformPoints with Point Atrray"
+//  TEST oMatrix4:TransformPointsF( aPointF ) == 0        DESCRIPTION "TransformPoints with PointF Atrray"
+//  TEST oMatrix4:TransformVectors( aPoint ) == 0         DESCRIPTION "TransformVentors with Point Atrray"
+//  TEST oMatrix4:TransformVectorsF( aPointF ) == 0       DESCRIPTION "TransformVectorsF with PointF Atrray"
+//  TEST oMatrix4:Translate( 150, 100, MatrixOrderAppend ) == 0 DESCRIPTION "Translate"
 
 
 return 0

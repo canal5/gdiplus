@@ -51,9 +51,6 @@ CLASS GPMatrix
    METHOD TransformVectorsF(PointF)
    METHOD Translate()
    
-   
-   METHOD convertMatrixHandle( h )
-
 
 // Constructors
 // Matrix::Matrix()
@@ -75,11 +72,7 @@ local iParams := PCount()
         ::handle := _GPMatrix()
         exit
      case 2
-        if p1:IsKindOf( "GPRECT" ) .AND. p2:IsKindOf( "GPPOINT" ) 
-           ::handle := _GPMatrixInt( p1:handle, p2:handle )
-        elseif p1:IsKindOf( "GPRECTF" ) .AND. p2:IsKindOf( "GPPOINTF" )
-           ::handle := _GPMatrixFloat( p1:handle, p2:handle )
-        endif
+        ::handle := _GPMatrix( p1:handle, p2:handle )
         exit
       case 6        
         ::handle := _GPMatrix( p1, p2, p3, p4, p5, p6 )
@@ -100,10 +93,8 @@ return nil
    METHOD Clone() CLASS GPMatrix
 *******************************************************************************************
    local oClone
-   
-   oClone = ::New()
 
-   oClone:handle = _GPMatrixClone( ::handle )
+   oClone = _GPMatrixClone( ::handle )
    
 return oClone
 
@@ -262,12 +253,6 @@ return _GPmatrixTransformVectorsf( ::handle, aPoint )
 return _GPMatrixTranslate( ::handle, nOffsetX, nOffsetY, nOrder )
 
 
-*********************************************************************************************************
-METHOD convertMatrixHandle( h ) CLASS GPMatrix
-*********************************************************************************************************
-   ::handle = _getMatrixHandle( h )
-return nil
-
 
 // Constructors
 // Matrix::Matrix()	                         Creates and initializes a Matrix::Matrix object that represents the identity matrix.
@@ -310,80 +295,65 @@ return nil
 #include <hbvm.h> 
 #include <gc.h>
 
-HB_FUNC( _GETMATRIXHANDLE )
-{
-	Matrix * c = ( Matrix * ) hb_parptr( 1 );
-	hb_Matrix_ret( c );	
-}
-
-
 HB_FUNC( _GPMATRIX )
 {
+   GDIPLUS * pObj = gdiplus_new( GP_IT_MATRIX );   
    Matrix* ptr;
-   int iParams = hb_pcount();
-
-   if( iParams == 0 )
-       ptr = new Matrix();
-
-   else if (iParams == 6 )
+   int iParams = hb_pcount(); 
+   BOOL lRet = true;
+ 
+   switch( iParams ){
+      case 0:
+   	    ptr = new Matrix();
+   	    break;
+     case 2:
+     {
+        GDIPLUS * pR = hb_GDIPLUS_par( 1 );
+        GDIPLUS * pP = hb_GDIPLUS_par( 2 );
+        if( GP_IS_RECTF( pR ) && GP_IS_POINTF( pP ) ){
+        	RectF * rect = ( RectF * ) GP_GET( pR );
+        	PointF * point = ( PointF * ) GP_GET( pP );
+        	ptr = new Matrix( *rect, point );        	
+        }else if( GP_IS_RECT( pR ) && GP_IS_POINT( pP ) ){
+        	Rect * rect = ( Rect * ) GP_GET( pR );
+        	Point * point = ( Point * ) GP_GET( pP );
+        	ptr = new Matrix( *rect, point );        	        	
+        }else 
+           lRet = false;
+     }
+     break;
+     case 6:
        ptr = new Matrix( (REAL) hb_parnd( 1 ), 
                          (REAL) hb_parnd( 2 ),
                          (REAL) hb_parnd( 3 ),
                          (REAL) hb_parnd( 4 ),
                          (REAL) hb_parnd( 5 ),
                          (REAL) hb_parnd( 6 ) );
-
-   hb_Matrix_ret( ptr );
-}
-
-//-----------------------------------------//
-
-HB_FUNC( _GPMATRIXINT )
-{
-   Matrix* ptr = NULL;
-   Rect * pRect = hb_Rect_par( 1 );
-   Point * pPoint = hb_Point_par( 2 );
-
-   if( pRect && pPoint )
-   {
-      Rect oRect( pRect->X, pRect->Y, pRect->Width, pRect->Height ); 
-      ptr = new Matrix( oRect, pPoint );
-      hb_Matrix_ret( ptr );
-   } else
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
-}
-
-//-----------------------------------------//
-
-HB_FUNC( _GPMATRIXFLOAT )
-{
-   Matrix* ptr = NULL;
-   RectF * pRect = hb_RectF_par( 1 );
-   PointF * pPoint = hb_PointF_par( 2 );
+   }
    
-   if( pRect && pPoint )
-   {
-      RectF oRect( pRect->X, pRect->Y, pRect->Width, pRect->Height );
-      ptr = new Matrix( oRect, pPoint );
-      hb_Matrix_ret( ptr );
-   } else
+   if( lRet ){
+      GP_SET( pObj, ptr );   
+      hb_GDIPLUS_ret( pObj );   	     
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-      
-      
-   
+
+
 }
 
 //-----------------------------------------//
 
 HB_FUNC( _GPMATRIXCLONE )
 {
-	 Matrix * ptr = hb_Matrix_par( 1 );
-   Matrix *pClone = NULL;
-
-	 if( ptr )
-	 {	 	 
-	    pClone = ptr->Clone();
-	    hb_Matrix_ret( pClone );
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_MATRIX( p ) ){
+      Matrix * ptr = ( Matrix * ) GP_GET( p );
+      Matrix * clone;
+      PHB_ITEM pClone;
+	    clone = ptr->Clone();
+	    pClone = GPNewGDIPLUSObject( ( void * ) clone, GP_IT_MATRIX );    
+	    hb_itemReturnRelease( pClone );
+	    
 	 }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 	 

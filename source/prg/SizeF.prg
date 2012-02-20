@@ -94,13 +94,13 @@ return GPSizeFEquals(::handle, sz:handle )
   METHOD Substract( sz ) CLASS GPSizeF
 *********************************************************************************************************
    
-return GPSizeFSubstract( ::handle, @sz )
+return GPSizeFSubstract( ::handle, sz:handle )
 
 *********************************************************************************************************
   METHOD Add( sz ) CLASS GPSizeF
 *********************************************************************************************************
 
-return GPSizeFAdd( ::handle, @sz )
+return GPSizeFAdd( ::handle, sz:handle )
 
 
 
@@ -189,7 +189,7 @@ HB_FUNC( GPSIZEFSUBSTRACT )
       SizeF * ptr1 = ( SizeF * ) GP_GET( p1 );
       SizeF * ptr2 = ( SizeF * ) GP_GET( p2 );
       SizeF point3 = *ptr1 - *ptr2;
-      pitem = GPNewSizeFObject( point3 );
+      pitem = GPNewGDIPLUSObject( &point3, GP_IT_SIZEF );
       
       hb_itemReturnRelease( pitem );
               
@@ -201,18 +201,20 @@ HB_FUNC( GPSIZEFADD )
 { 
    GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-   
+
    if( GP_IS_SIZEF( p1 ) && GP_IS_SIZEF( p2 ) ){
       PHB_ITEM pitem;
       SizeF * ptr1 = ( SizeF * ) GP_GET( p1 );
       SizeF * ptr2 = ( SizeF * ) GP_GET( p2 );
       SizeF point3 = *ptr1 + *ptr2;
-      pitem = GPNewSizeFObject( point3 );
-      
+
+      pitem = GPNewGDIPLUSObject( &point3, GP_IT_SIZEF );
+
       hb_itemReturnRelease( pitem );
               
-   }else
+   }else{
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
 }
 
 HB_FUNC( GPSIZEFEQUALS )

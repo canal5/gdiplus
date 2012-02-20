@@ -94,13 +94,13 @@ return GPSizeEquals(::handle, sz:handle )
   METHOD Substract( sz ) CLASS GPSize
 *********************************************************************************************************
    
-return GPSizeSubstract( ::handle, @sz )
+return GPSizeSubstract( ::handle, sz:handle )
 
 *********************************************************************************************************
   METHOD Add( sz ) CLASS GPSize
 *********************************************************************************************************
 
-return GPSizeAdd( ::handle, @sz )
+return GPSizeAdd( ::handle, sz:handle )
 
 
 
@@ -189,7 +189,7 @@ HB_FUNC( GPSIZESUBSTRACT )
       Size * ptr1 = ( Size * ) GP_GET( p1 );
       Size * ptr2 = ( Size * ) GP_GET( p2 );
       Size point3 = *ptr1 - *ptr2;
-      pitem = GPNewSizeObject( point3 );
+      pitem = GPNewGDIPLUSObject( &point3, GP_IT_SIZE );
       
       hb_itemReturnRelease( pitem );
               
@@ -207,7 +207,7 @@ HB_FUNC( GPSIZEADD )
       Size * ptr1 = ( Size * ) GP_GET( p1 );
       Size * ptr2 = ( Size * ) GP_GET( p2 );
       Size point3 = *ptr1 + *ptr2;
-      pitem = GPNewSizeObject( point3 );
+      pitem = GPNewGDIPLUSObject( &point3, GP_IT_SIZE );
       
       hb_itemReturnRelease( pitem );
               

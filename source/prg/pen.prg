@@ -458,7 +458,8 @@ HB_FUNC( GPPENGETBRUSH )
       type = b->GetType();
       switch( type ){
          case BrushTypeSolidColor:
-            pitem = GPNewSolidBrushObject( *(( SolidBrush *) b) );
+            pitem = GPNewGDIPLUSObject( b, GP_IT_SOLIDBRUSH );
+//            pitem = GPNewSolidBrushObject( *(( SolidBrush *) b) );
             if( !hb_itemParamStoreRelease( 2, pitem ))
                hb_itemRelease( pitem );
             break;                  
@@ -480,7 +481,7 @@ HB_FUNC( GPPENGETCOLOR )
       Status sta;
       
       p->GetColor( &c );
-      pitem = GPNewColorObject( c );
+      pitem = GPNewGDIPLUSObject( &c, GP_IT_COLOR );
       if( !hb_itemParamStoreRelease( 2, pitem ))
         hb_itemRelease( pitem );
         

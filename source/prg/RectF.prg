@@ -351,7 +351,8 @@ HB_FUNC( GPRECTFCLONE )
       
       pClone = ptr->Clone();
       
-      pitem = GPNewRectFObject( *pClone );
+//      pitem = GPNewRectFObject( *pClone );
+      pitem = GPNewGDIPLUSObject( pClone, GP_IT_RECTF );
 
       hb_itemReturnRelease( pitem );
    
@@ -422,7 +423,8 @@ HB_FUNC( GPRECTFGETBOUNDS )
 
       ptr->GetBounds( &pClone );
 
-      pitem = GPNewRectFObject( pClone );
+//      pitem = GPNewRectFObject( pClone );
+      pitem = GPNewGDIPLUSObject( &pClone, GP_IT_RECTF );      
       
       if( !hb_itemParamStoreRelease( 2, pitem ))
         hb_itemRelease( pitem );
@@ -454,7 +456,7 @@ HB_FUNC( GPRECTFGETLOCATION )
       
       ptr->GetLocation( &pClone );
       
-      pitem = GPNewPointFObject( pClone );
+      pitem = GPNewGDIPLUSObject( &pClone, GP_IT_RECTF );
       
       if( !hb_itemParamStoreRelease( 2, pitem ))
         hb_itemRelease( pitem );
@@ -535,7 +537,8 @@ HB_FUNC( GPRECTFINTERSECT )
             
             lRet =  ptr->Intersect( out, *ptr2, *ptr3 );
              
-            pitem = GPNewRectFObject( out );
+            //pitem = GPNewRectFObject( out );
+            pitem = GPNewGDIPLUSObject( &out, GP_IT_RECTF );
                         
             if( !hb_itemParamStoreRelease( 2, pitem ))
               hb_itemRelease( pitem );
@@ -683,7 +686,8 @@ HB_FUNC( GPRECTFUNION )
       BOOL lRet;
       PHB_ITEM pitem;
       lRet = ptr1->Union( out, *ptr2, *ptr3 );
-      pitem = GPNewRectFObject( out );
+      //pitem = GPNewRectFObject( out );
+      pitem = GPNewGDIPLUSObject( &out, GP_IT_RECTF );
       if( !hb_itemParamStoreRelease( 2, pitem ))
         hb_itemRelease( pitem );
         

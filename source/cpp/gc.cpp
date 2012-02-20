@@ -14,6 +14,7 @@ static HB_GARBAGE_FUNC( GDI_GDIPLUS_release )
    {
       /* Destroy the object */
 //      delete (Graphics*) * ph;
+
       switch( GP_OBJECT_TYPE( ( GDIPLUS *)*ph ) ){
         case GP_IT_IMAGE:
            delete (Image *) (( GDIPLUS *)*ph )->pObject;
@@ -48,6 +49,9 @@ static HB_GARBAGE_FUNC( GDI_GDIPLUS_release )
         case GP_IT_GRAPHICS:
            delete (Graphics *) (( GDIPLUS *)*ph )->pObject;
            break;                                               
+        case GP_IT_MATRIX:
+           delete (Matrix *) (( GDIPLUS *)*ph )->pObject;
+           break;                                                          
       }
       hb_xfree( (void *) *ph );
 

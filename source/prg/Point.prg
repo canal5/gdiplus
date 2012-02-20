@@ -227,7 +227,8 @@ HB_FUNC( GPPOINTSUBSTRACT )
       Point * ptr1 = ( Point * ) GP_GET( p1 );
       Point * ptr2 = ( Point * ) GP_GET( p2 );
       Point point3 = *ptr1 - *ptr2;
-      pitem = GPNewPointObject( point3 );
+      
+      pitem = GPNewGDIPLUSObject( &point3, GP_IT_POINT );
       
       hb_itemReturnRelease( pitem );
               
@@ -245,7 +246,7 @@ HB_FUNC( GPPOINTADD )
       Point * ptr1 = ( Point * ) GP_GET( p1 );
       Point * ptr2 = ( Point * ) GP_GET( p2 );
       Point point3 = *ptr1 + *ptr2;
-      pitem = GPNewPointObject( point3 );
+      pitem = GPNewGDIPLUSObject( &point3, GP_IT_POINT );
       
       hb_itemReturnRelease( pitem );
               

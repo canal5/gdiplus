@@ -350,7 +350,7 @@ HB_FUNC( GPRECTCLONE )
       
       pClone = ptr->Clone();
       
-      pitem = GPNewRectObject( *pClone );
+      pitem = GPNewGDIPLUSObject( pClone, GP_IT_RECT );
 
       hb_itemReturnRelease( pitem );
    
@@ -419,7 +419,7 @@ HB_FUNC( GPRECTGETBOUNDS )
       
       ptr->GetBounds( &pClone );
       
-      pitem = GPNewRectObject( pClone );
+      pitem = GPNewGDIPLUSObject( &pClone, GP_IT_RECT );
       
       if( !hb_itemParamStoreRelease( 2, pitem ))
         hb_itemRelease( pitem );
@@ -451,7 +451,7 @@ HB_FUNC( GPRECTGETLOCATION )
       
       ptr->GetLocation( &pClone );
       
-      pitem = GPNewPointObject( pClone );
+      pitem = GPNewGDIPLUSObject( &pClone, GP_IT_RECT );
       
       if( !hb_itemParamStoreRelease( 2, pitem ))
         hb_itemRelease( pitem );
@@ -531,7 +531,7 @@ HB_FUNC( GPRECTINTERSECT )
             
             lRet =  ptr->Intersect( out, *ptr2, *ptr3 );
              
-            pitem = GPNewRectObject( out );
+            pitem = GPNewGDIPLUSObject( &out, GP_IT_RECT );
             
             if( !hb_itemParamStoreRelease( 2, pitem ))
               hb_itemRelease( pitem );
@@ -680,7 +680,7 @@ HB_FUNC( GPRECTUNION )
 
       lRet = ptr1->Union( out, *ptr2, *ptr3 );
       
-      pitem = GPNewRectObject( out );
+      pitem = GPNewGDIPLUSObject( &out, GP_IT_RECT );
       
       if( !hb_itemParamStoreRelease( 2, pitem ))
         hb_itemRelease( pitem );
