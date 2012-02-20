@@ -517,7 +517,7 @@ return 0
    if nLen == 5
       nStatus = GP_FillRectangle( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
    elseif nLen == 2
-      nStatus = GP_FillRectangleR( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ]:handle /*Rect(F)*/ )
+      nStatus = GP_FillRectangle( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ]:handle /*Rect(F)*/ )
    endif
    /*
   if oPen == nil
@@ -1497,20 +1497,55 @@ HB_FUNC( GP_FILLRECTANGLE )
 {
     GDIPLUS * pG = hb_GDIPLUS_par( 1 );
     GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
-    REAL x = ( REAL ) hb_parnd( 3 );
-    REAL y = ( REAL ) hb_parnd( 4 );
-    REAL width = ( REAL ) hb_parnd( 5 );
-    REAL height = ( REAL ) hb_parnd( 6 );
 
-    if( GP_IS_GRAPHICS( pG )  && GP_IS_BRUSH( pBrush ) )
-    {
+    if( hb_pcount() > 2 ){    
        Graphics *g = ( Graphics *) GP_GET( pG );
        Brush * brush = ( Brush *) GP_GET( pBrush );
-       hb_retni( g->FillRectangle( brush, x, y, width, height ) );
+       
+       if( HB_IS_DOUBLE( hb_param( 3, HB_IT_ANY ) ) ){       
+          REAL x = ( REAL ) hb_parnd( 3 );
+          REAL y = ( REAL ) hb_parnd( 4 );
+          REAL width = ( REAL ) hb_parnd( 5 );
+          REAL height = ( REAL ) hb_parnd( 6 );
+
+          if( GP_IS_GRAPHICS( pG ) && GP_IS_BRUSH( pBrush ) )
+          {
+             hb_retni( g->FillRectangle( brush, x, y, width, height ) );
+          }
+          else
+             hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+             
+         } else if( HB_IS_INTEGER( hb_param( 3, HB_IT_ANY ) ) ){
+           int x      = hb_parni( 3 );
+           int y      = hb_parni( 4 );
+           int width  = hb_parni( 5 );
+           int height = hb_parni( 6 );         	
+           if( GP_IS_GRAPHICS( pG )  && GP_IS_BRUSH( pBrush ) )
+           {
+              hb_retni( g->FillRectangle( brush, x, y, width, height ) );
+           }
+           else
+              hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );          	
+         } 
+   
+    }else if( hb_pcount() > 1 ) { 
+       GDIPLUS * pRect = hb_GDIPLUS_par( 3 );	  
+       Graphics *g = ( Graphics *) GP_GET( pG );
+       Brush * brush = ( Brush *) GP_GET( pBrush );       
+       
+       if( GP_IS_GRAPHICS( pG ) &&  GP_IS_RECT( pRect ) && GP_IS_BRUSH( pBrush ) ){
+       	   Rect * rect = ( Rect *) GP_GET( pRect );       	   
+           hb_retni( g->FillRectangle( brush, *rect ) );
+       }
+       else if( GP_IS_GRAPHICS( pG ) &&  GP_IS_RECTF( pRect ) && GP_IS_BRUSH( pBrush ) ){
+       	   RectF * rect = ( RectF * ) GP_GET( pRect );       	   
+           hb_retni( g->FillRectangle( brush, *rect ) );
+       }else
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
     }
-    else
-       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
+
 
 HB_FUNC( GP_FILLRECTANGLER )
 {

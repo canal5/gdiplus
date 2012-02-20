@@ -55,3 +55,46 @@ PHB_ITEM GPNewSolidBrushObject( SolidBrush& c ){
    
    return pitem;
 }  
+
+
+PHB_ITEM GPNewPointObject( Point& c ){
+  
+   PHB_ITEM pitem;
+   Point * h;
+   GDIPLUS * p = gdiplus_new( GP_IT_POINT ); 
+   PHB_ITEM pHandle = hb_itemNew( NULL );
+       
+   pitem = hb_itemDoC( "GPPOINT", 0 );
+   
+   h = new Point( c ); 
+   GP_SET( p, h );
+   
+   hb_itemPutPtr( pHandle, p );
+   
+   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   
+   hb_itemRelease( pHandle );
+   
+   return pitem;
+} 
+
+PHB_ITEM GPNewRectObject( Rect& c ){
+  
+   PHB_ITEM pitem;
+   Rect * h;
+   GDIPLUS * p = gdiplus_new( GP_IT_RECT ); 
+   PHB_ITEM pHandle = hb_itemNew( NULL );
+       
+   pitem = hb_itemDoC( "GPRECT", 0 );
+   
+   h = new Rect( c.X, c.Y, c.Width, c.Height ); 
+   GP_SET( p, h );
+   
+   hb_itemPutPtr( pHandle, p );
+   
+   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   
+   hb_itemRelease( pHandle );
+   
+   return pitem;
+} 

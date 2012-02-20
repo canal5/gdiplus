@@ -33,17 +33,21 @@ CLASS GPPointF
 
   METHOD X( nValue ) SETGET
   METHOD Y( nValue ) SETGET
+  METHOD Equals( p ) OPERATOR "=="
+  
+  METHOD Substract OPERATOR "-"
+  METHOD Add       OPERATOR "+"  
 
 //Constructor
-//PointF::PointF()
-//PointF::PointF(PointF&)
-//PointF::PointF(REAL,REAL)
-//PointF::PointF(SizeF&)
+//Point::Point()
+//Point::Point(Point&)
+//Point::Point(REAL,REAL)
+//Point::Point(Size&)
 
 
 //Equals
-//operator-(PointF&)
-//operator+(PointF&)
+//operator-(Point&)
+//operator+(Point&)
 
 
 ENDCLASS
@@ -59,11 +63,7 @@ local iParams := PCount()
         ::handle := _GPPointF()
         exit
      case 1
-        if p1:IsKindOf( "GPPOINTF" )
-           ::handle := _GPPointFFromPoint( p1 )
-        elseif p1:IsKindOf( "GPSIZEF" )
-           ::handle := _GPPointFFromSize( p1 )
-        endif
+        ::handle = _GPPointF( p1 )
         exit
      case 2
         ::handle := _GPPointF( p1, p2 )
@@ -100,6 +100,23 @@ endif
 
 return GPPointFY(::handle)
 
+*********************************************************************************************************
+  METHOD Substract( p ) CLASS GPPointF
+*********************************************************************************************************
+   
+return GPPointFSubstract( ::handle, p:handle )
+
+*********************************************************************************************************
+  METHOD Add( p ) CLASS GPPointF
+*********************************************************************************************************
+
+return GPPointFAdd( ::handle, p:handle )
+
+*********************************************************************************************************
+  METHOD Equals( p ) CLASS GPPointF
+*********************************************************************************************************
+
+return GPPointFEquals( ::handle, p:handle )
 
 
 //*********************************************************************************************************
@@ -111,23 +128,23 @@ return GPPointFY(::handle)
 
 //Constructors
 //
-//The PointF class has the following constructors.
+//The Point class has the following constructors.
 //
 //Constructor                             Description
-//PointF::PointF()                        Creates a PointF object and initializes the X and Y data members to zero. This is the default constructor.
-//PointF::PointF(PointF&)                 Creates a new PointF object and copies the data from another PointF object.
-//PointF::PointF(REAL,REAL)               Creates a PointF object using two real numbers to specify the X and Y data members.
-//PointF::PointF(SizeF&)                  Creates a PointF object using a SizeF object to specify the X and Y data members.
+//Point::Point()                        Creates a Point object and initializes the X and Y data members to zero. This is the default constructor.
+//Point::Point(Point&)                 Creates a new Point object and copies the data from another Point object.
+//Point::Point(REAL,REAL)               Creates a Point object using two real numbers to specify the X and Y data members.
+//Point::Point(Size&)                  Creates a Point object using a Size object to specify the X and Y data members.
 //
 //
 //Methods
 //
-//The PointF class has the following methods.
+//The Point class has the following methods.
 //
 //Method                                  Description
-//PointF::Equals                          The PointF::Equals method determines whether two PointF objects are equal. Two points are considered equal if they have the same X and Y data members.
-//PointF::operator-(PointF&)              The PointF::operator- method subtracts the X and Y data members of two PointF objects.
-//PointF::operator+(PointF&)              The PointF::operator+ method adds the X and Y data members of two PointF objects.
+//Point::Equals                          The Point::Equals method determines whether two Point objects are equal. Two points are considered equal if they have the same X and Y data members.
+//Point::operator-(Point&)              The Point::operator- method subtracts the X and Y data members of two Point objects.
+//Point::operator+(Point&)              The Point::operator+ method adds the X and Y data members of two Point objects.
 
 
 #pragma BEGINDUMP
@@ -136,79 +153,121 @@ return GPPointFY(::handle)
 
 HB_FUNC( _GPPOINTF )
 {
+   GDIPLUS * pObj = gdiplus_new( GP_IT_RECTF ); 	
    PointF* ptr;
    int iParams = hb_pcount();
 
-   if( iParams == 0 )
-       ptr = new PointF();
+   switch( iParams ){
+      case 0:	
+   	     ptr = new PointF();
+   	     break;
+   	  case 1:
+   	   {
+   	     GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   	     if( GP_IS_POINTF( p2 ) ){
+   	     	  PointF * point = ( PointF * ) GP_GET( p2 );
+   	        ptr =  new PointF( *point );	
+   	     } else if( GP_IS_SIZE( p2 ) ){
+   	     	  SizeF * size = ( SizeF * ) GP_GET( p2 );
+   	        ptr =  new PointF( *size );	   	     	
+   	     }
+   	     break;
+   	   }
+   	  case 2:
+   	     ptr = new PointF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd( 2 ) );
+   	     break;   	  
+   }
 
-   else if (iParams == 2 )
-       ptr = new PointF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd( 2 ) );
+   GP_SET( pObj, ptr );
 
-   hb_PointF_ret( ptr );
+   hb_GDIPLUS_ret( pObj );
 }
 
-HB_FUNC( _GPPOINTFFROMPOINT )
-{
-   PointF * ptr;
-   PointF * par_Point = hb_PointF_par( 1 );
-   PointF pf( par_Point->X, par_Point->Y );
-
-   ptr = new PointF( pf );
-
-   hb_PointF_ret( ptr );
-}
-
-HB_FUNC( _GPPOINTFFROMSIZE )
-{
-   PointF * ptr;
-   SizeF * par_Size = hb_SizeF_par( 1 );
-   SizeF sz( par_Size->Width, par_Size->Height );
-
-   ptr = new PointF( sz );
-
-   hb_PointF_ret( ptr );
-}
 
 HB_FUNC( GPPOINTFX )
 {
-   PointF * ptr = hb_PointF_par( 1 );
-
-   if( hb_pcount() > 1 )
-   {
-      ptr->X = (REAL) hb_parnd( 2 );
-   }
-
-   hb_retni( ptr->X );
+	
+	 GDIPLUS * p = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_POINTF( p ) ){
+      Point * ptr = ( Point * ) GP_GET( p );
+      
+      if( hb_pcount() > 1 )
+	       ptr->X = (REAL) hb_parnd( 2 );
+	       
+	    hb_retnd( ( double ) ptr->X );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
 }
 
 HB_FUNC( GPPOINTFY )
 {
-   PointF * ptr = hb_PointF_par( 1 );
+	
+	 GDIPLUS * p = hb_GDIPLUS_par( 1 );
+	 if( GP_IS_POINTF( p ) ){
+      Point * ptr = ( Point * ) GP_GET( p );
 
-   if( hb_pcount() > 1 )
-   {
-      ptr->Y = (REAL) hb_parnd( 2 );
-   }
+      if( hb_pcount() > 1 )
+	       ptr->Y = (REAL) hb_parnd( 2 );
 
-   hb_retni( ptr->Y );
+	     hb_retnd( ( double ) ptr->Y );
+	 }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-
-
-
-
-HB_FUNC( DELETEPOINTF )
-{
-   //PointF* clr = (PointF*) hb_parptr( 1 );
-   //delete (PointF*) clr;
-   //hb_ret();
+HB_FUNC( GPPOINTFSUBSTRACT )
+{	
+	 GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
+	 GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+	 
+	 if( GP_IS_POINTF( p1 ) && GP_IS_POINTF( p2 ) ){
+	 	  PHB_ITEM pitem;
+      Point * ptr1 = ( Point * ) GP_GET( p1 );
+      Point * ptr2 = ( Point * ) GP_GET( p2 );
+      Point point3 = *ptr1 - *ptr2;
+      pitem = GPNewPointObject( point3 );
+      
+      if( !hb_itemParamStoreRelease( 2, pitem ))
+        hb_itemRelease( pitem );
+              
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-//HB_FUNC( GPPOINTF... )
-//{
-//   PointF* ptr = (PointF*) hb_parptr( 1 );
-//}
+HB_FUNC( GPPOINTFADD )
+{	
+	 GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
+	 GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+	 
+	 if( GP_IS_POINTF( p1 ) && GP_IS_POINTF( p2 ) ){
+	 	  PHB_ITEM pitem;
+      Point * ptr1 = ( Point * ) GP_GET( p1 );
+      Point * ptr2 = ( Point * ) GP_GET( p2 );
+      Point point3 = *ptr1 + *ptr2;
+      pitem = GPNewPointObject( point3 );
+      
+      if( !hb_itemParamStoreRelease( 2, pitem ))
+        hb_itemRelease( pitem );
+              
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+HB_FUNC( GPPOINTFEQUALS )
+{	
+	 GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
+	 GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+	 
+	 if( GP_IS_POINTF( p1 ) && GP_IS_POINTF( p2 ) ){
+	 	  PHB_ITEM pitem;
+      Point * ptr1 = ( Point * ) GP_GET( p1 );
+      Point * ptr2 = ( Point * ) GP_GET( p2 );
+      
+      hb_retl( ptr1->Equals( *ptr2 ) ); 
+                     
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
 
 #pragma ENDDUMP
 
