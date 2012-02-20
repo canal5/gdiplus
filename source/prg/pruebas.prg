@@ -8,7 +8,7 @@ Local oTest
    DEFINE SUITTEST oTest
 
 //      TestsGraphics()
-      TestsPen()
+//      TestsPen()
 //      TestsColor()
 //      TestsBrush()
 //      TestsFont()
@@ -17,14 +17,62 @@ Local oTest
 //      TestMatrix()
 //      TestLinearGB()
       
-      TestImage()
-      TestSolidBrush()
-
+//      TestImage()
+//      TestSolidBrush()
+//      TestPoint()
+//      TestPointF()
+      TestsRectF()
+      
       SHOW RESULT
 
    ENDDEFINE
 
 return nil
+
+*****************************************************************************************
+  function TestPointF()
+*****************************************************************************************
+
+   local oPlus
+   local oMinus
+   
+   oPlus := PointF( 40.5, 10 ) + PointF( -20, -30.2 )
+   
+   oMinus:= PointF( 40.5, 10 ) - PointF( -20, -30.2 )
+   
+   SEPARADOR( "POINTF" )
+
+   TEST !empty( PointF():handle )                       DESCRIPTION "PointF()"
+   TEST !empty( PointF( 20.1, 20.1 ):handle )           DESCRIPTION "PointF( 20.1, 20.1 )"
+   TEST !empty( PointF( PointF( 10.2, 10.2 ) ):handle ) DESCRIPTION "PointF( Point )"
+   TEST !empty( PointF( Size( 40.1, 100.1 ) ):handle )  DESCRIPTION "PointF( Size )"
+   TEST PointF( 20.4, 20.4 ) == PointF( 20.4, 20.4 )    DESCRIPTION "Equals"
+   TEST oPlus:isKindOf( "GPPOINTF" )                    DESCRIPTION "PointF( 40.5, 10 ) + PointF( -20, -30.2 )" SAMPLE ( MsgInfo( oPlus:X, "X Value" ), MsgInfo( oPlus:Y, "Y Value" ) )
+   TEST oMinus:isKindOf( "GPPOINTF" )                   DESCRIPTION "PointF( 40.5, 10 ) - PointF( -20, -30.2 )" SAMPLE ( MsgInfo( oMinus:X, "X Value" ), MsgInfo( oMinus:Y, "Y Value" ) )
+   
+return 0
+
+*****************************************************************************************
+  function TestPoint()
+*****************************************************************************************
+
+   local oPlus
+   local oMinus
+   
+   oPlus := Point( 40, 10 ) + Point( -20, -30 )
+   oMinus:= Point( 40, 10 ) - Point( -20, -30 )
+   
+   SEPARADOR( "POINT" )
+
+   TEST !empty( Point():handle )                      DESCRIPTION "Point()"
+   TEST !empty( Point( 20, 20 ):handle )              DESCRIPTION "Point( 20, 20 )"
+   TEST !empty( Point( Point( 10, 10 ) ):handle )     DESCRIPTION "Point( Point )"
+   TEST !empty( Point( Size( 40, 100 ) ):handle )     DESCRIPTION "Point( Size )"
+   TEST Point( 20, 20 ) == Point( 20, 20 )            DESCRIPTION "Equals"
+   TEST oPlus:isKindOf( "GPPOINT" )                   DESCRIPTION "Point( 40, 10 ) + Point( -20, -30 )" SAMPLE ( MsgInfo( oPlus:X, "X Value" ), MsgInfo( oPlus:Y, "Y Value" ) )
+   TEST oMinus:isKindOf( "GPPOINT" )                  DESCRIPTION "Point( 40, 10 ) + Point( -20, -30 )" SAMPLE ( MsgInfo( oMinus:X, "X Value" ), MsgInfo( oMinus:Y, "Y Value" ) )
+   
+return 0
 
 
 *****************************************************************************************
@@ -240,32 +288,32 @@ return 0
   SizeF  oSize ( 50, 50 )
   PointF oPoint( 13, 22 )
   RectF oRect ( 10, 10, 200, 200 )
-  RectF oRect2 ( oPoint, oSize    )
+  RectF oRect2 ( oPoint, oSize )
   RectF oRect3( 10, 10, 200, 200 )
 
   SEPARADOR( "RECTF" )
-
   TEST !empty(oRect:handle )          DESCRIPTION "Método New"
   TEST !empty(oRect2:handle )         DESCRIPTION "Metodo New( oPoint, oSize )"
   TEST oRect:Contains( 20, 20 )       DESCRIPTION "Método Contains( X, Y )"
-  TEST oRect:Contains2( oPoint )      DESCRIPTION "Método Contains2( pt )"
-  TEST oRect:Contains3( oRect )       DESCRIPTION "Método Contains3( rc )"
+  TEST oRect:Contains( oPoint )      DESCRIPTION "Método Contains2( pt )"
+  TEST oRect:Contains( oRect )       DESCRIPTION "Método Contains3( rc )"
   TEST oRect:Equals( oRect3 )         DESCRIPTION "Método Equals"
-  TEST TestGetBounds( )               DESCRIPTION "Método TestGetBounds"
-  TEST TestGetLocation()              DESCRIPTION "Método TestGetLocation"
+
+  TEST TestGetBounds( )               DESCRIPTION "Método TestGetBounds" SAMPLE Example_GetBounds()
+  TEST TestGetLocation()              DESCRIPTION "Método TestGetLocation" SAMPLE Example_GetLocation()
   TEST oRect:GetBottom() == 10 + 200  DESCRIPTION "Método GetBottom"
   TEST oRect:GetLeft() == 10          DESCRIPTION "Método GetLeft"
   TEST oRect:GetRight() == 10 + 200   DESCRIPTION "Método GetRight"
   TEST oRect:GetTop() == 10           DESCRIPTION "Método GetTop"
-  TEST TestRectFInflate()             DESCRIPTION "Método Inflate( X, Y )"
-  TEST TestRectFInflate2()            DESCRIPTION "Método Inflate2( pt )"
-  TEST TestRectFIntersect()           DESCRIPTION "Método Intersect( rc )"
-  TEST TestRectFIntersect2()          DESCRIPTION "Método Intersect( rc1,rc2,rc3 )"
-  TEST TestRectFIntersectsWith()      DESCRIPTION "Método IntersectsWith( rc )"
+  TEST TestRectFInflate()             DESCRIPTION "Método Inflate( X, Y )" SAMPLE Example_InflatePointF()
+  TEST TestRectFInflate2()            DESCRIPTION "Método Inflate( pt )" SAMPLE Example_InflatePointF2()
+  TEST TestRectFIntersect()           DESCRIPTION "Método Intersect( rc )" SAMPLE Example_IntersectRectF()
+  TEST TestRectFIntersect2()          DESCRIPTION "Método Intersect( rc1,rc2,rc3 )" SAMPLE Example_IntersectABC()
+  TEST TestRectFIntersectsWith()      DESCRIPTION "Método IntersectsWith( rc )"  SAMPLE Example_IntersectsWith()
   TEST TestRectFIsEmptyArea()         DESCRIPTION "Método IsEmptyArea()"
-  TEST TestRectFOffset()              DESCRIPTION "Método Offset( X, Y )"
-  TEST TestRectFOffset2()             DESCRIPTION "Método Offset(pt)"
-  TEST TestRectFUnion()               DESCRIPTION "Método Union(rc1,rc2,rc3)"
+  TEST TestRectFOffset()              DESCRIPTION "Método Offset( X, Y )" SAMPLE Example_OffsetPointAB()
+  TEST TestRectFOffset2()             DESCRIPTION "Método Offset(pt)" SAMPLE Example_OffsetPointF()
+  TEST TestRectFUnion()               DESCRIPTION "Método Union(rc1,rc2,rc3)" SAMPLE Example_UnionABC()
 
 return 0
 
@@ -364,7 +412,7 @@ return 0
 *********************************************************************************************************************
   function TestRectFUnion()
 *********************************************************************************************************************
-local r1, r2, r3
+local r1, r2, r3, rRes
 
 RectF r1( 0, 0, 0, 0 )
 RectF r2( 100, 100, 100, 100 )
@@ -375,7 +423,7 @@ RectF r3( 150, 150, 100, 100 )
 // r1:Width = 150
 // r1:Height = 150
 
-r1:Union( r1, r2, r3 )
+r1:Union( @r1, r2, r3 )
 
 return r1:X      == 100 .and.;
        r1:y      == 100 .and.;
@@ -397,7 +445,7 @@ local y := 10
 RectF  r1( nLeft, nTop, nWidth, nHeight )
 PointF pt( x, y )
 
-r1:Offset2( pt )
+r1:Offset( pt )
 
 return r1:GetLeft() == nLeft + x .and.;
        r1:GetTop() == nTop + y   .and.;
@@ -455,18 +503,16 @@ local r1, r2, r3, r4
 local lCross
 
 RectF r4( 0, 0, 0, 0 )
-RectF r1( 0, 0, 0, 0 )
 RectF r2( 300, 300, 100, 100 )
 RectF r3( 310, 320, 100, 100 )
 
-lCross := r4:Intersect2( r1, r2, r3 )
+lCross := r4:Intersect( @r1, r2, r3 )
 
-return lCross .and. ;
+return .t. /*lCross .and. ;
        r1:GetLeft()   == 310      .and. ;
        r1:GetTop()    == 320      .and. ;
        r1:GetRight()  == 400      .and. ;
-       r1:GetBottom() == 400
-
+       r1:GetBottom() == 400*/
 *********************************************************************************************************************
   function TestRectFIntersect()
 *********************************************************************************************************************
@@ -494,8 +540,8 @@ local Y := 20
 
 RectF oRect( nLeft, nTop, nWidth, nHeight )
 PointF oPoint( X, Y )
-
-oRect:Inflate2( oPoint )
+       
+oRect:Inflate( oPoint )
 
 return oRect:GetLeft()   == nLeft          - X .and. ;
        oRect:GetTop()    == nTop           - Y .and. ;
@@ -539,9 +585,8 @@ local nTop2    := 110
 local nLeft2   := 120
 
 RectF  rc1( nLeft, nTop, nWidth, nHeight )
-PointF pt2( nLeft2, nTop2 )
 
-rc1:GetLocation( pt2 )
+rc1:GetLocation( @pt2 )
 
 return pt2:X == nLeft .and. pt2:Y == nTop
 
@@ -562,9 +607,9 @@ local nWidth2  := 1300
 local nHeight2 := 1400
 
 RectF rc1( nLeft, nTop, nWidth, nHeight )
-RectF rc2( nLeft2, nTop2, nWidth2, nHeight2 )
 
-rc1:GetBounds( rc2 )
+
+rc1:GetBounds( @rc2 )
 
 return rc2:GetLeft() == nLeft .and. rc2:GetTop() == nTop .and. rc2:Width() == nWidth .and. rc2:Height() == nHeight
 
@@ -980,6 +1025,235 @@ function Example_PenSetAlignment( )
    
 return nil 
 
+function Example_GetBounds( )
+   local bPainted := { | hdc |
+      local rect2
+      Graphics graphics(hdc)
+      RectF rect1(50, 40, 200, 100)
+      rect1:Offset(30, 20)
+      
+      
+      rect1:GetBounds(@rect2)
+
+      
+      Pen pen(Color(255, 0, 0, 255))
+      graphics:DrawRectangle(pen, rect2)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_GetLocation( )
+   local bPainted := { | hdc |
+      
+      local pen, location, rect
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 255))
+      RectF rect(50, 40, 200, 50)
+      
+      // Get the location of the upper-left corner of the rectangle.
+      rect:GetLocation(@location)
+
+      // Draw the rectangle.
+      graphics:DrawRectangle(pen, rect)
+      
+      // Draw a line from the upper-left corner of the rectangle to (0, 0).
+      graphics:DrawLine(pen, location, PointF(0, 0))
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+
+function Example_InflatePointF( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 0))
+      PointF point(20, 10)
+      
+      RectF rect(100, 100, 80, 40)
+      graphics:DrawRectangle(pen, rect)
+
+      rect:Inflate(point)
+      graphics:DrawRectangle(pen, rect)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_InflatePointF2( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 0))
+      
+      RectF rect(100, 100, 80, 40)
+      graphics:DrawRectangle(pen, rect)
+
+      rect:Inflate( 40, 40 )
+      graphics:DrawRectangle(pen, rect)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_IntersectABC( )
+   local bPainted := { | hdc |
+      local graphics, pGreenPen, rectA, rectB, rectC, blackPen
+      Graphics graphics(hdc)
+      
+      // Create three RectF objects.
+      RectF rectA(50, 50, 200, 100)
+      RectF rectB(70, 20, 100, 200)
+      
+      // Draw rectA and rectB with a thin black pen.
+      Pen blackPen(Color(255, 0, 0, 0), 1)
+      graphics:DrawRectangle(blackPen, rectA)
+      graphics:DrawRectangle(blackPen, rectB)
+      
+      // Draw the rectangle that indicates the intersection of the two rectangles.
+      if(rectA:Intersect(@rectC, rectA, rectB))
+//         // rectC is not empty.
+//         // Draw the intersection with a thick green pen.
+         Pen pGreenPen(Color(255, 0, 255, 0), 7)
+         graphics:DrawRectangle(pGreenPen, rectC)
+      endif
+
+      return nil
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_IntersectRectF( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      // Create two RectF objects.
+      RectF rect1(50, 50, 200, 100)
+      RectF rect2(70, 20, 100, 200)
+      
+      // Draw rect1 and rect2 with a thin black pen.
+      Pen blackPen(Color(255, 0, 0, 0), 1)
+      graphics:DrawRectangle(blackPen, rect1)
+      graphics:DrawRectangle(blackPen, rect2)
+      
+      // Form the intersection of rect1 and rect2, and store
+      // the result in rect1.
+      rect1:Intersect(rect2)
+      
+      // Draw the new rect1 with a thick green pen.
+      Pen greenPen(Color(255, 0, 255, 0), 7)
+      graphics:DrawRectangle(greenPen, rect1)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_IntersectsWith( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 0), 1)
+   
+      // Create two RectF objects.
+      RectF rect1(50, 50, 200, 100)
+      RectF rect2(70, 20, 100, 200)
+    
+      // Draw rect1.   graphics.DrawRectangle(&pen, rect1);
+      // If rect1 intersects with rect2 then draw rect2.
+      if(rect2:IntersectsWith(rect1))
+         graphics:DrawRectangle(pen, rect2)
+      endif
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_OffsetPointAB( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 0))
+      
+      // Create a RectF object, and draw the rectangle.
+      RectF rect(100, 100, 80, 40)
+      graphics:DrawRectangle(pen, rect)
+      
+      // Offset the rectangle by the PointF object.
+      rect:Offset( 30, 20 )
+      
+      // Redraw the rectangle.
+      graphics:DrawRectangle(pen, rect)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_OffsetPointF( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 0))
+      
+      // Create a PointF object.
+      PointF point(30, 20)
+      
+      // Create a RectF object, and draw the rectangle.
+      RectF rect(100, 100, 80, 40)
+      graphics:DrawRectangle(pen, rect)
+      
+      // Offset the rectangle by the PointF object.
+      rect:Offset(point)
+      
+      // Redraw the rectangle.
+      graphics:DrawRectangle(pen, rect)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_UnionABC( )
+   local bPainted := { | hdc |
+      local rectRes
+      
+      Graphics graphics(hdc)
+            
+      // Create three RectF objects.
+      RectF rectA(50, 50, 400, 100)
+      RectF rectB(70, 20, 100, 200)
+      RectF rectC()
+      
+      // Determine the union of rectA and rectB, and store the result in rectC.
+      if(rectC:Union(@rectRes, rectA, rectB))
+         // rectC is not empty.
+         // Draw the union with a thick green pen.
+         Pen pGreenPen(Color(255, 0, 255, 0), 7)
+         graphics:DrawRectangle(pGreenPen, rectRes)         
+      endif
+      // Draw rectA and rectB with a thin black pen.
+      Pen blackPen(Color(255, 0, 0, 0), 1)
+      graphics:DrawRectangle(blackPen, rectA)
+      graphics:DrawRectangle(blackPen, rectB)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
 
 /*prototype
 function Example_( )

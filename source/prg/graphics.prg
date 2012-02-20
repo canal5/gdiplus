@@ -835,8 +835,15 @@ return 0
 **********************************************************************************************************
 
   DEFAULT oPen := ::oPen
+  
+  if ValType( x ) == "O"
+     return GP_DrawRectangle( ::handle, oPen:handle, x:handle )
+     
+  else
+     return GP_DrawRectangle( ::handle, oPen:handle, x, y, width, height )
+  endif
 
-return GP_DrawRectangle( ::handle, oPen:handle, x, y, width, height )
+return 0
 
 **********************************************************************************************************
   METHOD DrawRectangles( ) CLASS GPGraphics
@@ -899,8 +906,15 @@ return 0
 **********************************************************************************************************
 
    DEFAULT oPen := ::oPen
+   
+   if ValType( nTop ) == "O"
+      return GP_DrawLine( ::handle, oPen:handle, nTop:handle, nLeft:handle )
+   else 
+      return GP_DrawLine( ::handle, oPen:handle, nTop, nLeft, nBottom, nRight )
+   endif
+   
 
-return GP_DrawLine( ::handle, oPen:handle, nTop, nLeft, nBottom, nRight )
+return 0
 
 
 **********************************************************************************************************
@@ -1315,13 +1329,30 @@ HB_FUNC( GP_DRAWIMAGE )
 HB_FUNC( GP_DRAWLINE )
 {
    GDIPLUS *p = hb_GDIPLUS_par( 1 );
-
    GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
-   if(GP_IS_GRAPHICS( p )  && GP_IS_PEN( pObj ) && hb_pcount() > 5 )
+   
+   if(GP_IS_GRAPHICS( p )  && GP_IS_PEN( pObj ) )
    {
       Graphics *g = ( Graphics * ) GP_GET( p ) ;
       Pen* p = (Pen*) GP_GET( pObj );
-      hb_retni( g->DrawLine( p, hb_parni(4), hb_parni(3), hb_parni(6), hb_parni(5) ) );
+      if( hb_pcount() > 4 ){
+         if( HB_IS_DOUBLE( hb_param( 3, HB_IT_ANY ) ) )
+            hb_retni( g->DrawLine( p, ( REAL ) hb_parnd(4), ( REAL ) hb_parnd(3), ( REAL ) hb_parnd(6), ( REAL ) hb_parnd(5) ) );
+         else
+            hb_retni( g->DrawLine( p, hb_parni(4), hb_parni(3), hb_parni(6), hb_parni(5) ) );
+      }else if( hb_pcount() < 5 ){
+      	 GDIPLUS * pPoint1 = hb_GDIPLUS_par( 3 );
+      	 GDIPLUS * pPoint2 = hb_GDIPLUS_par( 4 );
+         if( GP_IS_POINTF( pPoint1 ) && GP_IS_POINTF( pPoint2 ) ){
+         	  PointF * point1 = ( PointF * ) GP_GET( pPoint1 );
+         	  PointF * point2 = ( PointF * ) GP_GET( pPoint2 );
+            hb_retni( g->DrawLine( p, *point1, *point2 ) );            
+         }else if( GP_IS_POINT( pPoint1 ) && GP_IS_POINT( pPoint2 ) ){
+         	  Point * point1 = ( Point * ) GP_GET( pPoint1 );
+         	  Point * point2 = ( Point * ) GP_GET( pPoint2 );
+            hb_retni( g->DrawLine( p, *point1, *point2 ) );                     	
+         }      	
+      }      
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -1395,20 +1426,33 @@ HB_FUNC( GP_DRAWRECTANGLE )
 {
     GDIPLUS * pG = hb_GDIPLUS_par( 1 ); 
     GDIPLUS * pP = hb_GDIPLUS_par( 2 );
-  
     if( GP_IS_PEN( pP ) && GP_IS_GRAPHICS( pG ) ){
 
        Graphics *g = ( Graphics * ) GP_GET( pG );
        Pen* p = (Pen*) GP_GET( pP );
-       if( hb_pcount() > 2 ){
+       if( hb_pcount() > 3 ){
           if( hb_itemType( hb_param( 3, HB_IT_ANY ) ) == HB_IT_DOUBLE ){
              RectF rect = RectF( ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ) );    
-             g->DrawRectangle(p, rect );
+             hb_retni( g->DrawRectangle(p, rect ) );
           }else if( hb_itemType( hb_param( 3, HB_IT_ANY ) ) == HB_IT_INTEGER  ){
              Rect rect = Rect( hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ) );    
-             g->DrawRectangle(p, rect );
-          }
-        }//else TODO WITH RECT PARAMETER
+             hb_retni( g->DrawRectangle(p, rect ) );
+          }else
+        	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          
+        }else {
+
+        	GDIPLUS * pR = hb_GDIPLUS_par( 3 );
+
+        	if( GP_IS_RECTF( pR ) ){
+        	   RectF * rect = ( RectF * ) GP_GET( pR );
+        	   hb_retni( g->DrawRectangle(p, *rect ) );
+        	}else if( GP_IS_RECT( pR ) ){
+        	   Rect * rect = ( Rect * ) GP_GET( pR );
+        	   hb_retni( g->DrawRectangle(p, *rect ) );        		
+        	}else
+        	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+        }        
     }       
     else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );

@@ -2,6 +2,7 @@ typedef struct __gdiplus
 {
   void * pObject;
   int type;
+  char Cargo[ 20 ];
 } GDIPLUS, * PGDIPLUS, *PTR_GDIPLUS;
 
 
@@ -22,7 +23,7 @@ typedef struct __gdiplus
 #define GP_IT_POINT      ( ( int ) 0x00008 )
 #define GP_IT_POINTF     ( ( int ) 0x00009 )
 #define GP_IT_SIZE       ( ( int ) 0x0000A )
-#define GP_IT_SIZEF       ( ( int ) 0x0000B )
+#define GP_IT_SIZEF      ( ( int ) 0x0000B )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )

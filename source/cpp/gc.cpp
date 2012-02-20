@@ -18,6 +18,36 @@ static HB_GARBAGE_FUNC( GDI_GDIPLUS_release )
         case GP_IT_IMAGE:
            delete (Image *) (( GDIPLUS *)*ph )->pObject;
            break;
+        case GP_IT_POINTF:
+           delete (PointF *) (( GDIPLUS *)*ph )->pObject;
+           break;           
+        case GP_IT_POINT:
+           delete (Point *) (( GDIPLUS *)*ph )->pObject;
+           break;       
+        case GP_IT_SIZEF:
+           delete (SizeF *) (( GDIPLUS *)*ph )->pObject;
+           break;                                     
+        case GP_IT_SIZE:
+           delete (Size *) (( GDIPLUS *)*ph )->pObject;
+           break;                                                
+        case GP_IT_RECT:
+           delete (Rect *) (( GDIPLUS *)*ph )->pObject;
+           break;                                                           
+        case GP_IT_RECTF:
+           delete (RectF *) (( GDIPLUS *)*ph )->pObject;
+           break;                                                                      
+        case GP_IT_SOLIDBRUSH:
+           delete (SolidBrush *) (( GDIPLUS *)*ph )->pObject;
+           break;           
+        case GP_IT_COLOR:
+           delete (Color *) (( GDIPLUS *)*ph )->pObject;
+           break;        
+        case GP_IT_PEN:
+           delete (Pen *) (( GDIPLUS *)*ph )->pObject;
+           break;                                    
+        case GP_IT_GRAPHICS:
+           delete (Graphics *) (( GDIPLUS *)*ph )->pObject;
+           break;                                               
       }
       hb_xfree( (void *) *ph );
 

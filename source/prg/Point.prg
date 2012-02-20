@@ -33,7 +33,8 @@ CLASS GPPoint
 
   METHOD X( nValue ) SETGET
   METHOD Y( nValue ) SETGET
-  METHOD Equals( p ) OPERATOR "=="
+  METHOD Equals2( p ) OPERATOR "=="
+  METHOD Equals( p ) INLINE Self == p
   
   METHOD Substract OPERATOR "-"
   METHOD Add       OPERATOR "+"  
@@ -63,7 +64,7 @@ local iParams := PCount()
         ::handle := _GPPoint()
         exit
      case 1
-        ::handle = _GPPoint( p1 )
+        ::handle = _GPPoint( p1:handle )
         exit
      case 2
         ::handle := _GPPoint( p1, p2 )
@@ -113,7 +114,7 @@ return GPPointSubstract( ::handle, p:handle )
 return GPPointAdd( ::handle, p:handle )
 
 *********************************************************************************************************
-  METHOD Equals( p ) CLASS GPPoint
+  METHOD Equals2( p ) CLASS GPPoint
 *********************************************************************************************************
 
 return GPPointEquals( ::handle, p:handle )
@@ -163,7 +164,7 @@ HB_FUNC( _GPPOINT )
          break;
       case 1:
        {
-         GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+         GDIPLUS * p2 = hb_GDIPLUS_par( 1 );
          if( GP_IS_POINT( p2 ) ){
             Point * point = ( Point * ) GP_GET( p2 );
             ptr =  new Point( *point ); 

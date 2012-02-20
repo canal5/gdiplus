@@ -13,7 +13,7 @@ HB_FUNC( GETGDIPLUSHANDLE )
 
 PHB_ITEM GPNewColorObject( Color& c ){
   
-   PHB_ITEM pitem;
+   PHB_ITEM pitem, pObj;
    Color * h;
    GDIPLUS * p = gdiplus_new( GP_IT_COLOR ); 
    PHB_ITEM pHandle = hb_itemNew( NULL );
@@ -25,8 +25,9 @@ PHB_ITEM GPNewColorObject( Color& c ){
    
    hb_itemPutPtr( pHandle, p );
    
-   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   pObj = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
    
+   hb_itemRelease( pObj );
    hb_itemRelease( pHandle );
    
    return pitem;
@@ -34,7 +35,7 @@ PHB_ITEM GPNewColorObject( Color& c ){
 
 PHB_ITEM GPNewSolidBrushObject( SolidBrush& c ){
   
-   PHB_ITEM pitem;
+   PHB_ITEM pitem, pObj;
    SolidBrush * h;
    Color hc;
    GDIPLUS * p = gdiplus_new( GP_IT_SOLIDBRUSH ); 
@@ -49,8 +50,9 @@ PHB_ITEM GPNewSolidBrushObject( SolidBrush& c ){
    
    hb_itemPutPtr( pHandle, p );
    
-   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   pObj = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
    
+   hb_itemRelease( pObj );
    hb_itemRelease( pHandle );
    
    return pitem;
@@ -59,7 +61,7 @@ PHB_ITEM GPNewSolidBrushObject( SolidBrush& c ){
 
 PHB_ITEM GPNewPointObject( Point& c ){
   
-   PHB_ITEM pitem;
+   PHB_ITEM pitem, pObj;
    Point * h;
    GDIPLUS * p = gdiplus_new( GP_IT_POINT ); 
    PHB_ITEM pHandle = hb_itemNew( NULL );
@@ -71,8 +73,9 @@ PHB_ITEM GPNewPointObject( Point& c ){
    
    hb_itemPutPtr( pHandle, p );
    
-   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   pObj = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
    
+   hb_itemRelease( pObj );
    hb_itemRelease( pHandle );
    
    return pitem;
@@ -80,9 +83,9 @@ PHB_ITEM GPNewPointObject( Point& c ){
 
 PHB_ITEM GPNewPointFObject( PointF& c ){
   
-   PHB_ITEM pitem;
+   PHB_ITEM pitem, pObj;
    PointF * h;
-   GDIPLUS * p = gdiplus_new( GP_IT_POINT ); 
+   GDIPLUS * p = gdiplus_new( GP_IT_POINTF ); 
    PHB_ITEM pHandle = hb_itemNew( NULL );
        
    pitem = hb_itemDoC( "GPPOINTF", 0 );
@@ -92,8 +95,9 @@ PHB_ITEM GPNewPointFObject( PointF& c ){
    
    hb_itemPutPtr( pHandle, p );
    
-   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   pObj = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
    
+   hb_itemRelease( pObj );
    hb_itemRelease( pHandle );
    
    return pitem;
@@ -101,7 +105,7 @@ PHB_ITEM GPNewPointFObject( PointF& c ){
 
 PHB_ITEM GPNewRectObject( Rect& c ){
   
-   PHB_ITEM pitem;
+   PHB_ITEM pitem, pObj;
    Rect * h;
    GDIPLUS * p = gdiplus_new( GP_IT_RECT ); 
    PHB_ITEM pHandle = hb_itemNew( NULL );
@@ -113,8 +117,9 @@ PHB_ITEM GPNewRectObject( Rect& c ){
    
    hb_itemPutPtr( pHandle, p );
    
-   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   pObj = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
    
+   hb_itemRelease( pObj );
    hb_itemRelease( pHandle );
    
    return pitem;
@@ -122,7 +127,7 @@ PHB_ITEM GPNewRectObject( Rect& c ){
 
 PHB_ITEM GPNewRectFObject( RectF& c ){
   
-   PHB_ITEM pitem;
+   PHB_ITEM pitem, pObj;
    RectF * h;
    GDIPLUS * p = gdiplus_new( GP_IT_RECTF ); 
    PHB_ITEM pHandle = hb_itemNew( NULL );
@@ -130,12 +135,13 @@ PHB_ITEM GPNewRectFObject( RectF& c ){
    pitem = hb_itemDoC( "GPRECTF", 0 );
    
    h = new RectF( c.X, c.Y, c.Width, c.Height ); 
+   strcpy( p->Cargo, "esta" );
    GP_SET( p, h );
-   
    hb_itemPutPtr( pHandle, p );
    
-   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   pObj = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
    
+   hb_itemRelease( pObj );
    hb_itemRelease( pHandle );
    
    return pitem;
@@ -143,7 +149,7 @@ PHB_ITEM GPNewRectFObject( RectF& c ){
 
 PHB_ITEM GPNewSizeObject( Size& c ){
   
-   PHB_ITEM pitem;
+   PHB_ITEM pitem, pObj;
    Size * h;
    GDIPLUS * p = gdiplus_new( GP_IT_SIZE ); 
    PHB_ITEM pHandle = hb_itemNew( NULL );
@@ -155,8 +161,9 @@ PHB_ITEM GPNewSizeObject( Size& c ){
    
    hb_itemPutPtr( pHandle, p );
    
-   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   pObj = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
    
+   hb_itemRelease( pObj );
    hb_itemRelease( pHandle );
    
    return pitem;
@@ -164,7 +171,7 @@ PHB_ITEM GPNewSizeObject( Size& c ){
 
 PHB_ITEM GPNewSizeFObject( SizeF& c ){
   
-   PHB_ITEM pitem;
+   PHB_ITEM pitem, pObj;
    SizeF * h;
    GDIPLUS * p = gdiplus_new( GP_IT_SIZE ); 
    PHB_ITEM pHandle = hb_itemNew( NULL );
@@ -176,8 +183,9 @@ PHB_ITEM GPNewSizeFObject( SizeF& c ){
    
    hb_itemPutPtr( pHandle, p );
    
-   pitem = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
+   pObj = hb_itemDoC( "_GPCONVERTHANDLE", 2, pitem, pHandle );
    
+   hb_itemRelease( pObj );
    hb_itemRelease( pHandle );
    
    return pitem;

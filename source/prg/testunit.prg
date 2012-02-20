@@ -89,7 +89,7 @@ Local bErr := ErrorBlock( { |oError| ::OnError( oError ) } )
 
 DEFAULT cDescription := ""
 
-BEGIN SEQUENCE
+//BEGIN SEQUENCE
 
 result->(DbAppend())
 
@@ -119,12 +119,12 @@ else
 endif
 
 
-
-RECOVER USING oValor
-
-  ErrorBlock( bErr )
-
-END SEQUENCE
+//
+//RECOVER USING oValor
+//
+//  ErrorBlock( bErr )
+//
+//END SEQUENCE
 
 
 return nil

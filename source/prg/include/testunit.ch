@@ -6,7 +6,7 @@
           [ DESCRIPTION <cDescription> ] ;
           [ SAMPLE <uDisplay> ];
        => ;
-          ThisTest():Assert( ProcName(), ProcLine(), <(uAction)>, {|This|<uAction>}, <cDescription>, [\{ |This| <uDisplay> \}] )
+          ThisTest():Assert( ProcName(), ProcLine(), <(uAction)>, \{|This|<uAction>\}, <cDescription>, [\{ |This| <uDisplay> \}] )
 
 #xcommand SEPARADOR <cDescription>  ;
        => ;

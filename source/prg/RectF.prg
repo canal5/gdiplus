@@ -142,7 +142,7 @@ return GPRectFGetLeft(::handle)
   METHOD GetLocation(pt) CLASS GPRectF
 *********************************************************************************************************
 
-return GPRectFGetLocation(::handle, pt:handle)
+return GPRectFGetLocation(::handle, @pt )
 
 *********************************************************************************************************
   METHOD GetRight() CLASS GPRectF
@@ -173,7 +173,7 @@ return GPRectFGetTop(::handle)
       case 1
          GPRectFInflate( ::handle, aParams[ 1 ]:handle )
          exit
-      case 3
+      case 2
          GPRectFInflate( ::handle, aParams[ 1 ], aParams[ 2 ] )
          exit 
    endswitch
@@ -182,21 +182,15 @@ return nil
 
 
 *********************************************************************************************************
-  METHOD Intersect( ... ) CLASS GPRectF
+  METHOD Intersect( A, B, C ) CLASS GPRectF
 *********************************************************************************************************
 
-   local aParams := hb_aparams()
-   local nLen := Len( aParams )
-   local lRet := .F.
    
-   switch nLen
-      case 1
-         lRet = GPRectFIntersect( ::handle, aParams[ 1 ] )
-         exit
-      case 2
-         lRet = GPRectFIntersect( ::handle, @aParams[ 1 ], aParams[ 2 ]:handle, aParams[ 3 ]:handle )
-         exit 
-   endswitch
+   if ValType( A ) == "O"
+      lRet = GPRectFIntersect( ::handle, A:handle )
+   else 
+      lRet = GPRectFIntersect( ::handle, @A, B:handle, C:handle )
+   endif
 
 return lRet
 
@@ -213,21 +207,14 @@ return GPRectFIntersectsWith(::handle, rc:handle )
 return GPRectFIsEmptyArea(::handle)
 
 *********************************************************************************************************
-  METHOD Offset(...) CLASS GPRectF
+  METHOD Offset( A, B ) CLASS GPRectF
 *********************************************************************************************************
 
-   local aParams := hb_aparams()
-   local nLen := Len( aParams )
-   local lRet := .F.
-   
-   switch nLen
-      case 1
-         lRet = GPRectFOffset( ::handle, aParams[ 1 ]:handle )
-         exit
-      case 2
-         lRet = GPRectFOffset( ::handle, aParams[ 1 ], aParams[ 2 ]:handle )
-         exit 
-   endswitch
+   if ValType( A ) == "O"
+      GPRectFOffset( ::handle, A:handle )
+   else 
+      GPRectFOffset( ::handle, A, B )
+   endif
 
 return nil
 
@@ -321,7 +308,7 @@ return GPRectFHeight(::handle)
 
 HB_FUNC( _GPRECTF )
 {
-    GDIPLUS * pObj = gdiplus_new( GP_IT_RECT );   
+    GDIPLUS * pObj = gdiplus_new( GP_IT_RECTF );   
     RectF * ptr;
     int iParams = hb_pcount();
 
@@ -335,7 +322,7 @@ HB_FUNC( _GPRECTF )
        GDIPLUS * pP = hb_GDIPLUS_par( 1 );
        GDIPLUS * pS = hb_GDIPLUS_par( 2 );
        
-       if( GP_IS_POINT( pP ) && GP_IS_SIZE( pS ) ){
+       if( GP_IS_POINTF( pP ) && GP_IS_SIZEF( pS ) ){
           PointF * p_pt = ( PointF * ) GP_GET( pP );
           SizeF * p_sz = ( SizeF * ) GP_GET( pS );
           ptr = new RectF( *p_pt, *p_sz );
@@ -377,13 +364,14 @@ HB_FUNC( GPRECTFCONTAINS )
 {
 
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
    if( GP_IS_RECTF( pObj ) ){
       RectF * ptr = ( RectF * ) GP_GET( pObj );
-      if( hb_pcount() == 2 ){         
+      if( hb_pcount() == 3 ){         
          hb_retl( ptr->Contains( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ) ) );  
-      } else if( hb_pcount() == 1 ){
+      } else if( hb_pcount() == 2 ){
          GDIPLUS * pP = hb_GDIPLUS_par( 2 );
-         if( GP_IS_POINT( pP ) ){
+         if( GP_IS_POINTF( pP ) ){
             PointF * p_pt = ( PointF * ) GP_GET( pP );
             hb_retl( ptr->Contains( *p_pt ) );         
          }else if( GP_IS_RECTF( pP ) ){
@@ -391,7 +379,8 @@ HB_FUNC( GPRECTFCONTAINS )
             hb_retl( ptr->Contains( *p_pt ) );            
          }else
             hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );      
-      }
+      }else
+            hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
@@ -428,16 +417,16 @@ HB_FUNC( GPRECTFGETBOUNDS )
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_RECTF( pObj ) ){
       RectF * ptr = ( RectF * ) GP_GET( pObj );
-      RectF * pClone;
+      RectF pClone;
       PHB_ITEM pitem;
-      
-      ptr->GetBounds( pClone );
-      
-      pitem = GPNewRectFObject( *pClone );
+
+      ptr->GetBounds( &pClone );
+
+      pitem = GPNewRectFObject( pClone );
       
       if( !hb_itemParamStoreRelease( 2, pitem ))
         hb_itemRelease( pitem );
-   
+
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
       
@@ -460,12 +449,12 @@ HB_FUNC( GPRECTFGETLOCATION )
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_RECTF( pObj ) ){
       RectF * ptr = ( RectF * ) GP_GET( pObj );
-      PointF * pClone;
+      PointF pClone;
       PHB_ITEM pitem;
       
-      ptr->GetLocation( pClone );
+      ptr->GetLocation( &pClone );
       
-      pitem = GPNewPointFObject( *pClone );
+      pitem = GPNewPointFObject( pClone );
       
       if( !hb_itemParamStoreRelease( 2, pitem ))
         hb_itemRelease( pitem );
@@ -508,12 +497,12 @@ HB_FUNC( GPRECTFINFLATE )
    
    if( GP_IS_RECTF( pObj ) ){
       RectF * ptr = ( RectF * ) GP_GET( pObj );
-      if( hb_pcount() == 2 ){
+      if( hb_pcount() == 3 ){
          ptr->Inflate( ( REAL ) hb_parnd(2), ( REAL ) hb_parnd(3) );      
-      }else if( hb_pcount() == 1 ){
+      }else if( hb_pcount() == 2 ){
          GDIPLUS * pP = hb_GDIPLUS_par( 2 );
          PointF * point = ( PointF * ) GP_GET( pP );
-         ptr->Inflate( *point );    
+         ptr->Inflate( *point );   
       }
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );      
@@ -522,6 +511,7 @@ HB_FUNC( GPRECTFINFLATE )
 HB_FUNC( GPRECTFINTERSECT )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+
    if( GP_IS_RECTF( pObj ) ){
       if( hb_pcount() == 2 ){
          GDIPLUS * pObj2 = hb_GDIPLUS_par( 2 );
@@ -546,7 +536,7 @@ HB_FUNC( GPRECTFINTERSECT )
             lRet =  ptr->Intersect( out, *ptr2, *ptr3 );
              
             pitem = GPNewRectFObject( out );
-            
+                        
             if( !hb_itemParamStoreRelease( 2, pitem ))
               hb_itemRelease( pitem );
               
@@ -597,9 +587,9 @@ HB_FUNC( GPRECTFOFFSET )
    
    if( GP_IS_RECTF( pObj ) ){
       RectF * ptr = ( RectF * ) GP_GET( pObj );
-      if( hb_pcount() == 2 ){
+      if( hb_pcount() == 3 ){
          ptr->Offset( ( REAL ) hb_parnd(2), ( REAL ) hb_parnd(3) ); 
-      }else if( hb_pcount() == 1 ){
+      }else if( hb_pcount() == 2 ){
          GDIPLUS * pP = hb_GDIPLUS_par( 2 );
          PointF * point = ( PointF * ) GP_GET( pP );
          ptr->Offset( *point );    
@@ -682,8 +672,8 @@ HB_FUNC( GPRECTFHEIGHT )
 HB_FUNC( GPRECTFUNION )
 {
    GDIPLUS * pObj1 = hb_GDIPLUS_par( 1 );
-   GDIPLUS * pObj2 = hb_GDIPLUS_par( 2 );
-   GDIPLUS * pObj3 = hb_GDIPLUS_par( 3 );
+   GDIPLUS * pObj2 = hb_GDIPLUS_par( 3 );
+   GDIPLUS * pObj3 = hb_GDIPLUS_par( 4 );
             
    if( GP_IS_RECTF( pObj1 ) && GP_IS_RECTF( pObj2 ) && GP_IS_RECTF( pObj3 ) ){
       RectF * ptr1 = ( RectF * ) GP_GET( pObj1 );
@@ -692,11 +682,8 @@ HB_FUNC( GPRECTFUNION )
       RectF out;
       BOOL lRet;
       PHB_ITEM pitem;
-
       lRet = ptr1->Union( out, *ptr2, *ptr3 );
-      
       pitem = GPNewRectFObject( out );
-      
       if( !hb_itemParamStoreRelease( 2, pitem ))
         hb_itemRelease( pitem );
         

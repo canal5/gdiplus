@@ -61,7 +61,7 @@ local iParams := PCount()
         ::handle := _GPSizeF()
         exit
      case 1
-        ::handle := _GPSizeF( p1 )
+        ::handle := _GPSizeF( p1:handle )
         exit
      case 2
         ::handle := _GPSizeF( p1, p2 )
@@ -149,7 +149,7 @@ HB_FUNC( _GPSIZEF )
          break;
       case 1:
        {
-         GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+         GDIPLUS * p2 = hb_GDIPLUS_par( 1 );
          if( GP_IS_SIZEF( p2 ) ){
             SizeF * point = ( SizeF * ) GP_GET( p2 );
             ptr =  new SizeF( *point ); 

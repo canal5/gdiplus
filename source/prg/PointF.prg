@@ -63,7 +63,7 @@ local iParams := PCount()
         ::handle := _GPPointF()
         exit
      case 1
-        ::handle = _GPPointF( p1 )
+        ::handle = _GPPointF( p1:handle )
         exit
      case 2
         ::handle := _GPPointF( p1, p2 )
@@ -163,7 +163,7 @@ HB_FUNC( _GPPOINTF )
          break;
       case 1:
        {
-         GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+         GDIPLUS * p2 = hb_GDIPLUS_par( 1 );
          if( GP_IS_POINTF( p2 ) ){
             PointF * point = ( PointF * ) GP_GET( p2 );
             ptr =  new PointF( *point );  
