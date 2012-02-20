@@ -330,6 +330,42 @@ HB_FUNC( DELETEBITMAP )
 //   hb_retni( ptr->GetA() );
 //}
 
+//How to Create a Gdiplus::Bitmap from an HBITMAP, retaining the alpha channel information?
+//Gdiplus::Status HBitmapToBitmap( HBITMAP source, Gdiplus::PixelFormat pixel_format, Gdiplus::Bitmap** result_out )
+//{
+//  BITMAP source_info = { 0 };
+//  if( !::GetObject( source, sizeof( source_info ), &source_info ) )
+//    return Gdiplus::GenericError;
+//
+//  Gdiplus::Status s;
+//
+//  std::auto_ptr< Gdiplus::Bitmap > target( new Gdiplus::Bitmap( source_info.bmWidth, source_info.bmHeight, pixel_format ) );
+//  if( !target.get() )
+//    return Gdiplus::OutOfMemory;
+//  if( ( s = target->GetLastStatus() ) != Gdiplus::Ok )
+//    return s;
+//
+//  Gdiplus::BitmapData target_info;
+//  Gdiplus::Rect rect( 0, 0, source_info.bmWidth, source_info.bmHeight );
+//
+//  s = target->LockBits( &rect, Gdiplus::ImageLockModeWrite, pixel_format, &target_info );
+//  if( s != Gdiplus::Ok )
+//    return s;
+//
+//  if( target_info.Stride != source_info.bmWidthBytes )
+//    return Gdiplus::InvalidParameter; // pixel_format is wrong!
+//
+//  CopyMemory( target_info.Scan0, source_info.bmBits, source_info.bmWidthBytes * source_info.bmHeight );
+//
+//  s = target->UnlockBits( &target_info );
+//  if( s != Gdiplus::Ok )
+//    return s;
+//
+//  *result_out = target.release();
+//
+//  return Gdiplus::Ok;
+//}
+
 #pragma ENDDUMP
 
 
