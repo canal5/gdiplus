@@ -24,6 +24,7 @@ typedef struct __gdiplus
 #define GP_IT_POINTF     ( ( int ) 0x00009 )
 #define GP_IT_SIZE       ( ( int ) 0x0000A )
 #define GP_IT_SIZEF      ( ( int ) 0x0000B )
+#define GP_IT_MATRIX     ( ( int ) 0x0000C )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
@@ -34,15 +35,21 @@ typedef struct __gdiplus
 #define GP_IS_BRUSH( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_SOLIDBRUSH ) )
 #define GP_IS_PEN( p )      ( ( GP_OBJECT_TYPE( p ) == GP_IT_PEN ) )
 #define GP_IS_POINT( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_POINT ) )
-#define GP_IS_POINTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_POINTF ) )
+#define GP_IS_POINTF( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_POINTF ) )
 #define GP_IS_SIZE( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_SIZE ) )
-#define GP_IS_SIZEF( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_SIZEF ) )
+#define GP_IS_SIZEF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_SIZEF ) )
+#define GP_IS_MATRIX( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_MATRIX ) )
 
+//gdiplus core
 GDIPLUS * gdiplus_new( int type );
-
-//graphics
+void gdiplus_destroy( GDIPLUS * p );
 void hb_GDIPLUS_ret( GDIPLUS * p );
 GDIPLUS * hb_GDIPLUS_par( int iParam );
+GDIPLUS * GDIPLUSItemGet( PHB_ITEM pItem );
+void GDIPLUSItemClear( PHB_ITEM pItem );
+PHB_ITEM GDIPLUSItemPut( PHB_ITEM pItem, GDIPLUS * pGdiPlus );
+
+
 
 extern "C"
 {

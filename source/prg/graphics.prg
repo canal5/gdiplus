@@ -428,8 +428,16 @@ return 0
 return 0
 
 **********************************************************************************************************
-  METHOD DrawCurve( ) CLASS GPGraphics
+  METHOD DrawCurve( oPen, B, C, D, E, F ) CLASS GPGraphics
 **********************************************************************************************************
+   DEFAULT oPen := ::oPen
+   
+   if D != NIL
+      return GP_DrawCurve( ::handle, oPen:handle, B:handle, C, D, E, F )
+   else 
+      return GP_DrawCurve( ::handle, oPen:handle, B, C )
+   endif
+
 
 return 0
 
@@ -472,15 +480,20 @@ return 0
 **********************************************************************************************************
 
   DEFAULT oBrush := ::oBrush
-
+  
   if valtype( nTop ) == "A"
      nLeft   := nTop[2]
      nWidth  := nTop[4]-nTop[2]
      nHeight := nTop[3]-nTop[1]
      nTop    := nTop[1]
+     GP_FillEllipse( ::handle, oBrush:handle, nTop, nLeft, nwidth, nHeight )
+  elseif ( valtype( nTop ) == "O" )
+     GP_FillEllipse( ::handle, oBrush:handle, nTop:handle )
+  elseif ( valtype( nTop ) == "N" )
+     GP_FillEllipse( ::handle, oBrush:handle, nTop, nLeft, nwidth, nHeight )
   endif
 
-return GP_FillEllipse( ::handle, oBrush:handle, nTop, nLeft, nwidth, nHeight )
+return 0
 
 
 **********************************************************************************************************
@@ -1043,11 +1056,11 @@ return 0
 return 0
 
 **********************************************************************************************************
-  METHOD SetTransform( ) CLASS GPGraphics
+  METHOD SetTransform( oMatrix ) CLASS GPGraphics
 **********************************************************************************************************
 
 
-return 0
+return GP_SetTransform( ::handle, oMatrix:handle )
 
 **********************************************************************************************************
   METHOD TransformPoints( ) CLASS GPGraphics
@@ -1083,6 +1096,7 @@ return o
 #include <hbapiitm.h>
 #include <gdiplus.h>
 #include <gc.h>
+#include <hbapicls.h>
 
 
 GdiplusStartupInput gdiplusStartupInput;
@@ -1292,6 +1306,78 @@ HB_FUNC( GP_DRAWCACHEDBITMAP )
     hb_ret();
 }
 
+HB_FUNC( GP_DRAWCURVE ){
+
+   GDIPLUS *p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
+   Status sta;
+   int iParam = hb_pcount();
+   if(GP_IS_GRAPHICS( p )  && GP_IS_PEN( pObj ) && hb_pcount() < 5 )
+   {
+      Graphics *g = ( Graphics * ) GP_GET( p ) ;
+      Pen* p = (Pen*) GP_GET( pObj ); 
+      int iParam = hb_pcount();
+      if( HB_ISARRAY( 3 ) ){        
+         PHB_ITEM aPoint = hb_param( 3, HB_IT_ARRAY );
+         int iLen = hb_arrayLen( aPoint );
+         int n;
+         BOOL lF = false;
+         Point * pPoint;
+         PointF * pPointF;
+
+         for( n = 0; n < iLen; n ++ ){
+           PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );
+           PHB_ITEM pitemP;           
+           GDIPLUS * ptrPoint;           
+           pitemP = hb_objSendMsg( pItem, "_HANDLE", 0 );
+           ptrPoint = GDIPLUSItemGet( pitemP ); 
+           if( GP_IS_POINT( ptrPoint ) ){
+              if( n == 0 )
+                 pPoint = ( Point * ) hb_xgrab( sizeof( Point ) * iLen );
+              Point * pObj = ( Point * )GP_GET( ptrPoint );         
+              pPoint[ n ] = *pObj;           
+           }else if( GP_IS_POINTF( ptrPoint ) ){              
+              if( n == 0 )
+                 pPointF = ( PointF * ) hb_xgrab( sizeof( PointF ) * iLen );
+              PointF * pObj = ( PointF * )GP_GET( ptrPoint );         
+              pPointF[ n ] = *pObj;                            
+              lF = true;
+            }           
+         }
+         
+         if( iParam < 5 ){
+            if( !lF )
+               sta = g->DrawCurve( p, pPoint, iLen ); 
+            else 
+               sta = g->DrawCurve( p, pPointF, iLen );  
+         }
+         else if( iParam > 4 && iParam < 6 ){
+            REAL tension = ( REAL ) hb_parnd( 5 );
+            if( !lF )
+               sta = g->DrawCurve( p, pPoint, iLen, tension );  
+            else 
+               sta = g->DrawCurve( p, pPointF, iLen, tension );             
+         }else if( iParam > 5 ){
+            int offset = hb_parni( 5 );
+            int numberOfSegments = hb_parni( 6 );
+            REAL tension = ( REAL ) hb_parnd( 7 );
+            if( !lF )
+               sta = g->DrawCurve( p, pPoint, iLen, offset, numberOfSegments, tension );  
+            else 
+               sta = g->DrawCurve( p, pPointF, iLen, offset, numberOfSegments, tension );                         
+         }
+         
+         if( !lF )
+            hb_xfree( pPoint );
+         else 
+            hb_xfree( pPointF );
+       }
+       hb_retni( sta );
+   }else  
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+
 HB_FUNC( GP_DRAWELLIPSE )
 {
 
@@ -1341,17 +1427,17 @@ HB_FUNC( GP_DRAWLINE )
          else
             hb_retni( g->DrawLine( p, hb_parni(4), hb_parni(3), hb_parni(6), hb_parni(5) ) );
       }else if( hb_pcount() < 5 ){
-      	 GDIPLUS * pPoint1 = hb_GDIPLUS_par( 3 );
-      	 GDIPLUS * pPoint2 = hb_GDIPLUS_par( 4 );
+         GDIPLUS * pPoint1 = hb_GDIPLUS_par( 3 );
+         GDIPLUS * pPoint2 = hb_GDIPLUS_par( 4 );
          if( GP_IS_POINTF( pPoint1 ) && GP_IS_POINTF( pPoint2 ) ){
-         	  PointF * point1 = ( PointF * ) GP_GET( pPoint1 );
-         	  PointF * point2 = ( PointF * ) GP_GET( pPoint2 );
+            PointF * point1 = ( PointF * ) GP_GET( pPoint1 );
+            PointF * point2 = ( PointF * ) GP_GET( pPoint2 );
             hb_retni( g->DrawLine( p, *point1, *point2 ) );            
          }else if( GP_IS_POINT( pPoint1 ) && GP_IS_POINT( pPoint2 ) ){
-         	  Point * point1 = ( Point * ) GP_GET( pPoint1 );
-         	  Point * point2 = ( Point * ) GP_GET( pPoint2 );
-            hb_retni( g->DrawLine( p, *point1, *point2 ) );                     	
-         }      	
+            Point * point1 = ( Point * ) GP_GET( pPoint1 );
+            Point * point2 = ( Point * ) GP_GET( pPoint2 );
+            hb_retni( g->DrawLine( p, *point1, *point2 ) );                       
+         }        
       }      
    }
    else
@@ -1432,26 +1518,25 @@ HB_FUNC( GP_DRAWRECTANGLE )
        Pen* p = (Pen*) GP_GET( pP );
        if( hb_pcount() > 3 ){
           if( hb_itemType( hb_param( 3, HB_IT_ANY ) ) == HB_IT_DOUBLE ){
-             RectF rect = RectF( ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ) );    
-             hb_retni( g->DrawRectangle(p, rect ) );
+             hb_retni( g->DrawRectangle(p, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ) ) );
           }else if( hb_itemType( hb_param( 3, HB_IT_ANY ) ) == HB_IT_INTEGER  ){
-             Rect rect = Rect( hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ) );    
-             hb_retni( g->DrawRectangle(p, rect ) );
-          }else
-        	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+             hb_retni( g->DrawRectangle(p, hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ) ) );
+          }else{
+             hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+           }
           
         }else {
 
-        	GDIPLUS * pR = hb_GDIPLUS_par( 3 );
+          GDIPLUS * pR = hb_GDIPLUS_par( 3 );
 
-        	if( GP_IS_RECTF( pR ) ){
-        	   RectF * rect = ( RectF * ) GP_GET( pR );
-        	   hb_retni( g->DrawRectangle(p, *rect ) );
-        	}else if( GP_IS_RECT( pR ) ){
-        	   Rect * rect = ( Rect * ) GP_GET( pR );
-        	   hb_retni( g->DrawRectangle(p, *rect ) );        		
-        	}else
-        	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          if( GP_IS_RECTF( pR ) ){
+             RectF * rect = ( RectF * ) GP_GET( pR );
+             hb_retni( g->DrawRectangle(p, *rect ) );
+          }else if( GP_IS_RECT( pR ) ){
+             Rect * rect = ( Rect * ) GP_GET( pR );
+             hb_retni( g->DrawRectangle(p, *rect ) );           
+          }else
+             hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
         }        
     }       
     else
@@ -1508,11 +1593,28 @@ HB_FUNC( GP_FILLELLIPSE )
 {
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
-   if( GP_IS_GRAPHICS( pG ) && GP_IS_BRUSH( pBrush ) && hb_pcount() > 5 )
+   int iParam = hb_pcount();
+   if( GP_IS_GRAPHICS( pG ) && GP_IS_BRUSH( pBrush ) )
    {
      Graphics *g = ( Graphics * ) GP_GET( pG );
      Brush* b = (Brush*) GP_GET( pBrush );
-     hb_retni( g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 )) );
+
+     if( iParam > 5 ){
+        if( HB_IS_DOUBLE( hb_param( 4, HB_IT_ANY ) ) )
+            hb_retni( g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 )) );
+        else
+           hb_retni( g->FillEllipse( b, ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ) ) );
+     }else if( iParam < 4 ){
+        GDIPLUS * pRect = hb_GDIPLUS_par( 3 );
+        if( GP_IS_RECT( pRect ) ){
+           Rect * rect = ( Rect * ) GP_GET( pRect );
+           hb_retni( g->FillEllipse( b, *rect ) );          
+        }else if( GP_IS_RECTF( pRect ) ){
+           RectF * rect = ( RectF * ) GP_GET( pRect );
+           hb_retni( g->FillEllipse( b, *rect ) );          
+        }else 
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+     }     
    }
    else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -1711,7 +1813,17 @@ HB_FUNC( SETTEXTRENDERINGHINT )
 
 }
 
-
+HB_FUNC( GP_SETTRANSFORM )
+{
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 ); 
+   GDIPLUS * pM = hb_GDIPLUS_par( 2 );
+   if( GP_IS_MATRIX( pM ) && GP_IS_GRAPHICS( pG ) ){
+      Graphics * g = ( Graphics * ) GP_GET( pG );
+      Matrix * m = ( Matrix * ) GP_GET( pM );
+      hb_retni( g->SetTransform( m ) );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
 
 #pragma ENDDUMP
 

@@ -7,7 +7,7 @@ Local oTest
 
    DEFINE SUITTEST oTest
 
-//      TestsGraphics()
+      TestsGraphics()
 //      TestsPen()
 //      TestsColor()
 //      TestsBrush()
@@ -212,7 +212,7 @@ return 0
   PointF oPointF( 50, 70 )
   Matrix oMatrix()
   Matrix oMatrix2( oRect, oPointF )
-  Matrix oMatrix3( 3, 0, 0, 1, 0, 0 )
+  Matrix oMatrix3( 1, 0, 0, 1, 0, 2 )
   Matrix oMatrix4( 1, 0, 0, 1, 20, 40 )
 
   AAdd( aPoint, Point( 50, 100 ) )
@@ -226,8 +226,7 @@ return 0
   AAdd( aPointF, PointF( 150, 125 ) )
   AAdd( aPointF, PointF( 200, 100 ) )
   AAdd( aPointF, PointF( 250, 150 ) )
-
-
+// 
   SEPARADOR( "MATRIX" )
 
   TEST ! empty( oMatrix:handle )                       DESCRIPTION "Constructor "
@@ -235,24 +234,24 @@ return 0
   TEST ! empty( oMatrix3:handle )                      DESCRIPTION "Constructor Matrix( REAL, REAL, REAL, REAL, REAL, REAL )"
   
   TEST !Empty( ( oClone := oMatrix3:Clone() ):handle )  DESCRIPTION "Clone"
-//  TEST oMatrix:Equals( oClone )                        DESCRIPTION "Equals"
-//  TEST oMatrix3:GetElements( @aElements ) == 0          DESCRIPTION "GetElements"
-//  nStatus = oMatrix:GetLastStatus()
-//  TEST hb_IsNumeric( oMatrix:GetLastStatus() )         DESCRIPTION "GetLastStatus is =" + str( nStatus )
-//  TEST oMatrix3:Invert() == 0                          DESCRIPTION "Invert"
-//  TEST oMatrix3:IsIdentity()                           DESCRIPTION "IsIdentity"
-//  TEST oMatrix3:IsInvertible()                         DESCRIPTION "IsInvertible"
-//  TEST oMatrix3:Multiply( oMatrix4, MatrixOrderAppend ) == 0           DESCRIPTION "Multiply"
-//  TEST oMatrix4:OffsetX() == 20                        DESCRIPTION "OffsetX"
-//  TEST oMatrix4:OffsetY() == 40                        DESCRIPTION "OffsetY"
-//  TEST oMatrix4:Reset() == 0                           DESCRIPTION "Reset"
-//  TEST oMatrix2:Rotate( 30, MatrixOrderAppend ) == 0 DESCRIPTION "Rotate"
-//  TEST oMatrix2:Rotate( 30, PointF(150, 100), MatrixOrderAppend ) == 0 DESCRIPTION "RotateAt"
-//  TEST oMatrix4:Scale( 3, 2, MatrixOrderAppend ) == 0  DESCRIPTION "Scale"
-//  TEST oMatrix4:SetElements( 1, 0, 0, 1, 30, 50 ) == 0  DESCRIPTION "SetElements"
-//  TEST oMatrix4:Shear( 3, 0, MatrixOrderAppend ) == 0  DESCRIPTION "Shear"
-//  TEST oMatrix4:TransformPoints( aPoint ) == 0         DESCRIPTION "TransformPoints with Point Atrray"
-//  TEST oMatrix4:TransformPointsF( aPointF ) == 0        DESCRIPTION "TransformPoints with PointF Atrray"
+  TEST oMatrix3:Equals( oClone )                        DESCRIPTION "Equals"
+  TEST oMatrix3:GetElements( @aElements ) == 0          DESCRIPTION "GetElements"
+  nStatus = oMatrix:GetLastStatus()
+  TEST hb_IsNumeric( oMatrix:GetLastStatus() )         DESCRIPTION "GetLastStatus is =" + str( nStatus )
+  TEST oMatrix3:Invert() == 0                          DESCRIPTION "Invert" SAMPLE Example_Invert()
+  TEST oMatrix3:IsIdentity()                           DESCRIPTION "IsIdentity"
+  TEST oMatrix3:IsInvertible()                         DESCRIPTION "IsInvertible"
+  TEST oMatrix3:Multiply( oMatrix4, MatrixOrderAppend ) == 0           DESCRIPTION "Multiply" SAMPLE Example_MultiplyM()
+  TEST oMatrix4:OffsetX() == 20                        DESCRIPTION "OffsetX" SAMPLE Example_OffsetMatrix()
+  TEST oMatrix4:OffsetY() == 40                        DESCRIPTION "OffsetY" SAMPLE Example_OffsetMatrix()
+  TEST oMatrix4:Reset() == 0                           DESCRIPTION "Reset"  SAMPLE Example_Reset()
+  TEST oMatrix2:Rotate( 30, MatrixOrderAppend ) == 0   DESCRIPTION "Rotate" SAMPLE Example_RotateMatrix()
+  TEST oMatrix2:Rotate( 30, PointF(150, 100), MatrixOrderAppend ) == 0 DESCRIPTION "RotateAt" SAMPLE Example_RotateAtMatrix()
+  TEST oMatrix4:Scale( 3, 2, MatrixOrderAppend ) == 0  DESCRIPTION "Scale" SAMPLE Example_ScaleMatrix()
+  TEST oMatrix4:SetElements( 1, 0, 0, 1, 30, 50 ) == 0  DESCRIPTION "SetElements" SAMPLE Example_SetElements()
+  TEST oMatrix4:Shear( 3, 0, MatrixOrderAppend ) == 0  DESCRIPTION "Shear" SAMPLE Example_Shear()
+  TEST oMatrix4:TransformPoints( @aPoint ) == 0         DESCRIPTION "TransformPoints with Point Array" SAMPLE Example_TransPoints()
+  TEST oMatrix4:TransformPoints( @aPointF ) == 0        DESCRIPTION "TransformPoints with PointF Array" SAMPLE Example_TransPointsF()
 //  TEST oMatrix4:TransformVectors( aPoint ) == 0         DESCRIPTION "TransformVentors with Point Atrray"
 //  TEST oMatrix4:TransformVectorsF( aPointF ) == 0       DESCRIPTION "TransformVectorsF with PointF Atrray"
 //  TEST oMatrix4:Translate( 150, 100, MatrixOrderAppend ) == 0 DESCRIPTION "Translate"
@@ -442,6 +441,8 @@ return 0
 
       SEPARADOR( "GRAPHICS" )
       TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
+      TEST .T.      DESCRIPTION "DrawCurve( pen, point ) "  SAMPLE Example_DrawCurve1()
+      TEST .T.      DESCRIPTION "SetTransform( matrix ) "  SAMPLE Example_SetTransformG()
 
 return 0
 
@@ -1071,10 +1072,6 @@ function  Example_SetBlend()
 return nil
 
 
-
-
-
-
 function Example_SetLinColors()
 
    local bPainted := { | hDC |
@@ -1271,6 +1268,9 @@ function Example_PenSetAlignment( )
    
 return nil 
 
+//--------------------
+//RECTf
+//--------------------
 function Example_GetBoundsF( )
    local bPainted := { | hdc |
       local rect2
@@ -1311,7 +1311,6 @@ function Example_GetLocationF( )
    exampleWindow( bPainted )
    
 return nil 
-
 
 
 function Example_InflatePointF( )
@@ -1501,7 +1500,9 @@ function Example_UnionABCF( )
    
 return nil 
 
-///
+//--------------------
+//RECT
+//--------------------
 
 function Example_GetBounds( )
    local bPainted := { | hdc |
@@ -1732,6 +1733,304 @@ function Example_UnionABC( )
    exampleWindow( bPainted )
    
 return nil 
+
+//--------------------
+//MATRIX
+//--------------------
+
+function Example_Invert( )
+   local bPainted := { | hdc |
+      local a
+      
+      Graphics graphics(hdc)
+      
+      Pen myPen(Color(255, 0, 0, 255))
+      
+      Matrix matrix(1.0, 0.0, 0.0, 1.0, 30.0, 20.0)
+      
+      graphics:SetTransform(matrix)
+      graphics:DrawRectangle(myPen, 0, 0, 200, 100)
+      matrix:Invert()
+      graphics:SetTransform(matrix)
+      graphics:DrawRectangle(myPen, 0, 0, 200, 100)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_MultiplyM( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 255))
+      
+      Matrix matrix1(3.0, 0.0, 0.0, 1.0, 0.0, 0.0)    // horizontal scale
+      Matrix matrix2(1.0, 0.0, 0.0, 1.0, 20.0, 40.0)  // translation
+      
+      matrix1:Multiply(matrix2, MatrixOrderAppend)
+      
+      graphics:SetTransform(matrix1)
+      graphics:DrawRectangle(pen, 0, 0, 100, 100)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_OffsetMatrix( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 255))
+      
+      Matrix matrix(1.0, 0.0, 0.0, 1.0, 50.0, 30.0)
+      xTranslation = matrix:OffsetX()
+      yTranslation = matrix:OffsetY()
+      
+      graphics:DrawLine(pen, 0.0, 0.0, xTranslation, yTranslation)
+      graphics:SetTransform(matrix)
+      graphics:DrawRectangle(pen, 0, 0, 20, 20)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_Reset( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 255))
+      
+      Matrix matrix(5.0, 0.0, 0.0, 3.0, 0.0, 0.0)
+      matrix:Reset()
+      matrix:Translate(50.0, 40.0)
+      
+      graphics:SetTransform(matrix)
+      graphics:DrawRectangle(pen, 0, 0, 100, 100)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_RotateMatrix( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 255))
+      
+      Matrix matrix()
+      matrix:Translate(40.0, 0.0)            // first a translation
+      matrix:Rotate(30.0, MatrixOrderAppend)  // then a rotation
+      
+      graphics:SetTransform(matrix)
+      graphics:DrawEllipse(pen, 0, 0, 100, 50)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_RotateAtMatrix( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 255))
+      
+      Matrix matrix()
+      matrix:Translate(150.0, 100.0)  
+      matrix:RotateAt(30.0, PointF(150.0, 100.0), MatrixOrderAppend)
+
+      graphics:SetTransform(matrix)
+      // Draw a tramsormed ellipse. The composite transormation
+      // is translate right 150, translate down 100, and then
+      // rotate 30 degrees about the point (150, 100).
+      graphics:DrawEllipse(pen, -40, -20, 80, 40)
+
+      // Draw rotated axes with the origin at the center o the ellipse.
+      graphics:DrawLine(pen, -50, 0, 50, 0)
+      graphics:DrawLine(pen, 0, -50, 0, 50)  
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_ScaleMatrix( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 255))
+      
+      Matrix matrix()
+      matrix:Rotate(30.0)  
+      matrix:Scale(3.0, 2.0, MatrixOrderAppend)
+      
+      graphics:SetTransform(matrix)
+      
+      // Draw a tramsformed ellipse. The composite transformation
+      // is rotate 30 degrees and then scale by a factor of 3
+      // in the horizontal direction and 2 in the vertical direction.
+      graphics:DrawEllipse(pen, 0, 0, 80, 40)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_SetElements( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 255))
+      
+      Matrix matrix()
+      matrix:SetElements(1.0, 0.0, 0.0, 1.0, 30.0, 50.0)
+      
+      graphics:SetTransform(matrix)
+      graphics:DrawRectangle(pen, 0, 0, 80, 40) 
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_Shear( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Pen pen(Color(255, 0, 0, 255))
+      
+      Matrix matrix()
+      matrix:Scale(2.0, 2.0)                     // first a scaling
+      matrix:Shear(3.0, 0.0, MatrixOrderAppend)  // then a shear
+      
+      graphics:SetTransform(matrix)
+      graphics:DrawRectangle(pen, 0, 0, 100, 50)  
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_TransPoints( )
+   local bPainted := { | hdc |
+
+      local aPoint := {}
+      Graphics graphics(hdc)
+      
+      Pen pen(Color(255, 0, 0, 255))
+
+      AAdd( aPoint, Point( 50, 100 ) )
+      AAdd( aPoint, Point( 100, 50 ) )
+      AAdd( aPoint, Point( 150, 125 ) )
+      AAdd( aPoint, Point( 200, 100 ) )
+      AAdd( aPoint, Point( 250, 150 ) )
+      
+      Matrix matrix(1.0, 0.0, 0.0, 2.0, 5.0, 10.0)
+
+      graphics:DrawCurve(pen, aPoint, 5)
+      
+      matrix:TransformPoints( @aPoint, 5)
+      
+      graphics:DrawCurve(pen, aPoint, 5)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_TransPointsF( )
+   local bPainted := { | hdc |
+
+      local aPoint := {}
+      Graphics graphics(hdc)
+      
+      Pen pen(Color(255, 0, 0, 255))
+
+      AAdd( aPoint, PointF( 50, 100 ) )
+      AAdd( aPoint, PointF( 100, 50 ) )
+      AAdd( aPoint, PointF( 150, 125 ) )
+      AAdd( aPoint, PointF( 200, 100 ) )
+      AAdd( aPoint, PointF( 250, 150 ) )
+      
+      Matrix matrix(1.0, 0.0, 0.0, 2.0, 5.0, 10.0)
+
+      graphics:DrawCurve(pen, aPoint, 5)
+      
+      matrix:TransformPoints( @aPoint, 5)
+      
+      graphics:DrawCurve(pen, aPoint, 5)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+//--------------------
+//GRAPHICS
+//--------------------
+
+function Example_DrawCurve1( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+      
+      Graphics graphics(hdc)
+      // Define a Pen object and an array of Point objects.
+      Pen greenPen(Color( 0, 255, 0 ), 3)
+
+      AAdd( aPoint, Point( 100, 100 ) )
+      AAdd( aPoint, Point( 200, 50 ) )
+      AAdd( aPoint, Point( 400, 10 ) )
+      AAdd( aPoint, Point( 500, 100 ) )
+      
+     
+      // Draw the curve.
+      graphics:DrawCurve(greenPen, aPoint, 4)
+      
+      //Draw the points in the curve.
+      SolidBrush redBrush( Color( 255, 0, 0 ) )
+      graphics:FillEllipse(redBrush, Rect(95, 95, 10, 10))
+      graphics:FillEllipse(redBrush, Rect(195, 45, 10, 10))
+      graphics:FillEllipse(redBrush, Rect(395, 5, 10, 10))
+      graphics:FillEllipse(redBrush, Rect(495, 95, 10, 10))
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_SetTransformG( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc);
+      
+      // Create a rotation matrix.
+      Matrix transformMatrix()
+      transformMatrix:Rotate(45.0)
+      
+      // Set the transformation matrix of the Graphics object.
+      graphics:SetTransform(transformMatrix)
+      
+      // Draw a rotated rectangle.
+      Pen pen(Color(255, 0, 0, 0))
+      graphics:DrawRectangle(pen, 120, 0, 100, 50)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
 
 
 /*prototype

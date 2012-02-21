@@ -13,48 +13,7 @@ static HB_GARBAGE_FUNC( GDI_GDIPLUS_release )
    if( ph && * ph )
    {
       /* Destroy the object */
-//      delete (Graphics*) * ph;
-
-      switch( GP_OBJECT_TYPE( ( GDIPLUS *)*ph ) ){
-        case GP_IT_IMAGE:
-           delete (Image *) (( GDIPLUS *)*ph )->pObject;
-           break;
-        case GP_IT_POINTF:
-           delete (PointF *) (( GDIPLUS *)*ph )->pObject;
-           break;           
-        case GP_IT_POINT:
-           delete (Point *) (( GDIPLUS *)*ph )->pObject;
-           break;       
-        case GP_IT_SIZEF:
-           delete (SizeF *) (( GDIPLUS *)*ph )->pObject;
-           break;                                     
-        case GP_IT_SIZE:
-           delete (Size *) (( GDIPLUS *)*ph )->pObject;
-           break;                                                
-        case GP_IT_RECT:
-           delete (Rect *) (( GDIPLUS *)*ph )->pObject;
-           break;                                                           
-        case GP_IT_RECTF:
-           delete (RectF *) (( GDIPLUS *)*ph )->pObject;
-           break;                                                                      
-        case GP_IT_SOLIDBRUSH:
-           delete (SolidBrush *) (( GDIPLUS *)*ph )->pObject;
-           break;           
-        case GP_IT_COLOR:
-           delete (Color *) (( GDIPLUS *)*ph )->pObject;
-           break;        
-        case GP_IT_PEN:
-           delete (Pen *) (( GDIPLUS *)*ph )->pObject;
-           break;                                    
-        case GP_IT_GRAPHICS:
-           delete (Graphics *) (( GDIPLUS *)*ph )->pObject;
-           break;                                               
-        case GP_IT_MATRIX:
-           delete (Matrix *) (( GDIPLUS *)*ph )->pObject;
-           break;                                                          
-      }
-      hb_xfree( (void *) *ph );
-
+       gdiplus_destroy( ( GDIPLUS *)*ph );
       /* set pointer to NULL to avoid multiple freeing */
       * ph = NULL;
    }
@@ -91,14 +50,62 @@ void hb_GDIPLUS_ret( GDIPLUS * p )
 GDIPLUS * hb_GDIPLUS_par( int iParam )
 {
 #ifndef __XHARBOUR__
-   void ** ph = ( void ** ) hb_parptrGC( &s_gcGDIPLUSFuncs, iParam );
+   PGDIPLUS * ph = ( PGDIPLUS * ) hb_parptrGC( &s_gcGDIPLUSFuncs, iParam );
 #else
-   void ** ph = ( void ** ) hb_parptrGC( GDI_GDIPLUS_release, iParam );
+   PGDIPLUS * ph = ( PGDIPLUS * ) hb_parptrGC( GDI_GDIPLUS_release, iParam );
 #endif //__XHARBOUR__
 
-   return ph ? ( GDIPLUS * ) * ph : NULL;
+   if( ph && *ph )
+      return *ph;
+
+   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   return NULL;     
 }
 
+void gdiplus_destroy( GDIPLUS * p ){
+   
+  
+   switch( GP_OBJECT_TYPE( p ) ){
+     case GP_IT_IMAGE:
+        delete (Image *) p->pObject;
+        break;
+     case GP_IT_POINTF:
+        delete (PointF *) p->pObject;
+        break;           
+     case GP_IT_POINT:
+        delete (Point *) p->pObject;
+        break;       
+     case GP_IT_SIZEF:
+        delete (SizeF *) p->pObject;
+        break;                                     
+     case GP_IT_SIZE:
+        delete (Size *) p->pObject;
+        break;                                                
+     case GP_IT_RECT:
+        delete (Rect *) p->pObject;
+        break;                                                           
+     case GP_IT_RECTF:
+        delete (RectF *) p->pObject;
+        break;                                                                      
+     case GP_IT_SOLIDBRUSH:
+        delete (SolidBrush *) p->pObject;
+        break;           
+     case GP_IT_COLOR:
+        delete (Color *) p->pObject;
+        break;        
+     case GP_IT_PEN:
+        delete (Pen *) p->pObject;
+        break;                                    
+     case GP_IT_GRAPHICS:
+        delete (Graphics *) p->pObject;
+        break;                                               
+     case GP_IT_MATRIX:
+        delete (Matrix *) p->pObject;
+        break;                                                          
+   }
+   hb_xfree( p );
+
+}
 
 GDIPLUS * gdiplus_new( int type )
 {
@@ -108,6 +115,29 @@ GDIPLUS * gdiplus_new( int type )
       p->type = type;
       
    return p;
+}
+
+GDIPLUS * GDIPLUSItemGet( PHB_ITEM pItem )
+{
+   PGDIPLUS * pp = ( PGDIPLUS * ) hb_itemGetPtrGC( pItem, &s_gcGDIPLUSFuncs );
+   return pp ? *pp : NULL;
+}
+
+
+PHB_ITEM GDIPLUSItemPut( PHB_ITEM pItem, GDIPLUS * pGdiPlus )
+{
+   PGDIPLUS * pp = ( PGDIPLUS * ) hb_gcAllocate( sizeof( GDIPLUS ), &s_gcGDIPLUSFuncs );
+
+   *pp = pGdiPlus;
+   return hb_itemPutPtrGC( pItem, pp );
+}
+
+void GDIPLUSItemClear( PHB_ITEM pItem )
+{
+   PGDIPLUS * pp = ( PGDIPLUS * ) hb_itemGetPtrGC( pItem, &s_gcGDIPLUSFuncs );
+
+   if( pp )
+      * pp = NULL;
 }
 
 //------------------------------------------------//
