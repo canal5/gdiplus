@@ -156,10 +156,10 @@ return GPPenGetColor(::handle, @oColor )
   METHOD GetCompoundArray( compoundarray ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPenGetCompoundArray( ::handle, compoundarray )
+return GPPenGetCompoundArray( ::handle, @compoundarray )
 
 *********************************************************************************************************
-  METHOD GetCompoundArrayCount() CLASS GPPen
+  METHOD GetCompoundArrayCount( ) CLASS GPPen
 *********************************************************************************************************
 
 return GPPenGetCompoundArrayCount(::handle)
@@ -191,15 +191,8 @@ return GPPenGetDashOffset(::handle)
 *********************************************************************************************************
   METHOD GetDashPattern( adashArray ) CLASS GPPen
 *********************************************************************************************************
-local nElements := ::GetDashPatternCount()
-local nStatus := Status.GenericError  // ??
 
-if nElements > 0
-   adashArray := afill(array(nElements),0)
-   nStatus := GPPenGetDashPattern( ::handle, @adashArray, nElements )
-endif
-
-return nStatus
+return GPPenGetDashPattern( ::handle, @adashArray )
 
 *********************************************************************************************************
   METHOD GetDashPatternCount() CLASS GPPen
@@ -253,7 +246,7 @@ return GPPenGetStartCap(::handle)
   METHOD GetTransform(matrix) CLASS GPPen
 *********************************************************************************************************
 
-return GPPenGetTransform(::handle, matrix:handle)
+return GPPenGetTransform(::handle, @matrix)
 
 *********************************************************************************************************
   METHOD GetWidth() CLASS GPPen
@@ -328,10 +321,10 @@ return GPPenSetCustomStartCap(::handle, customlinecap:handle )
 return GPPenSetDashCap( ::handle, dashcap )
 
 *********************************************************************************************************
-  METHOD SetDashOffset() CLASS GPPen
+  METHOD SetDashOffset( n ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPenSetDashOffset(::handle)
+return GPPenSetDashOffset(::handle, n )
 
 *********************************************************************************************************
   METHOD SetDashPattern( dasharray ) CLASS GPPen
@@ -459,12 +452,11 @@ HB_FUNC( GPPENGETBRUSH )
       switch( type ){
          case BrushTypeSolidColor:
             pitem = GPNewGDIPLUSObject( b, GP_IT_SOLIDBRUSH );
-//            pitem = GPNewSolidBrushObject( *(( SolidBrush *) b) );
-            if( !hb_itemParamStoreRelease( 2, pitem ))
-               hb_itemRelease( pitem );
-            break;                  
+            GDIPLUS_StoreParam( 2, pitem );
+            break;   
       }
-      
+      hb_retni(0);               
+
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
       
@@ -474,16 +466,13 @@ HB_FUNC( GPPENGETCOLOR )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_PEN( pObj ) ){
-      BrushType type;
       Pen* p = (Pen*) GP_GET( pObj );
       Color c;
       PHB_ITEM pitem;
       Status sta;
-      
-      p->GetColor( &c );
+      sta = p->GetColor( &c );
       pitem = GPNewGDIPLUSObject( &c, GP_IT_COLOR );
-      if( !hb_itemParamStoreRelease( 2, pitem ))
-        hb_itemRelease( pitem );
+      GDIPLUS_StoreParam( 2, pitem );
         
       hb_retni( sta );      
       
@@ -494,28 +483,39 @@ HB_FUNC( GPPENGETCOLOR )
 
 HB_FUNC( GPPENGETCOMPOUNDARRAY )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   int iLen;
-   REAL * pReal;
-   PHB_ITEM aCompoundArray = hb_param( 2, HB_IT_ARRAY );
-   INT j;
-   iLen = hb_arrayLen( aCompoundArray );
-   pReal = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
-
-   for( j = 0; j < iLen; j++ )
-   {
-      pReal[ j ] = ( REAL ) hb_arrayGetND( aCompoundArray, j + 1 );
-   }
-
-   hb_retni( (int) p->GetCompoundArray( pReal, iLen ) );
-   hb_xfree( ( void *) pReal );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta = Ok;
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      int count;
+      REAL * distances;
+      PHB_ITEM aCompoundArray;
+      INT j;
+      count = p->GetCompoundArrayCount();
+      if( count > 0 ){
+      	 aCompoundArray = hb_itemArrayNew( count );
+         distances = ( REAL * ) hb_xgrab( sizeof( REAL ) * count );      
+         sta = p->GetCompoundArray(distances, count);
+         for( j = 0; j < count; j++ )
+            hb_arraySetND( aCompoundArray, j + 1, ( double ) distances[ j ] );
+            
+         GDIPLUS_StoreParam( 2, aCompoundArray );
+         hb_xfree( ( void *) distances );
+      }
+      hb_retni( sta );
+    }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
 HB_FUNC( GPPENGETCOMPOUNDARRAYCOUNT )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->GetCompoundArrayCount() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );      
+      hb_retni( (int) p->GetCompoundArrayCount() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
@@ -523,7 +523,7 @@ HB_FUNC( GPPENGETCUSTOMENDCAP )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    CustomLineCap* ccp = (CustomLineCap*) hb_parptr( 2 );
-   hb_parni( (int) p->GetCustomEndCap( ccp ));
+   hb_retni( (int) p->GetCustomEndCap( ccp ));
 }
 
 
@@ -531,106 +531,174 @@ HB_FUNC( GPPENGETCUSTOMSTARTCAP )
 {
    Pen* p = (Pen*) hb_parptr( 1 );
    CustomLineCap* clc = (CustomLineCap*) hb_parptr( 2 );
-   hb_parni( (int) p->GetCustomStartCap( clc ));
+   hb_retni( (int) p->GetCustomStartCap( clc ));
 }
 
 
 HB_FUNC( GPPENGETDASHCAP )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_parni( (int) p->GetDashCap());
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );  
+      hb_retni( (int) p->GetDashCap());
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPPENGETDASHOFFSET )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->GetDashOffset() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );    
+      hb_retnd( (DOUBLE) p->GetDashOffset() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPPENGETDASHPATTERN )
 {
-  Pen* p = (Pen*) hb_parptr( 1 );
-  int iCount = hb_parni( 3 );
-  PHB_ITEM pArray = hb_param( 2, HB_IT_ARRAY );
-  REAL * real = ( REAL * ) hb_xgrab( sizeof( REAL ) * iCount );
-  int j, iStatus;
-  iStatus = p->GetDashPattern( real, iCount );
-  for( j = 0; j < iCount; j ++ )
-  {
-     hb_arraySetND( pArray, j + 1, ( DOUBLE ) real[j] );
-  }
-  hb_xfree( real );
-  hb_storvptr( pArray, 2 );
-  hb_itemRelease( pArray );
-  hb_retni( iStatus );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );   
+      int iCount = p->GetDashPatternCount();
+      PHB_ITEM pArray;
+      int j, iStatus;
+      if( iCount > 0 ){
+         REAL * real = ( REAL * ) hb_xgrab( sizeof( REAL ) * iCount );
+         iStatus = p->GetDashPattern( real, iCount );      
+      	 pArray = hb_itemArrayNew( iCount );
+         for( j=0; j < iCount; j++ ){
+            hb_arraySetND( pArray, j + 1, ( DOUBLE ) real[j] );
+         }
+         hb_xfree( real );
+         GDIPLUS_StoreParam( 2, pArray );
+         hb_retni( iStatus );
+      }
+   }   	
 }
 
 // INT GetDashPatternCount();
 HB_FUNC( GPPENGETDASHPATTERNCOUNT )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->GetDashPatternCount() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );      
+      hb_retni( (int) p->GetDashPatternCount() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      	
 }
 
 // DashStyle GetDashStyle();
 HB_FUNC( GPPENGETDASHSTYLE )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->GetDashStyle() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );      
+      hb_retni( (int) p->GetDashStyle() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 // LineCap GetEndCap();
 HB_FUNC( GPPENGETENDCAP )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->GetEndCap() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );      
+      hb_retni( (int) p->GetEndCap() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 // Status GetLastStatus();
 HB_FUNC( GPPENGETLASTSTATUS )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->GetLastStatus() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );      
+      hb_retni( (int) p->GetLastStatus() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 // LineJoin GetLineJoin();
 HB_FUNC( GPPENGETLINEJOIN )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->GetLineJoin() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );      
+      hb_retni( (int) p->GetLineJoin() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 // REAL GetMiterLimit();
 HB_FUNC( GPPENGETMITERLIMIT )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retnd( (int) p->GetMiterLimit() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );      
+      hb_retnd( (int) p->GetMiterLimit() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 // PenType GetPenType();
 HB_FUNC( GPPENGETPENTYPE )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->GetPenType() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );      
+      hb_retni( (int) p->GetPenType() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
 
 HB_FUNC( GPPENGETSTARTCAP )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->GetStartCap() );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );      
+      hb_retni( (int) p->GetStartCap() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      	
 }
 
 HB_FUNC( GPPENGETTRANSFORM )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   Matrix* m = (Matrix*) hb_parptr( 2 );
-   hb_retni( (int) p->GetTransform(m) );
+   GDIPLUS * pen = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pen )  ){
+   	  Status sta;
+   	  PHB_ITEM oMatrix;
+      Pen* p = (Pen*) GP_GET( pen );
+      Matrix matrix;
+      sta = p->GetTransform( &matrix );
+      oMatrix = GPNewGDIPLUSObject( &matrix, GP_IT_MATRIX );
+      GDIPLUS_StoreParam( 2, oMatrix );
+      hb_retni( sta );
+    }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
 }
 
 HB_FUNC( GPPENGETWIDTH )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->GetWidth() );
+   GDIPLUS * pen = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( pen )  ){
+      Pen* p = (Pen*) GP_GET( pen );
+      hb_retni( (int) p->GetWidth() );
+    }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
+   
 }
 
 HB_FUNC( GPPENMULTIPLYTRANSFORM )

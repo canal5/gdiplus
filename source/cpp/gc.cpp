@@ -35,9 +35,9 @@ void hb_GDIPLUS_ret( GDIPLUS * p )
    if( p )
    {
 #ifndef __XHARBOUR__
-      void ** ph = ( void ** ) hb_gcAllocate( sizeof( GDIPLUS * ), &s_gcGDIPLUSFuncs );
+      PGDIPLUS * ph = (PGDIPLUS * ) hb_gcAllocate( sizeof( GDIPLUS * ), &s_gcGDIPLUSFuncs );
 #else
-      void ** ph = ( void ** ) hb_gcAlloc( sizeof( GDIPLUS * ), GDI_GDIPLUS_release );
+      PGDIPLUS * ph = ( PGDIPLUS * ) hb_gcAlloc( sizeof( GDIPLUS * ), GDI_GDIPLUS_release );
 #endif //__XHARBOUR__
       * ph = p;
 
@@ -126,7 +126,11 @@ GDIPLUS * GDIPLUSItemGet( PHB_ITEM pItem )
 
 PHB_ITEM GDIPLUSItemPut( PHB_ITEM pItem, GDIPLUS * pGdiPlus )
 {
-   PGDIPLUS * pp = ( PGDIPLUS * ) hb_gcAllocate( sizeof( GDIPLUS ), &s_gcGDIPLUSFuncs );
+#ifndef __XHARBOUR__
+      PGDIPLUS * pp = (PGDIPLUS * ) hb_gcAllocate( sizeof( GDIPLUS * ), &s_gcGDIPLUSFuncs );
+#else
+      PGDIPLUS * pp = ( PGDIPLUS * ) hb_gcAlloc( sizeof( GDIPLUS * ), GDI_GDIPLUS_release );
+#endif //__XHARBOUR__
 
    *pp = pGdiPlus;
    return hb_itemPutPtrGC( pItem, pp );
@@ -139,6 +143,14 @@ void GDIPLUSItemClear( PHB_ITEM pItem )
    if( pp )
       * pp = NULL;
 }
+
+void GDIPLUS_StoreParam( int iParam, PHB_ITEM p ){
+	
+   if( !hb_itemParamStoreRelease( iParam, p ))
+      hb_itemRelease( p );
+
+}
+
 
 //------------------------------------------------//
 //graphics

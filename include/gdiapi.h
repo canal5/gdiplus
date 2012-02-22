@@ -42,12 +42,13 @@ typedef struct __gdiplus
 
 //gdiplus core
 GDIPLUS * gdiplus_new( int type );
-void gdiplus_destroy( GDIPLUS * p );
-void hb_GDIPLUS_ret( GDIPLUS * p );
+void      gdiplus_destroy( GDIPLUS * p );
+void      hb_GDIPLUS_ret( GDIPLUS * p );
 GDIPLUS * hb_GDIPLUS_par( int iParam );
 GDIPLUS * GDIPLUSItemGet( PHB_ITEM pItem );
-void GDIPLUSItemClear( PHB_ITEM pItem );
-PHB_ITEM GDIPLUSItemPut( PHB_ITEM pItem, GDIPLUS * pGdiPlus );
+void      GDIPLUSItemClear( PHB_ITEM pItem );
+PHB_ITEM  GDIPLUSItemPut( PHB_ITEM pItem, GDIPLUS * pGdiPlus );
+void      GDIPLUS_StoreParam( int iParam, PHB_ITEM p );
 
 
 

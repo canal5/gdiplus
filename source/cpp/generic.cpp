@@ -30,6 +30,11 @@ void Traza( char * c )
    MessageBox( 0, c, "TRAZA", 0 );
 }
 
+void TrazaL( long l )
+{
+   MessageBox( 0, LToStr( l ), "TRAZALONG", 0 );
+}
+
 HB_FUNC( GETGDIPLUSHANDLE )
 {
   GDIPLUS * o = ( GDIPLUS * ) hb_parptr( 1 );
@@ -38,7 +43,8 @@ HB_FUNC( GETGDIPLUSHANDLE )
 
 PHB_ITEM GPNewGDIPLUSObject( void * c, int iType ){
 
-   PHB_ITEM pitem, pObj;
+
+   PHB_ITEM pitem;
    GDIPLUS * p = gdiplus_new( _newo[ iType ].i_type ); 
    PHB_ITEM pHandle = hb_itemNew( NULL );
    void * pOut = operator new( _newo[ iType ].l_size );
@@ -50,10 +56,8 @@ PHB_ITEM GPNewGDIPLUSObject( void * c, int iType ){
    GP_SET( p, pOut );
    
    GDIPLUSItemPut( pHandle, p );
-   
    hb_objSendMsg( pitem, "_HANDLE", 1, pHandle );
    
-   hb_itemRelease( pObj );
    hb_itemRelease( pHandle );
    
    return pitem;  
@@ -77,5 +81,6 @@ void GPSendHandleToObject( PHB_ITEM pitem, void * c, int iType ){
    hb_itemRelease( pHandle );
    
    return;  
-  
 }
+
+   

@@ -342,10 +342,16 @@ HB_FUNC( _GPMATRIXCLONE )
    if( GP_IS_MATRIX( p ) ){
       Matrix * ptr = ( Matrix * ) GP_GET( p );
       Matrix * clone;
+      Status sta;
       PHB_ITEM pClone;
       clone = ptr->Clone();
-      pClone = GPNewGDIPLUSObject( ( void * ) clone, GP_IT_MATRIX );    
-      hb_itemReturnRelease( pClone );
+      sta = ptr->GetLastStatus();
+      Traza( LToStr( sta ) ); 
+      if( sta == Ok ){
+      	Traza( LToStr( sta ) ); 
+         pClone = GPNewGDIPLUSObject( ( void * ) clone, GP_IT_MATRIX );    
+         hb_itemReturnRelease( pClone );         
+      }
       
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -654,41 +660,6 @@ HB_FUNC( _GPMATRIXTRANSFORMPOINTS )
       hb_retni( sta );
       
       
-   }else
-     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
-}
-
-//-----------------------------------------//
-
-HB_FUNC( _GPMATRIXTRANSFORMPOINTSF )
-{
-   Status sta;    
-   GDIPLUS * p = hb_GDIPLUS_par( 1 );
-   
-   if( GP_IS_MATRIX( p ) && HB_ISARRAY( 2 ) ){
-      Matrix * ptr = ( Matrix * ) GP_GET( p ); 
-      PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
-      int iLen = hb_arrayLen( aPoint );     
-      int n;
-      PointF * pPoint = ( PointF * ) hb_xgrab( sizeof( PointF ) * iLen );
-      
-      for( n = 0; n < iLen; n++ ){
-        
-        PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );  
-        hb_vmPushSymbol( hb_dynsymGetSymbol( "HANDLE" ) ); 
-        hb_vmPush( pItem );     
-        hb_vmFunction( 0 );
-        PointF * pObj = hb_PointF_par( -1 );
-        PointF pDest( pObj->X, pObj->Y ); 
-        pPoint[ n ] = pDest;      
-      }
-      
-      hb_xfree( ( void*) pPoint );
-      sta = ptr->TransformPoints( pPoint, iLen );
-        
-      hb_retni( sta );
-
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    

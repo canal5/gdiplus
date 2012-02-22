@@ -106,7 +106,6 @@ HB_FUNC( _GPSOLIDBRUSHSETCOLOR )
 
 }
 
-
 HB_FUNC( _GPSOLIDBRUSHGETCOLOR )
 {
    GDIPLUS * pBrush = hb_GDIPLUS_par( 1 );
@@ -118,9 +117,11 @@ HB_FUNC( _GPSOLIDBRUSHGETCOLOR )
      Status sta;
      SolidBrush* b = ( SolidBrush * ) GP_GET( pBrush);
      sta = b->GetColor( &c );
+
      pitemColor = GPNewGDIPLUSObject( &c, GP_IT_COLOR );
-     if( !hb_itemParamStoreRelease( 2, pitemColor ))
-        hb_itemRelease( pitemColor );
+     
+     GDIPLUS_StoreParam( 2, pitemColor );
+
      hb_retni( sta );
   
   }else

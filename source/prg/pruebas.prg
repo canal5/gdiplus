@@ -415,7 +415,7 @@ return 0
 
 local oColor := Color( 255, 10, 20, 30 )
 local oBrush := SolidBrush( oColor )
-local oPen   
+local oPen, oColor2, oBrush2, matrix
 
    Pen oPen( oBrush, 5 )
    Pen oPen2(Color(255, 0, 0, 255), 30)
@@ -428,23 +428,52 @@ local oPen
    TEST !empty( Pen( oBrush, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
    TEST !empty( Pen( oColor, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
    TEST oPen:SetColor( oColor ) == 0                       DESCRIPTION "SetColor()" SAMPLE Example_PenSetColor()
+   TEST oPen2:GetColor( @oColor2 ) == 0                    DESCRIPTION "GetColor()" SAMPLE Example_PenSetColor()
    TEST oPen:SetBrush( oBrush ) == 0                       DESCRIPTION "SetBrush()" SAMPLE Example_PenSetBrush()
+   TEST oPen:GetBrush( @oBrush2 ) == 0                     DESCRIPTION "GetBrush()" SAMPLE Example_PenSetBrush()
+   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
+   TEST oPen2:GetCompoundArray( )==0                       DESCRIPTION "GetCompoundArray()" SAMPLE Example_SetCompoundArray()
+   
+   TEST oPen3:SetDashCap( DashCapTriangle )==0             DESCRIPTION "SetDashCap( )" SAMPLE Example_SetCustomStartCap()
+   TEST oPen3:GetDashCap() == DashCapTriangle              DESCRIPTION "GetDashCap( )" 
+
+   TEST oPen3:SetDashOffset( 10 )==0                       DESCRIPTION "SetDashOffset( )" SAMPLE Example_SetDashOffset()
+   TEST oPen3:GetDashOffset( )==10                         DESCRIPTION "GetDashOffset( )" 
+
+   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
+   TEST oPen2:GetCompoundArrayCount()==6                   DESCRIPTION "GetCompoundArrayCount()"
+   TEST oPen3:SetDashPattern( { 5, 2, 15, 4 }, 4 )==0      DESCRIPTION "SetDashPattern( {} )" SAMPLE Example_SetDashPattern()
+   TEST oPen3:GetDashPattern() ==0                         DESCRIPTION "GetDashPattern( )"    SAMPLE Example_SetDashPattern()
+   
+   TEST oPen3:SetDashStyle( DashStyleDash )==0           DESCRIPTION "SetDashStyle( )" SAMPLE Example_SetDashStyle()   
+   TEST oPen3:GetDashStyle()==DashStyleDash              DESCRIPTION "GetDashStyle( )" 
+   
+   TEST oPen3:SetEndCap( LineCapArrowAnchor )==0           DESCRIPTION "SetEndCap( )"   SAMPLE Example_SetStartEndCap()
+   TEST oPen3:GetEndCap( )==LineCapArrowAnchor             DESCRIPTION "GetEndCap( )"   
+   
+   TEST oPen3:SetStartCap( LineCapArrowAnchor )==0         DESCRIPTION "SetStartCap( )" SAMPLE Example_SetStartEndCap()
+   TEST oPen3:GetStartCap( )==LineCapArrowAnchor           DESCRIPTION "GetStartCap( )" 
+   
+   TEST oPen3:SetLineCap(LineCapArrowAnchor, LineCapTriangle, DashCapRound)==0 DESCRIPTION "SetLineCap()" SAMPLE Example_SetLineCap()
+   
+   TEST oPen3:SetLineJoin(LineJoinBevel)==0                DESCRIPTION "SetLineJoin()" SAMPLE Example_SetLineJoin()
+   TEST oPen3:GetLineJoin()==LineJoinBevel                 DESCRIPTION "GetLineJoin()" 
+
+   TEST oPen3:SetMiterLimit(10.0)==0                       DESCRIPTION "SetMiterLimit()" 
+   TEST oPen3:GetMiterLimit()==10.0                        DESCRIPTION "GetMiterLimit()" 
+
+   TEST oPen3:SetTransform(matrix(20, 0, 0, 10, 0, 0))==0  DESCRIPTION "SetTransform()" SAMPLE Example_SetTransformPen()
+   TEST oPen3:GetTransform( @matrix )==0                   DESCRIPTION "GetTransform()" SAMPLE Example_SetTransformPen()
+
+   TEST oPen3:SetWidth(15)==0                              DESCRIPTION "SetWidth()"    SAMPLE Example_SetWidth()
+   TEST oPen3:GetWidth()==15                             DESCRIPTION "GetWidth()"    SAMPLE Example_SetWidth()
+      
+
    TEST oPen:ScaleTransform( 8, 4 ) == 0                   DESCRIPTION "ScaleTransform()" SAMPLE Example_PenScaleTransform()
    TEST oPen:SetAlignment( PenAlignmentInset ) == 0        DESCRIPTION "oPen:SetAlignment()" SAMPLE Example_PenSetAlignment()
    TEST oPen:MultiplyTransform( Matrix( 1, 0, 0, 4, 0, 0 ), MatrixOrderPrepend ) == 0 DESCRIPTION "MultiplyTransform()" SAMPLE Example_MultiplyTrans()
    TEST oPen:ResetTransform() == 0                         DESCRIPTION "ResetTransform()" SAMPLE Example_ResetTransPen()
    TEST oPen:RotateTransform(30, MatrixOrderAppend)==0     DESCRIPTION "RotateTransform()" SAMPLE Example_RotateTransPen()
-   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
-   TEST oPen3:SetDashStyle( DashCapTriangle )==0           DESCRIPTION "SetDashStyle( DashCapTriangle )" SAMPLE Example_SetCustomStartCap()
-   TEST oPen3:SetDashOffset( 10 )==0                       DESCRIPTION "SetDashOffset( 10 )" SAMPLE Example_SetDashOffset()
-   TEST oPen3:SetDashPattern( { 5, 2, 15, 4 }, 4 )==0      DESCRIPTION "SetDashPattern( {} )" SAMPLE Example_SetDashPattern()
-   TEST oPen3:SetEndCap( LineCapArrowAnchor )==0           DESCRIPTION "SetEndCap( )"   SAMPLE Example_SetStartEndCap()
-   TEST oPen3:SetStartCap( LineCapArrowAnchor )==0         DESCRIPTION "SetStartCap( )" SAMPLE Example_SetStartEndCap()
-   TEST oPen3:SetLineCap(LineCapArrowAnchor, LineCapTriangle, DashCapRound)==0 DESCRIPTION "SetLineCap()" SAMPLE Example_SetLineCap()
-   TEST oPen3:SetLineJoin(LineJoinBevel)==0                DESCRIPTION "SetLineJoin()" SAMPLE Example_SetLineJoin()
-   TEST oPen3:SetMiterLimit(10.0)==0                       DESCRIPTION "SetMiterLimit()" 
-   TEST oPen3:SetTransform(matrix(20, 0, 0, 10, 0, 0))==0  DESCRIPTION "SetTransform()" SAMPLE Example_SetTransformPen()
-   TEST oPen3:SetWidth(15)==0                              DESCRIPTION "SetWidth()"    SAMPLE Example_SetWidth()
    
 return 0
 
@@ -1224,7 +1253,8 @@ return nil
 
 function Example_PenSetColor( )
    local bPainted := { | hdc |
-
+      local oColor
+      
       Graphics graphics(hdc)
       
       // Create a red pen, and use it to draw a line.
@@ -1234,6 +1264,10 @@ function Example_PenSetColor( )
       // Change the pen's color to blue, and draw a second line.
       pen:SetColor(Color(255, 0, 0, 255))
       graphics:DrawLine(pen, 0, 40, 200, 140)
+      
+      pen:GetColor( @oColor )
+      pen:SetColor( oColor )
+      graphics:DrawLine(pen, 0, 80, 200, 140)
 
    }
    
@@ -1347,6 +1381,7 @@ return nil
 function Example_SetCompoundArray( )
    local bPainted := { | hdc |
       local compVals := {0.0, 0.5, 0.6, 0.8, 0.9, 1.0}
+      local aRes
       
       Graphics graphics(hdc)
 
@@ -1354,12 +1389,18 @@ function Example_SetCompoundArray( )
        // Create an array of real numbers and a Pen object.
        
        Pen pen(Color(255, 0, 0, 255), 30)
+       Pen pen2(Color(255, 255, 0, 255), 40)
        
        // Set the compound array of the pen.
        pen:SetCompoundArray(compVals, 6)
        
+       pen:GetCompoundArray( @aRes )
+
+       pen:SetCompoundArray( aRes, Len( aRes ) )
+       
        // Draw a line with the pen.
        graphics:DrawLine(pen, 5, 20, 405, 200)
+       graphics:DrawLine(pen, 5, 100, 405, 280)
    
    }
    
@@ -1367,6 +1408,31 @@ function Example_SetCompoundArray( )
    
 return nil
 
+function Example_SetDashStyle( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a Pen object.
+      Pen pen(Color(255, 0, 0, 255), 15)
+      
+      // Set the dash style for the pen, and draw a dashed line.
+      pen:SetDashStyle(DashStyleDash)
+      graphics:DrawLine(pen, 0, 50, 400, 150)
+      
+      // Reset the dash style for the pen, and draw a second line.
+      pen:SetDashStyle(DashStyleDot)
+      graphics:DrawLine(pen, 0, 80, 400, 180)
+      
+      // Reset the dash style for the pen, and draw a third line.
+      pen:SetDashStyle(DashStyleDashDot)
+      graphics:DrawLine(pen, 0, 110, 400, 210)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
 
 function Example_SetCustomStartCap( )
    local bPainted := { | hdc |
@@ -1419,16 +1485,21 @@ function Example_SetDashPattern( )
          2.0,;   // space length 2
          15.0,;  // dash length 15
          4.0} 
+      local aRes
       Graphics graphics(hdc)
 
       // Create a Pen object.
       Pen pen(Color(255, 0, 0, 0), 5)
+      Pen pen2(Color(255, 255, 0, 0), 5)
       
       // Set the dash pattern for the custom dashed line.
       pen:SetDashPattern(dashVals, 4)
+      pen:GetDashPattern( @aRes )
+      pen2:SetDashPattern(aRes, Len( aRes ) )
       
       // Draw the custom dashed line.
       graphics:DrawLine(pen, 5, 20, 405, 200)
+      graphics:DrawLine(pen2, 5, 100, 405, 280)
    }
    
    exampleWindow( bPainted )
@@ -1509,13 +1580,15 @@ return nil
 
 function Example_SetTransformPen( )
    local bPainted := { | hdc |
-
+      local matrix2, matrix3
       Graphics graphics(hdc)
 
       Matrix matrix(20, 0, 0, 10, 0, 0)  // scale
       
       // Create a pen, and use it to draw a rectangle.
       Pen pen(Color(255, 0, 0, 255), 2)
+      Pen pen2(Color(255, 255, 0, 255), 2)
+      
       graphics:DrawRectangle(pen, 10, 50, 150, 100)
       
       // Scale the pen width by a factor of 20 in the horizontal 
@@ -1524,6 +1597,12 @@ function Example_SetTransformPen( )
       
       // Draw a rectangle with the transformed pen.
       graphics:DrawRectangle(pen, 200, 50, 150, 100)
+
+      pen:GetTransform(@matrix2)
+      
+      pen2:SetTransform(matrix)
+            
+      graphics:DrawRectangle(pen2, 200, 180, 150, 100)
    }
    
    exampleWindow( bPainted )
