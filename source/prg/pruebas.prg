@@ -35,15 +35,18 @@ return nil
 *****************************************************************************************
   function TestGraphicsPath()
 *****************************************************************************************
-
+   
+   local gp
    
    SEPARADOR( "GRAPHICS PATH" )
+   
+   GraphicsPath gp();
 
    TEST !empty( GraphicsPath():handle )                       DESCRIPTION "GraphicsPath()"
    TEST !empty( GraphicsPath( FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( FillMode )"
    TEST !empty( GraphicsPath( { Point( 10, 10 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( ... )"
-   TEST !empty( GraphicsPath( { PointF( 10.0, 20.0 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( ... )"
-   
+   TEST !empty( GraphicsPath( { PointF( 10.0, 20.0 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle ) DESCRIPTION "GraphicsPath( ... )"
+   TEST gp:AddArc( 20, 20, 50, 100, 0.0, 180.0 ) == 0         DESCRIPTION "AddArc()"
    
 return 0
 

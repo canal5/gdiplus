@@ -28,7 +28,7 @@ CLASS GPGraphicsPath
    METHOD     Destroy()
    DESTRUCTOR Destroy()
 
-   METHOD AddArc( rc, start, angle )          INLINE GPAddArc(::g, rc, start, angle )
+   METHOD AddArc( rc, start, angle )          
    METHOD AddBezier( aPt1, aPt2, aPt3, aPt4 ) INLINE GPAddBezier(::g, aPt1, aPt2, aPt3, aPt4 )
    METHOD AddBeziers()
    METHOD AddClosedCurve()
@@ -101,6 +101,21 @@ return self
   ::handle := nil
 
 return nil
+
+*********************************************************************************************************
+   METHOD AddArc( A, B, C, D, E, F ) CLASS GPGraphicsPath
+*********************************************************************************************************
+   
+   local sta
+   
+   if ValType( A ) == "O"
+      sta = GPAddArc(::handle, A:handle, B, C )
+   else 
+      sta = GPAddArc(::handle, A, B, C, D, E, F )
+   endif
+   
+return sta
+
 
 *********************************************************************************************************
    METHOD AddBeziers() CLASS GPGraphicsPath
@@ -418,19 +433,31 @@ HB_FUNC( _GPGRAPHICSPATH )
 	
 }
 
-HB_FUNC( DELETEGRAPHICSPATH )
-{
-   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
-   delete (GraphicsPath*) gp;
-   hb_ret();
-}
-
 HB_FUNC( GPADDARC )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
-   RectF rect = RectF(hb_parvnd( 2, 1 ), hb_parvnd( 2, 2 ), hb_parvnd( 2, 3 ), hb_parvnd( 2, 4 ));
-   gp->AddArc( rect, (float) hb_parnd( 3 ), (float) hb_parnd( 4 ) );
-   hb_ret();
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	    if( hb_pcount() > 4 ){
+	       if( HB_ISDOUBLE( 2 ) )
+	          sta = gp->AddArc( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ) );
+	       else if( HB_ISINTEGER( 2 ) )
+	       	  sta = gp->AddArc( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), hb_parni( 7 ) );	    	
+	    }else {
+	    	GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
+	    	if( GP_IS_RECTF( pRect ) ){
+	    	   RectF * rect = ( RectF * ) GP_GET( pRect );
+	    	   sta = gp->AddArc( *rect, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );	    		
+	    	}else{ 
+	    	   Rect * rect = ( Rect * ) GP_GET( pRect );
+	    	   sta = gp->AddArc( *rect, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );	    		
+	    	}
+	    }
+	    hb_parni( ( Status ) sta );
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 HB_FUNC( GPADDBEZIER )
