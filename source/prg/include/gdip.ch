@@ -19,7 +19,7 @@
 #xcommand IMAGE <o>( <par1> ) =>  <o> := Image( <par1> )
 #xcommand SOLIDBRUSH          <oBrush> (  <oColor> )                                                  => <oBrush>  := SolidBrush         ( <oColor> )
 #xcommand TEXTUREBRUSH        <oBrush> (  <par1>,<par2>[,<par3>[,<par4>,<par5>,<par6> ] ] )           => <oBrush>  := TextureBrush       ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>][, <par6>] )
-
+#xcommand GRAPHICSPATH        <oPath>  ( [<par1> [,<par2>,<par3>,<par4>]] )                           => <oPath>   := GraphicsPath       ( [<par1>][, <par2>][, <par3>][, <par4>] )
 
 
 
@@ -1156,6 +1156,18 @@
 #xtranslate LineJoinBevel                                 => 1
 #xtranslate LineJoinRound                                 => 2
 #xtranslate LineJoinMiterClipped                          => 3
+
+#xtranslate FillModeAlternate                             => 0
+#xtranslate FillModeWinding                               => 1
+
+#xtranslate PathPointTypeStart                            => 0
+#xtranslate PathPointTypeLine                             => 1
+#xtranslate PathPointTypeBezier                           => 3
+#xtranslate PathPointTypePathTypeMask                     => 0x7
+#xtranslate PathPointTypePathDashMode                     => 0x10
+#xtranslate PathPointTypePathMarker                       => 0x20
+#xtranslate PathPointTypeCloseSubpath                     => 0x80
+#xtranslate PathPointTypeBezier3                          => 3 
 
 
 // ---------------------------------------------------------------------------

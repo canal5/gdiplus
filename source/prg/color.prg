@@ -69,8 +69,6 @@ CLASS GPColor
   METHOD SetValue( argbColor )
   METHOD ToCOLORREF()
   
-  METHOD convertColorHandle( h ) 
-
 ENDCLASS
 
 *********************************************************************************************************
@@ -181,11 +179,6 @@ return GPColorSetValue(::handle, argbColor)
 return GPColorToCOLORREF(::handle)
 
 
-METHOD convertColorHandle( h ) CLASS GPColor
-   ::handle = _getColorHandle( h )
-return nil
-
-
 // Color::GetA               The Color::GetA method gets the alpha component of this Color object.
 // Color::GetAlpha       The Color::GetAlpha method gets the alpha component of this Color object.
 // Color::GetB               The Color::GetB method gets the blue component of this Color object.
@@ -204,11 +197,6 @@ return nil
 #pragma BEGINDUMP
 #include <gc.h>
 
-HB_FUNC( _GETCOLORHANDLE )
-{
-  Color * c = ( Color * ) hb_parptr( 1 );
-  hb_Color_ret( c );  
-}
 
 HB_FUNC( _GPCOLOR )
 {

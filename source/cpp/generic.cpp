@@ -83,4 +83,46 @@ void GPSendHandleToObject( PHB_ITEM pitem, void * c, int iType ){
    return;  
 }
 
+void * ConvertArray2Point( PHB_ITEM aPoint, BOOL * l )
+{
+	
+   int n;
+   int iLen = hb_arrayLen( aPoint );
+   Point * pPoint;
+   PointF * pPointF;
+   BOOL lF = false;
+   void * pVoid;
+      
+   for( n = 0; n < iLen; n++ ){
+     
+     PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );
+     GDIPLUS * ptrPoint;
+     hb_objSendMsg( pItem, "HANDLE", 0 );
+     ptrPoint = hb_GDIPLUS_par( -1 );
    
+     if( GP_IS_POINT( ptrPoint ) ){
+        if( n == 0 )
+           pPoint = ( Point * ) hb_xgrab( sizeof( Point ) * iLen );
+        Point * pObj = ( Point * )GP_GET( ptrPoint );          
+        pPoint[ n ] = *pObj;
+     }else if( GP_IS_POINTF( ptrPoint ) ){
+        if( n == 0 ){
+           pPointF = ( PointF * ) hb_xgrab( sizeof( PointF ) * iLen );
+           lF = true;
+        }
+        PointF * pObj = ( PointF * )GP_GET( ptrPoint );          
+        pPointF[ n ] = *pObj;
+     }
+   
+   }
+   
+   *l = lF;
+   
+   if( lF )
+      pVoid = ( void * ) pPointF;
+   else
+      pVoid = ( void * ) pPoint;
+      
+   return pVoid;
+      
+}

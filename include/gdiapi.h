@@ -25,6 +25,7 @@ typedef struct __gdiplus
 #define GP_IT_SIZE       ( ( int ) 0x0000A )
 #define GP_IT_SIZEF      ( ( int ) 0x0000B )
 #define GP_IT_MATRIX     ( ( int ) 0x0000C )
+#define GP_IT_GRAPHICSPATH ( ( int ) 0x0000D )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
@@ -39,6 +40,7 @@ typedef struct __gdiplus
 #define GP_IS_SIZE( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_SIZE ) )
 #define GP_IS_SIZEF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_SIZEF ) )
 #define GP_IS_MATRIX( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_MATRIX ) )
+#define GP_IS_GRAPHICSPATH( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICSPATH ) )
 
 //gdiplus core
 GDIPLUS * gdiplus_new( int type );

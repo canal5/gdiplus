@@ -13,7 +13,7 @@ Local oTest
 //      TestsBrush()
 //      TestsFont()
 //      TestsSizeF()
-      TestMatrix()
+//      TestMatrix()
 //      TestLinearGB()
       
 //      TestImage()
@@ -22,12 +22,30 @@ Local oTest
 //      TestPointF()
 //      TestsRectF()
 //      TestsRect()
+  
+      TestGraphicsPath()
       
       SHOW RESULT
 
    ENDDEFINE
 
 return nil
+
+
+*****************************************************************************************
+  function TestGraphicsPath()
+*****************************************************************************************
+
+   
+   SEPARADOR( "GRAPHICS PATH" )
+
+   TEST !empty( GraphicsPath():handle )                       DESCRIPTION "GraphicsPath()"
+   TEST !empty( GraphicsPath( FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( FillMode )"
+   TEST !empty( GraphicsPath( { Point( 10, 10 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( ... )"
+   TEST !empty( GraphicsPath( { PointF( 10.0, 20.0 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( ... )"
+   
+   
+return 0
 
 *****************************************************************************************
   function TestPointF()

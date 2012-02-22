@@ -1,7 +1,23 @@
 #include "fivewin.ch"
 
-function GraphicsPath()
-return GPGraphicsPath():New()
+function GraphicsPath( ... )
+   local aParams := hb_aparams()
+   local oPath
+   local nLen := Len( aParams )
+
+   switch nLen
+      case 0
+         oPath = GPGraphicsPath():New()
+         exit
+      case 1
+         oPath = GPGraphicsPath():New( aParams[ 1 ] )
+         exit
+      case 4
+         oPath = GPGraphicsPath():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
+        exit
+   endswitch
+
+return oPath
 
 
 CLASS GPGraphicsPath
@@ -55,10 +71,26 @@ CLASS GPGraphicsPath
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New( cFileName ) CLASS GPGraphicsPath
+  METHOD New( ... ) CLASS GPGraphicsPath
 *********************************************************************************************************
 
-  ::handle := _GPGraphicsPath( cFileName )
+local iParams := PCount()
+local handle 
+local aParams := hb_aparams()
+
+   switch iParams
+      case 0
+         handle = _GPGraphicsPath()
+         exit
+      case 1
+         handle = _GPGraphicsPath( aParams[ 1 ] )
+         exit
+      case 4
+         handle = _GPGraphicsPath( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
+        exit
+   endswitch
+   
+   ::handle = handle
 
 return self
 
@@ -335,17 +367,55 @@ return 0
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <hbapiitm.h>
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPGRAPHICSPATH )
 {
-   GraphicsPath* gp = new GraphicsPath();
-   hb_retni( (long) gp );
+   GraphicsPath* o;
+   GDIPLUS *  pObj = gdiplus_new( GP_IT_GRAPHICSPATH );
+   int iParams = hb_pcount();
+   BOOL lOk = true;
+   
+   switch (iParams){
+      case 0:
+          o = new GraphicsPath();
+          break;
+      case 1:
+          o = new GraphicsPath( ( FillMode) hb_parni( 1 ) );
+          break;
+      case 4:
+      {    
+      	 PHB_ITEM aPoint = hb_param( 1, HB_IT_ARRAY );
+      	 PHB_ITEM aType  = hb_param( 2, HB_IT_ARRAY );
+      	 int j;
+      	 int count = hb_arrayLen( aPoint );
+      	 int count2 = hb_arrayLen( aType );      	
+      	 BOOL lF = false; 
+      	 void * vPoint;
+      	 if( count2 == count ){
+      	    void * vPoint;
+      	    BYTE * pType = ( BYTE * ) hb_xgrab( sizeof( BYTE ) * count );
+      	    vPoint = ConvertArray2Point( aPoint, &lF );
+      	    for( j = 0; j < count; j++ )
+      	       pType[ j ] = hb_arrayGetNI( aType, j + 1 );
+            if( lF )
+               o = new GraphicsPath( ( PointF * ) vPoint, pType, count, ( FillMode ) hb_parni( 4 ) );
+            else 
+               o = new GraphicsPath( ( Point * ) vPoint, pType, count, ( FillMode ) hb_parni( 4 ) );
+            hb_xfree( ( void * ) pType );
+            hb_xfree( vPoint );            
+          }else
+             lOk = false;
+      }
+      break;
+   }
+   if( lOk )
+   {
+      GP_SET( pObj, o );
+      hb_GDIPLUS_ret( pObj );	
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	
 }
 
 HB_FUNC( DELETEGRAPHICSPATH )

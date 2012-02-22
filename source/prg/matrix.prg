@@ -602,53 +602,28 @@ HB_FUNC( _GPMATRIXTRANSFORMPOINTS )
       PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
       int iLen = hb_arrayLen( aPoint );     
       int n;
-      Point * pPoint;
-      PointF * pPointF;
+      void * vPoint;
       BOOL lF = false;
       
-      
-      for( n = 0; n < iLen; n++ ){
-        
-        PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );
-        GDIPLUS * ptrPoint;
-        hb_objSendMsg( pItem, "HANDLE", 0 );
-        ptrPoint = hb_GDIPLUS_par( -1 );
+      vPoint = ConvertArray2Point( aPoint, &lF );
 
-        if( GP_IS_POINT( ptrPoint ) ){
-           if( n == 0 )
-              pPoint = ( Point * ) hb_xgrab( sizeof( Point ) * iLen );
-           Point * pObj = ( Point * )GP_GET( ptrPoint );          
-           pPoint[ n ] = *pObj;
-        }else if( GP_IS_POINTF( ptrPoint ) ){
-           if( n == 0 ){
-              pPointF = ( PointF * ) hb_xgrab( sizeof( PointF ) * iLen );
-              lF = true;
-           }
-           PointF * pObj = ( PointF * )GP_GET( ptrPoint );          
-           pPointF[ n ] = *pObj;
-        }
-
-      }
-      
       if( ! lF ){
          int n;
-         sta = ptr->TransformPoints( pPoint, iLen );
+         sta = ptr->TransformPoints( ( Point * ) vPoint, iLen );
          for( n=0; n< iLen;n++ )
          {
             PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );
-            GPSendHandleToObject( pItem, &pPoint[ n ], GP_IT_POINT );
-         }              
-         hb_xfree( ( void*) pPoint );
+            GPSendHandleToObject( pItem, ( ( Point * )vPoint )+ n, GP_IT_POINT );
+         }                       
       }else{
-         sta = ptr->TransformPoints( pPointF, iLen );
+         sta = ptr->TransformPoints( ( PointF * ) vPoint, iLen );
          for( n=0; n< iLen;n++ )
          {
             PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );
-            GPSendHandleToObject( pItem, &pPointF[ n ], GP_IT_POINTF );
+            GPSendHandleToObject( pItem, ( ( PointF * )vPoint )+n, GP_IT_POINTF );
          }           
-         hb_xfree( ( void*) pPointF );        
       }
-        
+      hb_xfree( ( void*) vPoint );
       hb_retni( sta );
       
       
