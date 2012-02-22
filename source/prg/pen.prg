@@ -304,10 +304,10 @@ return GPPenSetBrush( ::handle, oBrush:handle )
 return GPPenSetColor( ::handle, oColor:handle )
 
 *********************************************************************************************************
-  METHOD SetCompoundArray() CLASS GPPen
+  METHOD SetCompoundArray( acompoundArray ) CLASS GPPen
 *********************************************************************************************************
 
-return GPPenSetCompoundArray(::handle)
+return GPPenSetCompoundArray(::handle, acompoundArray )
 
 *********************************************************************************************************
   METHOD SetCustomEndCap( customlinecap ) CLASS GPPen
@@ -355,7 +355,7 @@ return GPPenSetEndCap( ::handle, linecap )
   METHOD SetLineCap( startCap, dashCap, endCap) CLASS GPPen
 *********************************************************************************************************
 
-return 0//GPPenSetLineCap( ::handle, startCap, endCap, dashCap )
+return GPPenSetLineCap( ::handle, startCap, endCap, dashCap )
 
 *********************************************************************************************************
   METHOD SetLineJoin( linejoin ) CLASS GPPen
@@ -364,10 +364,10 @@ return 0//GPPenSetLineCap( ::handle, startCap, endCap, dashCap )
 return GPPenSetLineJoin( ::handle, linejoin )
 
 *********************************************************************************************************
-  METHOD SetMiterLimit() CLASS GPPen
+  METHOD SetMiterLimit( miterLimit ) CLASS GPPen
 *********************************************************************************************************
 
-return 0//GPPenSetMiterLimit(::handle)
+return GPPenSetMiterLimit(::handle, miterLimit)
 
 *********************************************************************************************************
   METHOD SetStartCap( linecap ) CLASS GPPen
@@ -635,24 +635,37 @@ HB_FUNC( GPPENGETWIDTH )
 
 HB_FUNC( GPPENMULTIPLYTRANSFORM )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   Matrix* m = (Matrix*) hb_parptr( 2 );
-   MatrixOrder mo = (MatrixOrder) hb_parni( 3 );
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_PEN( p ) && GP_IS_MATRIX( p2 ) ){
+      Pen* pen = (Pen*) GP_GET( p );
+      Matrix* m = (Matrix*) GP_GET( p2 );
+      MatrixOrder mo = (MatrixOrder) hb_parni( 3 );
+      hb_retni( (int) pen->MultiplyTransform(m, mo) );
+    }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-   hb_retni( (int) p->MultiplyTransform(m, mo) );
 }
 
 
 HB_FUNC( GPPENRESETTRANSFORM )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->ResetTransform() );
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( p )  ){
+      Pen* pen = (Pen*) GP_GET( p );
+      hb_retni( (int) pen->ResetTransform() );
+    }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );      	
 }
 
 HB_FUNC( GPPENROTATETRANSFORM )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->RotateTransform((REAL)hb_parnd(2),(MatrixOrder)hb_parnl(3)) );
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( p )  ){
+      Pen* pen = (Pen*) GP_GET( p );
+      hb_retni( (int) pen->RotateTransform((REAL)hb_parnd(2),(MatrixOrder)hb_parnl(3)) );   
+    }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
@@ -712,21 +725,29 @@ HB_FUNC( GPPENSETCOLOR )
 
 HB_FUNC( GPPENSETCOMPOUNDARRAY )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   int iLen;
-   REAL * pReal;
-   PHB_ITEM aCompoundArray = hb_param( 2, HB_IT_ARRAY );
-   INT j;
-   iLen = hb_arrayLen( aCompoundArray );
-   pReal = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) && HB_ISARRAY( 2 ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      int iLen;
+      REAL * pReal;
+      PHB_ITEM aCompoundArray = hb_param( 2, HB_IT_ARRAY );
+      INT j;
+      iLen = hb_arrayLen( aCompoundArray );
+      pReal = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
 
-   for( j = 0; j < iLen; j++ )
-   {
-      pReal[ j ] = ( REAL ) hb_arrayGetND( aCompoundArray, j + 1 );
-   }
+      for( j = 0; j < iLen; j++ )
+      {
+         pReal[ j ] = ( REAL ) hb_arrayGetND( aCompoundArray, j + 1 );
+      }
+      
+      hb_retni( (int) p->SetCompoundArray( pReal, iLen ) );
+      hb_xfree( ( void *) pReal );
+      
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-   hb_retni( (int) p->SetCompoundArray( pReal, iLen ) );
-   hb_xfree( ( void *) pReal );
+
 }
 
 
@@ -746,65 +767,150 @@ HB_FUNC( GPPENSETCUSTOMSTARTCAP )
 
 HB_FUNC( GPPENSETDASHCAP )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->SetDashCap( (DashCap) hb_parni( 2 ) ) );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      hb_retni( (int) p->SetDashCap( (DashCap) hb_parni( 2 ) ) );
+   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
 }
 
 HB_FUNC( GPPENSETDASHOFFSET )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->SetDashOffset( (REAL) hb_parnd( 2 ) ) );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      hb_retni( (int) p->SetDashOffset( (REAL) hb_parnd( 2 ) ) );
+   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
+
+   
 }
 
 HB_FUNC( GPPENSETDASHPATTERN )
 {
+	
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      int iLen;
+      REAL * pReal;
+      PHB_ITEM aDashVals = hb_param( 2, HB_IT_ARRAY );
+      INT j;
+      iLen = hb_arrayLen( aDashVals );
+      pReal = ( REAL * ) hb_xgrab( sizeof( REAL )* iLen );
+      
+      for( j = 0; j < iLen; j++ )
+      {
+         pReal[ j ] = ( REAL ) hb_arrayGetND( aDashVals, j + 1 );
+      }
+      
+      hb_retni( (int) p->SetDashPattern( pReal, iLen ) );
+      hb_xfree( ( void *) pReal );   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );  
+      	
+	
    Pen* p = (Pen*) hb_parptr( 1 );
-   int iLen;
-   REAL * pReal;
-   PHB_ITEM aDashVals = hb_param( 2, HB_IT_ARRAY );
-   INT j;
-   iLen = hb_arrayLen( aDashVals );
-   pReal = ( REAL * ) hb_xgrab( sizeof( REAL )* iLen );
 
-   for( j = 0; j < iLen; j++ )
-   {
-      pReal[ j ] = ( REAL ) hb_arrayGetND( aDashVals, j + 1 );
-   }
-
-   hb_retni( (int) p->SetDashPattern( pReal, iLen ) );
-   hb_xfree( ( void *) pReal );
 }
 
 HB_FUNC( GPPENSETDASHSTYLE )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->SetDashStyle( (DashStyle) hb_parni( 2 ) ) );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      hb_retni( (int) p->SetDashStyle( (DashStyle) hb_parni( 2 ) ) );
+   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
+	
 }
 
 HB_FUNC( GPPENSETENDCAP )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->SetEndCap( (LineCap) hb_parni( 2 ) ) );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      hb_retni( (int) p->SetEndCap( (LineCap) hb_parni( 2 ) ) );
+   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );  
+   
+}
+
+HB_FUNC( GPPENSETLINECAP )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      hb_retni( (int) p->SetLineCap( (LineCap) hb_parni( 2 ), (LineCap) hb_parni( 3 ), (DashCap) hb_parni( 4 ) ) );
+   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );  
+   
 }
 
 
 HB_FUNC( GPPENSETLINEJOIN )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->SetLineJoin( (LineJoin) hb_parni( 2 ) ) );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      hb_retni( (int) p->SetLineJoin( (LineJoin) hb_parni( 2 ) ) );
+   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+   
+}
+
+HB_FUNC( GPPENSETMITERLIMIT )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      hb_retni( (int) p->SetMiterLimit( (REAL) hb_parnd( 2 ) ) );
+   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+   
 }
 
 HB_FUNC( GPPENSTARTCAP )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->SetStartCap( (LineCap) hb_parni( 2 ) ) );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   
+   if( GP_IS_PEN( pObj ) ){
+      Pen* p = (Pen*) GP_GET( pObj );
+      hb_retni( (int) p->SetStartCap( (LineCap) hb_parni( 2 ) ) );
+   
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	 
 }
 
 HB_FUNC( GPPENSETTRANSFORM )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   Matrix* m = (Matrix*) hb_parptr( 2 );
-   hb_retni( (int) p->SetTransform( m ) );
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_PEN( p ) && GP_IS_MATRIX( p2 ) ){
+      Pen* pen = (Pen*) GP_GET( p );
+      Matrix* m = (Matrix*) GP_GET( p2 );
+      hb_retni( (int) pen->SetTransform( m ) );
+    }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
@@ -816,8 +922,13 @@ HB_FUNC( GPPENSETTRANSFORM )
 // );
 HB_FUNC( GPPENSETWIDTH )
 {
-   Pen* p = (Pen*) hb_parptr( 1 );
-   hb_retni( (int) p->SetWidth( (REAL) hb_parnd( 2 ) ) );
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PEN( p )  ){
+      Pen* pen = (Pen*) GP_GET( p );
+      hb_retni( (int) pen->SetWidth( (REAL) hb_parnd( 2 ) ) );
+    }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+   
 }
 
 

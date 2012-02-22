@@ -7,13 +7,13 @@ Local oTest
 
    DEFINE SUITTEST oTest
 
-      TestsGraphics()
-//      TestsPen()
+//      TestsGraphics()
+      TestsPen()
 //      TestsColor()
 //      TestsBrush()
 //      TestsFont()
 //      TestsSizeF()
-      TestMatrix()
+//      TestMatrix()
 //      TestLinearGB()
       
 //      TestImage()
@@ -418,20 +418,34 @@ local oBrush := SolidBrush( oColor )
 local oPen   
 
    Pen oPen( oBrush, 5 )
-
+   Pen oPen2(Color(255, 0, 0, 255), 30)
+   Pen oPen3(Color(255, 0, 0, 255), 30)
+   Pen oPen4(Color(255, 0, 0, 255), 30)
+   
    SEPARADOR( "PEN" )
 
-   TEST !empty( Pen( oPen ):handle )                   DESCRIPTION "Constructor Pen. Pen( oPen )"
-   TEST !empty( Pen( oBrush, 5 ):handle )              DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
-   TEST !empty( Pen( oColor, 5 ):handle )              DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
-   TEST oPen:SetColor( oColor ) == 0                   DESCRIPTION "SetColor( oColor )" SAMPLE Example_PenSetColor()
-   TEST oPen:SetBrush( oBrush ) == 0                   DESCRIPTION "SetBrush( oBrush )" SAMPLE Example_PenSetBrush()
-   TEST oPen:ScaleTransform( 8, 4 ) == 0               DESCRIPTION "ScaleTransform( 8, 4 )" SAMPLE Example_PenScaleTransform()
-   TEST oPen:SetAlignment( PenAlignmentInset ) == 0    DESCRIPTION "oPen:SetAlignment( PenAlignmentInset )" SAMPLE Example_PenSetAlignment()
+   TEST !empty( Pen( oPen ):handle )                       DESCRIPTION "Constructor Pen. Pen( oPen )"
+   TEST !empty( Pen( oBrush, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
+   TEST !empty( Pen( oColor, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
+   TEST oPen:SetColor( oColor ) == 0                       DESCRIPTION "SetColor()" SAMPLE Example_PenSetColor()
+   TEST oPen:SetBrush( oBrush ) == 0                       DESCRIPTION "SetBrush()" SAMPLE Example_PenSetBrush()
+   TEST oPen:ScaleTransform( 8, 4 ) == 0                   DESCRIPTION "ScaleTransform()" SAMPLE Example_PenScaleTransform()
+   TEST oPen:SetAlignment( PenAlignmentInset ) == 0        DESCRIPTION "oPen:SetAlignment()" SAMPLE Example_PenSetAlignment()
+   TEST oPen:MultiplyTransform( Matrix( 1, 0, 0, 4, 0, 0 ), MatrixOrderPrepend ) == 0 DESCRIPTION "MultiplyTransform()" SAMPLE Example_MultiplyTrans()
+   TEST oPen:ResetTransform() == 0                         DESCRIPTION "ResetTransform()" SAMPLE Example_ResetTransPen()
+   TEST oPen:RotateTransform(30, MatrixOrderAppend)==0     DESCRIPTION "RotateTransform()" SAMPLE Example_RotateTransPen()
+   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
+   TEST oPen3:SetDashStyle( DashCapTriangle )==0           DESCRIPTION "SetDashStyle( DashCapTriangle )" SAMPLE Example_SetCustomStartCap()
+   TEST oPen3:SetDashOffset( 10 )==0                       DESCRIPTION "SetDashOffset( 10 )" SAMPLE Example_SetDashOffset()
+   TEST oPen3:SetDashPattern( { 5, 2, 15, 4 }, 4 )==0      DESCRIPTION "SetDashPattern( {} )" SAMPLE Example_SetDashPattern()
+   TEST oPen3:SetEndCap( LineCapArrowAnchor )==0           DESCRIPTION "SetEndCap( )"   SAMPLE Example_SetStartEndCap()
+   TEST oPen3:SetStartCap( LineCapArrowAnchor )==0         DESCRIPTION "SetStartCap( )" SAMPLE Example_SetStartEndCap()
+   TEST oPen3:SetLineCap(LineCapArrowAnchor, LineCapTriangle, DashCapRound)==0 DESCRIPTION "SetLineCap()" SAMPLE Example_SetLineCap()
+   TEST oPen3:SetLineJoin(LineJoinBevel)==0                DESCRIPTION "SetLineJoin()" SAMPLE Example_SetLineJoin()
+   TEST oPen3:SetMiterLimit(10.0)==0                       DESCRIPTION "SetMiterLimit()" 
+   TEST oPen3:SetTransform(matrix(20, 0, 0, 10, 0, 0))==0  DESCRIPTION "SetTransform()" SAMPLE Example_SetTransformPen()
+   TEST oPen3:SetWidth(15)==0                              DESCRIPTION "SetWidth()"    SAMPLE Example_SetWidth()
    
-   
-//   TEST oPen:SetAlignment( PenAlignment.Center ) == oPen:GetAlignment() DESCRIPTION "SetAlignment, GetAlignMent"
-
 return 0
 
 
@@ -1268,8 +1282,275 @@ function Example_PenSetAlignment( )
    
 return nil 
 
+function Example_MultiplyTrans( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      Matrix matrix(1, 0, 0, 4, 0, 0)  // vertical stretch
+      
+      Pen pen(Color(255, 0, 0, 255))
+      pen:SetWidth(5)
+      pen:RotateTransform(30)                             // first rotate
+      pen:MultiplyTransform(matrix, MatrixOrderPrepend)  // then stretch
+      
+      graphics:DrawEllipse(pen, 50, 50, 200, 200)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_ResetTransPen( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+
+      // Create a pen, and set its transformation:
+      Pen pen(Color(255, 0, 0, 255), 2)
+      pen:ScaleTransform(8, 4)
+      
+      // Draw a rectangle with the transformed pen:
+      graphics:DrawRectangle(pen, 50, 50, 150, 100)
+      
+      pen:ResetTransform()
+      
+      // Draw a rectangle with no pen transformation:
+      graphics:DrawRectangle(pen, 250, 50, 150, 100)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_RotateTransPen( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+
+      Pen pen(Color( 0,0,255), 5)
+      pen:ScaleTransform(1, 4)                     // first stretch
+      pen:RotateTransform(60, MatrixOrderAppend)   // then rotate
+      graphics:DrawEllipse(pen, 50, 50, 200, 200)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_SetCompoundArray( )
+   local bPainted := { | hdc |
+      local compVals := {0.0, 0.5, 0.6, 0.8, 0.9, 1.0}
+      
+      Graphics graphics(hdc)
+
+
+       // Create an array of real numbers and a Pen object.
+       
+       Pen pen(Color(255, 0, 0, 255), 30)
+       
+       // Set the compound array of the pen.
+       pen:SetCompoundArray(compVals, 6)
+       
+       // Draw a line with the pen.
+       graphics:DrawLine(pen, 5, 20, 405, 200)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_SetCustomStartCap( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a pen.
+      Pen pen(Color(255, 0, 0, 255), 20)
+       // Set the dash style for the pen.
+      pen:SetDashStyle(DashStyleDash)
+
+      // Set a triangular dash cap for the pen.
+      pen:SetDashCap(DashCapTriangle)
+      
+      // Draw a line using the pen.
+      graphics:DrawLine(pen, 20, 20, 200, 100)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_SetDashOffset( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a Pen object, set the dash style, and draw a line.
+      Pen pen(Color(255, 0, 0, 255), 15)
+      pen:SetDashStyle(DashStyleDash)
+      graphics:DrawLine(pen, 0, 50, 400, 50)
+      
+      // Set the dash offset value for the pen, and draw a second line.
+      pen:SetDashOffset(10)
+      graphics:DrawLine(pen, 0, 80, 400, 80)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_SetDashPattern( )
+   local bPainted := { | hdc |
+      local dashVals := {;
+         5.0,;   // dash length 5
+         2.0,;   // space length 2
+         15.0,;  // dash length 15
+         4.0} 
+      Graphics graphics(hdc)
+
+      // Create a Pen object.
+      Pen pen(Color(255, 0, 0, 0), 5)
+      
+      // Set the dash pattern for the custom dashed line.
+      pen:SetDashPattern(dashVals, 4)
+      
+      // Draw the custom dashed line.
+      graphics:DrawLine(pen, 5, 20, 405, 200)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_SetStartEndCap( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a Pen object.
+      Pen pen(Color(255, 0, 0, 255), 15)
+   
+      // Set the end cap of the pen, and draw a line.
+      pen:SetEndCap(LineCapArrowAnchor)
+      pen:SetStartCap(LineCapRound)
+      graphics:DrawLine(pen, 10, 50, 400, 150)
+   
+      // Reset the end cap, and draw a second line.
+      pen:SetEndCap(LineCapTriangle)
+      pen:SetStartCap(LineCapArrowAnchor)
+      graphics:DrawLine(pen, 10, 80, 400, 180)
+   
+      // Reset the end cap, and draw a third line.
+      pen:SetEndCap(LineCapRound)
+      pen:SetStartCap(LineCapTriangle)
+      graphics:DrawLine(pen, 10, 110, 400, 210)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_SetLineCap( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      // Create a pen.
+      Pen pen(Color(255, 0, 0, 255), 15)
+      
+      // Set line caps for the pen.
+      pen:SetLineCap(LineCapArrowAnchor, LineCapTriangle, DashCapRound)
+      
+      // Set the dash style for the pen.
+      pen:SetDashStyle(DashStyleDash)
+      
+      // Draw a line.
+      graphics:DrawLine(pen, 50, 50, 420, 200)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_SetLineJoin( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+   // Create a pen.
+   Pen pen(Color(255, 0, 0, 255), 15)
+
+   // Set the join style, and draw a rectangle.
+   pen:SetLineJoin(LineJoinRound)
+   graphics:DrawRectangle(pen, 20, 20, 150, 100)
+
+   // Reset the join style, and draw a second rectangle.
+   pen:SetLineJoin(LineJoinBevel)
+   graphics:DrawRectangle(pen, 200, 20, 150, 100)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_SetTransformPen( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      Matrix matrix(20, 0, 0, 10, 0, 0)  // scale
+      
+      // Create a pen, and use it to draw a rectangle.
+      Pen pen(Color(255, 0, 0, 255), 2)
+      graphics:DrawRectangle(pen, 10, 50, 150, 100)
+      
+      // Scale the pen width by a factor of 20 in the horizontal 
+      // direction and a factor of 10 in the vertical direction.
+      pen:SetTransform(matrix)
+      
+      // Draw a rectangle with the transformed pen.
+      graphics:DrawRectangle(pen, 200, 50, 150, 100)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_SetWidth( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a pen of width 2, and use it to draw a rectangle.
+      Pen pen(Color(255, 0, 0, 255), 2)
+      graphics:DrawRectangle(pen, 10, 50, 150, 100)
+      
+      // Reset the pen's width to 15, and draw another rectangle.
+      pen:SetWidth(15)
+      graphics:DrawRectangle(pen, 200, 50, 150, 100)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
 //--------------------
-//RECTf
+//RECTF
 //--------------------
 function Example_GetBoundsF( )
    local bPainted := { | hdc |

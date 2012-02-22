@@ -1130,6 +1130,34 @@
 #xtranslate PenAlignmentCenter                            => 0
 #xtranslate PenAlignmentInset                             => 1
 
+#xtranslate DashCapFlat                                   => 0
+#xtranslate DashCapRound                                  => 2
+#xtranslate DashCapTriangle                               => 3
+
+#xtranslate DashStyleSolid                                => 0
+#xtranslate DashStyleDash                                 => 1
+#xtranslate DashStyleDot                                  => 2
+#xtranslate DashStyleDashDot                              => 3
+#xtranslate DashStyleDashDotDot                           => 4
+#xtranslate DashStyleCustom                               => 5
+
+#xtranslate LineCapFlat                                   => 0
+#xtranslate LineCapSquare                                 => 1
+#xtranslate LineCapRound                                  => 2
+#xtranslate LineCapTriangle                               => 3
+#xtranslate LineCapNoAnchor                               => 0x10
+#xtranslate LineCapSquareAnchor                           => 0x11
+#xtranslate LineCapRoundAnchor                            => 0x12
+#xtranslate LineCapDiamondAnchor                          => 0x13
+#xtranslate LineCapArrowAnchor                            => 0x14
+#xtranslate LineCapCustom                                 => 0xff 
+
+#xtranslate LineJoinMiter                                 => 0
+#xtranslate LineJoinBevel                                 => 1
+#xtranslate LineJoinRound                                 => 2
+#xtranslate LineJoinMiterClipped                          => 3
+
+
 // ---------------------------------------------------------------------------
 #define GDIP_EMFPLUSFLAGS_DISPLAY     1
 // ---------------------------------------------------------------------------
