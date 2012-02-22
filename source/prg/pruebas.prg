@@ -8,12 +8,12 @@ Local oTest
    DEFINE SUITTEST oTest
 
 //      TestsGraphics()
-      TestsPen()
+//      TestsPen()
 //      TestsColor()
 //      TestsBrush()
 //      TestsFont()
 //      TestsSizeF()
-//      TestMatrix()
+      TestMatrix()
 //      TestLinearGB()
       
 //      TestImage()
@@ -252,9 +252,9 @@ return 0
   TEST oMatrix4:Shear( 3, 0, MatrixOrderAppend ) == 0  DESCRIPTION "Shear" SAMPLE Example_Shear()
   TEST oMatrix4:TransformPoints( @aPoint ) == 0         DESCRIPTION "TransformPoints with Point Array" SAMPLE Example_TransPoints()
   TEST oMatrix4:TransformPoints( @aPointF ) == 0        DESCRIPTION "TransformPoints with PointF Array" SAMPLE Example_TransPointsF()
-//  TEST oMatrix4:TransformVectors( aPoint ) == 0         DESCRIPTION "TransformVentors with Point Atrray"
-//  TEST oMatrix4:TransformVectorsF( aPointF ) == 0       DESCRIPTION "TransformVectorsF with PointF Atrray"
-//  TEST oMatrix4:Translate( 150, 100, MatrixOrderAppend ) == 0 DESCRIPTION "Translate"
+  TEST oMatrix4:TransformVectors( aPoint ) == 0         DESCRIPTION "TransformVentors with Point Array" SAMPLE Example_TransVectors()
+  TEST oMatrix4:TransformVectors( aPointF ) == 0       DESCRIPTION "TransformVectors  with PointF Array" SAMPLE Example_TransVectors()
+  TEST oMatrix4:Translate( 150, 100, MatrixOrderAppend ) == 0 DESCRIPTION "Translate"
 
 
 return 0
@@ -2336,6 +2336,42 @@ function Example_TransPointsF( )
    
 return nil 
 
+
+function Example_TransVectors( )
+   local bPainted := { | hdc |
+
+      local aPoint := {}
+      Graphics graphics(hdc)
+      
+      Pen pen(Color(255, 0, 0, 255), 7)
+      pen:SetEndCap(LineCapArrowAnchor)
+      SolidBrush brush(Color(255, 0, 0, 255))
+      
+      // A point and a vector, same representation but different behavior
+      Point point(100, 50)
+      Point vector(100, 50)
+      
+      // Draw the original point and vector in blue.
+      graphics:FillEllipse(brush, point:X - 5, point:Y - 5, 10, 10)
+      
+      graphics:DrawLine(pen, Point(0, 0), vector)
+      
+      // Transform.
+      Matrix matrix(0.8, 0.6, -0.6, 0.8, 100.0, 0.0)
+      matrix:TransformPoints( { point } )
+      matrix:TransformVectors( { vector } )
+      
+      // Draw the transformed point and vector in red.
+      pen:SetColor(Color(255, 255, 0, 0))
+      brush:SetColor(Color(255, 255, 0, 0))
+      graphics:FillEllipse(brush, point:X - 5, point:Y - 5, 10, 10)
+      graphics:DrawLine(pen, Point(0, 0), vector)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
 
 //--------------------
 //GRAPHICS

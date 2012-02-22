@@ -47,7 +47,6 @@ CLASS GPMatrix
    METHOD Shear()
    METHOD TransformPoints( Point )
    METHOD TransformVectors(Point)
-   METHOD TransformVectorsF(PointF)
    METHOD Translate()
    
 
@@ -227,11 +226,6 @@ return _GPmatrixTransformPoints( ::handle, @aPoint )
 
 return _GPmatrixTransformVectors( ::handle, aPoint )
 
-*******************************************************************************************
-   METHOD TransformVectorsf( aPoint ) CLASS GPMatrix
-*******************************************************************************************
-
-return _GPmatrixTransformVectorsf( ::handle, aPoint )
 
 *******************************************************************************************
    METHOD Translate(nOffsetX, nOffsetY, nOrder ) CLASS GPMatrix
@@ -346,9 +340,7 @@ HB_FUNC( _GPMATRIXCLONE )
       PHB_ITEM pClone;
       clone = ptr->Clone();
       sta = ptr->GetLastStatus();
-      Traza( LToStr( sta ) ); 
       if( sta == Ok ){
-      	Traza( LToStr( sta ) ); 
          pClone = GPNewGDIPLUSObject( ( void * ) clone, GP_IT_MATRIX );    
          hb_itemReturnRelease( pClone );         
       }
@@ -671,35 +663,63 @@ HB_FUNC( _GPMATRIXTRANSFORMVECTORS )
 {
    Status sta;    
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
-   
    if( GP_IS_MATRIX( p ) && HB_ISARRAY( 2 ) ){
       Matrix * ptr = ( Matrix * ) GP_GET( p ); 
       PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
       int iLen = hb_arrayLen( aPoint );     
       int n;
-      Point * pPoint = ( Point * ) hb_xgrab( sizeof( Point ) * iLen );
+      Point * pPoint;
+      PointF * pPointF;
+      BOOL lF = false;
+      
       
       for( n = 0; n < iLen; n++ ){
         
-        PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );  
-        hb_vmPushSymbol( hb_dynsymGetSymbol( "HANDLE" ) ); 
-        hb_vmPush( pItem );     
-        hb_vmFunction( 0 );
-        Point * pObj = hb_Point_par( -1 );
-        Point pDest( pObj->X, pObj->Y );  
-        pPoint[ n ] = pDest;      
-                            
+        PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );
+        GDIPLUS * ptrPoint;
+        hb_objSendMsg( pItem, "HANDLE", 0 );
+        ptrPoint = hb_GDIPLUS_par( -1 );
+
+        if( GP_IS_POINT( ptrPoint ) ){
+           if( n == 0 )
+              pPoint = ( Point * ) hb_xgrab( sizeof( Point ) * iLen );
+           Point * pObj = ( Point * )GP_GET( ptrPoint );          
+           pPoint[ n ] = *pObj;
+        }else if( GP_IS_POINTF( ptrPoint ) ){
+           if( n == 0 ){
+              pPointF = ( PointF * ) hb_xgrab( sizeof( PointF ) * iLen );
+              lF = true;
+           }
+           PointF * pObj = ( PointF * )GP_GET( ptrPoint );          
+           pPointF[ n ] = *pObj;
+        }
+
       }
-
-      sta = ptr->TransformVectors( pPoint, iLen );
-
-      hb_xfree( ( void*) pPoint );
+      
+      if( ! lF ){
+         int n;
+         sta = ptr->TransformVectors( pPoint, iLen );
+         for( n=0; n< iLen;n++ )
+         {
+            PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );
+            GPSendHandleToObject( pItem, &pPoint[ n ], GP_IT_POINT );
+         }              
+         hb_xfree( ( void*) pPoint );
+      }else{
+         sta = ptr->TransformVectors( pPointF, iLen );
+         for( n=0; n< iLen;n++ )
+         {
+            PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );
+            GPSendHandleToObject( pItem, &pPointF[ n ], GP_IT_POINTF );
+         }           
+         hb_xfree( ( void*) pPointF );        
+      }
         
       hb_retni( sta );
-            
+      
+      
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
 }
 
 //-----------------------------------------//
