@@ -79,7 +79,16 @@ return nil
    TEST !empty( GraphicsPath( FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( FillMode )"
    TEST !empty( GraphicsPath( { Point( 10, 10 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( ... )"
    TEST !empty( GraphicsPath( { PointF( 10.0, 20.0 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle ) DESCRIPTION "GraphicsPath( ... )"
-   TEST gp:AddArc( 20, 20, 50, 100, 0.0, 180.0 ) == 0         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
+   
+   TEST gp:AddArc( Rect(20, 20, 50, 100), 0.0, 180.0 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
+   TEST gp:AddArc( RectF(20.0, 20.0, 50.0, 100.0), 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
+   TEST gp:AddArc( 20, 20, 50, 100, 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
+   TEST gp:AddArc( 20, 20, 50, 100, 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
+   TEST gp:AddBezier( Point(50, 50), Point(60, 20), Point(70, 100), Point(80, 50) ) == 0      DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()   
+   TEST gp:AddBezier( PointF(50, 50), PointF(60, 20), PointF(70, 100), PointF(80, 50) ) == 0  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
+   TEST gp:AddBezier( Point(50, 50), Point(60, 20), Point(70, 100), Point(80, 50) ) == 0      DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
+   TEST gp:AddBezier( 50.0, 50.0, 60.0, 20.0, 70.0, 100.0, 80.0, 50.0 ) == 0  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()   
+   TEST gp:AddBezier( 50, 50, 60, 20, 70, 100, 80, 50 ) == 0                  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()   
    
 return 0
 
@@ -2505,6 +2514,42 @@ function AddArcExample2( )
    
 return nil 
 
+function Example_AddBezier( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      GraphicsPath  path()
+      
+      Point pt1(50, 50) 
+      Point pt2(60, 20)
+      Point pt3(70, 100)
+      Point pt4(80, 50)
+      
+      Point pt1f(450, 550) 
+      Point pt2f(460, 520)
+      Point pt3f(470, 500)
+      Point pt4f(480, 450)      
+      
+      path:AddBezier(150.0, 150.0, 160.0, 120.0, 170.0, 200.0, 180.0, 150.0)
+      path:CloseFigure()
+      
+      path:AddBezier(250, 250, 260, 220, 270, 300, 280, 250)
+      path:CloseFigure()
+      
+      path:AddBezier(pt1, pt2, pt3, pt4)
+      path:CloseFigure()
+
+      path:AddBezier(pt1f, pt2f, pt3f, pt4f)
+      path:CloseFigure()      
+      
+      // Draw the path.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawPath(pen, path)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
 
 /*prototype
 function Example_( )

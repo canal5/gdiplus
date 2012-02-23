@@ -29,7 +29,7 @@ CLASS GPGraphicsPath
    DESTRUCTOR Destroy()
 
    METHOD AddArc( rc, start, angle )          
-   METHOD AddBezier( aPt1, aPt2, aPt3, aPt4 ) INLINE GPAddBezier(::g, aPt1, aPt2, aPt3, aPt4 )
+   METHOD AddBezier( aPt1, aPt2, aPt3, aPt4 ) 
    METHOD AddBeziers()
    METHOD AddClosedCurve()
    METHOD AddCurve()
@@ -115,6 +115,19 @@ return nil
    endif
    
 return sta
+
+*********************************************************************************************************
+   METHOD AddBezier( A, B, C, D, E, F, G, H ) CLASS GPGraphicsPath
+*********************************************************************************************************
+   local sta
+
+   if ValType( A ) == "O"
+      sta = GPGraphicsPathAddBezier(::handle, A:handle, B:handle, C:handle, D:handle)
+   else 
+      sta = GPGraphicsPathAddBezier(::handle, A, B, C, D, E, F, G, H )
+   endif
+
+return 0
 
 
 *********************************************************************************************************
@@ -460,22 +473,44 @@ HB_FUNC( GPGRAPHICSPATHADDARC )
 
 }
 
-HB_FUNC( GPADDBEZIER )
+HB_FUNC( GPGRAPHICSPATHADDBEZIER )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
-   PointF * pf1 = new PointF( (REAL) hb_parvnd( 2, 1 ), (REAL) hb_parvnd( 2, 2 ) );
-   PointF * pf2 = new PointF( (REAL) hb_parvnd( 3, 1 ), (REAL) hb_parvnd( 3, 2 ) );
-   PointF * pf3 = new PointF( (REAL) hb_parvnd( 4, 1 ), (REAL) hb_parvnd( 4, 2 ) );
-   PointF * pf4 = new PointF( (REAL) hb_parvnd( 5, 1 ), (REAL) hb_parvnd( 5, 2 ) );
-
-   gp->AddBezier( *pf1, *pf2, *pf3, *pf4 );
-
-   delete (PointF*) pf1;
-   delete (PointF*) pf2;
-   delete (PointF*) pf3;
-   delete (PointF*) pf4;
-
-   hb_ret();
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      if( hb_pcount() < 6 ){
+	    	GDIPLUS * pPoint1 = hb_GDIPLUS_par( 2 );
+	    	GDIPLUS * pPoint2 = hb_GDIPLUS_par( 3 );
+	    	GDIPLUS * pPoint3 = hb_GDIPLUS_par( 4 );
+	    	GDIPLUS * pPoint4 = hb_GDIPLUS_par( 5 );
+	    	if( GP_IS_POINTF( pPoint1 ) && GP_IS_POINTF( pPoint2 ) && GP_IS_POINTF( pPoint3 ) && GP_IS_POINTF( pPoint4 ) ){
+	    	   PointF * point1 = ( PointF * ) GP_GET( pPoint1 );
+	    	   PointF * point2 = ( PointF * ) GP_GET( pPoint2 );
+	    	   PointF * point3 = ( PointF * ) GP_GET( pPoint3 );
+	    	   PointF * point4 = ( PointF * ) GP_GET( pPoint4 );
+	    	   sta = gp->AddBezier( *point1, *point2, *point3, *point4 );	    		
+	    	}else if( GP_IS_POINT( pPoint1 ) && GP_IS_POINT( pPoint2 ) && GP_IS_POINT( pPoint3 ) && GP_IS_POINT( pPoint4 ) ){
+	    	   Point * point1 = ( Point * ) GP_GET( pPoint1 );
+	    	   Point * point2 = ( Point * ) GP_GET( pPoint2 );
+	    	   Point * point3 = ( Point * ) GP_GET( pPoint3 );
+	    	   Point * point4 = ( Point * ) GP_GET( pPoint4 );
+	    	   sta = gp->AddBezier( *point1, *point2, *point3, *point4 );	    		
+	    	}else 
+	    	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      }else {
+         if( HB_ISDOUBLE( 2 ) )
+      	    sta = gp->AddBezier( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), 
+      	                         ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ),
+      	                         ( REAL ) hb_parnd( 8 ), ( REAL ) hb_parnd( 9 ) );
+      	 else if( HB_ISINTEGER( 2 ) )
+      	    sta = gp->AddBezier( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), hb_parni( 7 ), hb_parni( 8 ), hb_parni( 9 ) );
+      	 else
+      	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      }
+      hb_retni( ( Status ) sta );
+   }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPADDCLOSEDCURVE )
