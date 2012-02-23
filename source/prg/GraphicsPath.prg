@@ -109,9 +109,9 @@ return nil
    local sta
    
    if ValType( A ) == "O"
-      sta = GPAddArc(::handle, A:handle, B, C )
+      sta = GPGraphicsPathAddArc(::handle, A:handle, B, C )
    else 
-      sta = GPAddArc(::handle, A, B, C, D, E, F )
+      sta = GPGraphicsPathAddArc(::handle, A, B, C, D, E, F )
    endif
    
 return sta
@@ -211,7 +211,7 @@ return 0
    METHOD CloseFigure() CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+return GPGraphicsPathCloseFigure(::handle)
 
 ********************************************************************************************************
    METHOD CreateObjRef() CLASS GPGraphicsPath
@@ -433,7 +433,7 @@ HB_FUNC( _GPGRAPHICSPATH )
 	
 }
 
-HB_FUNC( GPADDARC )
+HB_FUNC( GPGRAPHICSPATHADDARC )
 {
 	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
 	 Status sta;
@@ -454,7 +454,7 @@ HB_FUNC( GPADDARC )
 	    	   sta = gp->AddArc( *rect, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );	    		
 	    	}
 	    }
-	    hb_parni( ( Status ) sta );
+	    hb_retni( ( Status ) sta );
 	 }else 
 	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
@@ -559,11 +559,17 @@ HB_FUNC( GPSTARTFIGURE )
    hb_ret();
 }
 
-HB_FUNC( GPCLOSEFIGURE )
+HB_FUNC( GPGRAPHICSPATHCLOSEFIGURE )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
-   gp->CloseFigure();
-   hb_ret();
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      gp->CloseFigure();
+      hb_ret();
+   }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 

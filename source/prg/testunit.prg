@@ -4,7 +4,8 @@
 static oSelf
 
 CLASS TTestUnit
-
+      
+      DATA oWnd
       DATA bRun
       DATA aDisplay
       DATA cDescription
@@ -209,7 +210,7 @@ function zBrowse( cTitle, cListName, bNew, bModify, bDelete, bSearch, bList,;
    oBrw:aCols[ 2 ]:bBmpData   := { || If( oSelf:aDisplay[ oBrw:KeyNo() ] != NIL, 1, 0 ) }
 
 
-
+   oSelf:oWnd = oWnd
 
    ACTIVATE WINDOW oWnd MAXIMIZED
 

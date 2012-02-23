@@ -1,9 +1,27 @@
 #include "fivewin.ch"
 
 
-function Bitmap()
+function Bitmap( ... )
+   local aParams := hb_aparams()
+   local oBmp
+   local nLen := Len( aParams )
+   
+   switch nLen
+      case 1
+         oBmp = GPBitmap():New( aParams[ 1 ] )
+         exit
+      case 2
+         oBmp = GPBitmap():New( aParams[ 1 ], aParams[ 2 ] )
+        exit
+      case 3
+         oBmp = GPBitmap():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
+        exit        
+      case 5
+         oBmp = GPBitmap():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
+        exit        
+   endswitch
 
-return GPBitmap():New()
+return oBmp
 
 
 CLASS GPBitmap
@@ -57,27 +75,26 @@ CLASS GPBitmap
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New() CLASS GPBitmap
+  METHOD New( ... ) CLASS GPBitmap
 *********************************************************************************************************
 
-local iParams := PCount()
-
-
-  if iParams == 0
-     ::handle := _GPBitmap()
-  elseif iParams == 1
-     ::handle := _GPBitmap( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPBitmap( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPBitmap( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPBitmap( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPBitmap( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPBitmap( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
+   local aParams := hb_aparams()
+   local iParams := Len( aParams )
+   
+   switch iParams
+      case 1
+         ::handle = _GPBitmap( aParams[ 1 ] )
+         exit
+      case 2
+         ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ] )
+        exit
+      case 3
+         ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
+        exit        
+      case 5
+         ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
+        exit        
+   endswitch
 
 return self
 
@@ -294,27 +311,23 @@ return 0
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPBITMAP )
 {
-   Bitmap* clr;
+   Bitmap * o;
+   GDIPLUS * pObj = gdiplus_new( GP_IT_BITMAP );
    int iParams = hb_pcount();
-//
-//   if( iParams == 0 )
-//       clr = new Bitmap();
-//   else if (iParams == 1 )
-//       clr = new Bitmap( hb_parnl( 1 ) );
-//   else if (iParams == 3 )
-//       clr = new Bitmap( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-//   else
-//       clr = new Bitmap( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-//
-//   hb_retptr( (void*)  );
+   BOOL lOk = true;
+   
+   switch (iParams){  
+      case 2:
+         o = new Bitmap( ( HBITMAP ) hb_parnl( 1 ), ( HPALETTE ) hb_parnl( 2 ) );
+         break;
+   } 
+   
+   GP_SET( pObj, o );
+   hb_GDIPLUS_ret( pObj );   
 }
 
 HB_FUNC( DELETEBITMAP )

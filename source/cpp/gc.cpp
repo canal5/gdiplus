@@ -101,7 +101,13 @@ void gdiplus_destroy( GDIPLUS * p ){
         break;                                               
      case GP_IT_MATRIX:
         delete (Matrix *) p->pObject;
-        break;                                                          
+        break;       
+     case GP_IT_GRAPHICSPATH:
+        delete (GraphicsPath *) p->pObject;
+        break;      
+     case GP_IT_BITMAP:
+        delete (Bitmap *) p->pObject;
+        break;                                                                
    }
    hb_xfree( p );
 

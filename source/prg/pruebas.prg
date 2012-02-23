@@ -25,10 +25,43 @@ Local oTest
   
       TestGraphicsPath()
       
+      TestBitmap( oTest )
+
       SHOW RESULT
 
    ENDDEFINE
 
+return nil
+
+
+function TestBitmap( oTest )
+   
+   local hBmp
+   
+   SEPARADOR( "BITMAP" )
+
+   TEST .T. DESCRIPTION "CaptureWnd()" SAMPLE Example_CaptureWnd( oTest )
+
+
+return 0
+
+
+function Example_CaptureWnd( oTest )
+   local bPainted 
+   
+   bPainted := { | hdc, ps, oWnd |
+      local hBmp := MakeBmpFromHWND( oTest:oWnd:hWnd )
+      local oBmp
+      Bitmap oBmp( hBmp, 0 )
+      DeleteObject( hBmp )      
+
+      Graphics graphics(hdc)
+      
+      graphics:DrawImage( oBmp, 0, 0, oWnd:nWidth, oWnd:nHeight )      
+   }
+
+   exampleWindow( bPainted )
+   
 return nil
 
 
@@ -46,7 +79,7 @@ return nil
    TEST !empty( GraphicsPath( FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( FillMode )"
    TEST !empty( GraphicsPath( { Point( 10, 10 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( ... )"
    TEST !empty( GraphicsPath( { PointF( 10.0, 20.0 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle ) DESCRIPTION "GraphicsPath( ... )"
-   TEST gp:AddArc( 20, 20, 50, 100, 0.0, 180.0 ) == 0         DESCRIPTION "AddArc()"
+   TEST gp:AddArc( 20, 20, 50, 100, 0.0, 180.0 ) == 0         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
    
 return 0
 
@@ -2449,6 +2482,29 @@ function Example_SetTransformG( )
 return nil 
 
 
+//--------------------
+//GRAPHICSPATH
+//--------------------
+
+function AddArcExample2( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      GraphicsPath path()
+      
+      path:AddArc(20, 20, 50, 100, 0.0, 180.0)
+      path:CloseFigure()
+      
+      // Draw the path.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawPath(pen, path)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
 
 /*prototype
 function Example_( )
@@ -2474,4 +2530,42 @@ exit procedure salida
   GdiplusShutdown()
 
 return
+
+
+#pragma BEGINDUMP
+#include <windows.h>
+#include <hbapi.h>
+
+
+HBITMAP MakeBmpFromHWND( HWND hWnd  )
+{
+   HDC hDC2;
+   HBITMAP hBmp, hBmpOld;
+   HDC hDC = GetWindowDC( hWnd ); 
+   RECT rct;
+   int iTop,iLeft, iWidth, iHeight;
+ 
+   GetClientRect( hWnd, &rct );
+       
+   hDC2    = CreateCompatibleDC( hDC );
+   hBmp    = CreateCompatibleBitmap( hDC, rct.right, rct.bottom );
+   hBmpOld = ( HBITMAP ) SelectObject( hDC2, hBmp );
+ 
+   BitBlt( hDC2, 0, 0, rct.right, rct.bottom, hDC, rct.left, rct.top,  SRCCOPY );
+ 
+   SelectObject( hDC2, hBmpOld );
+ 
+   DeleteDC( hDC2 );
+   ReleaseDC( hWnd, hDC );
+   
+   return hBmp;
+}
+
+
+HB_FUNC( MAKEBMPFROMHWND )
+{
+	hb_retnl( ( LONG ) MakeBmpFromHWND( ( HWND ) hb_parnl( 1 ) ) );
+}
+
+#pragma ENDDUMP
 

@@ -822,12 +822,13 @@ return 0
 
 
 **********************************************************************************************************
-  METHOD DrawPath( oPath ) CLASS GPGraphics
+  METHOD DrawPath( oPen, oPath ) CLASS GPGraphics
 **********************************************************************************************************
+   
+   DEFAULT oPen := ::oPen
 
-  GP_DrawPath( ::oPen:handle, oPath:handle )
 
-return 0
+return GP_DrawPath( ::handle, oPen:handle, oPath:handle )
 
 **********************************************************************************************************
   METHOD DrawPie( ) CLASS GPGraphics
@@ -1400,7 +1401,7 @@ HB_FUNC( GP_DRAWIMAGE )
    GDIPLUS *p = hb_GDIPLUS_par( 1 );
    GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
 
-   if( GP_IS_GRAPHICS( p )  && GP_IS_IMAGE( pObj ) && hb_pcount() > 5 )
+   if( GP_IS_GRAPHICS( p )  && ( GP_IS_IMAGE( pObj ) || GP_IS_BITMAP( pObj ) ) && hb_pcount() > 5 )
    {
        Graphics * g = ( Graphics * ) GP_GET( p ); 
        Image * c = ( Image * ) GP_GET( pObj ); 
@@ -1493,19 +1494,21 @@ HB_FUNC( GP_ROUNDRECT )
 
 HB_FUNC( GP_DRAWPATH )
 {
-    Graphics *g = hb_Graphics_par( 1 );
-    Pen* p = (Pen*) hb_parptr( 2 );
-    GraphicsPath* gp = (GraphicsPath*) hb_parptr( 3 );
 
-   if( g && p && gp )
+   GDIPLUS * pObj1 = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
+   GDIPLUS * pObj2 = hb_GDIPLUS_par( 3 );
+   
+   if(GP_IS_GRAPHICS( pObj1 )  && GP_IS_PEN( pObj ) && GP_IS_GRAPHICSPATH( pObj2 ) )
    {
-     //TODO Garbage Collector for PEN, GraphicsPath
-     g->DrawPath(p, gp );
+      Graphics *g = ( Graphics * ) GP_GET( pObj1 ) ;
+      Pen * p = ( Pen * ) GP_GET( pObj );
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj2 );
+      g->DrawPath(p, gp );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-    hb_ret();
 }
 
 HB_FUNC( GP_DRAWRECTANGLE )

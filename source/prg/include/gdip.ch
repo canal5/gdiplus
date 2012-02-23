@@ -20,6 +20,7 @@
 #xcommand SOLIDBRUSH          <oBrush> (  <oColor> )                                                  => <oBrush>  := SolidBrush         ( <oColor> )
 #xcommand TEXTUREBRUSH        <oBrush> (  <par1>,<par2>[,<par3>[,<par4>,<par5>,<par6> ] ] )           => <oBrush>  := TextureBrush       ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>][, <par6>] )
 #xcommand GRAPHICSPATH        <oPath>  ( [<par1> [,<par2>,<par3>,<par4>]] )                           => <oPath>   := GraphicsPath       ( [<par1>][, <par2>][, <par3>][, <par4>] )
+#xcommand BITMAP              <oBmp>   ( <par1>,<par2>[,<par3>[,<par4>, <par5> ] ] )                  => <oBmp>    := Bitmap             ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>] )
 
 
 
