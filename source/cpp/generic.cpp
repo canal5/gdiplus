@@ -92,7 +92,7 @@ void * ConvertArray2Point( PHB_ITEM aPoint, BOOL * l )
    PointF * pPointF;
    BOOL lF = false;
    void * pVoid;
-      
+     
    for( n = 0; n < iLen; n++ ){
      
      PHB_ITEM pItem = hb_arrayGetItemPtr( aPoint, n + 1 );

@@ -1604,9 +1604,9 @@ HB_FUNC( GP_FILLELLIPSE )
 
      if( iParam > 5 ){
         if( HB_IS_DOUBLE( hb_param( 4, HB_IT_ANY ) ) )
-            hb_retni( g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 )) );
+            hb_retni( g->FillEllipse( b, hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 )) );
         else
-           hb_retni( g->FillEllipse( b, ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ) ) );
+           hb_retni( g->FillEllipse( b, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ) ) );
      }else if( iParam < 4 ){
         GDIPLUS * pRect = hb_GDIPLUS_par( 3 );
         if( GP_IS_RECT( pRect ) ){

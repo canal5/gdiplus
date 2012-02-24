@@ -70,6 +70,23 @@ return nil
 *****************************************************************************************
    
    local gp
+   local aPoint := { Point(50, 50)   ,; 
+      Point(60, 20)   ,            ;
+      Point(70, 100)  ,            ;
+      Point(80, 50),               ;
+      Point(120, 40),              ;
+      Point(150,80),               ;
+      Point(170, 30)               ;
+      }
+      
+   local aPointF := { PointF(150.0, 150.0)   ,; 
+      PointF(160.0, 120.0)   ,            ;
+      PointF(170.0, 200.0)  ,            ;
+      PointF(180.0, 150.0),               ;
+      PointF(220.0, 140.0),              ;
+      PointF(250.0,180.0),               ;
+      PointF(270.0, 130.0)               ;
+      }  
    
    SEPARADOR( "GRAPHICS PATH" )
    
@@ -89,6 +106,18 @@ return nil
    TEST gp:AddBezier( Point(50, 50), Point(60, 20), Point(70, 100), Point(80, 50) ) == 0      DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
    TEST gp:AddBezier( 50.0, 50.0, 60.0, 20.0, 70.0, 100.0, 80.0, 50.0 ) == 0  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()   
    TEST gp:AddBezier( 50, 50, 60, 20, 70, 100, 80, 50 ) == 0                  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()   
+   TEST gp:AddBeziers( aPointF ) == 0  DESCRIPTION "AddBeziers()"    SAMPLE Example_AddBeziers()   
+   TEST gp:AddBeziers( aPoint)   == 0  DESCRIPTION "AddBeziers()"    SAMPLE Example_AddBeziers()  
+   TEST gp:AddClosedCurve( aPoint,  1 )   == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
+   TEST gp:AddClosedCurve( aPointF,  1 )  == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
+   TEST gp:AddClosedCurve( aPoint )       == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
+   TEST gp:AddClosedCurve( aPointF )      == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()   
+   TEST gp:AddCurve( aPointF )              == 0  DESCRIPTION "AdddCurve()"    SAMPLE AddCurveExample2()
+   TEST gp:AddCurve( aPointF, 1 )           == 0  DESCRIPTION "AdddCurve()"    //SAMPLE Example_AddCurve()
+   TEST gp:AddCurve( aPointF, 2, 4, 1 )     == 0  DESCRIPTION "AdddCurve()"    //SAMPLE Example_AddCurve()
+   TEST gp:AddCurve( aPoint )               == 0  DESCRIPTION "AdddCurve()"    //SAMPLE Example_AddCurve()
+   TEST gp:AddCurve( aPoint, 1 )            == 0  DESCRIPTION "AdddCurve()"    //SAMPLE Example_AddCurve()
+   TEST gp:AddCurve( aPoint, 2, 4, 1 )      == 0  DESCRIPTION "AdddCurve()"    //SAMPLE Example_AddCurve()
    
 return 0
 
@@ -2550,6 +2579,116 @@ function Example_AddBezier( )
    exampleWindow( bPainted )
    
 return nil 
+
+function Example_AddBeziers( )
+   local bPainted := { | hdc |
+      local aPoint, aPointF
+      Graphics graphics(hdc)
+      GraphicsPath  path()
+      aPoint = { Point(50, 50)   ,; 
+      Point(60, 20)   ,            ;
+      Point(70, 100)  ,            ;
+      Point(80, 50),               ;
+      Point(120, 40),              ;
+      Point(150,80),               ;
+      Point(170, 30)               ;
+      }
+      
+      aPointF = { PointF(150.0, 150.0)   ,; 
+      PointF(160.0, 120.0)   ,            ;
+      PointF(170.0, 200.0)  ,            ;
+      PointF(180.0, 150.0),               ;
+      PointF(220.0, 140.0),              ;
+      PointF(250.0,180.0),               ;
+      PointF(270.0, 130.0)               ;
+      }   
+      
+      
+      path:AddBeziers( aPointF )
+      path:CloseFigure()
+      
+      path:AddBeziers( aPoint )
+      path:CloseFigure()
+
+      // Draw the path.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawPath(pen, path)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_AddClosedCurve( )
+   local bPainted := { | hdc |
+      local aPoint, aPointF
+      Graphics graphics(hdc)
+      GraphicsPath  path()
+      aPoint = { Point(50, 50)   ,; 
+      Point(60, 20)   ,            ;
+      Point(70, 100)  ,            ;
+      Point(80, 50),               ;
+      Point(120, 40),              ;
+      Point(150,80),               ;
+      Point(170, 30)               ;
+      }
+      
+      aPointF = { PointF(150.0, 150.0)   ,; 
+      PointF(160.0, 120.0)   ,            ;
+      PointF(170.0, 200.0)  ,            ;
+      PointF(180.0, 150.0),               ;
+      PointF(220.0, 140.0),              ;
+      PointF(250.0,180.0),               ;
+      PointF(270.0, 130.0)               ;
+      }   
+      
+      
+      path:AddClosedCurve( aPointF )
+      path:CloseFigure()
+      
+      path:AddClosedCurve( aPoint, ,1 )
+      path:CloseFigure()
+
+      // Draw the path.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawPath(pen, path)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function AddCurveExample2( )
+   local bPainted := { | hdc |
+      local aPoint, j
+      Graphics graphics(hdc)
+      GraphicsPath   path()
+      aPoint = {Point(50, 50),;
+                     Point(70, 80),;
+                     Point(100, 100),;
+                     Point(130, 40),;
+                     Point(150, 90),;
+                     Point(180, 30),;
+                     Point(210, 120),;
+                     Point(240, 80)}
+                     
+      path:AddCurve(;
+         aPoint, 1 )
+      Pen pen(Color(255, 0, 0, 255))
+      graphics:DrawPath(pen, path)
+      // Draw all eight points in the array.
+      SolidBrush brush(Color(255, 255, 0, 0))
+      
+      for j = 1 to 8 
+         graphics:FillEllipse(brush, aPoint[j]:X - 3, aPoint[j]:Y - 3, 6, 6)
+      next
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
 
 /*prototype
 function Example_( )

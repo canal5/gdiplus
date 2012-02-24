@@ -127,26 +127,49 @@ return sta
       sta = GPGraphicsPathAddBezier(::handle, A, B, C, D, E, F, G, H )
    endif
 
-return 0
+return sta
 
 
 *********************************************************************************************************
-   METHOD AddBeziers() CLASS GPGraphicsPath
+   METHOD AddBeziers( aPoint, nLen ) CLASS GPGraphicsPath
 *********************************************************************************************************
+   local sta
+   
+   nLen = 0
 
-return 0
+   sta = GPGraphicsPathAddBeziers(::handle, aPoint )
+
+return sta
 
 ********************************************************************************************************
-   METHOD AddClosedCurve() CLASS GPGraphicsPath
+   METHOD AddClosedCurve( aPoint, nTension ) CLASS GPGraphicsPath
+********************************************************************************************************
+   
+   local sta
+   
+   nLen = 0
+
+   sta = GPGraphicsPathAddClosedCurve(::handle, aPoint, nTension )
+
+return sta
+
+********************************************************************************************************
+   METHOD AddCurve( aPoint, A, B, C ) CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+   local sta
+   local iParam := PCount()
+   nLen = 0
+   
+   if iParam == 1 
+      sta = GPGraphicsPathAddCurve(::handle, aPoint  )
+   elseif iParam == 2
+      sta = GPGraphicsPathAddCurve(::handle, aPoint, A  )
+   else
+      sta = GPGraphicsPathAddCurve(::handle, aPoint, A, B, C  )
+   endif
 
-********************************************************************************************************
-   METHOD AddCurve() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
+return sta
 
 ********************************************************************************************************
    METHOD AddEllipse() CLASS GPGraphicsPath
@@ -513,42 +536,95 @@ HB_FUNC( GPGRAPHICSPATHADDBEZIER )
 	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPADDCLOSEDCURVE )
+
+HB_FUNC( GPGRAPHICSPATHADDBEZIERS )
 {
-//   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
-//   WORD wArray, wVertex, wItem = 0, wLen = 0;
-//   POINT * pBuffer;
-//   int * pItems;
-//   int wPolygons = ( int ) hb_pcount() - 1;
-//
-//   pItems = ( int * ) hb_xgrab( ( wPolygons ) * sizeof( int ) );
-//
-//   for( wArray = 0; wArray < wPolygons; wArray++ )
-//   {
-//      pItems[ wArray ] = hb_parinfa( wArray + 2, 0 );
-//      wLen += pItems[ wArray ];
-//   }
-//
-//   pBuffer = ( POINT * ) hb_xgrab( wLen * sizeof( POINT ) );
-//
-//   for( wArray = 0; wArray < wPolygons; wArray++ )
-//   {
-//     for( wVertex = 0; wVertex < pItems[ wArray ]; wVertex++ )
-//     {
-//         PHB_ITEM pArray = hb_param( wArray + 2, HB_IT_ANY );
-//         PHB_ITEM pSubArray = hb_itemNew( NULL );
-//         hb_arrayGet( pArray, wVertex + 1, pSubArray );
-//         pBuffer[ wItem   ].x = hb_arrayGetNL( pSubArray, 1 );
-//         pBuffer[ wItem++ ].y = hb_arrayGetNL( pSubArray, 2 );
-//         hb_itemRelease( pSubArray );
-//     }
-//   }
-//
-//   hb_retl( PolyPolygon( hDC, pBuffer, pItems, wPolygons ) );
-//   hb_xfree( ( void * ) pBuffer );
-//   hb_xfree( ( void * ) pItems );
-//   hb_ret();
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+      void * vPoint;
+      BOOL lF = false;      
+      vPoint = ConvertArray2Point( aPoint, &lF );
+      if( lF ){
+      	sta = gp->AddBeziers( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
+      }
+      else
+      { 
+      	sta = gp->AddBeziers( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
+      }
+      hb_xfree( vPoint );
+      hb_retni( ( Status ) sta );
+      	  
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
+
+HB_FUNC( GPGRAPHICSPATHADDCLOSEDCURVE )
+{
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+      void * vPoint;
+      BOOL lF = false;      
+      vPoint = ConvertArray2Point( aPoint, &lF );
+      if( lF ){
+      	if( hb_pcount() > 2 )
+      	   sta = gp->AddClosedCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
+      	else
+      	   sta = gp->AddClosedCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
+      }
+      else
+      { 
+      	if( hb_pcount() > 2 )
+      	   sta = gp->AddClosedCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
+      	else
+      	   sta = gp->AddClosedCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
+      }
+      hb_xfree( vPoint );
+      hb_retni( ( Status ) sta );
+      	  
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+HB_FUNC( GPGRAPHICSPATHADDCURVE )
+{
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+      void * vPoint;
+      BOOL lF = false;      
+      vPoint = ConvertArray2Point( aPoint, &lF );
+      if( lF ){
+      	if( hb_pcount() < 3 )
+      	   sta = gp->AddCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
+      	else if( hb_pcount() < 4 )
+      	   sta = gp->AddCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
+      	else if( hb_pcount() < 6 )      	
+      	   sta = gp->AddCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ), hb_parni( 3 ) - 1, hb_parni( 4 ), ( REAL ) hb_parnd( 5 ) );   
+      }
+      else
+      { 
+      	if( hb_pcount() < 3 )
+      	   sta = gp->AddCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
+      	else if( hb_pcount() < 4 )
+      	   sta = gp->AddCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
+      	else if( hb_pcount() < 6 )      	
+      	   sta = gp->AddCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ), hb_parni( 3 ) - 1, hb_parni( 4 ), ( REAL ) hb_parnd( 5 ) );   
+      }
+      hb_xfree( vPoint );
+      hb_retni( ( Status ) sta );
+      	  
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
 
 HB_FUNC( GPADDELLIPSE )
 {
