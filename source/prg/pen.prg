@@ -1,5 +1,4 @@
 #include "fivewin.ch"
-#include "gdip.ch"
 
 // Method                                Description
 // OK, Pen::Clone                    The Pen::Clone method copies a Pen object.

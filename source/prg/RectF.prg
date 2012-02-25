@@ -1,5 +1,4 @@
 #include "fivewin.ch"
-#include "gdip.ch"
 
 //Constructor
 //Rect::RectF()
