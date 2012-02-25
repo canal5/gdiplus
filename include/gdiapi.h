@@ -27,6 +27,9 @@ typedef struct __gdiplus
 #define GP_IT_MATRIX     ( ( int ) 0x0000C )
 #define GP_IT_GRAPHICSPATH ( ( int ) 0x0000D )
 #define GP_IT_BITMAP     ( ( int ) 0x0000E )
+#define GP_IT_FONTCOLLECTION ( ( int ) 0x0000F )
+#define GP_IT_INSTALLEDFONTCOLLECTION  ( ( int ) 0x00010 )
+#define GP_IT_PRIVATEFONTCOLLECTION ( ( int ) 0x00011 )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
@@ -43,6 +46,9 @@ typedef struct __gdiplus
 #define GP_IS_MATRIX( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_MATRIX ) )
 #define GP_IS_GRAPHICSPATH( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICSPATH ) )
 #define GP_IS_BITMAP( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_BITMAP ) )
+#define GP_IS_INSTALLEDFONTCOLLECTION( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_INSTALLEDFONTCOLLECTION ) )
+#define GP_IS_PRIVATEFONTCOLLECTION( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_PRIVATEFONTCOLLECTION ) )
+#define GP_IS_FONTCOLLECTION( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONTCOLLECTION ) || GP_IS_INSTALLEDFONTCOLLECTION( p ) || GP_IS_PRIVATEFONTCOLLECTION( p ) )
 
 #define HB_ISDOUBLE( n )    ( hb_param( n, HB_IT_DOUBLE ) != NULL )
 #define HB_ISINTEGER( n )    ( hb_param( n, HB_IT_INTEGER) != NULL )

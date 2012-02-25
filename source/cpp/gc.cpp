@@ -107,7 +107,16 @@ void gdiplus_destroy( GDIPLUS * p ){
         break;      
      case GP_IT_BITMAP:
         delete (Bitmap *) p->pObject;
-        break;                                                                
+        break; 
+     case GP_IT_FONTCOLLECTION:
+     	  delete ( FontCollection * ) p->pObject;
+     	  break;
+     case GP_IT_INSTALLEDFONTCOLLECTION:
+     	  delete ( InstalledFontCollection  * ) p->pObject;
+     	  break;   	                                                                 
+     case GP_IT_PRIVATEFONTCOLLECTION:
+     	  delete ( PrivateFontCollection * ) p->pObject;
+     	  break;   	                                                                 
    }
    hb_xfree( p );
 

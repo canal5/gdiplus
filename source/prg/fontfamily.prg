@@ -2,6 +2,27 @@
 
 Function FontFamily(); return GPFontFamily():New()
 
+
+//function FontFamily( ... )
+//   local aParams := hb_aparams()
+//   local oPath
+//   local nLen := Len( aParams )
+//
+//   switch nLen
+//      case 0
+//         oPath = GPGraphicsPath():New()
+//         exit
+//      case 1
+//         oPath = GPGraphicsPath():New( aParams[ 1 ] )
+//         exit
+//      case 4
+//         oPath = GPGraphicsPath():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
+//        exit
+//   endswitch
+//
+//return oPath
+
+
 CLASS GPFontFamily
 
   DATA handle

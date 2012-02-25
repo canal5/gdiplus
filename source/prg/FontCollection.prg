@@ -25,24 +25,7 @@ ENDCLASS
   METHOD New() CLASS GPFontCollection
 *********************************************************************************************************
 
-local iParams := PCount()
-
-
-  if iParams == 0
-     ::handle := _GPFontCollection()
-  elseif iParams == 1
-     ::handle := _GPFontCollection( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPFontCollection( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPFontCollection( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPFontCollection( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPFontCollection( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPFontCollection( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
+   ::handle := _GPFontCollection()
 
 return self
 
@@ -56,16 +39,16 @@ return nil
 
 
 *********************************************************************************************************
-  METHOD GetFamilies() CLASS GPFontCollection
+  METHOD GetFamilies( A, B, C ) CLASS GPFontCollection
 *********************************************************************************************************
 
-return 0
+return GPFontColGetFamilies( ::handle, A, @B, @C )
 
 *********************************************************************************************************
   METHOD GetFamilyCount() CLASS GPFontCollection
 *********************************************************************************************************
 
-return 0
+return GPFontColGetFamilyCount( ::handle )
 
 *********************************************************************************************************
   METHOD GetLastStatus() CLASS GPFontCollection
@@ -99,40 +82,76 @@ return 0
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPFONTCOLLECTION )
 {
-   //FontCollection* ptr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    ptr = new FontCollection();
-   //else if (iParams == 1 )
-   //    ptr = new FontCollection( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    ptr = new FontCollection( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    ptr = new FontCollection( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*) ptr );
+	 FontCollection * o;
+   GDIPLUS * pObj = gdiplus_new( GP_IT_FONTCOLLECTION );
+   
+   o = new FontCollection();
+    
+   GP_SET( pObj, ( void * ) o );
+   hb_GDIPLUS_ret( pObj ); 
+   
 }
 
-HB_FUNC( DELETEFONTCOLLECTION )
+HB_FUNC( GPFONTCOLGETFAMILIES )
 {
-   //FontCollection* clr = (FontCollection*) hb_parptr( 1 );
-   //delete (FontCollection*) clr;
-   //hb_ret();
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_FONTCOLLECTION( pObj ) )
+	 {
+	    FontCollection * o = ( FontCollection * ) GP_GET( pObj );
+	 	  int numFamilies = hb_parni( 2 );
+	 	  int numFound, j;
+	 	  PHB_ITEM pArray;
+	 	  PHB_ITEM pItem = hb_itemNew( NULL );
+	 	  FontFamily * families = ( FontFamily * ) hb_xgrab( sizeof( FontFamily ) * numFamilies );
+	 	  sta = o->GetFamilies( numFamilies, families, &numFound );
+	 	  pArray = hb_itemArrayNew( numFound );
+	 	  for( j = 0; j < numFound; j++ ){
+	 	     hb_arraySet( pArray, j + 1, GPNewGDIPLUSObject( families+j, GP_IT_FONTCOLLECTION ) );	 	     
+	 	  }
+	 	  
+	 	  hb_itemPutNI( pItem, numFound );
+	 	  
+      if( !hb_itemParamStoreRelease( 3, pArray ))
+           hb_itemRelease( pArray );	 	  
+
+      if( !hb_itemParamStoreRelease( 4, pItem ))
+           hb_itemRelease( pItem );	 	  
+	 	  
+	 	  hb_retni( ( Status ) sta );
+ 	 }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-//HB_FUNC( GPFONTCOLLECTION... )
-//{
-//   FontCollection* ptr = (FontCollection*) hb_parptr( 1 );
-//}
+HB_FUNC( GPFONTCOLGETFAMILYCOUNT  )
+{
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_FONTCOLLECTION( pObj ) )
+	 {
+	    FontCollection * o = ( FontCollection * ) GP_GET( pObj );
+	    hb_retni( o->GetFamilyCount() );
+	 }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+
+HB_FUNC( GPFONTCOLGETLASTSTATUS  )
+{
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_FONTCOLLECTION( pObj ) )
+	 {
+	    FontCollection * o = ( FontCollection * ) GP_GET( pObj );
+	    hb_retni( ( Status ) o->GetLastStatus() );
+	 }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
 
 #pragma ENDDUMP
 
