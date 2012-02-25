@@ -172,52 +172,97 @@ return sta
 return sta
 
 ********************************************************************************************************
-   METHOD AddEllipse() CLASS GPGraphicsPath
+   METHOD AddEllipse( A,B,C,D ) CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+   local sta
+   local iParam := PCount()
+   nLen = 0
+   
+   if iParam == 1 
+      sta = GPGraphicsAddEllipse(::handle, A:handle  )
+   elseif iParam == 4
+      sta = GPGraphicsAddEllipse(::handle, A, B, C, D )
+   endif
+
+return sta
 
 ********************************************************************************************************
-   METHOD AddLine() CLASS GPGraphicsPath
+   METHOD AddLine( A, B, C, D ) CLASS GPGraphicsPath
 ********************************************************************************************************
+   local sta
+   local iParam := PCount()
+   nLen = 0
+   
+   if iParam == 2 
+      sta = GPGraphicsAddLine(::handle, A:handle, B:handle  )
+   elseif iParam == 4
+      sta = GPGraphicsAddLine(::handle, A, B, C, D )
+   endif
 
-return 0
-
-********************************************************************************************************
-   METHOD AddLines() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
-
-********************************************************************************************************
-   METHOD AddPath() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
+return sta
 
 ********************************************************************************************************
-   METHOD AddPie() CLASS GPGraphicsPath
+   METHOD AddLines( A ) CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+   local sta
+   
+   sta = GPGraphicsAddLines(::handle, A )
+
+return sta
 
 ********************************************************************************************************
-   METHOD AddPolygon() CLASS GPGraphicsPath
+   METHOD AddPath( A, B ) CLASS GPGraphicsPath
 ********************************************************************************************************
+   local sta
+   
+   sta = GPGraphicsAddPath(::handle, A:handle, B )
 
-return 0
-
-********************************************************************************************************
-   METHOD AddRectangle() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
+return sta
 
 ********************************************************************************************************
-   METHOD AddRectangles() CLASS GPGraphicsPath
+   METHOD AddPie( A, B, C, D, E, F ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+   local iParam := PCount()
+   
+   if iParam == 3
+      sta = GPGraphicsAddPie(::handle, A:handle, B, C  )
+   elseif iParam == 6
+      sta = GPGraphicsAddPie(::handle, A, B, C, D, E, F )
+   endif
+   
+return sta   
+
+********************************************************************************************************
+   METHOD AddPolygon( A ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+  
+   sta = GPGraphicsPathAddPolygon(::handle, A )
+   
+return sta  
+
+********************************************************************************************************
+   METHOD AddRectangle( A ) CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+   local sta
+
+   sta = GPGraphicsPathAddRectangle(::handle, A:handle )
+   
+return sta  
+
+********************************************************************************************************
+   METHOD AddRectangles( A ) CLASS GPGraphicsPath
+********************************************************************************************************
+
+   local sta
+
+   sta = GPGraphicsPathAddRectangles(::handle, A )
+   
+return sta 
 
 ********************************************************************************************************
    METHOD AddString() CLASS GPGraphicsPath
@@ -626,26 +671,201 @@ HB_FUNC( GPGRAPHICSPATHADDCURVE )
 }
 
 
-HB_FUNC( GPADDELLIPSE )
+HB_FUNC( GPGRAPHICSADDELLIPSE )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
-   gp->AddEllipse( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ));
-   hb_ret();
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	 	  if( hb_pcount() < 3 ){
+	 	     GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
+	 	     if( GP_IS_RECT( pRect ) ){
+	 	        Rect * rect = ( Rect * ) GP_GET( pRect );
+	 	        sta = gp->AddEllipse( *rect );
+	 	     }else{
+	 	        RectF * rect = ( RectF * ) GP_GET( pRect );
+	 	        sta = gp->AddEllipse( *rect );	 	     	
+	 	     }
+	 	  }else {
+	 	     if( HB_ISDOUBLE( 2 ) ){
+	 	        sta = gp->AddEllipse( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ) );
+	 	     }else if( HB_ISINTEGER( 2 ) ){
+	 	     	  sta = gp->AddEllipse( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ) );
+	 	     }
+	 	  }
+	 	  hb_retni( ( Status ) sta );
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	    
 }
 
-HB_FUNC( GPADDLINE )
+HB_FUNC( GPGRAPHICSADDLINE )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
-   gp->AddLine( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ));
-   hb_ret();
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	 	  if( hb_pcount() < 4 ){
+	 	     GDIPLUS * pPoint1 = hb_GDIPLUS_par( 2 );
+	 	     GDIPLUS * pPoint2 = hb_GDIPLUS_par( 3 );
+	 	     if( GP_IS_POINT( pPoint1 ) ){
+	 	        Point * point1 = ( Point * ) GP_GET( pPoint1 );
+	 	        Point * point2 = ( Point * ) GP_GET( pPoint2 );
+	 	        sta = gp->AddLine( *point1, *point2 );
+	 	     }else{
+	 	        PointF * point1 = ( PointF * ) GP_GET( pPoint1 );
+	 	        PointF * point2 = ( PointF * ) GP_GET( pPoint2 );
+	 	        sta = gp->AddLine( *point1, *point2 );
+	 	     }
+	 	  }else {
+	 	     if( HB_ISDOUBLE( 2 ) ){
+	 	        sta = gp->AddLine( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ) );
+	 	     }else if( HB_ISINTEGER( 2 ) ){
+	 	     	  sta = gp->AddLine( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ) );
+	 	     }
+	 	  }
+	 	  hb_retni( ( Status ) sta );
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	    
 }
 
-HB_FUNC( GPADDRECTANGLE )
+
+HB_FUNC( GPGRAPHICSADDLINES )
 {
-   GraphicsPath* gp = (GraphicsPath*) hb_parnl( 1 );
-   RectF rect = RectF(hb_parvnd( 2, 1 ), hb_parvnd( 2, 2 ), hb_parvnd( 2, 3 ), hb_parvnd( 2, 4 ));
-   gp->AddRectangle( rect );
-   hb_ret();
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+      void * vPoint;
+      BOOL lF = false;      
+      vPoint = ConvertArray2Point( aPoint, &lF );
+      if( lF ){
+         sta = gp->AddLines( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
+      }
+      else
+      { 
+         sta = gp->AddLines( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
+      }
+      hb_xfree( vPoint );
+      hb_retni( ( Status ) sta );
+      	  
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+
+HB_FUNC( GPGRAPHICSADDPATH )
+{
+	 GDIPLUS * pObj  = hb_GDIPLUS_par( 1 );
+	 GDIPLUS * pPath = hb_GDIPLUS_par( 2 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) && GP_IS_GRAPHICSPATH( pPath ) ){
+	 	  GraphicsPath * gp   = ( GraphicsPath * ) GP_GET( pObj );
+      GraphicsPath * path = ( GraphicsPath * ) GP_GET( pPath );
+      gp->AddPath( path, hb_parl( 3 ) );
+      hb_retni( ( Status ) sta );
+      	  
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+HB_FUNC( GPGRAPHICSADDPIE )
+{
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	 	  if( hb_pcount() < 5 ){
+	 	     GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
+	 	     if( GP_IS_RECT( pRect ) ){
+	 	        Rect * rect1 = ( Rect * ) GP_GET( pRect );
+	 	        sta = gp->AddPie( *rect1, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );
+	 	     }else{
+	 	        RectF * rect1 = ( RectF * ) GP_GET( pRect );
+	 	        sta = gp->AddPie( *rect1, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );
+	 	     }
+	 	  }else {
+	 	     if( HB_ISDOUBLE( 2 ) ){
+	 	        sta = gp->AddPie( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), 
+	 	                          ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ),
+	 	                          ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ) );
+	 	     }else if( HB_ISINTEGER( 2 ) ){
+	 	     	  sta = gp->AddPie( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ),
+	 	     	                     ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ) );
+	 	     }
+	 	  }
+	 	  hb_retni( ( Status ) sta );
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	    
+}
+
+HB_FUNC( GPGRAPHICSPATHADDPOLYGON )
+{
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+      void * vPoint;
+      BOOL lF = false;      
+      vPoint = ConvertArray2Point( aPoint, &lF );
+      if( lF ){
+         sta = gp->AddPolygon( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
+      }
+      else{ 
+      	sta = gp->AddPolygon( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
+      }
+      hb_xfree( vPoint );
+      hb_retni( ( Status ) sta );
+      	  
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+
+HB_FUNC( GPGRAPHICSPATHADDRECTANGLE )
+{
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) && ( GP_IS_RECT( pRect ) || GP_IS_RECTF( pRect ) ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	 	  if( GP_IS_RECT( pRect ) ){
+	 	     Rect * rect1 = ( Rect * ) GP_GET( pRect );
+	 	     sta = gp->AddRectangle( *rect1 );
+	 	  }else if( GP_IS_RECTF( pRect ) ){
+	 	     RectF * rect1 = ( RectF * ) GP_GET( pRect );
+	 	     sta = gp->AddRectangle( *rect1 );
+	 	  }
+	 	  hb_retni( ( Status ) sta );
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+HB_FUNC( GPGRAPHICSPATHADDRECTANGLES )
+{
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_GRAPHICSPATH( pObj ) ){
+	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+	 	  PHB_ITEM aRect = hb_param( 2, HB_IT_ARRAY );
+      void * vRect;
+      BOOL lF = false;      
+      vRect = ConvertArray2Rect( aRect, &lF );
+      if( lF ){
+         sta = gp->AddRectangles( ( RectF * ) vRect, hb_arrayLen( aRect ) );
+      }
+      else{ 
+      	sta = gp->AddRectangles( ( Rect * ) vRect, hb_arrayLen( aRect ) );
+      }
+      hb_xfree( vRect );
+      hb_retni( ( Status ) sta );
+      	  
+	 }else 
+	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPADDSTRING )

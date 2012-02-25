@@ -126,3 +126,47 @@ void * ConvertArray2Point( PHB_ITEM aPoint, BOOL * l )
    return pVoid;
       
 }
+
+void * ConvertArray2Rect( PHB_ITEM aRect, BOOL * l )
+{
+	
+   int n;
+   int iLen = hb_arrayLen( aRect );
+   Rect * pRect;
+   RectF * pRectF;
+   BOOL lF = false;
+   void * pVoid;
+     
+   for( n = 0; n < iLen; n++ ){
+     
+     PHB_ITEM pItem = hb_arrayGetItemPtr( aRect, n + 1 );
+     GDIPLUS * ptrRect;
+     hb_objSendMsg( pItem, "HANDLE", 0 );
+     ptrRect = hb_GDIPLUS_par( -1 );
+   
+     if( GP_IS_RECT( ptrRect ) ){
+        if( n == 0 )
+           pRect = ( Rect * ) hb_xgrab( sizeof( Rect ) * iLen );
+        Rect * pObj = ( Rect * )GP_GET( ptrRect );          
+        pRect[ n ] = *pObj;
+     }else if( GP_IS_RECTF( ptrRect ) ){
+        if( n == 0 ){
+           pRectF = ( RectF * ) hb_xgrab( sizeof( RectF ) * iLen );
+           lF = true;
+        }
+        RectF * pObj = ( RectF * )GP_GET( ptrRect );          
+        pRectF[ n ] = *pObj;
+     }
+   
+   }
+   
+   *l = lF;
+   
+   if( lF )
+      pVoid = ( void * ) pRectF;
+   else
+      pVoid = ( void * ) pRect;
+      
+   return pVoid;
+      
+}
