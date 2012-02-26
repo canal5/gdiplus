@@ -117,6 +117,12 @@ void gdiplus_destroy( GDIPLUS * p ){
      case GP_IT_PRIVATEFONTCOLLECTION:
      	  delete ( PrivateFontCollection * ) p->pObject;
      	  break;   	                                                                 
+     case GP_IT_FONTFAMILY:
+     	  delete ( FontFamily * ) p->pObject;
+     	  break;   	                                                                 
+     case GP_IT_FONT:
+     	  delete ( Font * ) p->pObject;
+     	  break;   	                                                                      	       	  
    }
    hb_xfree( p );
 
@@ -164,6 +170,13 @@ void GDIPLUS_StoreParam( int iParam, PHB_ITEM p ){
    if( !hb_itemParamStoreRelease( iParam, p ))
       hb_itemRelease( p );
 
+}
+
+WCHAR * hb_GDIPLUS_parw( int iParam ){
+	 WCHAR * filename;
+   char* szFile = ( char * ) hb_parc( iParam );
+	 filename = hb_mbtowc( szFile );      		
+	 return filename;
 }
 
 

@@ -1,26 +1,23 @@
 #include "fivewin.ch"
 
-Function FontFamily(); return GPFontFamily():New()
+function FontFamily( ... )
+   local aParams := hb_aparams()
+   local oFont
+   local nLen := Len( aParams )
 
+   switch nLen
+      case 0
+         oFont = GPFontFamily():New()
+         exit
+      case 1
+         oFont = GPFontFamily():New( aParams[ 1 ] )
+         exit         
+      case 2
+         oFont = GPFontFamily():New( aParams[ 1 ], aParams[ 2 ] )
+         exit
+   endswitch
 
-//function FontFamily( ... )
-//   local aParams := hb_aparams()
-//   local oPath
-//   local nLen := Len( aParams )
-//
-//   switch nLen
-//      case 0
-//         oPath = GPGraphicsPath():New()
-//         exit
-//      case 1
-//         oPath = GPGraphicsPath():New( aParams[ 1 ] )
-//         exit
-//      case 4
-//         oPath = GPGraphicsPath():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
-//        exit
-//   endswitch
-//
-//return oPath
+return oFont
 
 
 CLASS GPFontFamily
@@ -49,26 +46,26 @@ CLASS GPFontFamily
 ENDCLASS
 
 *******************************************************************************************
-  METHOD New() CLASS GPFontFamily
+  METHOD New( ... ) CLASS GPFontFamily
 *******************************************************************************************
 local iParams := PCount()
+local handle 
+local aParams := hb_aparams()
 
-
-  if iParams == 0
-     ::handle := _GPFontFamily()
-  elseif iParams == 1
-     ::handle := _GPFontFamily( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPFontFamily( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPFontFamily( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPFontFamily( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPFontFamily( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPFontFamily( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
+   switch iParams
+      case 0
+         handle = _GPFontFamily()
+         exit
+      case 1
+         handle = _GPFontFamily( aParams[ 1 ] )
+         exit
+      case 2
+         handle = _GPFontFamily( aParams[ 1 ], aParams[ 2 ]:handle )
+        exit
+   endswitch
+   
+   ::handle = handle
+  
 return self
 
 *******************************************************************************************
@@ -185,46 +182,45 @@ return self
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-
-using namespace Gdiplus;
-
+#include <gc.h>
 
 HB_FUNC( _GPFONTFAMILY )
 {
-   //FontFamily* ptr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    ptr = new FontFamily();
-   //else if (iParams == 1 )
-   //    ptr = new FontFamily( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    ptr = new FontFamily( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    ptr = new FontFamily( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*) ptr );
+	 FontFamily * o;
+   GDIPLUS * pObj = gdiplus_new( GP_IT_FONTFAMILY );
+   int iParams = hb_pcount();
+   BOOL lOk = true;   
+   
+   switch( iParams ){
+      case 0:
+         o = new FontFamily();
+         break;
+      case 1:{         
+	          WCHAR* filename = hb_GDIPLUS_parw( 1 );
+            o = new FontFamily( filename, NULL );
+            hb_xfree( filename );
+         }
+         break;
+      case 2:{
+            GDIPLUS * pFont = hb_GDIPLUS_par( 2 );
+	          WCHAR* filename = hb_GDIPLUS_parw( 1 );                  
+            if( ( lOk = GP_IS_FONTCOLLECTION( pFont ) ) ){
+            	  FontCollection * font = ( FontCollection * ) GP_GET( pFont );
+               o = new FontFamily( filename, font );            
+            }            
+            hb_xfree( filename );
+         }
+         break;
+   }
+   
+   if( lOk )
+   {
+      GP_SET( pObj, ( void * ) o );
+      hb_GDIPLUS_ret( pObj ); 
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   
 }
-
-HB_FUNC( DELETEFONTFAMILY )
-{
-   //FontFamily* clr = (FontFamily*) hb_parptr( 1 );
-   //delete (FontFamily*) clr;
-   //hb_ret();
-}
-
-//HB_FUNC( GPFontFamily... )
-//{
-//   FontFamily* ptr = (FontFamily*) hb_parptr( 1 );
-//}
-
-
-
-
 
 
 #pragma ENDDUMP

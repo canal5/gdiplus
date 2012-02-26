@@ -23,15 +23,46 @@ Local oTest
 //      TestsRectF()
 //      TestsRect()
   
-      TestGraphicsPath()
+//      TestGraphicsPath()
+      TestFontFamily()
+      TestFont()
       
-      TestBitmap( oTest )
+//      TestBitmap( oTest )
 
       SHOW RESULT
 
    ENDDEFINE
 
 return nil
+
+
+function TestFont() 
+
+   local oFont
+   local oFontFamily
+
+   SEPARADOR( "FONT" )
+   
+   Font oFont( "Arial", 16 )
+   oFont:GetFamily( @oFontFamily )
+   ? oFont:GetHeight( 96 )
+   
+   TEST !Empty( oFont:handle )         DESCRIPTION "Font( )"   
+   TEST !Empty( oFont:Clone():handle ) DESCRIPTION "Clone( )"   
+   TEST !Empty( oFontFamily:handle )   DESCRIPTION "GetFamily( )"   
+   TEST oFont:GetHeight( 96 ) > 0      DESCRIPTION "GetHeight( )"   
+
+return 0
+
+
+function TestFontFamily() 
+
+   SEPARADOR( "FONTFAMILY" )
+
+   TEST !Empty( FontFamily():handle ) DESCRIPTION "FontFamily()" //SAMPLE Example_CaptureWnd( oTest )
+   TEST !Empty( FontFamily("arial"):handle ) DESCRIPTION "FontFamily()" //SAMPLE Example_CaptureWnd( oTest )
+
+return 0
 
 
 function TestBitmap( oTest )

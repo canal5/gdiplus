@@ -6,7 +6,7 @@ function PrivateFontCollection()
 return GPPrivateFontCollection():New()
 
 
-CLASS GPPrivateFontCollection
+CLASS GPPrivateFontCollection FROM GPFontCollection
 
   DATA handle
 
@@ -26,22 +26,7 @@ ENDCLASS
 
 local iParams := PCount()
 
-
-  if iParams == 0
      ::handle := _GPPrivateFontCollection()
-  elseif iParams == 1
-     ::handle := _GPPrivateFontCollection( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPPrivateFontCollection( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPPrivateFontCollection( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPPrivateFontCollection( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPPrivateFontCollection( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPPrivateFontCollection( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
 
 return self
 
@@ -55,16 +40,16 @@ return nil
 
 
 *********************************************************************************************************
-  METHOD AddFontFile() CLASS GPPrivateFontCollection
+  METHOD AddFontFile( cFilename ) CLASS GPPrivateFontCollection
 *********************************************************************************************************
 
-return 0
+return GPPrivateAddFontFile( ::handle, cFilename )
 
 *********************************************************************************************************
-  METHOD AddMemoryFont() CLASS GPPrivateFontCollection
+  METHOD AddMemoryFont( ptr, nLen ) CLASS GPPrivateFontCollection
 *********************************************************************************************************
 
-return 0
+return GPPrivateAddMemoryFont( ::handle, ptr, nLen )
 
 
 
@@ -95,40 +80,46 @@ return 0
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPPRIVATEFONTCOLLECTION )
 {
-   //PrivateFontCollection* ptr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    ptr = new PrivateFontCollection();
-   //else if (iParams == 1 )
-   //    ptr = new PrivateFontCollection( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    ptr = new PrivateFontCollection( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    ptr = new PrivateFontCollection( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*) ptr );
+	 PrivateFontCollection * o;
+   GDIPLUS * pObj = gdiplus_new( GP_IT_PRIVATEFONTCOLLECTION );
+   
+   o = new PrivateFontCollection();
+    
+   GP_SET( pObj, ( void * ) o );
+   hb_GDIPLUS_ret( pObj ); 
 }
 
-HB_FUNC( DELETEPRIVATEFONTCOLLECTION )
+HB_FUNC( GPPRIVATEADDFONTFILE  )
 {
-   //PrivateFontCollection* clr = (PrivateFontCollection*) hb_parptr( 1 );
-   //delete (PrivateFontCollection*) clr;
-   //hb_ret();
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_PRIVATEFONTCOLLECTION( pObj ) )
+	 {
+	    PrivateFontCollection * o = ( PrivateFontCollection * ) GP_GET( pObj );
+	    WCHAR* filename = hb_GDIPLUS_parw( 2 ) ;
+      sta = o->AddFontFile( filename );
+      hb_xfree( filename );
+	    hb_retni( ( Status ) sta );
+	 }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-//HB_FUNC( GPPRIVATEFONTCOLLECTION... )
-//{
-//   PrivateFontCollection* ptr = (PrivateFontCollection*) hb_parptr( 1 );
-//}
+HB_FUNC( GPPRIVATEADDMEMORYFONT )
+{
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_PRIVATEFONTCOLLECTION( pObj ) )
+	 {
+	    PrivateFontCollection * o = ( PrivateFontCollection * ) GP_GET( pObj );
+      sta = o->AddMemoryFont( hb_parptr( 2 ), hb_parni( 3 ) );
+	    hb_retni( ( Status ) sta );
+	 }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
 
 #pragma ENDDUMP
 

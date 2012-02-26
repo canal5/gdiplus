@@ -10,19 +10,27 @@ typedef struct s_GPNEWOBJ{
 
 static const GPNEWOBJ _newo[] = {
    { NULL, NULL, NULL },
-   { "GPGRAPHICS"  , GP_IT_GRAPHICS  , sizeof( Graphics ) },
-   { "GPRECTF"     , GP_IT_RECTF     , sizeof( RectF ) },
-   { "GPRECT"      , GP_IT_RECT      , sizeof( Rect ) },
-   { "GPIMAGE"     , GP_IT_IMAGE     , sizeof( Image ) },
-   { "GPCOLOR"     , GP_IT_COLOR     , sizeof( Color ) },
-   { "GPSOLIDBRUSH", GP_IT_SOLIDBRUSH, sizeof( SolidBrush ) },
-   { "GPPEN"       , GP_IT_PEN       , sizeof( Pen ) },
-   { "GPPOINT"     , GP_IT_POINT     , sizeof( Point ) },
-   { "GPPOINTF"    , GP_IT_POINTF    , sizeof( PointF ) },
-   { "GPSIZE"      , GP_IT_SIZE      , sizeof( Size ) },
-   { "GPSIZEF"     , GP_IT_SIZEF     , sizeof( SizeF ) },
-   { "GPMATRIX"    , GP_IT_MATRIX    , sizeof( Matrix ) },
+   { "GPGRAPHICS"      , GP_IT_GRAPHICS       , sizeof( Graphics ) },
+   { "GPRECTF"         , GP_IT_RECTF          , sizeof( RectF ) },
+   { "GPRECT"          , GP_IT_RECT           , sizeof( Rect ) },
+   { "GPIMAGE"         , GP_IT_IMAGE          , sizeof( Image ) },
+   { "GPCOLOR"         , GP_IT_COLOR          , sizeof( Color ) },
+   { "GPSOLIDBRUSH"    , GP_IT_SOLIDBRUSH     , sizeof( SolidBrush ) },
+   { "GPPEN"           , GP_IT_PEN            , sizeof( Pen ) },
+   { "GPPOINT"         , GP_IT_POINT          , sizeof( Point ) },
+   { "GPPOINTF"        , GP_IT_POINTF         , sizeof( PointF ) },
+   { "GPSIZE"          , GP_IT_SIZE           , sizeof( Size ) },
+   { "GPSIZEF"         , GP_IT_SIZEF          , sizeof( SizeF ) },
+   { "GPMATRIX"        , GP_IT_MATRIX         , sizeof( Matrix ) } ,
+   { "GPGRAPHICSPATH"  , GP_IT_GRAPHICSPATH   , sizeof( GraphicsPath ) },
+   { "GPBITMAP"        , GP_IT_BITMAP         , sizeof( Bitmap ) },
+   { "GPINSTALLEDFONTCOLLECTION", GP_IT_INSTALLEDFONTCOLLECTION , sizeof( InstalledFontCollection ) },
+   { "GPPRIVATEFONTCOLLECTION"  , GP_IT_PRIVATEFONTCOLLECTION   , sizeof( PrivateFontCollection ) },
+   { "GPFONTCOLLECTION"         , GP_IT_FONTCOLLECTION          , sizeof( FontCollection ) },
+   { "GPFONTFAMILY"             , GP_IT_FONTFAMILY              , sizeof( FontFamily ) },
+   { "GPFONT"                   , GP_IT_FONT                    , sizeof( Font )  },
 };
+
 
 
 void Traza( char * c )
