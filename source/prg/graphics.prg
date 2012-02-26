@@ -875,15 +875,13 @@ return 0
 return 0
 
 **********************************************************************************************************
-  METHOD DrawString( cText, nTop, nLeft, font, color ) CLASS GPGraphics
+  METHOD DrawString( cText, font, point, brush ) CLASS GPGraphics
 **********************************************************************************************************
 
   DEFAULT font := ::oFont
-  DEFAULT color := ::oColor
+  DEFAULT brush := ::oBrush
 
-  GP_DrawString( ::handle, cText, nTop, nLeft, font:handle, color:handle )
-
-return 0
+return GP_DrawString( ::handle, cText, font:handle, point:handle, brush:handle )
 
 **********************************************************************************************************
   METHOD EndContainer( ) CLASS GPGraphics
@@ -1317,7 +1315,6 @@ HB_FUNC( GP_DRAWCURVE ){
    {
       Graphics *g = ( Graphics * ) GP_GET( p ) ;
       Pen* p = (Pen*) GP_GET( pObj ); 
-      int iParam = hb_pcount();
       if( HB_ISARRAY( 3 ) ){        
          PHB_ITEM aPoint = hb_param( 3, HB_IT_ARRAY );
          int iLen = hb_arrayLen( aPoint );
@@ -1549,17 +1546,19 @@ HB_FUNC( GP_DRAWRECTANGLE )
 
 HB_FUNC( GP_DRAWSTRING )
 {
-   Graphics *g = hb_Graphics_par( 1 );
-   Font* myFont = (Font*) hb_parptr( 5 );
-   Color* c = (Color*) hb_parptr(6);
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pF = hb_GDIPLUS_par( 3 );
+   GDIPLUS * pP = hb_GDIPLUS_par( 4 );
+   GDIPLUS * pB = hb_GDIPLUS_par( 5 );
 
-   if( g && myFont && c )
+   if( GP_IS_GRAPHICS( pG ) && GP_IS_FONT( pF ) && ( GP_IS_POINTF( pP ) || GP_IS_RECTF( pP ) ) && GP_IS_BRUSH( pB ) ) 
    {
-      LPWSTR str = hb_mbtowc( (LPSTR) hb_parc( 2 ));
-      PointF origin((float) hb_parni( 4 ), (float) hb_parni( 3 ) );
-      SolidBrush* blackBrush = new SolidBrush(*c);
-      g->DrawString( str, hb_parclen( 2 ), myFont, origin, blackBrush);
-      delete (SolidBrush*) blackBrush;
+      Graphics * g = ( Graphics * ) GP_GET( pG );   
+      Font * myFont = ( Font* ) GP_GET( pF );
+      PointF * p = ( PointF * ) GP_GET( pP );
+      Brush * b = ( Brush * ) GP_GET( pB );
+      WCHAR * str = hb_GDIPLUS_parw( 2 );
+      g->DrawString( str, hb_parclen( 2 ), myFont, *p, b );
       hb_xfree( str );
    }
    else

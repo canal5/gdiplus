@@ -46,7 +46,6 @@ CLASS GPFont
   METHOD Clone()
   METHOD GetFamily()
   METHOD GetHeight()
-  METHOD GetHeight2()
   METHOD GetLastStatus()
   METHOD GetLogFontA()
   METHOD GetLogFontW()
@@ -124,29 +123,24 @@ return GPFontGetFamily( ::handle, @oFontFamily )
 
 return nHeight
 
-*********************************************************************************************************
-  METHOD GetHeight2() CLASS GPFont
-*********************************************************************************************************
-
-return 0
 
 *********************************************************************************************************
   METHOD GetLastStatus() CLASS GPFont
 *********************************************************************************************************
 
-return 0
+return GPFontGetLastStatus( ::handle )
 
 *********************************************************************************************************
-  METHOD GetLogFontA() CLASS GPFont
+  METHOD GetLogFontA( oGrap, oLog ) CLASS GPFont
+*********************************************************************************************************
+ 
+return GPFontGetLogFontA( ::handle, oGrap:handle, @oLog )
+
+*********************************************************************************************************
+  METHOD GetLogFontW( oGrap, oLog ) CLASS GPFont
 *********************************************************************************************************
 
-return 0
-
-*********************************************************************************************************
-  METHOD GetLogFontW() CLASS GPFont
-*********************************************************************************************************
-
-return 0
+return GPFontGetLogFontW( ::handle, oGrap:handle, @oLog )
 
 *********************************************************************************************************
   METHOD GetSize() CLASS GPFont
@@ -208,6 +202,7 @@ return 0
 
 #pragma BEGINDUMP
 #include <gc.h>
+#include <hbapiitm.h>
 
 HB_FUNC( _GPFONT )
 {
@@ -233,14 +228,18 @@ HB_FUNC( _GPFONT )
    	        WCHAR * filename = hb_GDIPLUS_parw( 1 );
    	        o = new Font( filename, ( REAL ) hb_parnd( 2 ) );
    	     	  hb_xfree( filename );
-   	     }else if( HB_ISNUM( 2 ) ){
-   	     	  
+   	     }else if( HB_ISNUM( 1 ) ){
    	        if( GetObjectType( ( HGDIOBJ ) hb_parnl( 2 ) ) )
    	           o = new Font( ( HDC ) hb_parnl( 1 ), ( HFONT ) hb_parnl( 2 ) );
-   	        else
-   	           o = new Font( ( HDC ) hb_parnl( 1 ), ( LOGFONTA * ) hb_parnl( 2 ) );
-   	     }else
+   	        else if( HB_ISPOINTER( 2 ) ){
+   	           GDIPLUS * log = hb_GDIPLUS_par( 2 );
+   	           LOGFONTA * pLog = ( LOGFONTA * ) GP_GET( log );
+   	           o = new Font( ( HDC ) hb_parnl( 1 ), pLog );
+   	        }
+   	     }else{
+   	     Traza( "Error" );
    	        lOk = false;
+   	        }
    	        
    	     break;
 
@@ -349,6 +348,65 @@ HB_FUNC( GPFONTGETHEIGHT ){
 	       }
 	    }
 	    hb_retnd( ( double ) height );
+	 }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+	
+}
+
+HB_FUNC( GPFONTGETLASTSTATUS  )
+{
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 Status sta;
+	 if( GP_IS_FONT( pObj ) )
+	 {
+	    Font * o = ( Font * ) GP_GET( pObj );
+	    hb_retni( ( Status ) o->GetLastStatus() );
+	 }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+HB_FUNC( GPFONTGETLOGFONTA ){
+	
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 GDIPLUS * p = hb_GDIPLUS_par( 2 );
+	 Status sta;
+	 if( GP_IS_GRAPHICS( p ) && GP_IS_FONT( pObj ) )
+	 {
+	    Font * o = ( Font * ) GP_GET( pObj );
+      Graphics * g = ( Graphics * ) GP_GET( p );
+      GDIPLUS * pLog =  gdiplus_new( GP_IT_LOGFONTA );
+      LOGFONTA log;
+      PHB_ITEM pRet = hb_itemNew( NULL );
+	    sta = o->GetLogFontA( g, &log );
+	    pLog->pObject = hb_xgrab( sizeof( LOGFONTA ) );
+	    memcpy( pLog->pObject, &log, sizeof( LOGFONTA ) );
+	    GDIPLUSItemPut( pRet, pLog );
+	    GDIPLUS_StoreParam( 3, pRet );
+	    hb_retni( ( Status ) sta );
+
+	 }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+	
+}
+
+
+HB_FUNC( GPFONTGETLOGFONTW ){
+	
+	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+	 GDIPLUS * p = hb_GDIPLUS_par( 2 );
+	 Status sta;
+	 if( GP_IS_GRAPHICS( pObj ) )
+	 {
+	    Font * o = ( Font * ) GP_GET( pObj );
+      Graphics * g = ( Graphics * ) GP_GET( p );
+      GDIPLUS * pLog =  gdiplus_new( GP_IT_LOGFONTW );
+      LOGFONTW log;
+	    sta = o->GetLogFontW( g, &log );
+	    memcpy( pLog->pObject, &log, sizeof( LOGFONTW ) );
+	    
+	    GDIPLUS_StoreParam( 3, pLog );
+	    hb_retni( ( Status ) sta );
+
 	 }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
 	

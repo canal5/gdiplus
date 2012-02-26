@@ -122,7 +122,11 @@ void gdiplus_destroy( GDIPLUS * p ){
      	  break;   	                                                                 
      case GP_IT_FONT:
      	  delete ( Font * ) p->pObject;
-     	  break;   	                                                                      	       	  
+     	  break;   	   
+     case GP_IT_LOGFONTA:
+     case GP_IT_LOGFONTW:
+     	  hb_xfree( ( void * ) p->pObject );
+     	  break;       	   	                                                                     	       	  
    }
    hb_xfree( p );
 

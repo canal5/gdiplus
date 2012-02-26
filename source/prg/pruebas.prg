@@ -40,18 +40,22 @@ function TestFont()
 
    local oFont
    local oFontFamily
+   local oLog
 
    SEPARADOR( "FONT" )
    
    Font oFont( "Arial", 16 )
    oFont:GetFamily( @oFontFamily )
-   ? oFont:GetHeight( 96 )
+
    
    TEST !Empty( oFont:handle )         DESCRIPTION "Font( )"   
    TEST !Empty( oFont:Clone():handle ) DESCRIPTION "Clone( )"   
    TEST !Empty( oFontFamily:handle )   DESCRIPTION "GetFamily( )"   
    TEST oFont:GetHeight( 96 ) > 0      DESCRIPTION "GetHeight( )"   
-
+   TEST oFont:GetLastStatus() == 0     DESCRIPTION "GetLastStatus( )"
+   TEST .T.  DESCRIPTION "GetLogFontA( )" SAMPLE Example_GetLogFontA()
+   
+   
 return 0
 
 
@@ -2930,6 +2934,32 @@ function Example_AddRectangles( )
    exampleWindow( bPainted )
    
 return nil
+
+
+//---------------------------------
+//FONT
+//---------------------------------
+function Example_GetLogFontA( )
+   local bPainted := { | hdc |
+      local logFont
+      
+      Graphics graphics(hdc)
+      // Create a Font object.
+      Font myFont("Arial", 16)
+      
+      // Get attributes of myFont.
+      myFont:GetLogFontA( graphics, @logFont)
+      // Create a second Font object from logFont.
+      Font logfontFont(hdc, logFont)
+      // Draw text using logfontFont.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      graphics:DrawString("Font from a LOGFONT",  logfontFont, PointF(0, 0), solidbrush)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
 
 
 /*prototype

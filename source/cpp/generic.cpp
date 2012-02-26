@@ -29,6 +29,8 @@ static const GPNEWOBJ _newo[] = {
    { "GPFONTCOLLECTION"         , GP_IT_FONTCOLLECTION          , sizeof( FontCollection ) },
    { "GPFONTFAMILY"             , GP_IT_FONTFAMILY              , sizeof( FontFamily ) },
    { "GPFONT"                   , GP_IT_FONT                    , sizeof( Font )  },
+   { ""                         , GP_IT_LOGFONTA                , sizeof( LOGFONTA ) },
+   { ""                         , GP_IT_LOGFONTW                , sizeof( LOGFONTW ) }   
 };
 
 
