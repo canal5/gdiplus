@@ -180,3 +180,33 @@ void * ConvertArray2Rect( PHB_ITEM aRect, BOOL * l )
    return pVoid;
       
 }
+
+HBITMAP MakeBmpFromHWND( HWND hWnd  )
+{
+   HDC hDC2;
+   HBITMAP hBmp, hBmpOld;
+   HDC hDC = GetWindowDC( hWnd ); 
+   RECT rct;
+   int iTop,iLeft, iWidth, iHeight;
+ 
+   GetClientRect( hWnd, &rct );
+       
+   hDC2    = CreateCompatibleDC( hDC );
+   hBmp    = CreateCompatibleBitmap( hDC, rct.right, rct.bottom );
+   hBmpOld = ( HBITMAP ) SelectObject( hDC2, hBmp );
+ 
+   BitBlt( hDC2, 0, 0, rct.right, rct.bottom, hDC, rct.left, rct.top,  SRCCOPY );
+ 
+   SelectObject( hDC2, hBmpOld );
+ 
+   DeleteDC( hDC2 );
+   ReleaseDC( hWnd, hDC );
+   
+   return hBmp;
+}
+
+
+HB_FUNC( MAKEBMPFROMHWND )
+{
+  hb_retnl( ( LONG ) MakeBmpFromHWND( ( HWND ) hb_parnl( 1 ) ) );
+}

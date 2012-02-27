@@ -24,8 +24,8 @@ Local oTest
 //      TestsRect()
   
 //      TestGraphicsPath()
-//      TestFontFamily()
-      TestFont()
+      TestFontFamily()
+//      TestFont()
       
 //      TestBitmap( oTest )
 
@@ -71,6 +71,7 @@ function TestFontFamily()
 
    TEST !Empty( FontFamily():handle )        DESCRIPTION "FontFamily()" 
    TEST !Empty( FontFamily("arial"):handle ) DESCRIPTION "FontFamily()" 
+   TEST !Empty( FontFamily("arial"):Clone:handle ) DESCRIPTION "Clone()" SAMPLE Example_FontFamilyClone()
 
 return 0
 
@@ -3118,6 +3119,32 @@ function Example_IsAvailable( )
 return nil 
 
 
+//---------------------------------
+//FONTfamily
+//---------------------------------
+
+function Example_FontFamilyClone( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      // Create a FontFamily object.
+      FontFamily arialFontFamily("arial")
+   
+      // Clone the FontFamily object and use it to create a Font object.
+      cloneFontFamily = arialFontFamily:Clone()
+      Font arialFont(cloneFontFamily, 16)
+   
+      // Draw text using the new font.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      graphics:DrawString("This is an Arial font",;
+                           arialFont, PointF(0, 0), solidbrush)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+  
 /*prototype
 function Example_( )
    local bPainted := { | hdc |
@@ -3149,35 +3176,7 @@ return
 #include <hbapi.h>
 
 
-HBITMAP MakeBmpFromHWND( HWND hWnd  )
-{
-   HDC hDC2;
-   HBITMAP hBmp, hBmpOld;
-   HDC hDC = GetWindowDC( hWnd ); 
-   RECT rct;
-   int iTop,iLeft, iWidth, iHeight;
- 
-   GetClientRect( hWnd, &rct );
-       
-   hDC2    = CreateCompatibleDC( hDC );
-   hBmp    = CreateCompatibleBitmap( hDC, rct.right, rct.bottom );
-   hBmpOld = ( HBITMAP ) SelectObject( hDC2, hBmp );
- 
-   BitBlt( hDC2, 0, 0, rct.right, rct.bottom, hDC, rct.left, rct.top,  SRCCOPY );
- 
-   SelectObject( hDC2, hBmpOld );
- 
-   DeleteDC( hDC2 );
-   ReleaseDC( hWnd, hDC );
-   
-   return hBmp;
-}
 
-
-HB_FUNC( MAKEBMPFROMHWND )
-{
-  hb_retnl( ( LONG ) MakeBmpFromHWND( ( HWND ) hb_parnl( 1 ) ) );
-}
 
 #pragma ENDDUMP
 

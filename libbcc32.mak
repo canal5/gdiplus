@@ -135,5 +135,6 @@ all: $(LIB_OBJS) $(LIB_HRB) $(LIB_NAME)
 
 .cpp.obj:
    $(BORLANDC_COMP_EXE) $(BORLANDC_COMP_FLAGS_CPP) -o$@ $**
+   $(BORLANDC_LIB_EXE) $(LIB_NAME) -+ $@,,
 
 

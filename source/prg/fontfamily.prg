@@ -81,26 +81,26 @@ return self
    METHOD Clone() CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyClone( ::handle )
 
 
 *******************************************************************************************
     METHOD GenericMonospace() CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyGenericMonospace( ::handle )
 
 *******************************************************************************************
     METHOD GenericSansSerif() CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyGenericSansSerif( ::handle )
 
 *******************************************************************************************
     METHOD GenericSerif() CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyGenericSerif( ::handle )
 
 *******************************************************************************************
     METHOD GetCellAscent() CLASS GPFontFamily
@@ -220,6 +220,72 @@ HB_FUNC( _GPFONTFAMILY )
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    
+}
+
+
+HB_FUNC( GPFONTFAMILYCLONE ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      FontFamily * oClone;
+      PHB_ITEM pClone;
+      oClone = o->Clone();
+      pClone = GPNewGDIPLUSObject( oClone, GP_IT_FONTFAMILY );
+      hb_itemReturnRelease( pClone );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+HB_FUNC( GPFONTFAMILYGENERICMONOSPACE ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      FontFamily * oClone;
+      PHB_ITEM pClone;
+      oClone = ( FontFamily * ) o->GenericMonospace();
+      pClone = GPNewGDIPLUSObject( oClone, GP_IT_FONTFAMILY );
+      hb_itemReturnRelease( pClone );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+HB_FUNC( GPFONTFAMILYGENERICSANSSERIF ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      FontFamily * oClone;
+      PHB_ITEM pClone;
+      oClone = ( FontFamily * )o->GenericSansSerif();
+      pClone = GPNewGDIPLUSObject( oClone, GP_IT_FONTFAMILY );
+      hb_itemReturnRelease( pClone );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPFONTFAMILYGENERICSERIF ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      FontFamily * oClone;
+      PHB_ITEM pClone;
+      oClone = ( FontFamily * )o->GenericSerif();
+      pClone = GPNewGDIPLUSObject( oClone, GP_IT_FONTFAMILY );
+      hb_itemReturnRelease( pClone );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
 }
 
 
