@@ -69,9 +69,14 @@ function TestFontFamily()
 
    SEPARADOR( "FONTFAMILY" )
 
-   TEST !Empty( FontFamily():handle )        DESCRIPTION "FontFamily()" 
-   TEST !Empty( FontFamily("arial"):handle ) DESCRIPTION "FontFamily()" 
-   TEST !Empty( FontFamily("arial"):Clone:handle ) DESCRIPTION "Clone()" SAMPLE Example_FontFamilyClone()
+   TEST !Empty( FontFamily():handle )                           DESCRIPTION "FontFamily()" 
+   TEST !Empty( FontFamily("arial"):handle )                    DESCRIPTION "FontFamily()" 
+   TEST !Empty( FontFamily("arial"):Clone():handle )            DESCRIPTION "Clone()"            SAMPLE Example_FontFamilyClone()
+   TEST !Empty( FontFamily("arial"):GenericMonospace():handle ) DESCRIPTION "GenericMonospace()" SAMPLE Example_GenericMonospace()
+   TEST !Empty( FontFamily("arial"):GenericSansSerif():handle ) DESCRIPTION "GenericSansSerif()" SAMPLE Example_GenericSansSerif()
+   TEST !Empty( FontFamily("arial"):GenericSerif():handle )     DESCRIPTION "GenericSerif()"     SAMPLE Example_GenericSerif()
+   TEST FontFamily("arial"):GetCellAscent( FontStyleRegular ) > 0  DESCRIPTION "GetCellAscent()"     SAMPLE Example_GetCellAscent()
+   TEST FontFamily("arial"):GetCellDescent( FontStyleRegular ) > 0  DESCRIPTION "GetCellDescent()"     SAMPLE Example_GetCellDescent()
 
 return 0
 
@@ -3144,7 +3149,113 @@ function Example_FontFamilyClone( )
    
 return nil 
 
+
+function Example_GenericMonospace( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      // Use a generic monospace FontFamily object to create a Font object.
+      Font generic( FontFamily():GenericMonospace(), 16)
+   
+      // Draw text using the new font.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      graphics:DrawString("This is a generic monospace font", generic, PointF(0, 0), solidbrush);
+                          
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
   
+
+function Example_GenericSansSerif( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      // Use a generic monospace FontFamily object to create a Font object.
+      Font generic( FontFamily():GenericSansSerif(), 16)
+   
+      // Draw text using the new font.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      graphics:DrawString("This is a generic SansSerif font", generic, PointF(0, 0), solidbrush);
+                          
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+
+function Example_GenericSerif( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      // Use a generic monospace FontFamily object to create a Font object.
+      Font generic( FontFamily():GenericSerif(), 16)
+   
+      // Draw text using the new font.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      graphics:DrawString("This is a generic Serif font", generic, PointF(0, 0), solidbrush);
+                          
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_GetCellAscent( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a FontFamily object.
+      FontFamily ascentFontFamily("arial")
+      
+      // Get the cell ascent of the font family in design units.
+      cellAscent = ascentFontFamily:GetCellAscent(FontStyleRegular)
+   
+      // Copy the cell ascent into a string and draw the string.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      Font       font(ascentFontFamily, 16)
+      string = "ascentFontFamily.GetCellAscent() returns " + str( cellAscent )
+      graphics:DrawString(string, font, PointF(0, 0), solidbrush)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_GetCellDescent( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a FontFamily object.
+      FontFamily ascentFontFamily("arial")
+      
+      // Get the cell ascent of the font family in design units.
+      cellDesc = ascentFontFamily:GetCellDescent(FontStyleRegular)
+   
+      // Copy the cell ascent into a string and draw the string.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      Font       font(ascentFontFamily, 16)
+      string = "ascentFontFamily.CellDescent() returns " + str( cellDesc )
+      graphics:DrawString(string, font, PointF(0, 0), solidbrush)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+
+
 /*prototype
 function Example_( )
    local bPainted := { | hdc |
@@ -3170,13 +3281,4 @@ exit procedure salida
 
 return
 
-
-#pragma BEGINDUMP
-#include <windows.h>
-#include <hbapi.h>
-
-
-
-
-#pragma ENDDUMP
 

@@ -103,16 +103,17 @@ return GPFontFamilyGenericSansSerif( ::handle )
 return GPFontFamilyGenericSerif( ::handle )
 
 *******************************************************************************************
-    METHOD GetCellAscent() CLASS GPFontFamily
+    METHOD GetCellAscent( n ) CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyGetCellAscent( ::handle, n )
 
 *******************************************************************************************
-    METHOD GetCellDescent() CLASS GPFontFamily
+    METHOD GetCellDescent( n ) CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyGetCellDescent( ::handle, n )
+
 
 *******************************************************************************************
     METHOD GetEmHeight() CLASS GPFontFamily
@@ -288,6 +289,34 @@ HB_FUNC( GPFONTFAMILYGENERICSERIF ){
   
 }
 
+
+HB_FUNC( GPFONTFAMILYGETCELLASCENT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {  
+   	  int style;
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      style = o->GetCellAscent( hb_parni( 2 ) );
+      hb_retni( style );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+HB_FUNC( GPFONTFAMILYGETCELLDESCENT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {  
+   	  int style;
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      style = o->GetCellDescent( hb_parni( 2 ) );
+      hb_retni( style );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
 
 #pragma ENDDUMP
 
