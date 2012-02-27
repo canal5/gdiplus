@@ -24,7 +24,7 @@ Local oTest
 //      TestsRect()
   
 //      TestGraphicsPath()
-      TestFontFamily()
+//      TestFontFamily()
       TestFont()
       
 //      TestBitmap( oTest )
@@ -44,17 +44,23 @@ function TestFont()
 
    SEPARADOR( "FONT" )
    
-   Font oFont( "Arial", 16 )
+   Font oFont( "Arial", 16, FontStyleItalic )
+
    oFont:GetFamily( @oFontFamily )
 
    
    TEST !Empty( oFont:handle )         DESCRIPTION "Font( )"   
    TEST !Empty( oFont:Clone():handle ) DESCRIPTION "Clone( )"   
    TEST !Empty( oFontFamily:handle )   DESCRIPTION "GetFamily( )"   
-   TEST oFont:GetHeight( 96 ) > 0      DESCRIPTION "GetHeight( )"   
+   TEST oFont:GetHeight( 96 ) > 0      DESCRIPTION "GetHeight( )"   SAMPLE Example_GetHeight()
    TEST oFont:GetLastStatus() == 0     DESCRIPTION "GetLastStatus( )"
-   TEST .T.  DESCRIPTION "GetLogFontA( )" SAMPLE Example_GetLogFontA()
-   
+   TEST .T.                            DESCRIPTION "GetLogFontA( )" SAMPLE Example_GetLogFontA()
+   TEST .T.                            DESCRIPTION "GetLogFontW( )" SAMPLE Example_GetLogFontW()
+   TEST oFont:GetSize() > 0            DESCRIPTION "GetSize( )"     SAMPLE Example_GetSize()
+   TEST oFont:GetStyle() > 0           DESCRIPTION "GetStyle( )"    SAMPLE Example_GetStyle()
+   TEST oFont:GetUnit() > 0            DESCRIPTION "GetUnit( )"     SAMPLE Example_GetUnit()
+   TEST oFont:IsAvailable()            DESCRIPTION "IsAvailable( )" SAMPLE Example_IsAvailable()
+
    
 return 0
 
@@ -63,8 +69,8 @@ function TestFontFamily()
 
    SEPARADOR( "FONTFAMILY" )
 
-   TEST !Empty( FontFamily():handle ) DESCRIPTION "FontFamily()" //SAMPLE Example_CaptureWnd( oTest )
-   TEST !Empty( FontFamily("arial"):handle ) DESCRIPTION "FontFamily()" //SAMPLE Example_CaptureWnd( oTest )
+   TEST !Empty( FontFamily():handle )        DESCRIPTION "FontFamily()" 
+   TEST !Empty( FontFamily("arial"):handle ) DESCRIPTION "FontFamily()" 
 
 return 0
 
@@ -173,9 +179,9 @@ return nil
 //   TEST gp2:AddPolygon( { PointF( 20.0, 20.0 ), PointF( 120.0, 20.0 ), PointF( 120.0, 70.0 ) } ) == 0  DESCRIPTION "AddPolygon()"   SAMPLE Example_AddPolygon()
    TEST gp2:AddRectangle( RectF( 20.0, 20.0, 100.0, 50.0 ) ) == 0  DESCRIPTION "AddRectangle()"   SAMPLE Example_AddRectangle()
    TEST gp2:AddRectangles( { RectF( 20.0, 20.0, 100.0, 50.0 ),;
-   	                         RectF( 30.0, 30.0, 50.0, 100.0 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
+                             RectF( 30.0, 30.0, 50.0, 100.0 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
    TEST gp2:AddRectangles( { RectF( 20, 20, 100, 50 ),;
-   	                         RectF( 30, 30, 50, 100 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
+                             RectF( 30, 30, 50, 100 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
    
 return 0
 
@@ -2952,8 +2958,158 @@ function Example_GetLogFontA( )
       // Create a second Font object from logFont.
       Font logfontFont(hdc, logFont)
       // Draw text using logfontFont.
-      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      SolidBrush solidbrush(Color(100, 0, 0, 0))
       graphics:DrawString("Font from a LOGFONT",  logfontFont, PointF(0, 0), solidbrush)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_GetLogFontW( )
+   local bPainted := { | hdc |
+      local logFont
+      
+      Graphics graphics(hdc)
+      // Create a Font object.
+      Font myFont("Arial", 16)
+      
+      // Get attributes of myFont.
+      myFont:GetLogFontW( graphics, @logFont)
+      // Create a second Font object from logFont.
+      Font logfontFont(hdc, logFont)
+      // Draw text using logfontFont.
+      SolidBrush solidbrush(Color(150, 0, 0, 0))
+      graphics:DrawString("Font from a LOGFONT",  logfontFont, PointF(0, 0), solidbrush)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_GetHeight( )
+   local bPainted := { | hdc |
+      local string
+      Graphics graphics(hdc)
+      // Create a Font object.
+      Font myFont("Arial", 16);
+   
+      // Draw text with myFont.
+      SolidBrush solidbrush_1(Color(255, 0, 0, 0))
+      string = "The first line of text"
+      graphics:DrawString(string, myFont, PointF(0, 0), solidbrush_1)
+   
+      // Get the height of myFont.
+
+       height := myFont:GetHeight(graphics)
+   
+      // Draw text immediately below the first line of text.
+      SolidBrush solidbrush_2(Color(255, 255, 0, 0))
+      string = "The second line of text"
+      graphics:DrawString(string, myFont, PointF(0, height), solidbrush_2) 
+
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_GetSize( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a Font object.
+      Font myFont("Arial", 16)
+      
+      // Get the size of myFont.
+      size = myFont:GetSize()
+      
+      // Create a second Font object with the same emSize as myFont.
+      Font sizeFont("Arial", size)
+      
+      // Draw text using sizeFont.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      string = "Font with an acquired size"
+      graphics:DrawString(string, sizeFont, PointF(0, 0), solidbrush)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_GetStyle( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      // Create a Font object.
+      Font myFont("Arial", 16, FontStyleItalic)
+   
+      // Get the style of myFont.
+      style = myFont:GetStyle()
+   
+      // Create a second Font object with the same emSize as myFont.
+      Font styleFont("Arial", 20, style)
+   
+      // Draw text using sizeFont.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      string = "Font with an acquired style"
+      graphics:DrawString(string, styleFont, PointF(0, 0), solidbrush)
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_GetUnit( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a Font object.
+      Font myFont("Arial", 12)
+      
+      // Get the unit of measure for myFont.
+      unit = myFont:GetUnit()
+      
+      // Set the Graphics units of graphics to the retrieved unit value.
+      graphics:SetPageUnit(unit)
+      
+      // Draw text using sizeFont.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      string = "Here is some text"
+      graphics:DrawString(string, myFont, PointF(0, 0), solidbrush)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_IsAvailable( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a Font object.
+      Font myFont("Arial", 18)
+      
+      // Check whether myFont is available.
+      available = myFont:IsAvailable()
+      
+      // Draw text using myFont, if it is availiable.
+      if available
+          SolidBrush solidbrush(Color(255, 0, 0, 0))
+          string = "Here is some text"
+          graphics:DrawString(string,  myFont, PointF(0, 0), solidbrush)
+      endif
 
    }
    
@@ -3020,7 +3176,7 @@ HBITMAP MakeBmpFromHWND( HWND hWnd  )
 
 HB_FUNC( MAKEBMPFROMHWND )
 {
-	hb_retnl( ( LONG ) MakeBmpFromHWND( ( HWND ) hb_parnl( 1 ) ) );
+  hb_retnl( ( LONG ) MakeBmpFromHWND( ( HWND ) hb_parnl( 1 ) ) );
 }
 
 #pragma ENDDUMP

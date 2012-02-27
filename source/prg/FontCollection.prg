@@ -86,7 +86,7 @@ return 0
 
 HB_FUNC( _GPFONTCOLLECTION )
 {
-	 FontCollection * o;
+   FontCollection * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_FONTCOLLECTION );
    
    o = new FontCollection();
@@ -98,58 +98,58 @@ HB_FUNC( _GPFONTCOLLECTION )
 
 HB_FUNC( GPFONTCOLGETFAMILIES )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_FONTCOLLECTION( pObj ) )
-	 {
-	    FontCollection * o = ( FontCollection * ) GP_GET( pObj );
-	 	  int numFamilies = hb_parni( 2 );
-	 	  int numFound, j;
-	 	  PHB_ITEM pArray;
-	 	  PHB_ITEM pItem = hb_itemNew( NULL );
-	 	  FontFamily * families = ( FontFamily * ) hb_xgrab( sizeof( FontFamily ) * numFamilies );
-	 	  sta = o->GetFamilies( numFamilies, families, &numFound );
-	 	  pArray = hb_itemArrayNew( numFound );
-	 	  for( j = 0; j < numFound; j++ ){
-	 	     hb_arraySet( pArray, j + 1, GPNewGDIPLUSObject( families+j, GP_IT_FONTCOLLECTION ) );	 	     
-	 	  }
-	 	  
-	 	  hb_itemPutNI( pItem, numFound );
-	 	  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_FONTCOLLECTION( pObj ) )
+   {
+      FontCollection * o = ( FontCollection * ) GP_GET( pObj );
+      int numFamilies = hb_parni( 2 );
+      int numFound, j;
+      PHB_ITEM pArray;
+      PHB_ITEM pItem = hb_itemNew( NULL );
+      FontFamily * families = ( FontFamily * ) hb_xgrab( sizeof( FontFamily ) * numFamilies );
+      sta = o->GetFamilies( numFamilies, families, &numFound );
+      pArray = hb_itemArrayNew( numFound );
+      for( j = 0; j < numFound; j++ ){
+         hb_arraySet( pArray, j + 1, GPNewGDIPLUSObject( families+j, GP_IT_FONTCOLLECTION ) );         
+      }
+      
+      hb_itemPutNI( pItem, numFound );
+      
       if( !hb_itemParamStoreRelease( 3, pArray ))
-           hb_itemRelease( pArray );	 	  
+           hb_itemRelease( pArray );      
 
       if( !hb_itemParamStoreRelease( 4, pItem ))
-           hb_itemRelease( pItem );	 	  
-	 	  
-	 	  hb_retni( ( Status ) sta );
- 	 }else 
+           hb_itemRelease( pItem );     
+      
+      hb_retni( ( Status ) sta );
+   }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
 HB_FUNC( GPFONTCOLGETFAMILYCOUNT  )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_FONTCOLLECTION( pObj ) )
-	 {
-	    FontCollection * o = ( FontCollection * ) GP_GET( pObj );
-	    hb_retni( o->GetFamilyCount() );
-	 }else 
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_FONTCOLLECTION( pObj ) )
+   {
+      FontCollection * o = ( FontCollection * ) GP_GET( pObj );
+      hb_retni( o->GetFamilyCount() );
+   }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
 HB_FUNC( GPFONTCOLGETLASTSTATUS  )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_FONTCOLLECTION( pObj ) )
-	 {
-	    FontCollection * o = ( FontCollection * ) GP_GET( pObj );
-	    hb_retni( ( Status ) o->GetLastStatus() );
-	 }else 
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_FONTCOLLECTION( pObj ) )
+   {
+      FontCollection * o = ( FontCollection * ) GP_GET( pObj );
+      hb_retni( ( Status ) o->GetLastStatus() );
+   }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 

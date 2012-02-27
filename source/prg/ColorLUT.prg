@@ -72,17 +72,17 @@ return 0
 //
 //The ColorLUT class has the following constructors.
 //
-//Constructor	                    Description
-//ColorLUT::ColorLUT	            Creates a new ColorLUT object.
+//Constructor                     Description
+//ColorLUT::ColorLUT              Creates a new ColorLUT object.
 //
 //
 //Methods
 //
 //The ColorLUT class has the following methods.
 //
-//Method	                            Description
-//ColorLUT::GetParameters	            The ColorLUT::GetParameters method gets the current values of the parameters of this ColorLUT object.
-//ColorLUT::SetParameters	            The ColorLUT::SetParameters method sets the parameters of this ColorLUT object.
+//Method                              Description
+//ColorLUT::GetParameters             The ColorLUT::GetParameters method gets the current values of the parameters of this ColorLUT object.
+//ColorLUT::SetParameters             The ColorLUT::SetParameters method sets the parameters of this ColorLUT object.
 
 
 

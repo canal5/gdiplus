@@ -109,24 +109,24 @@ void gdiplus_destroy( GDIPLUS * p ){
         delete (Bitmap *) p->pObject;
         break; 
      case GP_IT_FONTCOLLECTION:
-     	  delete ( FontCollection * ) p->pObject;
-     	  break;
+        delete ( FontCollection * ) p->pObject;
+        break;
      case GP_IT_INSTALLEDFONTCOLLECTION:
-     	  delete ( InstalledFontCollection  * ) p->pObject;
-     	  break;   	                                                                 
+        delete ( InstalledFontCollection  * ) p->pObject;
+        break;                                                                     
      case GP_IT_PRIVATEFONTCOLLECTION:
-     	  delete ( PrivateFontCollection * ) p->pObject;
-     	  break;   	                                                                 
+        delete ( PrivateFontCollection * ) p->pObject;
+        break;                                                                     
      case GP_IT_FONTFAMILY:
-     	  delete ( FontFamily * ) p->pObject;
-     	  break;   	                                                                 
+        delete ( FontFamily * ) p->pObject;
+        break;                                                                     
      case GP_IT_FONT:
-     	  delete ( Font * ) p->pObject;
-     	  break;   	   
+        delete ( Font * ) p->pObject;
+        break;       
      case GP_IT_LOGFONTA:
      case GP_IT_LOGFONTW:
-     	  hb_xfree( ( void * ) p->pObject );
-     	  break;       	   	                                                                     	       	  
+        hb_xfree( ( void * ) p->pObject );
+        break;                                                                                            
    }
    hb_xfree( p );
 
@@ -170,17 +170,17 @@ void GDIPLUSItemClear( PHB_ITEM pItem )
 }
 
 void GDIPLUS_StoreParam( int iParam, PHB_ITEM p ){
-	
+  
    if( !hb_itemParamStoreRelease( iParam, p ))
       hb_itemRelease( p );
 
 }
 
 WCHAR * hb_GDIPLUS_parw( int iParam ){
-	 WCHAR * filename;
+   WCHAR * filename;
    char* szFile = ( char * ) hb_parc( iParam );
-	 filename = hb_mbtowc( szFile );      		
-	 return filename;
+   filename = hb_mbtowc( szFile );          
+   return filename;
 }
 
 

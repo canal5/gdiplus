@@ -186,7 +186,7 @@ return self
 
 HB_FUNC( _GPFONTFAMILY )
 {
-	 FontFamily * o;
+   FontFamily * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_FONTFAMILY );
    int iParams = hb_pcount();
    BOOL lOk = true;   
@@ -196,16 +196,16 @@ HB_FUNC( _GPFONTFAMILY )
          o = new FontFamily();
          break;
       case 1:{         
-	          WCHAR* filename = hb_GDIPLUS_parw( 1 );
+            WCHAR* filename = hb_GDIPLUS_parw( 1 );
             o = new FontFamily( filename, NULL );
             hb_xfree( filename );
          }
          break;
       case 2:{
             GDIPLUS * pFont = hb_GDIPLUS_par( 2 );
-	          WCHAR* filename = hb_GDIPLUS_parw( 1 );                  
+            WCHAR* filename = hb_GDIPLUS_parw( 1 );                  
             if( ( lOk = GP_IS_FONTCOLLECTION( pFont ) ) ){
-            	  FontCollection * font = ( FontCollection * ) GP_GET( pFont );
+                FontCollection * font = ( FontCollection * ) GP_GET( pFont );
                o = new FontFamily( filename, font );            
             }            
             hb_xfree( filename );

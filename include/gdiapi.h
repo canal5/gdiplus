@@ -30,10 +30,11 @@ typedef struct __gdiplus
 #define GP_IT_FONTCOLLECTION ( ( int ) 0x0000F )
 #define GP_IT_INSTALLEDFONTCOLLECTION  ( ( int ) 0x00010 )
 #define GP_IT_PRIVATEFONTCOLLECTION ( ( int ) 0x00011 )
-#define GP_IT_FONTFAMILY ( ( int ) 0x00012 )
-#define GP_IT_FONT       ( ( int ) 0x00013 ) 
-#define GP_IT_LOGFONTA   ( ( int ) 0x00014 )
-#define GP_IT_LOGFONTW   ( ( int ) 0x00015 )
+#define GP_IT_FONTFAMILY   ( ( int ) 0x00012 )
+#define GP_IT_FONT         ( ( int ) 0x00013 ) 
+#define GP_IT_LOGFONTA     ( ( int ) 0x00014 )
+#define GP_IT_LOGFONTW     ( ( int ) 0x00015 )
+#define GP_IT_STRINGFORMAT ( ( int ) 0x00016 )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
@@ -57,6 +58,7 @@ typedef struct __gdiplus
 #define GP_IS_FONT( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONT ) ) 
 #define GP_IS_LOGFONTA( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTA ) ) 
 #define GP_IS_LOGFONTW( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTB ) ) 
+#define GP_IS_STRINGFORMAT( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_STRINGFORMAT ) ) 
 
 #define HB_ISDOUBLE( n )    ( hb_param( n, HB_IT_DOUBLE ) != NULL )
 #define HB_ISINTEGER( n )    ( hb_param( n, HB_IT_INTEGER) != NULL )
@@ -70,11 +72,7 @@ GDIPLUS * GDIPLUSItemGet( PHB_ITEM pItem );
 void      GDIPLUSItemClear( PHB_ITEM pItem );
 PHB_ITEM  GDIPLUSItemPut( PHB_ITEM pItem, GDIPLUS * pGdiPlus );
 void      GDIPLUS_StoreParam( int iParam, PHB_ITEM p );
-WCHAR * hb_GDIPLUS_parw( int iParam );
-
-#ifndef hb_itemRawCpy
-#define hb_itemRawCpy( dst, src )       do { *(dst) = *(src); } while( 0 )
-#endif
+WCHAR   * hb_GDIPLUS_parw( int iParam );
 
 extern "C"
 {

@@ -112,15 +112,15 @@ return 0
 
 
 
-//Method	                                 Description
-//AdjustableArrowCap::GetHeight	         The AdjustableArrowCap::GetHeight method gets the height of the arrow cap. The height is the distance from the base of the arrow to its vertex.
-//AdjustableArrowCap::GetMiddleInset	 The AdjustableArrowCap::GetMiddleInset method gets the value of the inset. The middle inset is the number of units that the midpoint of the base shifts towards the vertex.
-//AdjustableArrowCap::GetWidth	         The AdjustableArrowCap::GetWidth method gets the width of the arrow cap. The width is the distance between the endpoints of the base of the arrow.
-//AdjustableArrowCap::IsFilled	         The AdjustableArrowCap::IsFilled method determines whether the arrow cap is filled.
-//AdjustableArrowCap::SetFillState	 The AdjustableArrowCap::SetFillState method sets the fill state of the arrow cap. If the arrow cap is not filled, only the outline is drawn.
-//AdjustableArrowCap::SetHeight	         The AdjustableArrowCap::SetHeight method sets the height of the arrow cap. This is the distance from the base of the arrow to its vertex.
-//AdjustableArrowCap::SetMiddleInset	 The AdjustableArrowCap::SetMiddleInset method sets the number of units that the midpoint of the base shifts towards the vertex.
-//AdjustableArrowCap::SetWidth	         The AdjustableArrowCap::SetWidth method sets the width of the arrow cap. The width is the distance between the endpoints of the base of the arrow.
+//Method                                   Description
+//AdjustableArrowCap::GetHeight          The AdjustableArrowCap::GetHeight method gets the height of the arrow cap. The height is the distance from the base of the arrow to its vertex.
+//AdjustableArrowCap::GetMiddleInset   The AdjustableArrowCap::GetMiddleInset method gets the value of the inset. The middle inset is the number of units that the midpoint of the base shifts towards the vertex.
+//AdjustableArrowCap::GetWidth           The AdjustableArrowCap::GetWidth method gets the width of the arrow cap. The width is the distance between the endpoints of the base of the arrow.
+//AdjustableArrowCap::IsFilled           The AdjustableArrowCap::IsFilled method determines whether the arrow cap is filled.
+//AdjustableArrowCap::SetFillState   The AdjustableArrowCap::SetFillState method sets the fill state of the arrow cap. If the arrow cap is not filled, only the outline is drawn.
+//AdjustableArrowCap::SetHeight          The AdjustableArrowCap::SetHeight method sets the height of the arrow cap. This is the distance from the base of the arrow to its vertex.
+//AdjustableArrowCap::SetMiddleInset   The AdjustableArrowCap::SetMiddleInset method sets the number of units that the midpoint of the base shifts towards the vertex.
+//AdjustableArrowCap::SetWidth           The AdjustableArrowCap::SetWidth method sets the width of the arrow cap. The width is the distance between the endpoints of the base of the arrow.
 
 
 

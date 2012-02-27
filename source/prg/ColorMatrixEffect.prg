@@ -72,17 +72,17 @@ return 0
 //
 //The ColorMatrixEffect class has the following constructors.
 //
-//Constructor	                           Description
-//ColorMatrixEffect::ColorMatrixEffect	   Creates a ColorMatrixEffect object.
+//Constructor                            Description
+//ColorMatrixEffect::ColorMatrixEffect     Creates a ColorMatrixEffect object.
 //
 //
 //Methods
 //
 //The ColorMatrixEffect class has the following methods.
 //
-//Method	                                   Description
-//ColorMatrixEffect::GetParameters	   The ColorMatrixEffect::GetParameters method gets the elements of the current 5x5 color matrix of this ColorMatrixEffect object.
-//ColorMatrixEffect::SetParameters	   The ColorMatrixEffect::SetParameters method sets the 5x5 color matrix of this ColorMatrixEffect object.
+//Method                                     Description
+//ColorMatrixEffect::GetParameters     The ColorMatrixEffect::GetParameters method gets the elements of the current 5x5 color matrix of this ColorMatrixEffect object.
+//ColorMatrixEffect::SetParameters     The ColorMatrixEffect::SetParameters method sets the 5x5 color matrix of this ColorMatrixEffect object.
 
 
 

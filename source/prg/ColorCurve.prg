@@ -73,17 +73,17 @@ return 0
 //
 //The ColorCurve class has the following constructors.
 //
-//Constructor	                       Description
-//ColorCurve::ColorCurve	               Creates a ColorCurve object.
+//Constructor                        Description
+//ColorCurve::ColorCurve                 Creates a ColorCurve object.
 //
 //
 //Methods
 //
 //The ColorCurve class has the following methods.
 //
-//Method	                               Description
-//ColorCurve::GetParameters	       The ColorCurve::GetParameters gets the current values of the parameters of this ColorCurve object.
-//ColorCurve::SetParameters	       The ColorCurve::SetParameters method sets the parameters of this ColorCurve object.
+//Method                                 Description
+//ColorCurve::GetParameters        The ColorCurve::GetParameters gets the current values of the parameters of this ColorCurve object.
+//ColorCurve::SetParameters        The ColorCurve::SetParameters method sets the parameters of this ColorCurve object.
 //
 
 

@@ -481,19 +481,19 @@ HB_FUNC( _GPGRAPHICSPATH )
           break;
       case 4:
       {    
-      	 PHB_ITEM aPoint = hb_param( 1, HB_IT_ARRAY );
-      	 PHB_ITEM aType  = hb_param( 2, HB_IT_ARRAY );
-      	 int j;
-      	 int count = hb_arrayLen( aPoint );
-      	 int count2 = hb_arrayLen( aType );      	
-      	 BOOL lF = false; 
-      	 void * vPoint;
-      	 if( count2 == count ){
-      	    void * vPoint;
-      	    BYTE * pType = ( BYTE * ) hb_xgrab( sizeof( BYTE ) * count );
-      	    vPoint = ConvertArray2Point( aPoint, &lF );
-      	    for( j = 0; j < count; j++ )
-      	       pType[ j ] = hb_arrayGetNI( aType, j + 1 );
+         PHB_ITEM aPoint = hb_param( 1, HB_IT_ARRAY );
+         PHB_ITEM aType  = hb_param( 2, HB_IT_ARRAY );
+         int j;
+         int count = hb_arrayLen( aPoint );
+         int count2 = hb_arrayLen( aType );       
+         BOOL lF = false; 
+         void * vPoint;
+         if( count2 == count ){
+            void * vPoint;
+            BYTE * pType = ( BYTE * ) hb_xgrab( sizeof( BYTE ) * count );
+            vPoint = ConvertArray2Point( aPoint, &lF );
+            for( j = 0; j < count; j++ )
+               pType[ j ] = hb_arrayGetNI( aType, j + 1 );
             if( lF )
                o = new GraphicsPath( ( PointF * ) vPoint, pType, count, ( FillMode ) hb_parni( 4 ) );
             else 
@@ -508,236 +508,236 @@ HB_FUNC( _GPGRAPHICSPATH )
    if( lOk )
    {
       GP_SET( pObj, o );
-      hb_GDIPLUS_ret( pObj );	
+      hb_GDIPLUS_ret( pObj ); 
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	
+  
 }
 
 HB_FUNC( GPGRAPHICSPATHADDARC )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	    if( hb_pcount() > 4 ){
-	       if( HB_ISDOUBLE( 2 ) )
-	          sta = gp->AddArc( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ) );
-	       else if( HB_ISINTEGER( 2 ) )
-	       	  sta = gp->AddArc( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), hb_parni( 7 ) );	    	
-	    }else {
-	    	GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
-	    	if( GP_IS_RECTF( pRect ) ){
-	    	   RectF * rect = ( RectF * ) GP_GET( pRect );
-	    	   sta = gp->AddArc( *rect, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );	    		
-	    	}else{ 
-	    	   Rect * rect = ( Rect * ) GP_GET( pRect );
-	    	   sta = gp->AddArc( *rect, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );	    		
-	    	}
-	    }
-	    hb_retni( ( Status ) sta );
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      if( hb_pcount() > 4 ){
+         if( HB_ISDOUBLE( 2 ) )
+            sta = gp->AddArc( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ) );
+         else if( HB_ISINTEGER( 2 ) )
+            sta = gp->AddArc( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), hb_parni( 7 ) );       
+      }else {
+        GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
+        if( GP_IS_RECTF( pRect ) ){
+           RectF * rect = ( RectF * ) GP_GET( pRect );
+           sta = gp->AddArc( *rect, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );         
+        }else{ 
+           Rect * rect = ( Rect * ) GP_GET( pRect );
+           sta = gp->AddArc( *rect, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );         
+        }
+      }
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
 HB_FUNC( GPGRAPHICSPATHADDBEZIER )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
       if( hb_pcount() < 6 ){
-	    	GDIPLUS * pPoint1 = hb_GDIPLUS_par( 2 );
-	    	GDIPLUS * pPoint2 = hb_GDIPLUS_par( 3 );
-	    	GDIPLUS * pPoint3 = hb_GDIPLUS_par( 4 );
-	    	GDIPLUS * pPoint4 = hb_GDIPLUS_par( 5 );
-	    	if( GP_IS_POINTF( pPoint1 ) && GP_IS_POINTF( pPoint2 ) && GP_IS_POINTF( pPoint3 ) && GP_IS_POINTF( pPoint4 ) ){
-	    	   PointF * point1 = ( PointF * ) GP_GET( pPoint1 );
-	    	   PointF * point2 = ( PointF * ) GP_GET( pPoint2 );
-	    	   PointF * point3 = ( PointF * ) GP_GET( pPoint3 );
-	    	   PointF * point4 = ( PointF * ) GP_GET( pPoint4 );
-	    	   sta = gp->AddBezier( *point1, *point2, *point3, *point4 );	    		
-	    	}else if( GP_IS_POINT( pPoint1 ) && GP_IS_POINT( pPoint2 ) && GP_IS_POINT( pPoint3 ) && GP_IS_POINT( pPoint4 ) ){
-	    	   Point * point1 = ( Point * ) GP_GET( pPoint1 );
-	    	   Point * point2 = ( Point * ) GP_GET( pPoint2 );
-	    	   Point * point3 = ( Point * ) GP_GET( pPoint3 );
-	    	   Point * point4 = ( Point * ) GP_GET( pPoint4 );
-	    	   sta = gp->AddBezier( *point1, *point2, *point3, *point4 );	    		
-	    	}else 
-	    	   hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+        GDIPLUS * pPoint1 = hb_GDIPLUS_par( 2 );
+        GDIPLUS * pPoint2 = hb_GDIPLUS_par( 3 );
+        GDIPLUS * pPoint3 = hb_GDIPLUS_par( 4 );
+        GDIPLUS * pPoint4 = hb_GDIPLUS_par( 5 );
+        if( GP_IS_POINTF( pPoint1 ) && GP_IS_POINTF( pPoint2 ) && GP_IS_POINTF( pPoint3 ) && GP_IS_POINTF( pPoint4 ) ){
+           PointF * point1 = ( PointF * ) GP_GET( pPoint1 );
+           PointF * point2 = ( PointF * ) GP_GET( pPoint2 );
+           PointF * point3 = ( PointF * ) GP_GET( pPoint3 );
+           PointF * point4 = ( PointF * ) GP_GET( pPoint4 );
+           sta = gp->AddBezier( *point1, *point2, *point3, *point4 );         
+        }else if( GP_IS_POINT( pPoint1 ) && GP_IS_POINT( pPoint2 ) && GP_IS_POINT( pPoint3 ) && GP_IS_POINT( pPoint4 ) ){
+           Point * point1 = ( Point * ) GP_GET( pPoint1 );
+           Point * point2 = ( Point * ) GP_GET( pPoint2 );
+           Point * point3 = ( Point * ) GP_GET( pPoint3 );
+           Point * point4 = ( Point * ) GP_GET( pPoint4 );
+           sta = gp->AddBezier( *point1, *point2, *point3, *point4 );         
+        }else 
+           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
       }else {
          if( HB_ISDOUBLE( 2 ) )
-      	    sta = gp->AddBezier( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), 
-      	                         ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ),
-      	                         ( REAL ) hb_parnd( 8 ), ( REAL ) hb_parnd( 9 ) );
-      	 else if( HB_ISINTEGER( 2 ) )
-      	    sta = gp->AddBezier( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), hb_parni( 7 ), hb_parni( 8 ), hb_parni( 9 ) );
-      	 else
-      	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+            sta = gp->AddBezier( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), 
+                                 ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ),
+                                 ( REAL ) hb_parnd( 8 ), ( REAL ) hb_parnd( 9 ) );
+         else if( HB_ISINTEGER( 2 ) )
+            sta = gp->AddBezier( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), hb_parni( 7 ), hb_parni( 8 ), hb_parni( 9 ) );
+         else
+            hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
       }
       hb_retni( ( Status ) sta );
    }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
 HB_FUNC( GPGRAPHICSPATHADDBEZIERS )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
       void * vPoint;
       BOOL lF = false;      
       vPoint = ConvertArray2Point( aPoint, &lF );
       if( lF ){
-      	sta = gp->AddBeziers( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
+        sta = gp->AddBeziers( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
       }
       else
       { 
-      	sta = gp->AddBeziers( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
+        sta = gp->AddBeziers( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
       }
       hb_xfree( vPoint );
       hb_retni( ( Status ) sta );
-      	  
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPGRAPHICSPATHADDCLOSEDCURVE )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
       void * vPoint;
       BOOL lF = false;      
       vPoint = ConvertArray2Point( aPoint, &lF );
       if( lF ){
-      	if( hb_pcount() > 2 )
-      	   sta = gp->AddClosedCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
-      	else
-      	   sta = gp->AddClosedCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
+        if( hb_pcount() > 2 )
+           sta = gp->AddClosedCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
+        else
+           sta = gp->AddClosedCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
       }
       else
       { 
-      	if( hb_pcount() > 2 )
-      	   sta = gp->AddClosedCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
-      	else
-      	   sta = gp->AddClosedCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
+        if( hb_pcount() > 2 )
+           sta = gp->AddClosedCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
+        else
+           sta = gp->AddClosedCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
       }
       hb_xfree( vPoint );
       hb_retni( ( Status ) sta );
-      	  
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPGRAPHICSPATHADDCURVE )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
       void * vPoint;
       BOOL lF = false;      
       vPoint = ConvertArray2Point( aPoint, &lF );
       if( lF ){
-      	if( hb_pcount() < 3 )
-      	   sta = gp->AddCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
-      	else if( hb_pcount() < 4 )
-      	   sta = gp->AddCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
-      	else if( hb_pcount() < 6 )      	
-      	   sta = gp->AddCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ), hb_parni( 3 ) - 1, hb_parni( 4 ), ( REAL ) hb_parnd( 5 ) );   
+        if( hb_pcount() < 3 )
+           sta = gp->AddCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
+        else if( hb_pcount() < 4 )
+           sta = gp->AddCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
+        else if( hb_pcount() < 6 )        
+           sta = gp->AddCurve( ( PointF * ) vPoint, hb_arrayLen( aPoint ), hb_parni( 3 ) - 1, hb_parni( 4 ), ( REAL ) hb_parnd( 5 ) );   
       }
       else
       { 
-      	if( hb_pcount() < 3 )
-      	   sta = gp->AddCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
-      	else if( hb_pcount() < 4 )
-      	   sta = gp->AddCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
-      	else if( hb_pcount() < 6 )      	
-      	   sta = gp->AddCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ), hb_parni( 3 ) - 1, hb_parni( 4 ), ( REAL ) hb_parnd( 5 ) );   
+        if( hb_pcount() < 3 )
+           sta = gp->AddCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
+        else if( hb_pcount() < 4 )
+           sta = gp->AddCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
+        else if( hb_pcount() < 6 )        
+           sta = gp->AddCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ), hb_parni( 3 ) - 1, hb_parni( 4 ), ( REAL ) hb_parnd( 5 ) );   
       }
       hb_xfree( vPoint );
       hb_retni( ( Status ) sta );
-      	  
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
 HB_FUNC( GPGRAPHICSADDELLIPSE )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	 	  if( hb_pcount() < 3 ){
-	 	     GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
-	 	     if( GP_IS_RECT( pRect ) ){
-	 	        Rect * rect = ( Rect * ) GP_GET( pRect );
-	 	        sta = gp->AddEllipse( *rect );
-	 	     }else{
-	 	        RectF * rect = ( RectF * ) GP_GET( pRect );
-	 	        sta = gp->AddEllipse( *rect );	 	     	
-	 	     }
-	 	  }else {
-	 	     if( HB_ISDOUBLE( 2 ) ){
-	 	        sta = gp->AddEllipse( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ) );
-	 	     }else if( HB_ISINTEGER( 2 ) ){
-	 	     	  sta = gp->AddEllipse( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ) );
-	 	     }
-	 	  }
-	 	  hb_retni( ( Status ) sta );
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	    
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      if( hb_pcount() < 3 ){
+         GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
+         if( GP_IS_RECT( pRect ) ){
+            Rect * rect = ( Rect * ) GP_GET( pRect );
+            sta = gp->AddEllipse( *rect );
+         }else{
+            RectF * rect = ( RectF * ) GP_GET( pRect );
+            sta = gp->AddEllipse( *rect );          
+         }
+      }else {
+         if( HB_ISDOUBLE( 2 ) ){
+            sta = gp->AddEllipse( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ) );
+         }else if( HB_ISINTEGER( 2 ) ){
+            sta = gp->AddEllipse( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ) );
+         }
+      }
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
 }
 
 HB_FUNC( GPGRAPHICSADDLINE )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	 	  if( hb_pcount() < 4 ){
-	 	     GDIPLUS * pPoint1 = hb_GDIPLUS_par( 2 );
-	 	     GDIPLUS * pPoint2 = hb_GDIPLUS_par( 3 );
-	 	     if( GP_IS_POINT( pPoint1 ) ){
-	 	        Point * point1 = ( Point * ) GP_GET( pPoint1 );
-	 	        Point * point2 = ( Point * ) GP_GET( pPoint2 );
-	 	        sta = gp->AddLine( *point1, *point2 );
-	 	     }else{
-	 	        PointF * point1 = ( PointF * ) GP_GET( pPoint1 );
-	 	        PointF * point2 = ( PointF * ) GP_GET( pPoint2 );
-	 	        sta = gp->AddLine( *point1, *point2 );
-	 	     }
-	 	  }else {
-	 	     if( HB_ISDOUBLE( 2 ) ){
-	 	        sta = gp->AddLine( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ) );
-	 	     }else if( HB_ISINTEGER( 2 ) ){
-	 	     	  sta = gp->AddLine( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ) );
-	 	     }
-	 	  }
-	 	  hb_retni( ( Status ) sta );
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	    
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      if( hb_pcount() < 4 ){
+         GDIPLUS * pPoint1 = hb_GDIPLUS_par( 2 );
+         GDIPLUS * pPoint2 = hb_GDIPLUS_par( 3 );
+         if( GP_IS_POINT( pPoint1 ) ){
+            Point * point1 = ( Point * ) GP_GET( pPoint1 );
+            Point * point2 = ( Point * ) GP_GET( pPoint2 );
+            sta = gp->AddLine( *point1, *point2 );
+         }else{
+            PointF * point1 = ( PointF * ) GP_GET( pPoint1 );
+            PointF * point2 = ( PointF * ) GP_GET( pPoint2 );
+            sta = gp->AddLine( *point1, *point2 );
+         }
+      }else {
+         if( HB_ISDOUBLE( 2 ) ){
+            sta = gp->AddLine( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ) );
+         }else if( HB_ISINTEGER( 2 ) ){
+            sta = gp->AddLine( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ) );
+         }
+      }
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
 }
 
 
 HB_FUNC( GPGRAPHICSADDLINES )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
       void * vPoint;
       BOOL lF = false;      
       vPoint = ConvertArray2Point( aPoint, &lF );
@@ -750,65 +750,65 @@ HB_FUNC( GPGRAPHICSADDLINES )
       }
       hb_xfree( vPoint );
       hb_retni( ( Status ) sta );
-      	  
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
 HB_FUNC( GPGRAPHICSADDPATH )
 {
-	 GDIPLUS * pObj  = hb_GDIPLUS_par( 1 );
-	 GDIPLUS * pPath = hb_GDIPLUS_par( 2 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) && GP_IS_GRAPHICSPATH( pPath ) ){
-	 	  GraphicsPath * gp   = ( GraphicsPath * ) GP_GET( pObj );
+   GDIPLUS * pObj  = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pPath = hb_GDIPLUS_par( 2 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) && GP_IS_GRAPHICSPATH( pPath ) ){
+      GraphicsPath * gp   = ( GraphicsPath * ) GP_GET( pObj );
       GraphicsPath * path = ( GraphicsPath * ) GP_GET( pPath );
       gp->AddPath( path, hb_parl( 3 ) );
       hb_retni( ( Status ) sta );
-      	  
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPGRAPHICSADDPIE )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	 	  if( hb_pcount() < 5 ){
-	 	     GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
-	 	     if( GP_IS_RECT( pRect ) ){
-	 	        Rect * rect1 = ( Rect * ) GP_GET( pRect );
-	 	        sta = gp->AddPie( *rect1, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );
-	 	     }else{
-	 	        RectF * rect1 = ( RectF * ) GP_GET( pRect );
-	 	        sta = gp->AddPie( *rect1, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );
-	 	     }
-	 	  }else {
-	 	     if( HB_ISDOUBLE( 2 ) ){
-	 	        sta = gp->AddPie( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), 
-	 	                          ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ),
-	 	                          ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ) );
-	 	     }else if( HB_ISINTEGER( 2 ) ){
-	 	     	  sta = gp->AddPie( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ),
-	 	     	                     ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ) );
-	 	     }
-	 	  }
-	 	  hb_retni( ( Status ) sta );
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	    
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      if( hb_pcount() < 5 ){
+         GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
+         if( GP_IS_RECT( pRect ) ){
+            Rect * rect1 = ( Rect * ) GP_GET( pRect );
+            sta = gp->AddPie( *rect1, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );
+         }else{
+            RectF * rect1 = ( RectF * ) GP_GET( pRect );
+            sta = gp->AddPie( *rect1, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );
+         }
+      }else {
+         if( HB_ISDOUBLE( 2 ) ){
+            sta = gp->AddPie( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), 
+                              ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ),
+                              ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ) );
+         }else if( HB_ISINTEGER( 2 ) ){
+            sta = gp->AddPie( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ),
+                               ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ) );
+         }
+      }
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
 }
 
 HB_FUNC( GPGRAPHICSPATHADDPOLYGON )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	 	  PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      PHB_ITEM aPoint = hb_param( 2, HB_IT_ARRAY );
       void * vPoint;
       BOOL lF = false;      
       vPoint = ConvertArray2Point( aPoint, &lF );
@@ -816,42 +816,42 @@ HB_FUNC( GPGRAPHICSPATHADDPOLYGON )
          sta = gp->AddPolygon( ( PointF * ) vPoint, hb_arrayLen( aPoint ) );
       }
       else{ 
-      	sta = gp->AddPolygon( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
+        sta = gp->AddPolygon( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
       }
       hb_xfree( vPoint );
       hb_retni( ( Status ) sta );
-      	  
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
 HB_FUNC( GPGRAPHICSPATHADDRECTANGLE )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) && ( GP_IS_RECT( pRect ) || GP_IS_RECTF( pRect ) ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	 	  if( GP_IS_RECT( pRect ) ){
-	 	     Rect * rect1 = ( Rect * ) GP_GET( pRect );
-	 	     sta = gp->AddRectangle( *rect1 );
-	 	  }else if( GP_IS_RECTF( pRect ) ){
-	 	     RectF * rect1 = ( RectF * ) GP_GET( pRect );
-	 	     sta = gp->AddRectangle( *rect1 );
-	 	  }
-	 	  hb_retni( ( Status ) sta );
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pRect = hb_GDIPLUS_par( 2 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) && ( GP_IS_RECT( pRect ) || GP_IS_RECTF( pRect ) ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      if( GP_IS_RECT( pRect ) ){
+         Rect * rect1 = ( Rect * ) GP_GET( pRect );
+         sta = gp->AddRectangle( *rect1 );
+      }else if( GP_IS_RECTF( pRect ) ){
+         RectF * rect1 = ( RectF * ) GP_GET( pRect );
+         sta = gp->AddRectangle( *rect1 );
+      }
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPGRAPHICSPATHADDRECTANGLES )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
-	 	  PHB_ITEM aRect = hb_param( 2, HB_IT_ARRAY );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      PHB_ITEM aRect = hb_param( 2, HB_IT_ARRAY );
       void * vRect;
       BOOL lF = false;      
       vRect = ConvertArray2Rect( aRect, &lF );
@@ -859,13 +859,13 @@ HB_FUNC( GPGRAPHICSPATHADDRECTANGLES )
          sta = gp->AddRectangles( ( RectF * ) vRect, hb_arrayLen( aRect ) );
       }
       else{ 
-      	sta = gp->AddRectangles( ( Rect * ) vRect, hb_arrayLen( aRect ) );
+        sta = gp->AddRectangles( ( Rect * ) vRect, hb_arrayLen( aRect ) );
       }
       hb_xfree( vRect );
       hb_retni( ( Status ) sta );
-      	  
-	 }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+          
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPADDSTRING )
@@ -892,14 +892,14 @@ HB_FUNC( GPSTARTFIGURE )
 
 HB_FUNC( GPGRAPHICSPATHCLOSEFIGURE )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_GRAPHICSPATH( pObj ) ){
-	 	  GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
       gp->CloseFigure();
       hb_ret();
    }else 
-	    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 

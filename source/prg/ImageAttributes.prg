@@ -15,8 +15,8 @@ CLASS GPImageAttributes
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-//Constructor	                                      Description
-//ImageAttributes::ImageAttributes	              Creates an ImageAttributes::ImageAttributes object. This is the default constructor.
+//Constructor                                       Description
+//ImageAttributes::ImageAttributes                Creates an ImageAttributes::ImageAttributes object. This is the default constructor.
 
   METHOD ClearBrushRemapTable()
   METHOD ClearColorKey()
@@ -251,41 +251,41 @@ return 0
 //
 //The ImageAttributes class has the following constructors.
 //
-//Constructor	                                      Description
-//ImageAttributes::ImageAttributes	              Creates an ImageAttributes::ImageAttributes object. This is the default constructor.
+//Constructor                                       Description
+//ImageAttributes::ImageAttributes                Creates an ImageAttributes::ImageAttributes object. This is the default constructor.
 //
 //
 //Methods
 //
 //The ImageAttributes class has the following methods.
 //
-//Method	                                              Description
-//ImageAttributes::ClearBrushRemapTable	              The ImageAttributes::ClearBrushRemapTable method clears the brush color-remap table of this ImageAttributes object.
-//ImageAttributes::ClearColorKey	                      The ImageAttributes::ClearColorKey method clears the color key (transparency range) for a specified category.
-//ImageAttributes::ClearColorMatrices	              The ImageAttributes::ClearColorMatrices method clears the color-adjustment matrix and the grayscale-adjustment matrix for a specified category.
-//ImageAttributes::ClearColorMatrix	              The ImageAttributes::ClearColorMatrix method clears the color-adjustment matrix for a specified category.
-//ImageAttributes::ClearGamma	                      The ImageAttributes::ClearGamma method disables gamma correction for a specified category.
-//ImageAttributes::ClearNoOp	                      The ImageAttributes::ClearNoOp method clears the NoOp setting for a specified category.
-//ImageAttributes::ClearOutputChannel	              The ImageAttributes::ClearOutputChannel method clears the CMYK output channel setting for a specified category.
-//ImageAttributes::ClearOutputChannelColorProfile	      The ImageAttributes::ClearOutputChannelColorProfile method clears the output channel color profile setting for a specified category.
-//ImageAttributes::ClearRemapTable	              The ImageAttributes::ClearRemapTable method clears the color-remap table for a specified category.
-//ImageAttributes::ClearThreshold	                      The ImageAttributes::ClearThreshold method clears the threshold value for a specified category.
-//ImageAttributes::Clone	                              The ImageAttributes::Clone method makes a copy of this ImageAttributes object.
-//ImageAttributes::GetAdjustedPalette	              The ImageAttributes::GetAdjustedPalette method adjusts the colors in a palette according to the adjustment settings of a specified category.
-//ImageAttributes::GetLastStatus	                      The ImageAttributes::GetLastStatus method returns a value that indicates the nature of this ImageAttributes object's most recent method failure.
-//ImageAttributes::Reset	                              The ImageAttributes::Reset method clears all color- and grayscale-adjustment settings for a specified category.
-//ImageAttributes::SetBrushRemapTable	              The ImageAttributes::SetBrushRemapTable method sets the color remap table for the brush category.
-//ImageAttributes::SetColorKey	                      The ImageAttributes::SetColorKey method sets the color key (transparency range) for a specified category.
-//ImageAttributes::SetColorMatrices	              The ImageAttributes::SetColorMatrices method sets the color-adjustment matrix and the grayscale-adjustment matrix for a specified category.
-//ImageAttributes::SetColorMatrix	                      The ImageAttributes::SetColorMatrix method sets the color-adjustment matrix for a specified category.
-//ImageAttributes::SetGamma	                      The ImageAttributes::SetGamma method sets the gamma value for a specified category.
-//ImageAttributes::SetNoOp	                      The ImageAttributes::SetNoOp method turns off color adjustment for a specified category. You can call ImageAttributes::ClearNoOp to reinstate the color-adjustment settings that were in place before the call to ImageAttributes::SetNoOp.
-//ImageAttributes::SetOutputChannel	              The ImageAttributes::SetOutputChannel method sets the CMYK output channel for a specified category.
-//ImageAttributes::SetOutputChannelColorProfile	      The ImageAttributes::SetOutputChannelColorProfile method sets the output channel color-profile file for a specified category.
-//ImageAttributes::SetRemapTable	                      The ImageAttributes::SetRemapTable method sets the color-remap table for a specified category.
-//ImageAttributes::SetThreshold	                      The ImageAttributes::SetThreshold method sets the threshold (transparency range) for a specified category.
-//ImageAttributes::SetToIdentity	                      The ImageAttributes::SetToIdentity method sets the color-adjustment matrix of a specified category to identity matrix.
-//ImageAttributes::SetWrapMode	                      The ImageAttributes::SetWrapMode method sets the wrap mode of this ImageAttributes object.
+//Method                                                Description
+//ImageAttributes::ClearBrushRemapTable               The ImageAttributes::ClearBrushRemapTable method clears the brush color-remap table of this ImageAttributes object.
+//ImageAttributes::ClearColorKey                        The ImageAttributes::ClearColorKey method clears the color key (transparency range) for a specified category.
+//ImageAttributes::ClearColorMatrices               The ImageAttributes::ClearColorMatrices method clears the color-adjustment matrix and the grayscale-adjustment matrix for a specified category.
+//ImageAttributes::ClearColorMatrix               The ImageAttributes::ClearColorMatrix method clears the color-adjustment matrix for a specified category.
+//ImageAttributes::ClearGamma                       The ImageAttributes::ClearGamma method disables gamma correction for a specified category.
+//ImageAttributes::ClearNoOp                        The ImageAttributes::ClearNoOp method clears the NoOp setting for a specified category.
+//ImageAttributes::ClearOutputChannel               The ImageAttributes::ClearOutputChannel method clears the CMYK output channel setting for a specified category.
+//ImageAttributes::ClearOutputChannelColorProfile       The ImageAttributes::ClearOutputChannelColorProfile method clears the output channel color profile setting for a specified category.
+//ImageAttributes::ClearRemapTable                The ImageAttributes::ClearRemapTable method clears the color-remap table for a specified category.
+//ImageAttributes::ClearThreshold                       The ImageAttributes::ClearThreshold method clears the threshold value for a specified category.
+//ImageAttributes::Clone                                The ImageAttributes::Clone method makes a copy of this ImageAttributes object.
+//ImageAttributes::GetAdjustedPalette               The ImageAttributes::GetAdjustedPalette method adjusts the colors in a palette according to the adjustment settings of a specified category.
+//ImageAttributes::GetLastStatus                        The ImageAttributes::GetLastStatus method returns a value that indicates the nature of this ImageAttributes object's most recent method failure.
+//ImageAttributes::Reset                                The ImageAttributes::Reset method clears all color- and grayscale-adjustment settings for a specified category.
+//ImageAttributes::SetBrushRemapTable               The ImageAttributes::SetBrushRemapTable method sets the color remap table for the brush category.
+//ImageAttributes::SetColorKey                        The ImageAttributes::SetColorKey method sets the color key (transparency range) for a specified category.
+//ImageAttributes::SetColorMatrices               The ImageAttributes::SetColorMatrices method sets the color-adjustment matrix and the grayscale-adjustment matrix for a specified category.
+//ImageAttributes::SetColorMatrix                       The ImageAttributes::SetColorMatrix method sets the color-adjustment matrix for a specified category.
+//ImageAttributes::SetGamma                       The ImageAttributes::SetGamma method sets the gamma value for a specified category.
+//ImageAttributes::SetNoOp                        The ImageAttributes::SetNoOp method turns off color adjustment for a specified category. You can call ImageAttributes::ClearNoOp to reinstate the color-adjustment settings that were in place before the call to ImageAttributes::SetNoOp.
+//ImageAttributes::SetOutputChannel               The ImageAttributes::SetOutputChannel method sets the CMYK output channel for a specified category.
+//ImageAttributes::SetOutputChannelColorProfile       The ImageAttributes::SetOutputChannelColorProfile method sets the output channel color-profile file for a specified category.
+//ImageAttributes::SetRemapTable                        The ImageAttributes::SetRemapTable method sets the color-remap table for a specified category.
+//ImageAttributes::SetThreshold                       The ImageAttributes::SetThreshold method sets the threshold (transparency range) for a specified category.
+//ImageAttributes::SetToIdentity                        The ImageAttributes::SetToIdentity method sets the color-adjustment matrix of a specified category to identity matrix.
+//ImageAttributes::SetWrapMode                        The ImageAttributes::SetWrapMode method sets the wrap mode of this ImageAttributes object.
 
 
 

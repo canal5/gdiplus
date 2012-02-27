@@ -1170,10 +1170,17 @@
 #xtranslate PathPointTypeBezier                           => 3
 #xtranslate PathPointTypePathTypeMask                     => 0x7
 #xtranslate PathPointTypePathDashMode                     => 0x10
+
 #xtranslate PathPointTypePathMarker                       => 0x20
 #xtranslate PathPointTypeCloseSubpath                     => 0x80
 #xtranslate PathPointTypeBezier3                          => 3 
 
+#xtranslate FontStyleRegular                              => 0
+#xtranslate FontStyleBold                                 => 1
+#xtranslate FontStyleItalic                               => 2
+#xtranslate FontStyleBoldItalic                           => 3
+#xtranslate FontStyleUnderline                            => 4
+#xtranslate FontStyleStrikeout                            => 8
 
 // ---------------------------------------------------------------------------
 #define GDIP_EMFPLUSFLAGS_DISPLAY     1

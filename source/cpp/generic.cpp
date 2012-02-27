@@ -95,7 +95,7 @@ void GPSendHandleToObject( PHB_ITEM pitem, void * c, int iType ){
 
 void * ConvertArray2Point( PHB_ITEM aPoint, BOOL * l )
 {
-	
+  
    int n;
    int iLen = hb_arrayLen( aPoint );
    Point * pPoint;
@@ -139,7 +139,7 @@ void * ConvertArray2Point( PHB_ITEM aPoint, BOOL * l )
 
 void * ConvertArray2Rect( PHB_ITEM aRect, BOOL * l )
 {
-	
+  
    int n;
    int iLen = hb_arrayLen( aRect );
    Rect * pRect;

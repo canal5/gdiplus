@@ -84,7 +84,7 @@ return GPPrivateAddMemoryFont( ::handle, ptr, nLen )
 
 HB_FUNC( _GPPRIVATEFONTCOLLECTION )
 {
-	 PrivateFontCollection * o;
+   PrivateFontCollection * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_PRIVATEFONTCOLLECTION );
    
    o = new PrivateFontCollection();
@@ -95,29 +95,29 @@ HB_FUNC( _GPPRIVATEFONTCOLLECTION )
 
 HB_FUNC( GPPRIVATEADDFONTFILE  )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_PRIVATEFONTCOLLECTION( pObj ) )
-	 {
-	    PrivateFontCollection * o = ( PrivateFontCollection * ) GP_GET( pObj );
-	    WCHAR* filename = hb_GDIPLUS_parw( 2 ) ;
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_PRIVATEFONTCOLLECTION( pObj ) )
+   {
+      PrivateFontCollection * o = ( PrivateFontCollection * ) GP_GET( pObj );
+      WCHAR* filename = hb_GDIPLUS_parw( 2 ) ;
       sta = o->AddFontFile( filename );
       hb_xfree( filename );
-	    hb_retni( ( Status ) sta );
-	 }else 
+      hb_retni( ( Status ) sta );
+   }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( GPPRIVATEADDMEMORYFONT )
 {
-	 GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-	 Status sta;
-	 if( GP_IS_PRIVATEFONTCOLLECTION( pObj ) )
-	 {
-	    PrivateFontCollection * o = ( PrivateFontCollection * ) GP_GET( pObj );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_PRIVATEFONTCOLLECTION( pObj ) )
+   {
+      PrivateFontCollection * o = ( PrivateFontCollection * ) GP_GET( pObj );
       sta = o->AddMemoryFont( hb_parptr( 2 ), hb_parni( 3 ) );
-	    hb_retni( ( Status ) sta );
-	 }else 
+      hb_retni( ( Status ) sta );
+   }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 

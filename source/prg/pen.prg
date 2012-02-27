@@ -492,7 +492,7 @@ HB_FUNC( GPPENGETCOMPOUNDARRAY )
       INT j;
       count = p->GetCompoundArrayCount();
       if( count > 0 ){
-      	 aCompoundArray = hb_itemArrayNew( count );
+         aCompoundArray = hb_itemArrayNew( count );
          distances = ( REAL * ) hb_xgrab( sizeof( REAL ) * count );      
          sta = p->GetCompoundArray(distances, count);
          for( j = 0; j < count; j++ )
@@ -567,7 +567,7 @@ HB_FUNC( GPPENGETDASHPATTERN )
       if( iCount > 0 ){
          REAL * real = ( REAL * ) hb_xgrab( sizeof( REAL ) * iCount );
          iStatus = p->GetDashPattern( real, iCount );      
-      	 pArray = hb_itemArrayNew( iCount );
+         pArray = hb_itemArrayNew( iCount );
          for( j=0; j < iCount; j++ ){
             hb_arraySetND( pArray, j + 1, ( DOUBLE ) real[j] );
          }
@@ -575,7 +575,7 @@ HB_FUNC( GPPENGETDASHPATTERN )
          GDIPLUS_StoreParam( 2, pArray );
          hb_retni( iStatus );
       }
-   }   	
+   }    
 }
 
 // INT GetDashPatternCount();
@@ -587,7 +587,7 @@ HB_FUNC( GPPENGETDASHPATTERNCOUNT )
       hb_retni( (int) p->GetDashPatternCount() );
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-      	
+        
 }
 
 // DashStyle GetDashStyle();
@@ -670,15 +670,15 @@ HB_FUNC( GPPENGETSTARTCAP )
       hb_retni( (int) p->GetStartCap() );
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-      	
+        
 }
 
 HB_FUNC( GPPENGETTRANSFORM )
 {
    GDIPLUS * pen = hb_GDIPLUS_par( 1 );
    if( GP_IS_PEN( pen )  ){
-   	  Status sta;
-   	  PHB_ITEM oMatrix;
+      Status sta;
+      PHB_ITEM oMatrix;
       Pen* p = (Pen*) GP_GET( pen );
       Matrix matrix;
       sta = p->GetTransform( &matrix );
@@ -722,7 +722,7 @@ HB_FUNC( GPPENRESETTRANSFORM )
       Pen* pen = (Pen*) GP_GET( p );
       hb_retni( (int) pen->ResetTransform() );
     }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );      	
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );       
 }
 
 HB_FUNC( GPPENROTATETRANSFORM )
@@ -860,7 +860,7 @@ HB_FUNC( GPPENSETDASHOFFSET )
 
 HB_FUNC( GPPENSETDASHPATTERN )
 {
-	
+  
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    
    if( GP_IS_PEN( pObj ) ){
@@ -881,8 +881,8 @@ HB_FUNC( GPPENSETDASHPATTERN )
       hb_xfree( ( void *) pReal );   
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );  
-      	
-	
+        
+  
    Pen* p = (Pen*) hb_parptr( 1 );
 
 }
@@ -897,7 +897,7 @@ HB_FUNC( GPPENSETDASHSTYLE )
    
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );    
-	
+  
 }
 
 HB_FUNC( GPPENSETENDCAP )
@@ -965,7 +965,7 @@ HB_FUNC( GPPENSTARTCAP )
    
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-	 
+   
 }
 
 HB_FUNC( GPPENSETTRANSFORM )
@@ -994,7 +994,7 @@ HB_FUNC( GPPENSETWIDTH )
       Pen* pen = (Pen*) GP_GET( p );
       hb_retni( (int) pen->SetWidth( (REAL) hb_parnd( 2 ) ) );
     }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );	
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
    
 }
 

@@ -128,17 +128,17 @@ return 0
 
 
 //Metafile::ConvertToEmfPlus                  The Metafile::ConvertToEmfPlus method converts this Metafile object to the EMF+ format.
-//Metafile::ConvertToEmfPlus	            The Metafile::ConvertToEmfPlus method converts this Metafile object to the EMF+ format.
-//Metafile::ConvertToEmfPlus	            The Metafile::ConvertToEmfPlus method converts this Metafile object to the EMF+ format.
-//Metafile::EmfToWmfBits	                    Converts an enhanced-format metafile to a WMF metafile and stores the converted records in a specified buffer.
+//Metafile::ConvertToEmfPlus              The Metafile::ConvertToEmfPlus method converts this Metafile object to the EMF+ format.
+//Metafile::ConvertToEmfPlus              The Metafile::ConvertToEmfPlus method converts this Metafile object to the EMF+ format.
+//Metafile::EmfToWmfBits                      Converts an enhanced-format metafile to a WMF metafile and stores the converted records in a specified buffer.
 //Metafile::GetDownLevelRasterizationLimit    Gets the rasterization limit currently set for this metafile. The rasterization limit is the resolution used for certain brush bitmaps that are stored in the metafile. For a detailed explanation of the rasterization limit, see Metafile::SetDownLevelRasterizationLimit.
-//Metafile::GetHENHMETAFILE	            The Metafile::GetHENHMETAFILE method gets a Windows handle to an Enhanced Metafile (EMF) file.
+//Metafile::GetHENHMETAFILE             The Metafile::GetHENHMETAFILE method gets a Windows handle to an Enhanced Metafile (EMF) file.
 //Metafile::GetMetafileHeader                 The Metafile::GetMetafileHeader method gets the header.
 //Metafile::GetMetafileHeader                 The Metafile::GetMetafileHeader method gets the metafile header of this metafile.
 //Metafile::GetMetafileHeader                 The Metafile::GetMetafileHeader method gets the header.
-//Metafile::GetMetafileHeader	            The Metafile::GetMetafileHeader method gets the header.
+//Metafile::GetMetafileHeader             The Metafile::GetMetafileHeader method gets the header.
 //Metafile::GetMetafileHeader                 The Metafile::GetMetafileHeader method gets the header.
-//Metafile::PlayRecord	                    The Metafile::PlayRecord method plays a metafile record.
+//Metafile::PlayRecord                      The Metafile::PlayRecord method plays a metafile record.
 //Metafile::SetDownLevelRasterizationLimit    Sets the resolution for certain brush bitmaps that are stored in this metafile.
 //
 

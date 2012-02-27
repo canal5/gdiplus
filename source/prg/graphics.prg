@@ -875,13 +875,20 @@ return 0
 return 0
 
 **********************************************************************************************************
-  METHOD DrawString( cText, font, point, brush ) CLASS GPGraphics
+  METHOD DrawString( cText, font, point, A, B  ) CLASS GPGraphics
 **********************************************************************************************************
+  local sta
 
   DEFAULT font := ::oFont
-  DEFAULT brush := ::oBrush
-
-return GP_DrawString( ::handle, cText, font:handle, point:handle, brush:handle )
+  if B != NIL 
+     DEFAULT B := ::oBrush
+     sta = GP_DrawString( ::handle, cText, font:handle, point:handle, A:handle, B:handle )
+  else 
+     DEFAULT A := ::oBrush
+     sta = GP_DrawString( ::handle, cText, font:handle, point:handle, A:handle )
+  endif
+  
+return sta
 
 **********************************************************************************************************
   METHOD EndContainer( ) CLASS GPGraphics
@@ -1549,19 +1556,41 @@ HB_FUNC( GP_DRAWSTRING )
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    GDIPLUS * pF = hb_GDIPLUS_par( 3 );
    GDIPLUS * pP = hb_GDIPLUS_par( 4 );
-   GDIPLUS * pB = hb_GDIPLUS_par( 5 );
+   BOOL lRet = true;
 
-   if( GP_IS_GRAPHICS( pG ) && GP_IS_FONT( pF ) && ( GP_IS_POINTF( pP ) || GP_IS_RECTF( pP ) ) && GP_IS_BRUSH( pB ) ) 
+   if( GP_IS_GRAPHICS( pG ) && GP_IS_FONT( pF ) && ( GP_IS_POINTF( pP ) || GP_IS_RECTF( pP ) ) ) 
    {
       Graphics * g = ( Graphics * ) GP_GET( pG );   
       Font * myFont = ( Font* ) GP_GET( pF );
       PointF * p = ( PointF * ) GP_GET( pP );
-      Brush * b = ( Brush * ) GP_GET( pB );
-      WCHAR * str = hb_GDIPLUS_parw( 2 );
-      g->DrawString( str, hb_parclen( 2 ), myFont, *p, b );
-      hb_xfree( str );
+      if( hb_pcount() < 6 ){
+         GDIPLUS * pB = hb_GDIPLUS_par( 5 );
+         if( GP_IS_BRUSH( pB ) ){
+            Brush * b = ( Brush * ) GP_GET( pB );
+            WCHAR * str = hb_GDIPLUS_parw( 2 );
+            g->DrawString( str, hb_parclen( 2 ), myFont, *p, b );
+            hb_xfree( str );            
+         }else
+            lRet = false;
+      }else {
+         GDIPLUS * pU = hb_GDIPLUS_par( 5 );
+         GDIPLUS * pB = hb_GDIPLUS_par( 6 );
+         if( GP_IS_STRINGFORMAT( pU ) && GP_IS_BRUSH( pB ) ){
+            StringFormat * s = ( StringFormat * ) GP_GET( pU );
+            Brush * b = ( Brush * ) GP_GET( pB );
+            WCHAR * str = hb_GDIPLUS_parw( 2 );
+            g->DrawString( str, hb_parclen( 2 ), myFont, *p, s, b );
+            hb_xfree( str );            
+         }else
+            lRet = false;
+      }     
+      
+      
    }
    else
+      lRet = false;
+      
+   if( ! lRet )
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 

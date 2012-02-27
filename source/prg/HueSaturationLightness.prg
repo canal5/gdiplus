@@ -65,9 +65,9 @@ return 0
 
 
 
-// Method	                                Description
-// HueSaturationLightness::GetParameters	The HueSaturationLightness::GetParameters method gets the current values of the parameters of this HueSaturationLightness object.
-// HueSaturationLightness::SetParameters	The HueSaturationLightness::SetParameters method sets the parameters of this HueSaturationLightness object.
+// Method                                 Description
+// HueSaturationLightness::GetParameters  The HueSaturationLightness::GetParameters method gets the current values of the parameters of this HueSaturationLightness object.
+// HueSaturationLightness::SetParameters  The HueSaturationLightness::SetParameters method sets the parameters of this HueSaturationLightness object.
 
 
 #pragma BEGINDUMP

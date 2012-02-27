@@ -52,7 +52,7 @@ return nil
 
 HB_FUNC( _GPINSTALLEDFONTCOLLECTION )
 {
-	 InstalledFontCollection * o;
+   InstalledFontCollection * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_INSTALLEDFONTCOLLECTION );
    
    o = new InstalledFontCollection();
