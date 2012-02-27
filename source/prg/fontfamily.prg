@@ -116,40 +116,40 @@ return GPFontFamilyGetCellDescent( ::handle, n )
 
 
 *******************************************************************************************
-    METHOD GetEmHeight() CLASS GPFontFamily
+    METHOD GetEmHeight( n ) CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyGetEmHeight( ::handle, n )
 
 *******************************************************************************************
-    METHOD GetFamilyName() CLASS GPFontFamily
+    METHOD GetFamilyName( name, lang ) CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyGetFamilyName( ::handle, @name, lang  )
 
 *******************************************************************************************
     METHOD GetLastStatus() CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyGetLastStatus( ::handle )
 
 *******************************************************************************************
-    METHOD GetLineSpacing() CLASS GPFontFamily
+    METHOD GetLineSpacing( n ) CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyGetLineSpacing( ::handle, n )
 
 *******************************************************************************************
     METHOD IsAvailable() CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyIsAvailable( ::handle )
 
 *******************************************************************************************
-    METHOD IsStyleAvailable() CLASS GPFontFamily
+    METHOD IsStyleAvailable( n ) CLASS GPFontFamily
 *******************************************************************************************
 
-return self
+return GPFontFamilyIsStyleAvailable( ::handle, n )
 
 //Constructors
 //
@@ -317,6 +317,98 @@ HB_FUNC( GPFONTFAMILYGETCELLDESCENT ){
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
   
 }
+
+
+HB_FUNC( GPFONTFAMILYGETEMHEIGHT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {  
+   	  int style;
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      style = o->GetEmHeight( hb_parni( 2 ) );
+      hb_retni( style );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPFONTFAMILYGETFAMILYNAME ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {  
+   	  int style;   	  
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      WCHAR familyName[LF_FACESIZE];
+      char * sOut;
+      long lang = hb_parnl( 3 );
+      sta = o->GetFamilyName( familyName, lang );
+      sOut = hb_wctomb( familyName );
+      hb_storvc( sOut, 2 );
+      
+      hb_retni( sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+HB_FUNC( GPFONTFAMILYGETLASTSTATUS  )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      hb_retni( ( Status ) o->GetLastStatus() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+
+
+HB_FUNC( GPFONTFAMILYGETLINESPACING ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {  
+   	  int style;
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      style = o->GetLineSpacing( hb_parni( 2 ) );
+      hb_retni( style );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+HB_FUNC( GPFONTFAMILYISAVAILABLE )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      hb_retl( o->IsAvailable() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+
+HB_FUNC( GPFONTFAMILYISSTYLEAVAILABLE ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_FONTFAMILY( pObj ) )
+   {  
+   	  int style;
+      FontFamily * o = ( FontFamily * ) GP_GET( pObj );
+      hb_retl( o->IsStyleAvailable( hb_parni( 2 ) ) );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
 
 #pragma ENDDUMP
 

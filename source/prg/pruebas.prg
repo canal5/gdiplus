@@ -76,8 +76,13 @@ function TestFontFamily()
    TEST !Empty( FontFamily("arial"):GenericSansSerif():handle ) DESCRIPTION "GenericSansSerif()" SAMPLE Example_GenericSansSerif()
    TEST !Empty( FontFamily("arial"):GenericSerif():handle )     DESCRIPTION "GenericSerif()"     SAMPLE Example_GenericSerif()
    TEST FontFamily("arial"):GetCellAscent( FontStyleRegular ) > 0  DESCRIPTION "GetCellAscent()"     SAMPLE Example_GetCellAscent()
-   TEST FontFamily("arial"):GetCellDescent( FontStyleRegular ) > 0  DESCRIPTION "GetCellDescent()"     SAMPLE Example_GetCellDescent()
-
+   TEST FontFamily("arial"):GetCellDescent( FontStyleRegular ) > 0  DESCRIPTION "GetCellDescent()"   SAMPLE Example_GetCellDescent()
+   TEST FontFamily("arial"):GetEmHeight( FontStyleRegular ) > 0     DESCRIPTION "GetEmHeight()"      SAMPLE Example_GetEmHeight()
+   TEST .T.                                                         DESCRIPTION "GetFamilyName()"      SAMPLE Example_GetFamilyName()
+   TEST FontFamily("arial"):GetLastStatus() == 0                    DESCRIPTION "GetLastStatus()"     
+   TEST FontFamily("arial"):GetLineSpacing( FontStyleRegular ) > 0  DESCRIPTION "GetLineSpacing()"  SAMPLE Example_GetLineSpacing()
+   TEST FontFamily("arial"):IsAvailable()                             DESCRIPTION "IsAvailable()" 
+   TEST FontFamily("arial"):IsStyleAvailable( FontStyleRegular )      DESCRIPTION "IsStyleAvailable()" 
 return 0
 
 
@@ -3254,6 +3259,73 @@ function Example_GetCellDescent( )
 return nil
 
 
+function Example_GetEmHeight( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a FontFamily object.
+      FontFamily ascentFontFamily("arial")
+      
+      // Get the cell ascent of the font family in design units.
+      emHeight = ascentFontFamily:GetEmHeight(FontStyleRegular)
+   
+      // Copy the cell ascent into a string and draw the string.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      Font       font(ascentFontFamily, 16)
+      string = "ascentFontFamily.GetEmHeight() returns " + str( emHeight )
+      graphics:DrawString(string, font, PointF(0, 0), solidbrush)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_GetFamilyName( )
+   local bPainted := { | hdc |
+      local familyName
+      Graphics graphics(hdc)
+      // Create a FontFamily object.
+      FontFamily nameFontFamily("arial")
+      
+      // Get the cell ascent of the font family in design units.
+      nameFontFamily:GetFamilyName(@familyName)
+      // Copy the cell ascent into a string and draw the string.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      Font       font(nameFontFamily, 16)
+      graphics:DrawString(familyName, font, PointF(0, 0), solidbrush)
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_GetLineSpacing( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      // Create a FontFamily object.
+      FontFamily lineSpacingFontFamily("arial")
+      
+      // Get the cell ascent of the font family in design units.
+      lineSpacing = lineSpacingFontFamily:GetLineSpacing(FontStyleRegular)
+   
+      // Copy the cell ascent into a string and draw the string.
+      SolidBrush solidbrush(Color(255, 0, 0, 0))
+      Font       font(lineSpacingFontFamily, 16)
+      string = "FontFamily.GetLineSpacing() returns " + str( lineSpacing )
+      graphics:DrawString(string, font, PointF(0, 0), solidbrush)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
 
 
 /*prototype
