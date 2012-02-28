@@ -1562,13 +1562,16 @@ HB_FUNC( GP_DRAWSTRING )
    {
       Graphics * g = ( Graphics * ) GP_GET( pG );   
       Font * myFont = ( Font* ) GP_GET( pF );
-      PointF * p = ( PointF * ) GP_GET( pP );
+         
       if( hb_pcount() < 6 ){
          GDIPLUS * pB = hb_GDIPLUS_par( 5 );
          if( GP_IS_BRUSH( pB ) ){
             Brush * b = ( Brush * ) GP_GET( pB );
             WCHAR * str = hb_GDIPLUS_parw( 2 );
-            g->DrawString( str, hb_parclen( 2 ), myFont, *p, b );
+            if( GP_IS_POINTF( pP ) ){
+               PointF * p = ( PointF * ) GP_GET( pP );
+               g->DrawString( str, hb_parclen( 2 ), myFont, *p, b );
+            }
             hb_xfree( str );            
          }else
             lRet = false;
@@ -1579,7 +1582,14 @@ HB_FUNC( GP_DRAWSTRING )
             StringFormat * s = ( StringFormat * ) GP_GET( pU );
             Brush * b = ( Brush * ) GP_GET( pB );
             WCHAR * str = hb_GDIPLUS_parw( 2 );
-            g->DrawString( str, hb_parclen( 2 ), myFont, *p, s, b );
+            if( GP_IS_POINTF( pP ) ){
+               PointF * p = ( PointF * ) GP_GET( pP );
+               g->DrawString( str, hb_parclen( 2 ), myFont, *p, s, b );
+            }
+            else {            
+               RectF * p = ( RectF * ) GP_GET( pP );
+               g->DrawString( str, hb_parclen( 2 ), myFont, *p, s, b );
+             }            
             hb_xfree( str );            
          }else
             lRet = false;

@@ -1,9 +1,17 @@
 #include "fivewin.ch"
 
 
-function CharacterRange()
+function CharacterRange( A, B )
+   
+   local o
 
-return GPCharacterRange():New()
+   if A != NIL 
+      o = GPCharacterRange():New( A, B ) 
+   else 
+      o = GPCharacterRange():New() 
+   endif
+
+return o 
 
 
 CLASS GPCharacterRange
@@ -14,34 +22,23 @@ CLASS GPCharacterRange
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
+  
+  METHOD First( nValue )  SETGET
+  METHOD Length( nValue ) SETGET
 
-//  METHOD
-//  OPERATOR "="
+  METHOD Assigment( p )  OPERATOR "="
 
 
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New() CLASS GPCharacterRange
+  METHOD New( A, B ) CLASS GPCharacterRange
 *********************************************************************************************************
 
-local iParams := PCount()
-
-
-  if iParams == 0
+  if A != 0
      ::handle := _GPCharacterRange()
-  elseif iParams == 1
-     ::handle := _GPCharacterRange( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPCharacterRange( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPCharacterRange( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPCharacterRange( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPCharacterRange( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPCharacterRange( p1, p2, p3, p4, p5, p6, p7 )       //
+  else
+     ::handle := _GPCharacterRange( A, B )                               
   endif
 
 return self
@@ -55,10 +52,30 @@ return self
 return nil
 
 //*********************************************************************************************************
-//  METHOD () CLASS GPCharacterRange
+  METHOD First( nValue ) CLASS GPCharacterRange
 //*********************************************************************************************************
-//
-//return GPCharacterRange(::handle)
+
+   if pcount() > 0
+      return GPCharacterFirst(::handle, nValue)
+   endif
+
+return GPCharacterFirst(::handle)
+
+//*********************************************************************************************************
+  METHOD Length( nValue ) CLASS GPCharacterRange
+//*********************************************************************************************************
+
+   if pcount() > 0
+      return GPCharacterLength(::handle, nValue)
+   endif
+
+return GPCharacterLength(::handle)
+
+//*********************************************************************************************************
+  METHOD Assigment( p ) CLASS GPCharacterRange
+//*********************************************************************************************************
+
+return GPCharacterAssigment( ::handle, p )
 
 
 //Constructors
@@ -90,35 +107,76 @@ return nil
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPCHARACTERRANGE )
 {
-   //CharacterRange* clr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    clr = new CharacterRange();
-   //else if (iParams == 1 )
-   //    clr = new CharacterRange( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    clr = new CharacterRange( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    clr = new CharacterRange( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*)  );
+   CharacterRange * o;
+   GDIPLUS * pObj = gdiplus_new( GP_IT_CHARACTERRANGE );
+   int iParams = hb_pcount();
+   BOOL lOk = true;   
+   
+   switch( iParams ){
+   	   case 0:
+   	      o = new CharacterRange();
+   	      break;
+   	   case 2:
+   	      o = new CharacterRange( hb_parni( 1 ), hb_parni( 2 ) );
+   	      break;
+   }
+   
+   GP_SET( pObj, ( void * ) o );
+   hb_GDIPLUS_ret( pObj );   
+   
 }
 
-HB_FUNC( DELETECHARACTERRANGE )
-{
-   //CharacterRange* clr = (CharacterRange*) hb_parptr( 1 );
-   //delete (CharacterRange*) clr;
-   //hb_ret();
+HB_FUNC( GPCHARACTERFIRST ){
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_CHARACTERRANGE( p ) ){
+      CharacterRange * o = ( CharacterRange * ) GP_GET( p );
+      
+      if( hb_pcount() > 1 )
+         o->First = hb_parni( 2 );
+         
+      hb_retni( o->First );
+      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
 }
+
+HB_FUNC( GPCHARACTERLENGTH ){
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_CHARACTERRANGE( p ) ){
+      CharacterRange * o = ( CharacterRange * ) GP_GET( p );
+      
+      if( hb_pcount() > 1 )
+         o->Length = hb_parni( 2 );
+         
+      hb_retni( o->Length );
+      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+
+HB_FUNC( GPCHARACTERASSIGMENT ){
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_CHARACTERRANGE( p ) ){
+      CharacterRange * o  = ( CharacterRange * ) GP_GET( p );
+      CharacterRange * o2 = ( CharacterRange * ) GP_GET( p2 );
+      *o = *o2;      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+
 
 //HB_FUNC( GPCharacterRange... )
 //{

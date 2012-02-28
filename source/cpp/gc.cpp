@@ -126,7 +126,13 @@ void gdiplus_destroy( GDIPLUS * p ){
      case GP_IT_LOGFONTA:
      case GP_IT_LOGFONTW:
         hb_xfree( ( void * ) p->pObject );
-        break;                                                                                            
+        break;    
+     case GP_IT_STRINGFORMAT:
+     	   delete ( StringFormat * ) p->pObject;
+     	   break;
+     case GP_IT_CHARACTERRANGE:
+     	   delete ( CharacterRange * ) p->pObject;
+     	   break;     	   
    }
    hb_xfree( p );
 
@@ -175,6 +181,7 @@ void GDIPLUS_StoreParam( int iParam, PHB_ITEM p ){
       hb_itemRelease( p );
 
 }
+
 
 WCHAR * hb_GDIPLUS_parw( int iParam ){
    WCHAR * filename;

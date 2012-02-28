@@ -267,15 +267,17 @@ HB_FUNC( _GPFONT )
             lOk = false;
          break;
       case 4:{
-         if( HB_ISPOINTER( 1 ) ){
+      	
+         if( HB_ISPOINTER( 1 ) && ! HB_ISCHAR( 1 ) ){
             GDIPLUS * pFont = hb_GDIPLUS_par( 1 );
             lOk = GP_IS_FONTFAMILY( pFont );
             if( lOk ){
                FontFamily * font = ( FontFamily * ) GP_GET( pFont );
-               o = new Font( font, ( REAL ) hb_parnd( 2 ) );
+               o = new Font( font, ( REAL ) hb_parnd( 2 ), hb_parni( 3 ), ( Unit ) hb_parni( 4 ) );
             }   
          }else if( HB_ISCHAR( 1 ) ){
             WCHAR * filename = hb_GDIPLUS_parw( 1 );
+            
             o = new Font( filename, ( REAL ) hb_parnd( 2 ), hb_parni( 3 ), ( Unit ) hb_parni( 4 ) );
             hb_xfree( filename );       
          }else
@@ -287,6 +289,7 @@ HB_FUNC( _GPFONT )
          lOk = GP_IS_FONTCOLLECTION( pFont );
          if( lOk ){
             FontCollection * font = ( FontCollection * ) GP_GET( pFont );
+            
             o = new Font( filename, ( REAL ) hb_parnd( 2 ), hb_parni( 3 ), ( Unit ) hb_parni( 4 ), font );
          }                       
          hb_xfree( filename );              

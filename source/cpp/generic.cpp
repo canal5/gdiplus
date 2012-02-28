@@ -31,7 +31,8 @@ static const GPNEWOBJ _newo[] = {
    { "GPFONT"                   , GP_IT_FONT                    , sizeof( Font )  },
    { ""                         , GP_IT_LOGFONTA                , sizeof( LOGFONTA ) },
    { ""                         , GP_IT_LOGFONTW                , sizeof( LOGFONTW ) },   
-   { "GPSTRINGFORMAT"           , GP_IT_STRINGFORMAT            , sizeof( StringFormat ) }
+   { "GPSTRINGFORMAT"           , GP_IT_STRINGFORMAT            , sizeof( StringFormat ) },
+   { "GPCHARACTERRANGE"         , GP_IT_CHARACTERRANGE          , sizeof( CharacterRange ) }
 };
 
 
@@ -179,6 +180,31 @@ void * ConvertArray2Rect( PHB_ITEM aRect, BOOL * l )
       pVoid = ( void * ) pRect;
       
    return pVoid;
+      
+}
+
+void * ConvertArray2Any( PHB_ITEM aArray, int iType )
+{
+  
+   int n;
+   int iLen = hb_arrayLen( aArray );
+   BYTE * pAny;
+   void * pVoid;
+
+   pAny =  ( BYTE * ) hb_xgrab( _newo[ iType ].l_size * iLen );
+
+   for( n = 0; n < iLen; n++ ){
+     
+     PHB_ITEM pItem = hb_arrayGetItemPtr( aArray, n + 1 );
+     GDIPLUS * ptr;
+     hb_objSendMsg( pItem, "HANDLE", 0 );
+     ptr = hb_GDIPLUS_par( -1 );     
+     pVoid = GP_GET( ptr );
+     memcpy( ( BYTE * ) pAny+( _newo[ iType ].l_size*n ), ( BYTE * ) pVoid, _newo[ iType ].l_size );
+
+   }
+      
+   return pAny;
       
 }
 

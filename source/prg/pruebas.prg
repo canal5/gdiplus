@@ -48,11 +48,28 @@ function TestStringFormat()
    TEST !Empty( oSF:handle )                                      DESCRIPTION "StringFormat( )"   
    TEST !Empty( StringFormat( oSF ):handle )                      DESCRIPTION "StringFormat( )"   
    TEST !Empty( StringFormat( StringFormatFlagsNoWrap ):handle )  DESCRIPTION "StringFormat( )"      
-   TEST !Empty( oSF:Clone():handle )                              DESCRIPTION "Clone( )"              SAMPLE Example_SFClone()
-   TEST oSF:SetAlignment( StringAlignmentFar ) == 0               DESCRIPTION "SetAlignment( )"       SAMPLE Example_SFSetAlignment()
+   TEST !Empty( oSF:Clone():handle )                              DESCRIPTION "Clone( )"              SAMPLE Example_SFClone()   
    TEST !Empty( oSF:GenericDefault():handle )                     DESCRIPTION "GenericDefault( )"     SAMPLE Example_SFGenericDefault()
    TEST !Empty( oSF:GenericTypographic():handle )                 DESCRIPTION "GenericTypographic( )" SAMPLE Example_SFGenericTypographic()
-
+   TEST oSF:SetAlignment( StringAlignmentFar ) == 0               DESCRIPTION "SetAlignment( )"       SAMPLE Example_SFSetAlignment()
+   TEST oSF:GetAlignment( ) >  0                                  DESCRIPTION "GetAlignment( )"       //SAMPLE Example_SFSetAlignment()
+   
+   TEST oSF:SetDigitSubstitution(0, StringDigitSubstituteNone ) == 0  DESCRIPTION "GenericTypographic( )" 
+   
+   TEST oSF:SetFormatFlags( StringFormatFlagsNoClip ) == 0        DESCRIPTION "SetFormatFlags( )"     SAMPLE Example_SFSetFormatFlags()
+   TEST oSF:GetFormatFlags( ) > 0                                 DESCRIPTION "GetFormatFlags( )"    // SAMPLE Example_SFSetFormatFlags()
+   
+   TEST oSF:SetHotkeyPrefix(HotkeyPrefixShow)         == 0        DESCRIPTION "SetHotkeyPrefix( )"    SAMPLE Example_SFSetHotkeyPrefix()
+   TEST oSF:GetHotkeyPrefix( ) > 0                                DESCRIPTION "GetHotkeyPrefix( )"    //SAMPLE Example_SFSetHotkeyPrefix()
+   
+   TEST oSF:SetLineAlignment( StringAlignmentFar ) == 0           DESCRIPTION "SetLineAlignment( )"   SAMPLE Example_SFSetLineAlignment()
+   TEST oSF:GetLineAlignment() > 0                                DESCRIPTION "GetLineAlignment( )"   //SAMPLE Example_SFSetLineAlignment()
+   
+   TEST .T.                                                       DESCRIPTION "SetMeasurableCharacterRanges( )"   SAMPLE Example_SetMeasCharRanges()
+   TEST oSF:SetTabStops( 1, {10,20,30 } ) == 0                    DESCRIPTION "SetTabStops( )"         SAMPLE Example_SFSetTabStops()
+   
+   TEST oSF:SetTrimming(StringTrimmingEllipsisWord) == 0          DESCRIPTION "SetTrimming( )"         SAMPLE Example_SFSetTrimming()
+   TEST oSF:GetTrimming() > 0                                     DESCRIPTION "GetTrimming( )"         //SAMPLE Example_SFSetTrimming()
    
 return 0
 
@@ -3471,6 +3488,234 @@ function Example_SFGenericTypographic( )
    exampleWindow( bPainted )
    
 return nil
+
+function Example_SFSetFormatFlags( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      SolidBrush  solidBrush(Color(255, 255, 0, 0))
+      FontFamily  fontFamily("Times New Roman")
+      Font        font(fontFamily, 24, FontStyleRegular, UnitPoint)
+      
+      StringFormat stringFormat()
+      stringFormat:SetFormatFlags( hb_bitOr( StringFormatFlagsDirectionVertical, StringFormatFlagsNoFitBlackBox ) )
+      
+      graphics:DrawString(;
+         "This text is vertical because of a format flag.",;
+         font, ;
+         RectF(30, 30, 150, 200), ;
+         stringFormat, ;
+         solidBrush)
+      
+      // Draw the rectangle that encloses the text.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawRectangle(pen, 30, 30, 150, 200)
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_SFSetHotkeyPrefix( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      FontFamily  fontFamily("Times New Roman")
+      Font        font(fontFamily, 24, FontStyleRegular, UnitPixel)
+      
+      StringFormat stringFormat()
+      stringFormat:SetHotkeyPrefix(HotkeyPrefixShow)
+      
+      graphics:DrawString(;
+         "This &text has some &underlined cha&r&acters.", ;
+         font, ;
+         RectF(30, 30, 160, 200), ;
+         stringFormat, ;
+         solidBrush)
+      
+      // Draw the rectangle that encloses the text.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawRectangle(pen, 30, 30, 160, 200)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_SFSetLineAlignment( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      FontFamily  fontFamily("Times New Roman")
+      Font        font(fontFamily, 24, FontStyleRegular, UnitPixel)
+      // Create a StringFormat object.
+      StringFormat stringFormat()
+      stringFormat:SetLineAlignment(StringAlignmentCenter)
+
+      // Use the cloned StringFormat object in a call to DrawString.
+      graphics:DrawString(;
+         "This text was formatted by a StringFormat object.", ;
+         font, ;
+         RectF(30, 30, 150, 200), ;
+         stringFormat,;
+         solidBrush)
+
+      // Draw the rectangle that encloses the text.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawRectangle(pen, 30, 30, 150, 200)
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_SetMeasCharRanges( )
+   local bPainted := { | hdc |
+   /*   
+      local charRanges :={}
+      
+      Graphics graphics(hdc)
+      // Brushes and pens used for drawing and painting
+      SolidBrush blueBrush(Color(255, 0, 0, 255))
+      SolidBrush redBrush(Color(100, 255, 0, 0))
+      Pen        blackPen(Color(255, 0, 0, 0))
+   
+      // Layout rectangles used for drawing strings
+      RectF   layoutRect_A(20.0, 20.0, 130.0, 130.0)
+      RectF   layoutRect_B(160.0, 20.0, 165.0, 130.0)
+      RectF   layoutRect_C(335.0, 20.0, 165.0, 130.0)
+   
+      // Three ranges of character positions within the string
+      charRanges = { CharacterRange(3, 5),;
+                     CharacterRange(15, 2),;
+                     CharacterRange(30, 15) }
+   
+      // Font and string format used to apply to string when drawing
+      Font         myFont("Times New Roman", 16.0)
+      StringFormat strFormat()
+   
+  
+       // Other variables
+      Region* pCharRangeRegions // pointer to CharacterRange regions
+      short   i                 // loop counter
+      INT     count             // number of character ranges set
+      string = "The quick, brown fox easily jumps over the lazy dog."
+   
+   
+      // Set three ranges of character positions.
+      strFormat:SetMeasurableCharacterRanges(charRanges)
+   
+      // Get the number of ranges that have been set, and allocate memory to 
+      // store the regions that correspond to the ranges.
+      count = strFormat.GetMeasurableCharacterRangeCount()
+      pCharRangeRegions = new Region[count]
+   
+      // Get the regions that correspond to the ranges within the string when
+      // layout rectangle A is used. Then draw the string, and show the 
+      // regions.
+      graphics.MeasureCharacterRanges(string, -1,
+         &myFont, layoutRect_A, &strFormat, count, pCharRangeRegions)
+      graphics.DrawString(string, -1,
+         &myFont, layoutRect_A, &strFormat, &blueBrush)
+      graphics.DrawRectangle(&blackPen, layoutRect_A)
+      for ( i = 0 i < count i++)
+      {
+         graphics.FillRegion(&redBrush, pCharRangeRegions + i)
+      }
+   
+      // Get the regions that correspond to the ranges within the string when
+      // layout rectangle B is used. Then draw the string, and show the 
+      // regions.
+      graphics.MeasureCharacterRanges(string, -1,
+         &myFont, layoutRect_B, &strFormat, count, pCharRangeRegions)
+      graphics.DrawString(string, -1,
+         &myFont, layoutRect_B, &strFormat, &blueBrush)
+      graphics.DrawRectangle(&blackPen, layoutRect_B)
+      for ( i = 0 i < count i++)
+      {
+         graphics.FillRegion(&redBrush, pCharRangeRegions + i)
+      }
+   
+      // Get the regions that correspond to the ranges within the string when
+      // layout rectangle C is used. Set trailing spaces to be included in the
+      // regions. Then draw the string, and show the regions.
+   strFormat.SetFormatFlags(StringFormatFlagsMeasureTrailingSpaces)
+      graphics.MeasureCharacterRanges(string, -1,
+         &myFont, layoutRect_C, &strFormat, count, pCharRangeRegions)
+      graphics.DrawString(string, -1,
+         &myFont, layoutRect_C, &strFormat, &blueBrush)
+      graphics.DrawRectangle(&blackPen, layoutRect_C)
+      for ( i = 0 i < count i++)
+      {
+         graphics.FillRegion(&redBrush, pCharRangeRegions + i)
+      }*/
+   }
+   
+ //  exampleWindow( bPainted )
+   ? "Not ready yet!!!"
+return nil 
+
+function Example_SFSetTabStops( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      tabs = {150, 100, 100}
+      FontFamily   fontFamily("Courier New")
+      Font         font(fontFamily, 12, FontStyleRegular, UnitPoint)
+      SolidBrush   solidBrush(Color(255, 0, 0, 255))
+      
+      StringFormat stringFormat()
+      stringFormat:SetTabStops(2, tabs)
+      graphics:DrawString(;
+         "Name"+chr( 9 )+"Test 1"+chr( 9 )+"Test 2"+chr( 9 )+"Test 3",;
+         font, ;
+         RectF(20, 20, 500, 100),;
+         stringFormat, ;
+         solidBrush)
+      
+      // Draw the rectangle that encloses the text.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawRectangle(pen, 20, 20, 500, 100)
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_SFSetTrimming( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      SolidBrush  solidBrush(Color(255, 255, 0, 0))
+      FontFamily  fontFamily("Times New Roman")
+      Font        font(fontFamily, 24, FontStyleRegular, UnitPixel)
+      
+      StringFormat stringFormat()
+      stringFormat:SetTrimming(StringTrimmingEllipsisWord)
+      
+      graphics:DrawString(;
+         "One two three four five six seven eight nine ten", ;
+         font, ;
+         RectF(30, 30, 160, 60),;
+         stringFormat, ;
+         solidBrush)
+      
+      // Draw the rectangle that encloses the text.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawRectangle(pen, 30, 30, 160, 60)
+//   EXAMPLE_SETTRIMMING( hDC )
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
 
 
 /*prototype

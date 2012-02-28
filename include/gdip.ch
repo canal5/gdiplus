@@ -1206,6 +1206,22 @@
 #xtranslate StringAlignmentCenter                         => 1
 #xtranslate StringAlignmentFar                            => 2
 
+#xtranslate StringDigitSubstituteUser                     => 0
+#xtranslate StringDigitSubstituteNone                     => 1
+#xtranslate StringDigitSubstituteNational                 => 2
+#xtranslate StringDigitSubstituteTraditional              => 3
+
+#xtranslate HotkeyPrefixNone                              => 0
+#xtranslate HotkeyPrefixShow                              => 1
+#xtranslate HotkeyPrefixHide                              => 2
+
+#xtranslate StringTrimmingNone                            => 0
+#xtranslate StringTrimmingCharacter                       => 1
+#xtranslate StringTrimmingWord                            => 2
+#xtranslate StringTrimmingEllipsisCharacter               => 3
+#xtranslate StringTrimmingEllipsisWord                    => 4
+#xtranslate StringTrimmingEllipsisPath                    => 5
+
 // ---------------------------------------------------------------------------
 #define GDIP_EMFPLUSFLAGS_DISPLAY     1
 // ---------------------------------------------------------------------------

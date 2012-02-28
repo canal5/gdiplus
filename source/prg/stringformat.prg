@@ -106,62 +106,66 @@ return GPStringFormatGenericDefault( ::handle )
 *******************************************************************************************
   METHOD GenericTypographic() CLASS GPStringFormat
 *******************************************************************************************
+
 return GPStringFormatGenericTypographic( ::handle )
 
 *******************************************************************************************
   METHOD GetAlignment() CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatGetAlignment( ::handle )
 
 *******************************************************************************************
   METHOD GetDigitSubstitutionLanguage() CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPSFGetDigitSubstitutionLanguage( ::handle )
 
 *******************************************************************************************
   METHOD GetDigitSubstitutionMethod() CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPSFGetDigitSubstitutionMethod( ::handle )
 
 *******************************************************************************************
   METHOD GetFormatFlags() CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatGetFormatFlags( ::handle )
 
 *******************************************************************************************
   METHOD GetHotkeyPrefix() CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatGetHotkeyPrefix( ::handle )
 
 *******************************************************************************************
   METHOD GetLastStatus() CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatGetLastStatus( ::handle )
 
 *******************************************************************************************
   METHOD GetLineAlignment() CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatGetLineAlignment( ::handle )
 
 *******************************************************************************************
   METHOD GetMeasurableCharacterRangeCount() CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPSFGetMeasurableCharacterRangeCount( ::handle )
 
 *******************************************************************************************
-  METHOD GetTabStopCount() CLASS GPStringFormat
+  METHOD GetTabStopCount(   ) CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatGetTabStopCount( ::handle )
 
 *******************************************************************************************
-  METHOD GetTabStops() CLASS GPStringFormat
+  METHOD GetTabStops( count, first, stop ) CLASS GPStringFormat
 *******************************************************************************************
-return self
+
+   DEFAULT count := ::GetTabStops()
+
+return GPStringFormatGetTabStops( ::handle, count, @first, @stop )
 
 *******************************************************************************************
   METHOD GetTrimming() CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatGetTrimming( ::handle )
 
 *******************************************************************************************
   METHOD SetAlignment( n ) CLASS GPStringFormat
@@ -170,39 +174,42 @@ return self
 return GPStringFormatSetAlignment( ::handle, n )
 
 *******************************************************************************************
-  METHOD SetDigitSubstitution() CLASS GPStringFormat
+  METHOD SetDigitSubstitution( lang, substitute ) CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatSetDigitSubstitution( ::handle, lang, substitute )
 
 *******************************************************************************************
-  METHOD SetFormatFlags() CLASS GPStringFormat
+  METHOD SetFormatFlags( n ) CLASS GPStringFormat
 *******************************************************************************************
-return self
+
+return GPStringFormatSetFormatFlags( ::handle, n )
 
 *******************************************************************************************
-  METHOD SetHotkeyPrefix() CLASS GPStringFormat
+  METHOD SetHotkeyPrefix( n ) CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatSetHotkeyPrefix( ::handle, n )
 
 *******************************************************************************************
-  METHOD SetLineAlignment() CLASS GPStringFormat
+  METHOD SetLineAlignment( n ) CLASS GPStringFormat
 *******************************************************************************************
-return self
+
+return GPStringFormatSetLineAlignment( ::handle, n )
 
 *******************************************************************************************
-  METHOD SetMeasurableCharacterRanges() CLASS GPStringFormat
+  METHOD SetMeasurableCharacterRanges( aRanges ) CLASS GPStringFormat
 *******************************************************************************************
-return self
+
+return GPSFSetMeasurableCharacterRanges( ::handle, aRanges )
 
 *******************************************************************************************
-  METHOD SetTabStops() CLASS GPStringFormat
+  METHOD SetTabStops( firstTabOffset, aReal ) CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatSetTabStops( ::handle, firstTabOffset, aReal )
 
 *******************************************************************************************
-  METHOD SetTrimming() CLASS GPStringFormat
+  METHOD SetTrimming( n ) CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatSetTrimming( ::handle, n )
 
 
 
@@ -309,21 +316,6 @@ HB_FUNC( GPSTRINGFORMATCLONE ){
 }
 
 
-HB_FUNC( GPSTRINGFORMATSETALIGNMENT ){
-  
-   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   Status sta;
-   if( GP_IS_STRINGFORMAT( pObj ) )
-   {  
-      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
-      sta = o->SetAlignment( ( StringAlignment ) hb_parni( 2 ) );
-      hb_retni( ( Status ) sta );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
-}
-
-
 HB_FUNC( GPSTRINGFORMATGENERICDEFAULT ){
   
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
@@ -354,6 +346,299 @@ HB_FUNC( GPSTRINGFORMATGENERICTYPOGRAPHIC ){
       oClone = ( StringFormat *) o->GenericTypographic();
       pClone = GPNewGDIPLUSObject( oClone, GP_IT_STRINGFORMAT );
       hb_itemReturnRelease( pClone );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+HB_FUNC( GPSTRINGFORMATGETALIGNMENT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      hb_retni( ( int ) o->GetAlignment() );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSTRINGFORMATGETLINEALIGNMENT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      hb_retni( ( int ) o->GetLineAlignment() );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+
+HB_FUNC( GPSFGETDIGITSUBSTITUTIONMETHOD ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      hb_retnl( ( int ) o->GetDigitSubstitutionMethod() );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSTRINGFORMATGETFORMATFLAGS ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      hb_retnl( ( int ) o->GetFormatFlags() );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSTRINGFORMATGETLASTSTATUS ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      hb_retnl( ( int ) o->GetLastStatus() );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSFGETMEASURABLECHARACTERRANGECOUNT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      hb_retni( ( int ) o->GetMeasurableCharacterRangeCount() );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSTRINGFORMATGETTABSTOPS ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      REAL first, stop;
+      sta = o->GetTabStops( hb_parni( 2 ), &first, &stop );
+      hb_storvni( 3, first );
+      hb_storvni( 4, stop );
+      hb_retni( ( int ) sta );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSTRINGFORMATGETTRIMMING ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      hb_retni( ( int ) o->GetTrimming() );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+HB_FUNC( GPSTRINGFORMATGETTABSTOPCOUNT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      hb_retni( ( int ) o->GetTabStopCount() );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+
+
+HB_FUNC( GPSFGETDIGITSUBSTITUTIONLANGUAGE ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      hb_retnl( ( long ) o->GetDigitSubstitutionLanguage() );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+
+HB_FUNC( GPSTRINGFORMATGETHOTKEYPREFIX ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      hb_retnl( ( int ) o->GetHotkeyPrefix() );
+
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSTRINGFORMATSETALIGNMENT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      sta = o->SetAlignment( ( StringAlignment ) hb_parni( 2 ) );
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSTRINGFORMATSETDIGITSUBSTITUTION ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      sta = o->SetDigitSubstitution( hb_parnl( 2 ), ( StringDigitSubstitute ) hb_parni( 3 ) );
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSTRINGFORMATSETFORMATFLAGS ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      sta = o->SetFormatFlags( hb_parni( 2 ) );
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSTRINGFORMATSETHOTKEYPREFIX ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      sta = o->SetHotkeyPrefix( ( HotkeyPrefix ) hb_parni( 2 ) );
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+HB_FUNC( GPSTRINGFORMATSETLINEALIGNMENT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      sta = o->SetLineAlignment( ( StringAlignment ) hb_parni( 2 ) );
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+HB_FUNC( GPSFSETMEASURABLECHARACTERRANGES ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      PHB_ITEM pArray = hb_param( 2, HB_IT_ARRAY );
+      int iLen = hb_arrayLen( pArray );
+      int j;
+      CharacterRange * ranges = ( CharacterRange * ) ConvertArray2Any( pArray, GP_IT_CHARACTERRANGE );
+      sta = o->SetMeasurableCharacterRanges( iLen, ranges );      
+      hb_xfree( ranges );
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
+
+
+HB_FUNC( GPSTRINGFORMATSETTABSTOPS ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      PHB_ITEM aReal = hb_param( 3, HB_IT_ARRAY );
+      int iLen = hb_arrayLen( aReal );
+      int j;
+      REAL * pReals = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
+      for( j = 0; j < iLen; j++ )
+      {
+         pReals[ j ] = hb_arrayGetND( aReal, j + 1 );
+      }
+      sta = o->SetTabStops( ( REAL ) hb_parnd( 2 ) - 1, iLen, pReals );
+      hb_xfree( pReals );
+      
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+}
+
+
+HB_FUNC( GPSTRINGFORMATSETTRIMMING ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      sta = o->SetTrimming( ( StringTrimming ) hb_parni( 2 ) );
+      hb_retni( ( Status ) sta );
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
   

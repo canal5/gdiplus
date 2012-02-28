@@ -35,6 +35,7 @@ typedef struct __gdiplus
 #define GP_IT_LOGFONTA     ( ( int ) 0x00014 )
 #define GP_IT_LOGFONTW     ( ( int ) 0x00015 )
 #define GP_IT_STRINGFORMAT ( ( int ) 0x00016 )
+#define GP_IT_CHARACTERRANGE ( ( int ) 0x00017 )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
@@ -59,6 +60,7 @@ typedef struct __gdiplus
 #define GP_IS_LOGFONTA( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTA ) ) 
 #define GP_IS_LOGFONTW( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTB ) ) 
 #define GP_IS_STRINGFORMAT( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_STRINGFORMAT ) ) 
+#define GP_IS_CHARACTERRANGE( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_CHARACTERRANGE ) ) 
 
 #define HB_ISDOUBLE( n )    ( hb_param( n, HB_IT_DOUBLE ) != NULL )
 #define HB_ISINTEGER( n )    ( hb_param( n, HB_IT_INTEGER) != NULL )
@@ -73,6 +75,7 @@ void      GDIPLUSItemClear( PHB_ITEM pItem );
 PHB_ITEM  GDIPLUSItemPut( PHB_ITEM pItem, GDIPLUS * pGdiPlus );
 void      GDIPLUS_StoreParam( int iParam, PHB_ITEM p );
 WCHAR   * hb_GDIPLUS_parw( int iParam );
+
 
 extern "C"
 {

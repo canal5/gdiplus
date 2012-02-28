@@ -14,5 +14,6 @@ void GPSendHandleToObject( PHB_ITEM pitem, void * c, int iType );
 PHB_ITEM GPNewGDIPLUSObject( void * c, int iType );
 void * ConvertArray2Point( PHB_ITEM aPoint, BOOL * l );
 void * ConvertArray2Rect( PHB_ITEM aRect, BOOL * l );
+void * ConvertArray2Any( PHB_ITEM aArray, int iType );
 
 #endif
