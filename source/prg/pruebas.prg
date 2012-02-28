@@ -24,9 +24,9 @@ Local oTest
 //      TestsRect()
   
 //      TestGraphicsPath()
-      TestFontFamily()
+//      TestFontFamily()
 //      TestFont()
-      
+      TestStringFormat()    
 //      TestBitmap( oTest )
 
       SHOW RESULT
@@ -34,6 +34,27 @@ Local oTest
    ENDDEFINE
 
 return nil
+
+
+function TestStringFormat() 
+
+   local oSF
+
+   SEPARADOR( "STRINGFORMAT" )
+       
+   StringFormat oSF()
+
+  
+   TEST !Empty( oSF:handle )                                      DESCRIPTION "StringFormat( )"   
+   TEST !Empty( StringFormat( oSF ):handle )                      DESCRIPTION "StringFormat( )"   
+   TEST !Empty( StringFormat( StringFormatFlagsNoWrap ):handle )  DESCRIPTION "StringFormat( )"      
+   TEST !Empty( oSF:Clone():handle )                              DESCRIPTION "Clone( )"              SAMPLE Example_SFClone()
+   TEST oSF:SetAlignment( StringAlignmentFar ) == 0               DESCRIPTION "SetAlignment( )"       SAMPLE Example_SFSetAlignment()
+   TEST !Empty( oSF:GenericDefault():handle )                     DESCRIPTION "GenericDefault( )"     SAMPLE Example_SFGenericDefault()
+   TEST !Empty( oSF:GenericTypographic():handle )                 DESCRIPTION "GenericTypographic( )" SAMPLE Example_SFGenericTypographic()
+
+   
+return 0
 
 
 function TestFont() 
@@ -3129,8 +3150,9 @@ function Example_IsAvailable( )
 return nil 
 
 
+
 //---------------------------------
-//FONTfamily
+//FONTFAMILY
 //---------------------------------
 
 function Example_FontFamilyClone( )
@@ -3326,6 +3348,129 @@ function Example_GetLineSpacing( )
    exampleWindow( bPainted )
    
 return nil 
+   
+
+//---------------------------------
+//STRINGFORMAT
+//---------------------------------
+
+function Example_SFClone( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      FontFamily  fontFamily("Times New Roman")
+      Font        font(fontFamily, 24, FontStyleRegular, UnitPixel)
+      // Create a StringFormat object.
+      StringFormat stringFormat()
+      stringFormat:SetAlignment(StringAlignmentCenter)
+      // Clone the StringFormat object.
+      pStringFormat = stringFormat:Clone()
+      // Use the cloned StringFormat object in a call to DrawString.
+      graphics:DrawString(;
+         "This text was formatted by a cloned StringFormat object.", ;
+         font, ;
+         RectF(30, 30, 200, 200), ;
+         pStringFormat,;
+         solidBrush)
+
+      // Draw the rectangle that encloses the text.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawRectangle(pen, 30, 30, 200, 200)
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_SFSetAlignment( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      FontFamily  fontFamily("Times New Roman")
+      Font        font(fontFamily, 24, FontStyleRegular, UnitPixel)
+      // Create a StringFormat object.
+      StringFormat stringFormat()
+      stringFormat:SetAlignment(StringAlignmentCenter)
+
+      // Use the cloned StringFormat object in a call to DrawString.
+      graphics:DrawString(;
+         "This text was formatted by a StringFormat object.", ;
+         font, ;
+         RectF(30, 30, 150, 200), ;
+         stringFormat,;
+         solidBrush)
+
+      // Draw the rectangle that encloses the text.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawRectangle(pen, 30, 30, 150, 200)
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_SFGenericDefault( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      FontFamily  fontFamily("Times New Roman")
+      Font        font(fontFamily, 12, FontStyleRegular, UnitPixel)
+      // Create a StringFormat object.
+      
+      pStringFormat = StringFormat():GenericDefault()
+
+      // Use the cloned StringFormat object in a call to DrawString.
+      graphics:DrawString(;
+         "This text was formatted by a generic StringFormat object.", ;
+         font, ;
+         RectF(30, 30, 150, 200), ;
+         pStringFormat,;
+         solidBrush)
+
+      // Draw the rectangle that encloses the text.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawRectangle(pen, 30, 30, 150, 200)
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_SFGenericTypographic( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      FontFamily  fontFamily("Times New Roman")
+      Font        font(fontFamily, 12, FontStyleRegular, UnitPixel)
+      // Create a StringFormat object.
+      
+      pStringFormat = StringFormat():GenericTypographic()
+
+      // Use the cloned StringFormat object in a call to DrawString.
+      graphics:DrawString(;
+         "Formatted by a generic typographic StringFormat object.", ;
+         font, ;
+         RectF(30, 30, 150, 200), ;
+         pStringFormat,;
+         solidBrush)
+
+      // Draw the rectangle that encloses the text.
+      Pen pen(Color(255, 255, 0, 0))
+      graphics:DrawRectangle(pen, 30, 30, 150, 200)
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
 
 
 /*prototype

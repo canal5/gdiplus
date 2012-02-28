@@ -1,7 +1,24 @@
 #include "fivewin.ch"
 
-function StringFormat(ff, idlang)
-return GPStringFormat():New(ff, idlang)
+function StringFormat( ... )
+   local aParams := hb_aparams()
+   local oFont
+   local nLen := Len( aParams )
+   
+
+   switch nLen
+      case 0
+         oFont = GPStringFormat():New()
+         exit
+      case 1
+         oFont = GPStringFormat():New( aParams[ 1 ] )
+         exit         
+      case 2
+         oFont = GPStringFormat():New( aParams[ 1 ], aParams[ 2 ] )
+         exit
+   endswitch
+
+return oFont
 
 CLASS GPStringFormat
 
@@ -39,38 +56,37 @@ CLASS GPStringFormat
 ENDCLASS
 
 *******************************************************************************************
-  METHOD New(ff, idlang) CLASS GPStringFormat
+  METHOD New( ... ) CLASS GPStringFormat
 *******************************************************************************************
-
 local iParams := PCount()
+local handle 
+local aParams := hb_aparams()
 
-
-  if iParams == 0
-     ::handle := _GPStringFormat()
-  elseif iParams == 1
-     ::handle := _GPStringFormat( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPStringFormat( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPStringFormat( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPStringFormat( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPStringFormat( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPStringFormat( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
-
-
+   switch iParams
+      case 0
+         handle = _GPStringFormat()
+         exit
+      case 1
+         if( valType( aParams[ 1 ] ) == "O" )
+            handle = _GPStringFormat( aParams[ 1 ]:handle )
+         else 
+            handle = _GPStringFormat( aParams[ 1 ] )
+         endif
+         exit
+      case 2
+         handle = _GPStringFormat( aParams[ 1 ], aParams[ 2 ] )
+        exit
+   endswitch
+   
+   ::handle = handle
+  
 return self
 
 *******************************************************************************************
   METHOD Destroy() CLASS GPStringFormat
 *******************************************************************************************
-
-if !empty(::Handle )
-
-endif
+   
+   ::handle = NIL
 
 return self
 
@@ -78,17 +94,19 @@ return self
 *******************************************************************************************
   METHOD Clone() CLASS GPStringFormat
 *******************************************************************************************
-return self
+
+return GPStringFormatClone( ::handle )
 
 *******************************************************************************************
   METHOD GenericDefault() CLASS GPStringFormat
 *******************************************************************************************
-return self
+
+return GPStringFormatGenericDefault( ::handle )
 
 *******************************************************************************************
   METHOD GenericTypographic() CLASS GPStringFormat
 *******************************************************************************************
-return self
+return GPStringFormatGenericTypographic( ::handle )
 
 *******************************************************************************************
   METHOD GetAlignment() CLASS GPStringFormat
@@ -146,9 +164,10 @@ return self
 return self
 
 *******************************************************************************************
-  METHOD SetAlignment() CLASS GPStringFormat
+  METHOD SetAlignment( n ) CLASS GPStringFormat
 *******************************************************************************************
-return self
+
+return GPStringFormatSetAlignment( ::handle, n )
 
 *******************************************************************************************
   METHOD SetDigitSubstitution() CLASS GPStringFormat
@@ -231,46 +250,114 @@ return self
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPSTRINGFORMAT )
 {
-   //StringFormat* ptr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    ptr = new StringFormat();
-   //else if (iParams == 1 )
-   //    ptr = new StringFormat( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    ptr = new StringFormat( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    ptr = new StringFormat( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*) ptr );
+   StringFormat * o;
+   GDIPLUS * pObj = gdiplus_new( GP_IT_STRINGFORMAT );
+   int iParams = hb_pcount();
+   BOOL lOk = true;   
+   
+   switch( iParams ){
+      case 0:
+         o = new StringFormat();
+         break;
+      case 1:{         
+         if( HB_ISPOINTER( 1 ) ){         	  
+            GDIPLUS * pSF = hb_GDIPLUS_par( 1 );
+               if( GP_IS_STRINGFORMAT( pSF ) ) {
+               StringFormat * sf = ( StringFormat * ) GP_GET( pSF );
+               o = new StringFormat( sf );      
+            }else 
+               lOk = false;
+         }else if( HB_ISNUM( 1 ) )
+            o = new StringFormat( hb_parni( 1 ) );
+         else
+            lOk = false;
+      }
+         break;
+      case 2:
+         o = new StringFormat( hb_parni( 1 ), hb_parnl( 2 ) );
+         break;
+   }
+   
+   if( lOk )
+   {
+      GP_SET( pObj, ( void * ) o );
+      hb_GDIPLUS_ret( pObj ); 
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( DELETESTRINGFORMAT )
-{
-   //StringFormat* clr = (StringFormat*) hb_parptr( 1 );
-   //delete (StringFormat*) clr;
-   //hb_ret();
+
+HB_FUNC( GPSTRINGFORMATCLONE ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      StringFormat * oClone;
+      PHB_ITEM pClone;
+      oClone = o->Clone();
+      pClone = GPNewGDIPLUSObject( oClone, GP_IT_STRINGFORMAT );
+      hb_itemReturnRelease( pClone );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
 }
 
-//HB_FUNC( GPSTRINGFORMAT... )
-//{
-//   StringFormat* ptr = (StringFormat*) hb_parptr( 1 );
-//}
+
+HB_FUNC( GPSTRINGFORMATSETALIGNMENT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      sta = o->SetAlignment( ( StringAlignment ) hb_parni( 2 ) );
+      hb_retni( ( Status ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
 
 
+HB_FUNC( GPSTRINGFORMATGENERICDEFAULT ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+   	  int style;
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      StringFormat * oClone;
+      PHB_ITEM pClone;
+      oClone = ( StringFormat *) o->GenericDefault();
+      pClone = GPNewGDIPLUSObject( oClone, GP_IT_STRINGFORMAT );
+      hb_itemReturnRelease( pClone );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
 
 
-
+HB_FUNC( GPSTRINGFORMATGENERICTYPOGRAPHIC ){
+  
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_STRINGFORMAT( pObj ) )
+   {  
+   	  int style;
+      StringFormat * o = ( StringFormat * ) GP_GET( pObj );
+      StringFormat * oClone;
+      PHB_ITEM pClone;
+      oClone = ( StringFormat *) o->GenericTypographic();
+      pClone = GPNewGDIPLUSObject( oClone, GP_IT_STRINGFORMAT );
+      hb_itemReturnRelease( pClone );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+  
+}
 
 #pragma ENDDUMP
 

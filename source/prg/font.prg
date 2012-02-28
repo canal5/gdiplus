@@ -16,7 +16,11 @@ function Font( ... )
          oFont = GPFont():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
          exit
       case 4
-         oFont = GPFont():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
+         if ValType( aParams[ 1 ] ) == "O"
+            oFont = GPFont():New( aParams[ 1 ]:handle, aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
+         else 
+            oFont = GPFont():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
+         endif
          exit                  
       case 5
          oFont = GPFont():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )

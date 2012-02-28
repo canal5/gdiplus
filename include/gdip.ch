@@ -25,7 +25,8 @@
 #xcommand FONTCOLLECTION      <o>      ()                                                             => <o>       := FontCollection     ()
 #xcommand INSTALLEDFONTCOLLECTION <o>  ()                                                             => <o>       := InstalledFontCollection()
 #xcommand PRIVATEFONTCOLLECTION   <o>  ()                                                             => <o>       := PrivateFontCollection()
-#xcommand FONT               <o>       ( <par1>[,<par2> ][,<par3> ][,<par4> ][,<par5>] )             => <o>        := Font               ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>] )
+#xcommand FONT               <o>       ( <par1>[,<par2> ][,<par3> ][,<par4> ][,<par5>] )              => <o>       := Font               ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>] )
+#xcommand STRINGFORMAT       <o>       ( [<par1> [,<par2> ] ] )                                       => <o>       := StringFormat       ( [<par1>][, <par2>] )
 
 
 
@@ -1181,6 +1182,29 @@
 #xtranslate FontStyleBoldItalic                           => 3
 #xtranslate FontStyleUnderline                            => 4
 #xtranslate FontStyleStrikeout                            => 8
+
+#xtranslate StringFormatFlagsDirectionRightToLeft         => 0x0001
+#xtranslate StringFormatFlagsDirectionVertical            => 0x0002
+#xtranslate StringFormatFlagsNoFitBlackBox                => 0x0004
+#xtranslate StringFormatFlagsDisplayFormatControl         => 0x0020
+#xtranslate StringFormatFlagsNoFontFallback               => 0x0400
+#xtranslate StringFormatFlagsMeasureTrailingSpaces        => 0x0800
+#xtranslate StringFormatFlagsNoWrap                       => 0x1000
+#xtranslate StringFormatFlagsLineLimit                    => 0x2000
+#xtranslate StringFormatFlagsNoClip                       => 0x4000
+
+#xtranslate UnitWorld                                     => 0
+#xtranslate UnitDisplay                                   => 1
+#xtranslate UnitPixel                                     => 2
+#xtranslate UnitPoint                                     => 3
+#xtranslate UnitInch                                      => 4
+#xtranslate UnitDocument                                  => 5
+#xtranslate UnitMillimeter                                => 6
+
+
+#xtranslate StringAlignmentNear                           => 0
+#xtranslate StringAlignmentCenter                         => 1
+#xtranslate StringAlignmentFar                            => 2
 
 // ---------------------------------------------------------------------------
 #define GDIP_EMFPLUSFLAGS_DISPLAY     1
