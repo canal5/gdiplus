@@ -1,10 +1,25 @@
 #include "fivewin.ch"
 
 
-function Region()
+function Region( ... )
 
-return GPRegion():New()
+   local aParams := hb_aparams()
+   local oObj
+   local nLen := Len( aParams )
 
+   switch nLen
+      case 0
+         oObj = GPRegion():New()
+         exit
+      case 1
+         oObj = GPRegion():New( aParams[ 1 ] )
+         exit
+      case 2
+         oObj = GPRegion():New( aParams[ 1 ], aParams[ 2 ] )
+         exit
+   endswitch
+
+return oObj
 
 CLASS GPRegion
 
@@ -25,17 +40,10 @@ CLASS GPRegion
 
   METHOD Clone()
   METHOD Complement()
-  METHOD Complement2()
-  METHOD Complement3()
-  METHOD Complement4()
   METHOD Equals()
   METHOD Exclude()
-  METHOD Exclude2()
-  METHOD Exclude3()
-  METHOD Exclude4()
   METHOD FromHRGN()
   METHOD GetBounds()
-  METHOD GetBounds2()
   METHOD GetData()
   METHOD GetDataSize()
   METHOD GetHRGN()
@@ -63,9 +71,6 @@ CLASS GPRegion
   METHOD Translate()
   METHOD Translate2()
   METHOD Union()
-  METHOD Union2()
-  METHOD Union3()
-  METHOD Union4()
   METHOD Xor()
   METHOD Xor2()
   METHOD Xor3()
@@ -75,28 +80,27 @@ CLASS GPRegion
 ENDCLASS
 
 *********************************************************************************************************
-  METHOD New() CLASS GPRegion
+  METHOD New( p1, p2 ) CLASS GPRegion
 *********************************************************************************************************
 
 local iParams := PCount()
 
-
-  if iParams == 0
-     ::handle := _GPRegion()
-  elseif iParams == 1
-     ::handle := _GPRegion( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPRegion( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPRegion( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPRegion( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPRegion( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPRegion( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
-
+  
+  switch iParams
+     case 0
+        ::handle := _GPRegion()
+        exit 
+     case 1
+        if ValType( p1 ) == "O"
+           ::handle := _GPRegion( p1:handle )
+        else 
+           ::handle := _GPRegion( p1 )
+        endif
+        exit 
+     case 2        
+        ::handle := _GPRegion( p1, p2 )                       
+  endswitch
+  
 return self
 
 *********************************************************************************************************
@@ -112,97 +116,63 @@ return nil
   METHOD Clone() CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionClone( ::handle )
 
 *********************************************************************************************************
-  METHOD Complement() CLASS GPRegion
+  METHOD Complement( p ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionComplement( ::handle, p:handle )
 
 *********************************************************************************************************
-  METHOD Complement2() CLASS GPRegion
+  METHOD Equals( p1, p2 ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionEquals( ::handle, p1:handle, p2:handle )
 
 *********************************************************************************************************
-  METHOD Complement3() CLASS GPRegion
+  METHOD Exclude( p ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionExclude( ::handle, p:handle )
+
 
 *********************************************************************************************************
-  METHOD Complement4() CLASS GPRegion
+  METHOD FromHRGN( hRgn ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionFromHRGN( ::handle, hRgn )
 
 *********************************************************************************************************
-  METHOD Equals() CLASS GPRegion
+  METHOD GetBounds( oRect, oGrap ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionGetBounds( ::handle, @oRect:handle, oGrap:handle )
 
 *********************************************************************************************************
-  METHOD Exclude() CLASS GPRegion
+  METHOD GetData( A, B, C  ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+   local sta
+   
+   DEFAULT B := ::GetDataSize()
+   DEFAULT C := 0
+   
+   sta = GPRegionGetData( ::handle, @A, B, @C )
 
-*********************************************************************************************************
-  METHOD Exclude2() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Exclude3() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Exclude4() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD FromHRGN() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD GetBounds() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD GetBounds2() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD GetData() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
+return sta
 
 *********************************************************************************************************
   METHOD GetDataSize() CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionGetDataSize( ::handle )
 
 *********************************************************************************************************
-  METHOD GetHRGN() CLASS GPRegion
+  METHOD GetHRGN( graph ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionGetHRGN( ::handle, graph:handle )
 
 *********************************************************************************************************
   METHOD GetLastStatus() CLASS GPRegion
@@ -343,28 +313,10 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD Union() CLASS GPRegion
+  METHOD Union( uPar ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
-
-*********************************************************************************************************
-  METHOD Union2() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Union3() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Union4() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
+return GPRegionUnion( ::handle, uPar:handle )
 
 *********************************************************************************************************
   METHOD Xor() CLASS GPRegion
@@ -472,40 +424,346 @@ return 0
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( _GPREGION )
 {
-   //Region* ptr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    ptr = new Region();
-   //else if (iParams == 1 )
-   //    ptr = new Region( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    ptr = new Region( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    ptr = new Region( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*) ptr );
+   GDIPLUS * pObj = gdiplus_new( GP_IT_REGION );  
+   Region * ptr;
+   int iParams = hb_pcount();
+   BOOL lOk = true;
+
+//   GDIPLUS * p2 = hb_GDIPLUS_par( 1 ); 
+//
+//   Rect * r = ( Rect * ) GP_GET( p2 );
+//   ptr = new Region( *r );
+//
+//   GP_SET( pObj, ptr );
+//
+//   hb_GDIPLUS_ret( pObj );
+
+   
+   switch( iParams ){
+      case 0: 
+         ptr = new Region();
+         break;
+      case 1:
+       {
+         GDIPLUS * p2 = hb_GDIPLUS_par( 1 );         
+         int iType = GP_OBJECT_TYPE( p2 );
+         if( HB_ISNUM( 1 ) && GetObjectType( ( HGDIOBJ ) hb_parnl( 1 ) ) ){
+            ptr = new Region( ( HRGN ) hb_parnl( 1 ) );
+         }
+         else {
+         	  void * g = GP_GET( p2 );
+         	  
+            switch( iType ){            	  
+               case GP_IT_GRAPHICSPATH:
+                  ptr = new Region( ( GraphicsPath * ) g );
+                  break;
+               case GP_IT_RECTF:
+                  ptr = new Region( *( ( RectF * ) g ) );                  
+                  break;
+               case GP_IT_RECT:
+                  ptr = new Region( *( ( Rect * ) g ) );
+                  break;               
+            	  default:
+            	     lOk = false;
+            }
+         }
+       }
+       break;
+      case 2:
+      {
+         GDIPLUS * p2 = hb_GDIPLUS_par( 1 );         
+         if( GP_IS_REGIONDATA( p2 ) ){
+         	  BYTE * b = ( BYTE * ) GP_GET( p2 );
+            ptr = new Region( b, hb_parni( 2 ) );
+         }else 
+            lOk = false;
+      }
+      break;       
+   }
+
+   if( lOk ){
+      GP_SET( pObj, ptr );
+      hb_GDIPLUS_ret( pObj );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+     
 }
 
-HB_FUNC( DELETEREGION )
+HB_FUNC( GPREGIONCLONE )
 {
-   //Region* clr = (Region*) hb_parptr( 1 );
-   //delete (Region*) clr;
-   //hb_ret();
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      Region * oClone = o->Clone();
+      PHB_ITEM pClone;
+            
+      pClone = GPNewGDIPLUSObject( oClone, GP_IT_REGION );
+      hb_itemReturnRelease( pClone );
+      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
 }
 
-//HB_FUNC( GPREGION... )
-//{
-//   Region* ptr = (Region*) hb_parptr( 1 );
-//}
+
+HB_FUNC( GPREGIONUNION )
+{
+  
+   GDIPLUS * p  = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_REGION( p ) ){
+   	  int iType = GP_OBJECT_TYPE( p2 );
+      Region * o = ( Region * ) GP_GET( p );
+      void * u = GP_GET( p2 );
+      Status sta;
+      BOOL lOk = true;
+      switch ( iType ){
+      	case GP_IT_GRAPHICSPATH:
+      	   sta = o->Union( ( GraphicsPath * ) u );
+      	   break;
+      	case GP_IT_RECTF:
+      	   sta = o->Union( *( ( RectF * ) u ) );
+      	   break;      	
+      	case GP_IT_RECT:
+      	   sta = o->Union( *( ( Rect * ) u ) );
+      	   break;      	      	
+      	case GP_IT_REGION:
+      	   sta = o->Union( ( Region * ) u );
+      	   break;      	      	   
+      	default:
+      	   lOk = false;
+      }
+      
+      if( lOk )
+        hb_retni( ( int ) sta );
+      else 
+        hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+         
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+
+HB_FUNC( GPREGIONCOMPLEMENT )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      void * g = GP_GET( p2 );
+      int iType = GP_OBJECT_TYPE( p2 );
+      Status sta;
+      BOOL lOk = true;
+
+      switch( iType ){            	  
+         case GP_IT_GRAPHICSPATH:
+            sta = o->Complement( ( GraphicsPath * ) g );
+            break;
+         case GP_IT_RECTF:
+            sta = o->Complement( *( ( RectF * ) g ) ) ;
+            break;
+         case GP_IT_RECT:
+            sta = o->Complement( *( ( Rect * ) g ));
+            break;               
+         case GP_IT_REGION:
+            sta = o->Complement( ( Region * ) g );
+            break;                         
+         default:
+            lOk = false;
+      }
+      
+      if( lOk )      
+         hb_retni( ( int ) sta );
+      else 
+         hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONEQUALS )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+   if( GP_IS_REGION( p ) && GP_IS_REGION( p2 ) &&  GP_IS_GRAPHICS( p3 ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      Region * r = ( Region * ) GP_GET( p2 );
+      Graphics * g = ( Graphics * ) GP_GET( p3 );
+      hb_retnl( o->Equals( r, g ) );         
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONEXCLUDE )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      void * g = GP_GET( p2 );
+      int iType = GP_OBJECT_TYPE( p2 );
+      Status sta;
+      BOOL lOk = true;
+
+      switch( iType ){            	  
+         case GP_IT_GRAPHICSPATH:
+            sta = o->Exclude( ( GraphicsPath * ) g );
+            break;
+         case GP_IT_RECTF:
+            sta = o->Exclude( *( ( RectF * ) g ) ) ;
+            break;
+         case GP_IT_RECT:
+            sta = o->Exclude( *( ( Rect * ) g ));
+            break;               
+         case GP_IT_REGION:
+            sta = o->Exclude( ( Region * ) g );
+            break;                         
+         default:
+            lOk = false;
+      }
+      
+      if( lOk )      
+         hb_retni( ( int ) sta );
+      else 
+         hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONFROMHRGN )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   HRGN hRgn   = ( HRGN ) hb_parnl( 2 );
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      Region * oOut;      
+      PHB_ITEM pOut;            
+      oOut = o->FromHRGN( hRgn );
+      pOut = GPNewGDIPLUSObject( oOut, GP_IT_REGION );
+      hb_itemReturnRelease( pOut );
+               
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONGETBOUNDS )
+{
+  
+   GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_REGION( p1 ) && GP_IS_GRAPHICS( p3 ) ){
+      Region * o = ( Region * ) GP_GET( p1 );
+      Graphics * g = ( Graphics * ) GP_GET( p3 );
+      if( GP_IS_RECT( p2 ) ){
+         Rect * rect = ( Rect * ) GP_GET( p2 );
+         hb_retni( ( int ) o->GetBounds( rect, g ) );
+      }else if( GP_IS_RECTF( p2 ) ){
+         RectF * rect = ( RectF * ) GP_GET( p2 );
+         hb_retni( ( int ) o->GetBounds( rect, g ) );
+      }else
+         hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONGETDATA )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   int iParams = hb_pcount();
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      UINT bufferSize, sizeFilled;
+      Status sta;
+      GDIPLUS * pData = gdiplus_new( GP_IT_REGIONDATA );  
+      PHB_ITEM pOut = hb_itemNew( NULL );
+      if( iParams > 2 )
+         bufferSize = ( UINT ) hb_parni( 3 );
+      else 
+         bufferSize = o->GetDataSize();
+         
+      pData->pObject = ( BYTE * ) hb_xgrab( bufferSize );
+      
+      sta = o->GetData( ( BYTE * )( pData->pObject ), bufferSize, &sizeFilled );
+      
+      GDIPLUSItemPut( pOut, pData );      
+      GDIPLUS_StoreParam( 2, pOut );
+      
+      hb_storvni( sizeFilled, 4 );         
+      hb_retni( ( Status ) sta );
+         
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+
+HB_FUNC( GPREGIONGETDATASIZE )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      hb_retni( ( int ) o->GetDataSize() );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+
+HB_FUNC( GPREGIONGETHRGN )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_REGION( p ) && GP_IS_GRAPHICS( p2 ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      Graphics * g = ( Graphics * ) GP_GET( p2 );
+      HRGN hRegion;
+      hRegion = o->GetHRGN( g );
+      hb_retptr( hRegion );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+
+
+/*
+HB_FUNC( GPREGION... )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+         
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+*/
+
+
 
 #pragma ENDDUMP
 

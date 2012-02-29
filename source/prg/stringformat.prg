@@ -445,8 +445,8 @@ HB_FUNC( GPSTRINGFORMATGETTABSTOPS ){
       StringFormat * o = ( StringFormat * ) GP_GET( pObj );
       REAL first, stop;
       sta = o->GetTabStops( hb_parni( 2 ), &first, &stop );
-      hb_storvni( 3, first );
-      hb_storvni( 4, stop );
+      hb_storvni( first, 3 );
+      hb_storvni( stop, 4 );
       hb_retni( ( int ) sta );
 
    }else 

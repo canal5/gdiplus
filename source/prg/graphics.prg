@@ -549,11 +549,12 @@ return 0
 return 0
 
 **********************************************************************************************************
-  METHOD FillRegion( ) CLASS GPGraphics
+  METHOD FillRegion( oBrush, oRegion ) CLASS GPGraphics
 **********************************************************************************************************
 
+   DEFAULT oBrush := ::oBrush
 
-return 0
+return GP_FillRegion( ::handle, oBrush:handle, oRegion:handle )
 
 **********************************************************************************************************
   METHOD FillRoundRect( rc, nRad1, nRad2, oBrush, oPen ) CLASS GPGraphics
@@ -562,9 +563,8 @@ return 0
   DEFAULT oBrush := ::oBrush
   DEFAULT oPen   := ::oPen
 
-  GP_RoundRect( ::handle, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2, oBrush:handle )
 
-return 0
+return GP_RoundRect( ::handle, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2, oBrush:handle )
 
 **********************************************************************************************************
   METHOD Flush( ) CLASS GPGraphics
@@ -1450,6 +1450,28 @@ HB_FUNC( GP_DRAWLINE )
 
 }
 
+
+HB_FUNC( GP_FILLREGION ){
+	
+   GDIPLUS *p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
+	 GDIPLUS * pregion = hb_GDIPLUS_par( 3 );
+
+	 if( GP_IS_GRAPHICS( p ) && GP_IS_BRUSH( pBrush ) && GP_IS_REGION( pregion ) ){
+	 	  Status sta;
+	 	  Graphics * g = ( Graphics * ) GP_GET( p );
+	    Brush * b = ( Brush * ) GP_GET( pBrush );
+	    Region * r = ( Region * ) GP_GET( pregion );
+	    
+	    sta = g->FillRegion( b, r );
+
+	    hb_retni( ( int ) sta );
+	 
+	 }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+
 HB_FUNC( GP_ROUNDRECT )
 {
     Graphics *g = hb_Graphics_par( 1 );
@@ -1489,9 +1511,6 @@ HB_FUNC( GP_ROUNDRECT )
     }
     else
        hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-
-
-
 
 }
 

@@ -27,6 +27,7 @@
 #xcommand PRIVATEFONTCOLLECTION   <o>  ()                                                             => <o>       := PrivateFontCollection()
 #xcommand FONT               <o>       ( <par1>[,<par2> ][,<par3> ][,<par4> ][,<par5>] )              => <o>       := Font               ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>] )
 #xcommand STRINGFORMAT       <o>       ( [<par1> [,<par2> ] ] )                                       => <o>       := StringFormat       ( [<par1>][, <par2>] )
+#xcommand REGION             <o>       ( [<par1> [,<par2> ] ] )                                       => <o>       := Region             ( [<par1>][, <par2>] )
 
 
 

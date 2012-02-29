@@ -148,8 +148,12 @@ return sta
    local sta
    
    nLen = 0
-
-   sta = GPGraphicsPathAddClosedCurve(::handle, aPoint, nTension )
+   
+   if nTension != NIL
+      sta = GPGraphicsPathAddClosedCurve(::handle, aPoint, nTension )
+   else 
+      sta = GPGraphicsPathAddClosedCurve(::handle, aPoint )
+   endif
 
 return sta
 
@@ -624,10 +628,12 @@ HB_FUNC( GPGRAPHICSPATHADDCLOSEDCURVE )
       }
       else
       { 
-        if( hb_pcount() > 2 )
+        if( hb_pcount() > 2 ){
            sta = gp->AddClosedCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ), ( REAL ) hb_parnd( 3 ) );
-        else
+         }
+        else{
            sta = gp->AddClosedCurve( ( Point * ) vPoint, hb_arrayLen( aPoint ) );
+         }
       }
       hb_xfree( vPoint );
       hb_retni( ( Status ) sta );

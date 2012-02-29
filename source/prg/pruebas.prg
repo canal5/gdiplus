@@ -26,13 +26,55 @@ Local oTest
 //      TestGraphicsPath()
 //      TestFontFamily()
 //      TestFont()
-      TestStringFormat()    
+//      TestStringFormat()    
+      TestRegion()
 //      TestBitmap( oTest )
 
       SHOW RESULT
 
    ENDDEFINE
 
+return nil
+
+
+function TestRegion()
+
+   local oRegion, path
+   local aPoint
+
+   aPoints = {;
+      Point(20, 20), ;
+      Point(120, 20),;
+      Point(120, 70),;
+      Point(20, 70) }
+
+   Region oRegion()
+
+   GraphicsPath path()
+
+   path:AddPolygon(aPoints, 4)
+   
+   SEPARADOR( "REGION" )
+   
+//   TEST !Empty( Region():handle )                                      DESCRIPTION "Constructor Region()"   
+//   TEST !Empty( Region( RectF( 10.0, 10.0, 100.0, 100.0 ) ):handle )   DESCRIPTION "Constructor Region()"   
+//   TEST !Empty( Region( Rect( 10, 10, 100, 100 ) ):handle )            DESCRIPTION "Constructor Region()"   
+   TEST !Empty( oRegion:Clone():handle )                                 DESCRIPTION "Clone()"                 SAMPLE Example_RGClone() 
+   TEST .T.                                                              DESCRIPTION "Complement( GraphicsPath )" SAMPLE Example_ComplementPath1() 
+   TEST .T.                                                              DESCRIPTION "Complement( Rect )"      SAMPLE Example_ComplementPath2() 
+   TEST .T.                                                              DESCRIPTION "Complement( RectF )"     SAMPLE Example_ComplementPath3() 
+   TEST .T.                                                              DESCRIPTION "Complement( Region )"    SAMPLE Example_ComplementPath4() 
+   TEST .T.                                                              DESCRIPTION "Exclude( GraphicsPath )" SAMPLE Example_Exclude1() 
+   TEST .T.                                                              DESCRIPTION "Exclude( Rect )"         SAMPLE Example_Exclude2() 
+   TEST .T.                                                              DESCRIPTION "Exclude( RectF )"        SAMPLE Example_Exclude3() 
+   TEST .T.                                                              DESCRIPTION "Exclude( Region )"       SAMPLE Example_Exclude4() 
+   TEST .T.                                                              DESCRIPTION "GetBounds( Rect )"       SAMPLE Example_GetBounds1() 
+   TEST .T.                                                              DESCRIPTION "GetBounds( RectF )"      SAMPLE Example_GetBounds2() 
+   TEST .T.                                                              DESCRIPTION "GetData(  )"             SAMPLE Example_RGGetData() 
+   TEST .T.                                                              DESCRIPTION "GetDataSize(  )"         SAMPLE Example_RGGetData() 
+   TEST .T.                                                              DESCRIPTION "GetHRGN(  )"             SAMPLE Example_RGGetHRGN() 
+
+   
 return nil
 
 
@@ -687,10 +729,11 @@ return 0
   function TestsGraphics()
 *********************************************************************************************************************
 
-      SEPARADOR( "GRAPHICS" )
-      TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
-      TEST .T.      DESCRIPTION "DrawCurve( pen, point ) "  SAMPLE Example_DrawCurve1()
-      TEST .T.      DESCRIPTION "SetTransform( matrix ) "  SAMPLE Example_SetTransformG()
+   SEPARADOR( "GRAPHICS" )
+   
+   TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
+   TEST .T.      DESCRIPTION "DrawCurve( pen, point ) "  SAMPLE Example_DrawCurve1()
+   TEST .T.      DESCRIPTION "SetTransform( matrix ) "  SAMPLE Example_SetTransformG()
 
 return 0
 
@@ -3718,6 +3761,475 @@ function Example_SFSetTrimming( )
 return nil 
 
 
+function Example_RGClone( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      SolidBrush alphaBrush(Color(128, 0, 0, 255))
+//      
+      points = {   ;
+         Point(110, 20), ;
+         Point(120, 30), ;
+         Point(100, 60), ;
+         Point(120, 70), ;
+         Point(150, 60), ;
+         Point(140, 10) }
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region rectRegion(rect) 
+      
+      // Create a region from a curved path.
+      Region pathRegion(path)
+      
+      
+      // Make a copy (clone) of the curved region.
+      pClonedRegion := pathRegion:Clone()
+      
+      // Fill the cloned region with a red brush.
+      graphics:FillRegion(solidBrush, pClonedRegion)
+      
+      // Form the union of the cloned region and the rectangular region.
+      pClonedRegion:Union(rectRegion)
+      
+      // Fill the union of the two regions with a semitransparent blue brush.
+      graphics:FillRegion(alphaBrush, pClonedRegion)
+      
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_ComplementPath1( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10) }
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region region(rect); 
+      
+      // Update the region so that it consists of all points inside a path but
+      // outside the rectangular region.
+      region:Complement(path);
+      
+      graphics:FillRegion(solidBrush, region);
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_ComplementPath2( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10) }
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region region(path); 
+      
+      // Update the region so that it consists of all points inside a path but
+      // outside the rectangular region.
+      region:Complement(rect);
+      
+      graphics:FillRegion(solidBrush, region);
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_ComplementPath3( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10) }
+      
+      RectF rect(65, 15, 70, 45)
+      GraphicsPath path()
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region region(path); 
+      
+      // Update the region so that it consists of all points inside a path but
+      // outside the rectangular region.
+      region:Complement(rect);
+      
+      graphics:FillRegion(solidBrush, region);
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_ComplementPath4( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10) }
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()
+      
+      path:AddClosedCurve(points)
+      
+      Region region(rect); 
+      
+      // Create a region from a rectangle.
+      Region pathregion(path); 
+      
+      // Update the region so that it consists of all points inside a path but
+      // outside the rectangular region.
+      region:Complement(pathregion);
+      
+      graphics:FillRegion(solidBrush, region);
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_Exclude1( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      path:AddClosedCurve(points, 6)
+      
+      // Create a region from a rectangle.
+      Region rectRegion(rect)
+      
+      // Exclude the intersecting portion of the path interior from the region.
+      rectRegion:Exclude(path)
+      
+      graphics:FillRegion(solidBrush, rectRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_Exclude2( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region rectRegion(path)
+      
+      // Exclude the intersecting portion of the path interior from the region.
+      rectRegion:Exclude(rect)
+      
+      graphics:FillRegion(solidBrush, rectRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_Exclude3( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      RectF rect(65, 15, 70, 45)
+      GraphicsPath path()
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region rectRegion(path)
+      
+      // Exclude the intersecting portion of the path interior from the region.
+      rectRegion:Exclude(rect)
+      
+      graphics:FillRegion(solidBrush, rectRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_Exclude4( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      RectF rect(65, 15, 70, 45)
+      GraphicsPath path()
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region rectRegion(rect)
+      
+      Region pathRegion(path);
+      
+      // Exclude the intersecting portion of the path interior from the region.
+      pathRegion:Exclude(rectRegion)
+      
+      graphics:FillRegion(solidBrush, pathRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_GetBounds1( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      Pen pen(Color(255, 0, 0, 0))
+      Rect rect()
+      
+      path:AddClosedCurve(points)
+      
+      Region pathRegion(path);
+      
+      // Get the region's enclosing rectangle.
+      pathRegion:GetBounds( @rect, graphics )
+      
+      graphics:FillRegion(solidBrush, pathRegion)
+      graphics:DrawRectangle(pen, rect);
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_GetBounds2( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      Pen pen(Color(255, 0, 0, 0))
+      RectF rect()
+      
+      path:AddClosedCurve(points)
+      
+      Region pathRegion(path);
+      
+      // Get the region's enclosing rectangle.
+      pathRegion:GetBounds( @rect, graphics )
+      
+      graphics:FillRegion(solidBrush, pathRegion)
+      graphics:DrawRectangle(pen, rect);
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+
+function Example_RGGetData( )
+   local bPainted := { | hdc |
+      
+      local pData, sizeFilled := 0
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      path:AddClosedCurve(points)
+      
+      Region pathRegion(path);
+      
+      pathRegion:GetData(@pData, ,@sizeFilled );
+       
+      Region newRegion( pData, sizeFilled );
+     
+      graphics:FillRegion(solidBrush, newRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_RGGetHRGN( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      path:AddClosedCurve(points)
+      
+      Region pathRegion(path);
+      
+      hRgn = pathRegion:GetHRGN( graphics )
+      
+      hBrush = CreateSolidBrush( CLR_HRED )
+
+      FillRgn(hdc, Ptr2Long( hRgn ), hBrush)
+
+      DeleteObject(hBrush)
+      DeleteObject( Ptr2Long( hRgn ) )
+      
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
 /*prototype
 function Example_( )
    local bPainted := { | hdc |
@@ -3742,5 +4254,17 @@ exit procedure salida
   GdiplusShutdown()
 
 return
+
+#pragma BEGINDUMP
+#include <windows.h>
+#include <hbapi.h>
+
+HB_FUNC( PTR2LONG ){
+   void * ptr = hb_parptr( 1 );
+   hb_retnl( ( LONG ) ptr );
+}
+
+
+#pragma ENDDUMP
 
 

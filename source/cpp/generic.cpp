@@ -32,7 +32,9 @@ static const GPNEWOBJ _newo[] = {
    { ""                         , GP_IT_LOGFONTA                , sizeof( LOGFONTA ) },
    { ""                         , GP_IT_LOGFONTW                , sizeof( LOGFONTW ) },   
    { "GPSTRINGFORMAT"           , GP_IT_STRINGFORMAT            , sizeof( StringFormat ) },
-   { "GPCHARACTERRANGE"         , GP_IT_CHARACTERRANGE          , sizeof( CharacterRange ) }
+   { "GPCHARACTERRANGE"         , GP_IT_CHARACTERRANGE          , sizeof( CharacterRange ) },
+   { "GPREGION"                 , GP_IT_REGION                  , sizeof( Region ) },
+   { ""                         , GP_IT_REGIONDATA              , sizeof( BYTE ) }
 };
 
 

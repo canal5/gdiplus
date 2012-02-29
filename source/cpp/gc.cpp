@@ -125,6 +125,7 @@ void gdiplus_destroy( GDIPLUS * p ){
         break;       
      case GP_IT_LOGFONTA:
      case GP_IT_LOGFONTW:
+     case GP_IT_REGIONDATA:
         hb_xfree( ( void * ) p->pObject );
         break;    
      case GP_IT_STRINGFORMAT:
@@ -133,6 +134,10 @@ void gdiplus_destroy( GDIPLUS * p ){
      case GP_IT_CHARACTERRANGE:
      	   delete ( CharacterRange * ) p->pObject;
      	   break;     	   
+     case GP_IT_REGION:
+     	   delete ( Region * ) p->pObject;
+     	   break;     	   
+     	   
    }
    hb_xfree( p );
 
