@@ -8,7 +8,7 @@ Local oTest
    DEFINE SUITTEST oTest
 
 //      TestsGraphics()
-//      TestsPen()
+      TestsPen()
 //      TestsColor()
 //      TestsBrush()
 //      TestsFont()
@@ -27,7 +27,7 @@ Local oTest
 //      TestFontFamily()
 //      TestFont()
 //      TestStringFormat()    
-      TestRegion()
+//      TestRegion()
 //      TestBitmap( oTest )
 
       SHOW RESULT
@@ -56,10 +56,11 @@ function TestRegion()
    
    SEPARADOR( "REGION" )
    
-//   TEST !Empty( Region():handle )                                      DESCRIPTION "Constructor Region()"   
-//   TEST !Empty( Region( RectF( 10.0, 10.0, 100.0, 100.0 ) ):handle )   DESCRIPTION "Constructor Region()"   
-//   TEST !Empty( Region( Rect( 10, 10, 100, 100 ) ):handle )            DESCRIPTION "Constructor Region()"   
+   TEST !Empty( Region():handle )                                      DESCRIPTION "Constructor Region()"   
+   TEST !Empty( Region( RectF( 10.0, 10.0, 100.0, 100.0 ) ):handle )   DESCRIPTION "Constructor Region()"   
+   TEST !Empty( Region( Rect( 10, 10, 100, 100 ) ):handle )            DESCRIPTION "Constructor Region()"   
    TEST !Empty( oRegion:Clone():handle )                                 DESCRIPTION "Clone()"                 SAMPLE Example_RGClone() 
+  
    TEST .T.                                                              DESCRIPTION "Complement( GraphicsPath )" SAMPLE Example_ComplementPath1() 
    TEST .T.                                                              DESCRIPTION "Complement( Rect )"      SAMPLE Example_ComplementPath2() 
    TEST .T.                                                              DESCRIPTION "Complement( RectF )"     SAMPLE Example_ComplementPath3() 
@@ -73,7 +74,8 @@ function TestRegion()
    TEST .T.                                                              DESCRIPTION "GetData(  )"             SAMPLE Example_RGGetData() 
    TEST .T.                                                              DESCRIPTION "GetDataSize(  )"         SAMPLE Example_RGGetData() 
    TEST .T.                                                              DESCRIPTION "GetHRGN(  )"             SAMPLE Example_RGGetHRGN() 
-
+   TEST .T.                                                              DESCRIPTION "GetTransform(  )"        SAMPLE Example_RGGetTransform() 
+   */
    
 return nil
 
@@ -671,56 +673,56 @@ local oPen, oColor2, oBrush2, matrix
    
    SEPARADOR( "PEN" )
 
-   TEST !empty( Pen( oPen ):handle )                       DESCRIPTION "Constructor Pen. Pen( oPen )"
-   TEST !empty( Pen( oBrush, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
-   TEST !empty( Pen( oColor, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
-   TEST oPen:SetColor( oColor ) == 0                       DESCRIPTION "SetColor()" SAMPLE Example_PenSetColor()
-   TEST oPen2:GetColor( @oColor2 ) == 0                    DESCRIPTION "GetColor()" SAMPLE Example_PenSetColor()
-   TEST oPen:SetBrush( oBrush ) == 0                       DESCRIPTION "SetBrush()" SAMPLE Example_PenSetBrush()
-   TEST oPen:GetBrush( @oBrush2 ) == 0                     DESCRIPTION "GetBrush()" SAMPLE Example_PenSetBrush()
-   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
-   TEST oPen2:GetCompoundArray( )==0                       DESCRIPTION "GetCompoundArray()" SAMPLE Example_SetCompoundArray()
-   
-   TEST oPen3:SetDashCap( DashCapTriangle )==0             DESCRIPTION "SetDashCap( )" SAMPLE Example_SetCustomStartCap()
-   TEST oPen3:GetDashCap() == DashCapTriangle              DESCRIPTION "GetDashCap( )" 
-
-   TEST oPen3:SetDashOffset( 10 )==0                       DESCRIPTION "SetDashOffset( )" SAMPLE Example_SetDashOffset()
-   TEST oPen3:GetDashOffset( )==10                         DESCRIPTION "GetDashOffset( )" 
-
-   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
-   TEST oPen2:GetCompoundArrayCount()==6                   DESCRIPTION "GetCompoundArrayCount()"
-   TEST oPen3:SetDashPattern( { 5, 2, 15, 4 }, 4 )==0      DESCRIPTION "SetDashPattern( {} )" SAMPLE Example_SetDashPattern()
-   TEST oPen3:GetDashPattern() ==0                         DESCRIPTION "GetDashPattern( )"    SAMPLE Example_SetDashPattern()
-   
-   TEST oPen3:SetDashStyle( DashStyleDash )==0           DESCRIPTION "SetDashStyle( )" SAMPLE Example_SetDashStyle()   
-   TEST oPen3:GetDashStyle()==DashStyleDash              DESCRIPTION "GetDashStyle( )" 
-   
-   TEST oPen3:SetEndCap( LineCapArrowAnchor )==0           DESCRIPTION "SetEndCap( )"   SAMPLE Example_SetStartEndCap()
-   TEST oPen3:GetEndCap( )==LineCapArrowAnchor             DESCRIPTION "GetEndCap( )"   
-   
-   TEST oPen3:SetStartCap( LineCapArrowAnchor )==0         DESCRIPTION "SetStartCap( )" SAMPLE Example_SetStartEndCap()
-   TEST oPen3:GetStartCap( )==LineCapArrowAnchor           DESCRIPTION "GetStartCap( )" 
-   
-   TEST oPen3:SetLineCap(LineCapArrowAnchor, LineCapTriangle, DashCapRound)==0 DESCRIPTION "SetLineCap()" SAMPLE Example_SetLineCap()
-   
-   TEST oPen3:SetLineJoin(LineJoinBevel)==0                DESCRIPTION "SetLineJoin()" SAMPLE Example_SetLineJoin()
-   TEST oPen3:GetLineJoin()==LineJoinBevel                 DESCRIPTION "GetLineJoin()" 
-
-   TEST oPen3:SetMiterLimit(10.0)==0                       DESCRIPTION "SetMiterLimit()" 
-   TEST oPen3:GetMiterLimit()==10.0                        DESCRIPTION "GetMiterLimit()" 
+//   TEST !empty( Pen( oPen ):handle )                       DESCRIPTION "Constructor Pen. Pen( oPen )"
+//   TEST !empty( Pen( oBrush, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
+//   TEST !empty( Pen( oColor, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
+//   TEST oPen:SetColor( oColor ) == 0                       DESCRIPTION "SetColor()" SAMPLE Example_PenSetColor()
+//   TEST oPen2:GetColor( @oColor2 ) == 0                    DESCRIPTION "GetColor()" SAMPLE Example_PenSetColor()
+//   TEST oPen:SetBrush( oBrush ) == 0                       DESCRIPTION "SetBrush()" SAMPLE Example_PenSetBrush()
+//   TEST oPen:GetBrush( @oBrush2 ) == 0                     DESCRIPTION "GetBrush()" SAMPLE Example_PenSetBrush()
+//   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
+//   TEST oPen2:GetCompoundArray( )==0                       DESCRIPTION "GetCompoundArray()" SAMPLE Example_SetCompoundArray()
+//   
+//   TEST oPen3:SetDashCap( DashCapTriangle )==0             DESCRIPTION "SetDashCap( )" SAMPLE Example_SetCustomStartCap()
+//   TEST oPen3:GetDashCap() == DashCapTriangle              DESCRIPTION "GetDashCap( )" 
+//
+//   TEST oPen3:SetDashOffset( 10 )==0                       DESCRIPTION "SetDashOffset( )" SAMPLE Example_SetDashOffset()
+//   TEST oPen3:GetDashOffset( )==10                         DESCRIPTION "GetDashOffset( )" 
+//
+//   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
+//   TEST oPen2:GetCompoundArrayCount()==6                   DESCRIPTION "GetCompoundArrayCount()"
+//   TEST oPen3:SetDashPattern( { 5, 2, 15, 4 }, 4 )==0      DESCRIPTION "SetDashPattern( {} )" SAMPLE Example_SetDashPattern()
+//   TEST oPen3:GetDashPattern() ==0                         DESCRIPTION "GetDashPattern( )"    SAMPLE Example_SetDashPattern()
+//   
+//   TEST oPen3:SetDashStyle( DashStyleDash )==0           DESCRIPTION "SetDashStyle( )" SAMPLE Example_SetDashStyle()   
+//   TEST oPen3:GetDashStyle()==DashStyleDash              DESCRIPTION "GetDashStyle( )" 
+//   
+//   TEST oPen3:SetEndCap( LineCapArrowAnchor )==0           DESCRIPTION "SetEndCap( )"   SAMPLE Example_SetStartEndCap()
+//   TEST oPen3:GetEndCap( )==LineCapArrowAnchor             DESCRIPTION "GetEndCap( )"   
+//   
+//   TEST oPen3:SetStartCap( LineCapArrowAnchor )==0         DESCRIPTION "SetStartCap( )" SAMPLE Example_SetStartEndCap()
+//   TEST oPen3:GetStartCap( )==LineCapArrowAnchor           DESCRIPTION "GetStartCap( )" 
+//   
+//   TEST oPen3:SetLineCap(LineCapArrowAnchor, LineCapTriangle, DashCapRound)==0 DESCRIPTION "SetLineCap()" SAMPLE Example_SetLineCap()
+//   
+//   TEST oPen3:SetLineJoin(LineJoinBevel)==0                DESCRIPTION "SetLineJoin()" SAMPLE Example_SetLineJoin()
+//   TEST oPen3:GetLineJoin()==LineJoinBevel                 DESCRIPTION "GetLineJoin()" 
+//
+//   TEST oPen3:SetMiterLimit(10.0)==0                       DESCRIPTION "SetMiterLimit()" 
+//   TEST oPen3:GetMiterLimit()==10.0                        DESCRIPTION "GetMiterLimit()" 
 
    TEST oPen3:SetTransform(matrix(20, 0, 0, 10, 0, 0))==0  DESCRIPTION "SetTransform()" SAMPLE Example_SetTransformPen()
    TEST oPen3:GetTransform( @matrix )==0                   DESCRIPTION "GetTransform()" SAMPLE Example_SetTransformPen()
 
-   TEST oPen3:SetWidth(15)==0                              DESCRIPTION "SetWidth()"    SAMPLE Example_SetWidth()
-   TEST oPen3:GetWidth()==15                             DESCRIPTION "GetWidth()"    SAMPLE Example_SetWidth()
-      
-
-   TEST oPen:ScaleTransform( 8, 4 ) == 0                   DESCRIPTION "ScaleTransform()" SAMPLE Example_PenScaleTransform()
-   TEST oPen:SetAlignment( PenAlignmentInset ) == 0        DESCRIPTION "oPen:SetAlignment()" SAMPLE Example_PenSetAlignment()
-   TEST oPen:MultiplyTransform( Matrix( 1, 0, 0, 4, 0, 0 ), MatrixOrderPrepend ) == 0 DESCRIPTION "MultiplyTransform()" SAMPLE Example_MultiplyTrans()
-   TEST oPen:ResetTransform() == 0                         DESCRIPTION "ResetTransform()" SAMPLE Example_ResetTransPen()
-   TEST oPen:RotateTransform(30, MatrixOrderAppend)==0     DESCRIPTION "RotateTransform()" SAMPLE Example_RotateTransPen()
+//   TEST oPen3:SetWidth(15)==0                              DESCRIPTION "SetWidth()"    SAMPLE Example_SetWidth()
+//   TEST oPen3:GetWidth()==15                             DESCRIPTION "GetWidth()"    SAMPLE Example_SetWidth()
+//      
+//
+//   TEST oPen:ScaleTransform( 8, 4 ) == 0                   DESCRIPTION "ScaleTransform()" SAMPLE Example_PenScaleTransform()
+//   TEST oPen:SetAlignment( PenAlignmentInset ) == 0        DESCRIPTION "oPen:SetAlignment()" SAMPLE Example_PenSetAlignment()
+//   TEST oPen:MultiplyTransform( Matrix( 1, 0, 0, 4, 0, 0 ), MatrixOrderPrepend ) == 0 DESCRIPTION "MultiplyTransform()" SAMPLE Example_MultiplyTrans()
+//   TEST oPen:ResetTransform() == 0                         DESCRIPTION "ResetTransform()" SAMPLE Example_ResetTransPen()
+//   TEST oPen:RotateTransform(30, MatrixOrderAppend)==0     DESCRIPTION "RotateTransform()" SAMPLE Example_RotateTransPen()
    
 return 0
 
@@ -1848,7 +1850,7 @@ function Example_SetTransformPen( )
 
       pen:GetTransform(@matrix2)
       
-      pen2:SetTransform(matrix)
+      pen2:SetTransform(matrix2)
             
       graphics:DrawRectangle(pen2, 200, 180, 150, 100)
    }
@@ -4228,6 +4230,42 @@ function Example_RGGetHRGN( )
    exampleWindow( bPainted )
    
 return nil
+
+
+function Example_RGGetTransform( )
+   local bPainted := { | hdc |
+      
+      local oMatrix, rects, matrix, count
+      Graphics graphics(hdc)
+
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      Pen pen(Color(255, 0, 0, 0))
+      GraphicsPath path()
+
+      count = 0;
+   
+      // Create a region from a path.
+      path:AddEllipse(10, 10, 50, 300)
+      Region pathRegion(path)
+      graphics:FillRegion(solidBrush, pathRegion)
+   
+      // Get the rectangles.
+      graphics:GetTransform(@matrix)
+ 
+      pathRegion:GetRegionScans(matrix, @rects, @count)
+
+//      
+      // Draw the rectangles.
+      for j = 1 to count
+         graphics:DrawRectangle( pen, rects[ j ] )
+      next
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
 
 
 /*prototype

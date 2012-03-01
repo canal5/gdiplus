@@ -178,13 +178,13 @@ return GPRegionGetHRGN( ::handle, graph:handle )
   METHOD GetLastStatus() CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionGetLastStatus( ::handle )
 
 *********************************************************************************************************
-  METHOD GetRegionScans() CLASS GPRegion
+  METHOD GetRegionScans( oMatrix, aRect, nCount ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionGetRegionScans( ::handle, oMatrix:handle, @aRect, @nCount )
 
 *********************************************************************************************************
   METHOD GetRegionScans2() CLASS GPRegion
@@ -747,7 +747,86 @@ HB_FUNC( GPREGIONGETHRGN )
   
 }
 
+HB_FUNC( GPREGIONGETLASTSTATUS )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      hb_retni( ( int ) o->GetLastStatus() );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
 
+
+HB_FUNC( GPREGIONGETREGIONSCANS )
+{
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_REGION( p ) && GP_IS_MATRIX( p2 ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      Matrix * m = ( Matrix * ) GP_GET( p2 );
+      int iCount = o->GetRegionScansCount( m );
+      int j;
+      Status sta = 0;
+      PHB_ITEM pArray = hb_itemArrayNew( iCount );
+      Rect * rects = ( Rect * ) hb_xgrab( sizeof( Rect ) * iCount );      
+      o->GetRegionScans(m, rects, &iCount);  
+      
+      for( j = 0; j < iCount; j++ ){
+      	 PHB_ITEM pitem = GPNewGDIPLUSObject( rects+j, GP_IT_RECT );
+         hb_arraySet( pArray, j + 1, pitem );
+         hb_itemRelease( pitem );
+      }
+
+     if( !hb_itemParamStoreRelease( 3, pArray ))
+           hb_itemRelease( pArray );      
+     
+     hb_storvni( iCount, 4 );
+     hb_xfree( rects );     
+     hb_retni( ( int ) sta );
+         
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+
+
+HB_FUNC( TTT )
+{
+	 HDC hdc = ( HDC ) hb_parnl( 1 );
+   Graphics graphics(hdc);
+
+   SolidBrush solidBrush(Color(255, 255, 0, 0));
+   Pen pen(Color(255, 0, 0, 0));
+   GraphicsPath path;
+   Matrix matrix;
+   Rect* rects = NULL;
+   INT count = 0;  
+
+   // Create a region from a path.
+   path.AddEllipse(10, 10, 50, 300);
+   Region pathRegion(&path);    
+   graphics.FillRegion(&solidBrush, &pathRegion);
+
+   // Get the rectangles.
+   graphics.GetTransform(&matrix);
+//   REAL * pOut = ( REAL * ) hb_xgrab( sizeof( REAL ) * 6 );
+    
+   count = pathRegion.GetRegionScansCount(&matrix);
+   TrazaL( count );
+
+   rects = (Rect*)malloc(count*sizeof(Rect));
+   pathRegion.GetRegionScans(&matrix, rects, &count);  
+   TrazaL( count );
+
+   // Draw the rectangles.
+   for(INT j = 0; j < count; ++j)
+      graphics.DrawRectangle(&pen, rects[j]);
+
+   free(rects);
+}
 
 /*
 HB_FUNC( GPREGION... )

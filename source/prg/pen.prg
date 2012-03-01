@@ -466,11 +466,12 @@ HB_FUNC( GPPENGETCOLOR )
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_PEN( pObj ) ){
       Pen* p = (Pen*) GP_GET( pObj );
-      Color c;
+      Color * c;
       PHB_ITEM pitem;
       Status sta;
-      sta = p->GetColor( &c );
-      pitem = GPNewGDIPLUSObject( &c, GP_IT_COLOR );
+      pitem = GPCreateObjectToFill( ( void**)&c, GP_IT_COLOR );
+      sta = p->GetColor( c );
+//      pitem = GPNewGDIPLUSObject( &c, GP_IT_COLOR );
       GDIPLUS_StoreParam( 2, pitem );
         
       hb_retni( sta );      
@@ -680,9 +681,10 @@ HB_FUNC( GPPENGETTRANSFORM )
       Status sta;
       PHB_ITEM oMatrix;
       Pen* p = (Pen*) GP_GET( pen );
-      Matrix matrix;
-      sta = p->GetTransform( &matrix );
-      oMatrix = GPNewGDIPLUSObject( &matrix, GP_IT_MATRIX );
+      Matrix * matrix;
+      oMatrix = GPCreateObjectToFill( ( void **)&matrix, GP_IT_MATRIX );
+      sta = p->GetTransform( matrix );
+//      oMatrix = GPNewGDIPLUSObject( &matrix, GP_IT_MATRIX );
       GDIPLUS_StoreParam( 2, oMatrix );
       hb_retni( sta );
     }else 

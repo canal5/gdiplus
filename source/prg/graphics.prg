@@ -721,11 +721,11 @@ return 0
 return 0
 
 **********************************************************************************************************
-  METHOD GetTransform( ) CLASS GPGraphics
+  METHOD GetTransform( oMatrix ) CLASS GPGraphics
 **********************************************************************************************************
-
-
-return 0
+   local sta
+   sta = GP_GetTransform( ::handle, @oMatrix )
+return sta
 
 **********************************************************************************************************
   METHOD GetVisibleClipBounds( ) CLASS GPGraphics
@@ -1091,18 +1091,18 @@ return 0
 
 return nil
 
+function pppp()
+   Msginfo( "pàso" )
+return nil
 
 function _GPConvertHandle( o, h )
    o:handle = getGdiplusHandle( h )
 return o
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <hbapiitm.h>
-#include <gdiplus.h>
 #include <gc.h>
 #include <hbapicls.h>
+#include <hbvm.h>
 
 
 GdiplusStartupInput gdiplusStartupInput;
@@ -1885,12 +1885,73 @@ HB_FUNC( GP_SETTRANSFORM )
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
+//HB_FUNC( GP_GETTRANSFORM )
+//{
+//  
+//   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+//
+//   if( GP_IS_GRAPHICS( p ) ){
+//      Graphics * o = ( Graphics * ) GP_GET( p );
+//      GDIPLUS * p2;
+//      PHB_ITEM oMatrix = hb_itemNew( NULL );
+//      Status sta;
+//      Traza( "1");
+//      p2 = GPNewGDIPLUSObject2( GP_IT_MATRIX );
+//      Traza( "2");
+//      Matrix * matrix = ( Matrix * ) GP_GET( p2 );
+//      sta = o->GetTransform( matrix );
+//      
+//      GDIPLUSItemPut( oMatrix, p2 );
+//      
+//      GDIPLUS_StoreParam( 2, oMatrix );
+////      hb_gcGripDrop( oMatrix );
+//
+//      hb_retni( sta );               
+//   }else
+//     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+//  
+//}
+
+
+HB_FUNC( GP_GETTRANSFORM )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_GRAPHICS( p ) ){
+      Graphics * o = ( Graphics * ) GP_GET( p );
+      PHB_ITEM oMatrix;
+      Matrix * matrix;
+      Status sta;            
+      oMatrix = GPCreateObjectToFill( ( void **)&matrix, GP_IT_MATRIX );
+      
+      sta = o->GetTransform( matrix );
+      
+      GDIPLUS_StoreParam( 2, oMatrix );
+      
+      hb_retni( sta );               
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
 #pragma ENDDUMP
 
 
 
 
-
+/*
+HB_FUNC( GP_... )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_GRAPHICS( p ) ){
+      Graphics * o = ( Graphics * ) GP_GET( p );
+         
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+*/
 
 
 

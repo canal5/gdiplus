@@ -79,6 +79,7 @@ void      GDIPLUSItemClear( PHB_ITEM pItem );
 PHB_ITEM  GDIPLUSItemPut( PHB_ITEM pItem, GDIPLUS * pGdiPlus );
 void      GDIPLUS_StoreParam( int iParam, PHB_ITEM p );
 WCHAR   * hb_GDIPLUS_parw( int iParam );
+PHB_ITEM  GPCreateObjectToFill( void ** uPtr, int iType );
 
 
 extern "C"
