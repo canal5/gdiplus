@@ -49,32 +49,17 @@ CLASS GPRegion
   METHOD GetHRGN()
   METHOD GetLastStatus()
   METHOD GetRegionScans()
-  METHOD GetRegionScans2()
   METHOD GetRegionScansCount()
   METHOD Intersect()
-  METHOD Intersect2()
-  METHOD Intersect3()
-  METHOD Intersect4()
   METHOD IsEmpty()
   METHOD IsInfinite()
   METHOD IsVisible()
-  METHOD IsVisible2()
-  METHOD IsVisible3()
-  METHOD IsVisible4()
-  METHOD IsVisible5()
-  METHOD IsVisible6()
-  METHOD IsVisible7()
-  METHOD IsVisible8()
   METHOD MakeEmpty()
   METHOD MakeInfinite()
   METHOD Transform()
   METHOD Translate()
-  METHOD Translate2()
   METHOD Union()
   METHOD Xor()
-  METHOD Xor2()
-  METHOD Xor3()
-  METHOD Xor4()
 
 
 ENDCLASS
@@ -186,131 +171,71 @@ return GPRegionGetLastStatus( ::handle )
 
 return GPRegionGetRegionScans( ::handle, oMatrix:handle, @aRect, @nCount )
 
-*********************************************************************************************************
-  METHOD GetRegionScans2() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
 
 *********************************************************************************************************
-  METHOD GetRegionScansCount() CLASS GPRegion
+  METHOD GetRegionScansCount( oMatrix ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionGetRegionScansCount( ::handle, oMatrix:handle )
 
 *********************************************************************************************************
-  METHOD Intersect() CLASS GPRegion
+  METHOD Intersect( p ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionIntersect( ::handle, p:handle )
 
 *********************************************************************************************************
-  METHOD Intersect2() CLASS GPRegion
+  METHOD IsEmpty( graph ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
-
-*********************************************************************************************************
-  METHOD Intersect3() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Intersect4() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD IsEmpty() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
+return GPRegionIsEmpty( ::handle, graph:handle )
 
 *********************************************************************************************************
   METHOD IsInfinite() CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionIsInfinite( ::handle, graph:handle )
 
 *********************************************************************************************************
-  METHOD IsVisible() CLASS GPRegion
+  METHOD IsVisible( p1, p2, p3, p4, p5 ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+   local lRet
 
-*********************************************************************************************************
-  METHOD IsVisible2() CLASS GPRegion
-*********************************************************************************************************
+   if ValType( p1 ) == "O" 
+      lRet = GPRegionIsVisible( ::handle, p1:handle, p2:handle )
+   elseif ValType( p3 ) == "O" 
+      lRet = GPRegionIsVisible( ::handle, p1, p2, p3:handle )
+   else 
+      lRet = GPRegionIsVisible( ::handle, p1, p2, p3, p4, p5:handle )
+   endif
+   
+return lRet
 
-return 0
 
-*********************************************************************************************************
-  METHOD IsVisible3() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD IsVisible4() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD IsVisible5() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD IsVisible6() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD IsVisible7() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD IsVisible8() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
+************************************************************************************************0*********
   METHOD MakeEmpty() CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionMakeEmpty( ::handle )
 
 *********************************************************************************************************
   METHOD MakeInfinite() CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionMakeInfinite( ::handle )
 
 *********************************************************************************************************
-  METHOD Transform() CLASS GPRegion
+  METHOD Transform( oMatrix ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionTransform( ::handle, oMatrix:handle )
 
 *********************************************************************************************************
-  METHOD Translate() CLASS GPRegion
+  METHOD Translate( p1, p2 ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
-
-*********************************************************************************************************
-  METHOD Translate2() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
+return GPRegionTranslate( ::handle, p1, p2 )
 
 *********************************************************************************************************
   METHOD Union( uPar ) CLASS GPRegion
@@ -319,28 +244,11 @@ return 0
 return GPRegionUnion( ::handle, uPar:handle )
 
 *********************************************************************************************************
-  METHOD Xor() CLASS GPRegion
+  METHOD Xor( p1 ) CLASS GPRegion
 *********************************************************************************************************
 
-return 0
+return GPRegionXor( ::handle, p1:handle )
 
-*********************************************************************************************************
-  METHOD Xor2() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Xor3() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Xor4() CLASS GPRegion
-*********************************************************************************************************
-
-return 0
 
 
 
@@ -791,42 +699,250 @@ HB_FUNC( GPREGIONGETREGIONSCANS )
   
 }
 
-
-
-HB_FUNC( TTT )
+HB_FUNC( GPREGIONGETREGIONSCANSCOUNT )
 {
-	 HDC hdc = ( HDC ) hb_parnl( 1 );
-   Graphics graphics(hdc);
-
-   SolidBrush solidBrush(Color(255, 255, 0, 0));
-   Pen pen(Color(255, 0, 0, 0));
-   GraphicsPath path;
-   Matrix matrix;
-   Rect* rects = NULL;
-   INT count = 0;  
-
-   // Create a region from a path.
-   path.AddEllipse(10, 10, 50, 300);
-   Region pathRegion(&path);    
-   graphics.FillRegion(&solidBrush, &pathRegion);
-
-   // Get the rectangles.
-   graphics.GetTransform(&matrix);
-//   REAL * pOut = ( REAL * ) hb_xgrab( sizeof( REAL ) * 6 );
-    
-   count = pathRegion.GetRegionScansCount(&matrix);
-   TrazaL( count );
-
-   rects = (Rect*)malloc(count*sizeof(Rect));
-   pathRegion.GetRegionScans(&matrix, rects, &count);  
-   TrazaL( count );
-
-   // Draw the rectangles.
-   for(INT j = 0; j < count; ++j)
-      graphics.DrawRectangle(&pen, rects[j]);
-
-   free(rects);
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_REGION( p ) && GP_IS_MATRIX( p2 ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      Matrix * m = ( Matrix * ) GP_GET( p2 );      
+      hb_retni( ( int ) o->GetRegionScansCount( m ) );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
+
+HB_FUNC( GPREGIONINTERSECT )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      void * g = GP_GET( p2 );
+      int iType = GP_OBJECT_TYPE( p2 );
+      Status sta;
+      BOOL lOk = true;
+
+      switch( iType ){            	  
+         case GP_IT_GRAPHICSPATH:
+            sta = o->Intersect( ( GraphicsPath * ) g );
+            break;
+         case GP_IT_RECTF:
+            sta = o->Intersect( *( ( RectF * ) g ) ) ;
+            break;
+         case GP_IT_RECT:
+            sta = o->Intersect( *( ( Rect * ) g ));
+            break;               
+         case GP_IT_REGION:
+            sta = o->Intersect( ( Region * ) g );
+            break;                         
+         default:
+            lOk = false;
+      }
+      
+      if( lOk )      
+         hb_retni( ( int ) sta );
+      else 
+         hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONISEMPTY )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_REGION( p ) && GP_IS_GRAPHICS( p2 ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      Graphics * g = ( Graphics * ) GP_GET( p2 );
+      hb_retl( o->IsEmpty( g ) );     
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONISINFINITE )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_REGION( p ) && GP_IS_GRAPHICS( p2 ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      Graphics * g = ( Graphics * ) GP_GET( p2 );
+      hb_retl( o->IsInfinite( g ) );     
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+
+HB_FUNC( GPREGIONISVISIBLE )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      int iParam = hb_pcount();
+      BOOL lRet;
+      switch( iParam ){
+         case 3:
+         {
+            GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+            GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+            Graphics * g = ( Graphics * ) GP_GET( p3 );
+            int iType = GP_OBJECT_TYPE( p2 );
+            void * u = GP_GET( p2 );
+            switch( iType ){
+               case GP_IT_RECT:
+            	    lRet = o->IsVisible( *( ( Rect * )u ), g );
+            	    break;
+            	 case GP_IT_RECTF:
+            	    lRet = o->IsVisible( *( ( RectF * )u ), g );
+            	   break;
+            	 case GP_IT_POINT:
+            	    lRet = o->IsVisible( *( ( Point * )u ), g );
+            	   break;            	   
+            	 case GP_IT_POINTF:
+            	    lRet = o->IsVisible( *( ( PointF * )u ), g );
+            	   break;            	               	   
+            }
+            
+         }
+         break;
+         case 4:
+         {
+         	  GDIPLUS * p3 = hb_GDIPLUS_par( 4 );
+            Graphics * g = ( Graphics * ) GP_GET( p3 );
+            if( HB_ISINTEGER( 2 ) )
+               lRet = o->IsVisible( hb_parni( 2 ), hb_parni( 3 ), g );            	
+            else 
+               lRet = o->IsVisible( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), g );            	
+         }
+         break;
+         
+         case 6:
+         {
+         	  GDIPLUS * p3 = hb_GDIPLUS_par( 6 );
+            Graphics * g = ( Graphics * ) GP_GET( p3 );
+            if( HB_ISINTEGER( 2 ) )
+               lRet = o->IsVisible( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ),  hb_parni( 5 ), g );            	
+            else 
+               lRet = o->IsVisible( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), g );            	
+         }
+         break;            
+      }
+      hb_retl( lRet );
+         
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+
+HB_FUNC( GPREGIONMAKEEMPTY )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      hb_retni( ( int ) o->MakeEmpty() );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONMAKEINFINITE )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      hb_retni( ( int ) o->MakeInfinite() );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONTRANSFORM )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_REGION( p ) && GP_IS_MATRIX( p2 ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      Matrix * m = ( Matrix * ) GP_GET( p2 );
+      Status sta;
+      
+      sta = o->Transform( m );
+      hb_retni( ( int ) sta );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONTRANSLATE )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      if( HB_ISINTEGER( 2 ) )
+         sta = o->Translate( hb_parni( 2 ), hb_parni( 3 ) );
+      else
+         sta = o->Translate( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ) );
+         
+      hb_retni( ( int ) sta );      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPREGIONXOR )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_REGION( p ) ){
+      Region * o = ( Region * ) GP_GET( p );
+      void * g = GP_GET( p2 );
+      int iType = GP_OBJECT_TYPE( p2 );
+      Status sta;
+      BOOL lOk = true;
+
+      switch( iType ){            	  
+         case GP_IT_GRAPHICSPATH:
+            sta = o->Xor( ( GraphicsPath * ) g );
+            break;
+         case GP_IT_RECTF:
+            sta = o->Xor( *( ( RectF * ) g ) ) ;
+            break;
+         case GP_IT_RECT:
+            sta = o->Xor( *( ( Rect * ) g ));
+            break;               
+         case GP_IT_REGION:
+            sta = o->Xor( ( Region * ) g );
+            break;                         
+         default:
+            lOk = false;
+      }
+      
+      if( lOk )      
+         hb_retni( ( int ) sta );
+      else 
+         hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
 
 /*
 HB_FUNC( GPREGION... )
@@ -835,7 +951,6 @@ HB_FUNC( GPREGION... )
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_REGION( p ) ){
       Region * o = ( Region * ) GP_GET( p );
-         
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   

@@ -4,39 +4,39 @@
 #include <hbstack.h>
 
 typedef struct s_GPNEWOBJ{
-
    char s_class[ 63 ];
+   char s_funcConst[ 63 ];
    int i_type;
    long l_size;
 } GPNEWOBJ, *PGPNEWOBJ, *PTR_GPNEWOBJ;
 
 static const GPNEWOBJ _newo[] = {
    { NULL, NULL, NULL },
-   { "GRAPHICS"               , GP_IT_GRAPHICS                , sizeof( Graphics ) },
-   { "RECTF"                  , GP_IT_RECTF                   , sizeof( RectF ) },
-   { "RECT"                   , GP_IT_RECT                    , sizeof( Rect ) },
-   { "IMAGE"                  , GP_IT_IMAGE                   , sizeof( Image ) },
-   { "COLOR"                  , GP_IT_COLOR                   , sizeof( Color ) },
-   { "SOLIDBRUSH"             , GP_IT_SOLIDBRUSH              , sizeof( SolidBrush ) },
-   { "PEN"                    , GP_IT_PEN                     , sizeof( Pen ) },
-   { "POINT"                  , GP_IT_POINT                   , sizeof( Point ) },
-   { "POINTF"                 , GP_IT_POINTF                  , sizeof( PointF ) },
-   { "SIZE"                   , GP_IT_SIZE                    , sizeof( Size ) },
-   { "SIZEF"                  , GP_IT_SIZEF                   , sizeof( SizeF ) },
-   { "MATRIX"                 , GP_IT_MATRIX                  , sizeof( Matrix ) } ,
-   { "GRAPHICSPATH"           , GP_IT_GRAPHICSPATH            , sizeof( GraphicsPath ) },
-   { "BITMAP"                 , GP_IT_BITMAP                  , sizeof( Bitmap ) },
-   { "INSTALLEDFONTCOLLECTION", GP_IT_INSTALLEDFONTCOLLECTION , sizeof( InstalledFontCollection ) },
-   { "PRIVATEFONTCOLLECTION"  , GP_IT_PRIVATEFONTCOLLECTION   , sizeof( PrivateFontCollection ) },
-   { "FONTCOLLECTION"         , GP_IT_FONTCOLLECTION          , sizeof( FontCollection ) },
-   { "FONTFAMILY"             , GP_IT_FONTFAMILY              , sizeof( FontFamily ) },
-   { "FONT"                   , GP_IT_FONT                    , sizeof( Font )  },
-   { ""                       , GP_IT_LOGFONTA                , sizeof( LOGFONTA ) },
-   { ""                       , GP_IT_LOGFONTW                , sizeof( LOGFONTW ) },   
-   { "STRINGFORMAT"           , GP_IT_STRINGFORMAT            , sizeof( StringFormat ) },
-   { "CHARACTERRANGE"         , GP_IT_CHARACTERRANGE          , sizeof( CharacterRange ) },
-   { "REGION"                 , GP_IT_REGION                  , sizeof( Region ) },
-   { ""                       , GP_IT_REGIONDATA              , sizeof( BYTE ) }
+   { "GPGRAPHICS"               ,"GRAPHICS"               , GP_IT_GRAPHICS                , sizeof( Graphics ) },
+   { "GPRECTF"                  ,"RECTF"                  , GP_IT_RECTF                   , sizeof( RectF ) },
+   { "GPRECT"                   ,"RECT"                   , GP_IT_RECT                    , sizeof( Rect ) },
+   { "GPIMAGE"                  ,"IMAGE"                  , GP_IT_IMAGE                   , sizeof( Image ) },
+   { "GPCOLOR"                  ,"COLOR"                  , GP_IT_COLOR                   , sizeof( Color ) },
+   { "GPSOLIDBRUSH"             ,"SOLIDBRUSH"             , GP_IT_SOLIDBRUSH              , sizeof( SolidBrush ) },
+   { "GPPEN"                    ,"PEN"                    , GP_IT_PEN                     , sizeof( Pen ) },
+   { "GPPOINT"                  ,"POINT"                  , GP_IT_POINT                   , sizeof( Point ) },
+   { "GPPOINTF"                 ,"POINTF"                 , GP_IT_POINTF                  , sizeof( PointF ) },
+   { "GPSIZE"                   ,"SIZE"                   , GP_IT_SIZE                    , sizeof( Size ) },
+   { "GPSIZEF"                  ,"SIZEF"                  , GP_IT_SIZEF                   , sizeof( SizeF ) },
+   { "GPMATRIX"                 ,"MATRIX"                 , GP_IT_MATRIX                  , sizeof( Matrix ) } ,
+   { "GPGRAPHICSPATH"           ,"GRAPHICSPATH"           , GP_IT_GRAPHICSPATH            , sizeof( GraphicsPath ) },
+   { "GPBITMAP"                 ,"BITMAP"                 , GP_IT_BITMAP                  , sizeof( Bitmap ) },
+   { "GPINSTALLEDFONTCOLLECTION","INSTALLEDFONTCOLLECTION", GP_IT_INSTALLEDFONTCOLLECTION , sizeof( InstalledFontCollection ) },
+   { "GPPRIVATEFONTCOLLECTION"  ,"PRIVATEFONTCOLLECTION"  , GP_IT_PRIVATEFONTCOLLECTION   , sizeof( PrivateFontCollection ) },
+   { "GPFONTCOLLECTION"         ,"FONTCOLLECTION"         , GP_IT_FONTCOLLECTION          , sizeof( FontCollection ) },
+   { "GPFONTFAMILY"             ,"FONTFAMILY"             , GP_IT_FONTFAMILY              , sizeof( FontFamily ) },
+   { "GPFONT"                   ,"FONT"                   , GP_IT_FONT                    , sizeof( Font )  },
+   { ""                         ,""                       , GP_IT_LOGFONTA                , sizeof( LOGFONTA ) },
+   { ""                         ,""                       , GP_IT_LOGFONTW                , sizeof( LOGFONTW ) },   
+   { "GPSTRINGFORMAT"           ,"STRINGFORMAT"           , GP_IT_STRINGFORMAT            , sizeof( StringFormat ) },
+   { "GPCHARACTERRANGE"         ,"CHARACTERRANGE"         , GP_IT_CHARACTERRANGE          , sizeof( CharacterRange ) },
+   { "GPREGION"                 ,"REGION"                 , GP_IT_REGION                  , sizeof( Region ) },
+   { ""                         ,""                       , GP_IT_REGIONDATA              , sizeof( BYTE ) }
 };
 
 
@@ -88,7 +88,7 @@ PHB_ITEM GPCreateObjectToFill( void ** uPtr, int iType ){
    PHB_ITEM pitem;
    GDIPLUS * ptr;
    
-   pitem = hb_itemDoC( _newo[ iType ].s_class, 0 );
+   pitem = hb_itemDoC( _newo[ iType ].s_funcConst, 0 );
    
    hb_objSendMsg( pitem, "HANDLE", 0 );
    ptr = hb_GDIPLUS_par( -1 );   

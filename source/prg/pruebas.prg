@@ -8,7 +8,7 @@ Local oTest
    DEFINE SUITTEST oTest
 
 //      TestsGraphics()
-      TestsPen()
+//      TestsPen()
 //      TestsColor()
 //      TestsBrush()
 //      TestsFont()
@@ -27,7 +27,7 @@ Local oTest
 //      TestFontFamily()
 //      TestFont()
 //      TestStringFormat()    
-//      TestRegion()
+      TestRegion()
 //      TestBitmap( oTest )
 
       SHOW RESULT
@@ -59,23 +59,35 @@ function TestRegion()
    TEST !Empty( Region():handle )                                      DESCRIPTION "Constructor Region()"   
    TEST !Empty( Region( RectF( 10.0, 10.0, 100.0, 100.0 ) ):handle )   DESCRIPTION "Constructor Region()"   
    TEST !Empty( Region( Rect( 10, 10, 100, 100 ) ):handle )            DESCRIPTION "Constructor Region()"   
-   TEST !Empty( oRegion:Clone():handle )                                 DESCRIPTION "Clone()"                 SAMPLE Example_RGClone() 
+   TEST !Empty( oRegion:Clone():handle )                               DESCRIPTION "Clone()"                    SAMPLE Example_RGClone() 
   
-   TEST .T.                                                              DESCRIPTION "Complement( GraphicsPath )" SAMPLE Example_ComplementPath1() 
-   TEST .T.                                                              DESCRIPTION "Complement( Rect )"      SAMPLE Example_ComplementPath2() 
-   TEST .T.                                                              DESCRIPTION "Complement( RectF )"     SAMPLE Example_ComplementPath3() 
-   TEST .T.                                                              DESCRIPTION "Complement( Region )"    SAMPLE Example_ComplementPath4() 
-   TEST .T.                                                              DESCRIPTION "Exclude( GraphicsPath )" SAMPLE Example_Exclude1() 
-   TEST .T.                                                              DESCRIPTION "Exclude( Rect )"         SAMPLE Example_Exclude2() 
-   TEST .T.                                                              DESCRIPTION "Exclude( RectF )"        SAMPLE Example_Exclude3() 
-   TEST .T.                                                              DESCRIPTION "Exclude( Region )"       SAMPLE Example_Exclude4() 
-   TEST .T.                                                              DESCRIPTION "GetBounds( Rect )"       SAMPLE Example_GetBounds1() 
-   TEST .T.                                                              DESCRIPTION "GetBounds( RectF )"      SAMPLE Example_GetBounds2() 
-   TEST .T.                                                              DESCRIPTION "GetData(  )"             SAMPLE Example_RGGetData() 
-   TEST .T.                                                              DESCRIPTION "GetDataSize(  )"         SAMPLE Example_RGGetData() 
-   TEST .T.                                                              DESCRIPTION "GetHRGN(  )"             SAMPLE Example_RGGetHRGN() 
-   TEST .T.                                                              DESCRIPTION "GetTransform(  )"        SAMPLE Example_RGGetTransform() 
-   */
+   TEST .T.                                                            DESCRIPTION "Complement( GraphicsPath )" SAMPLE Example_ComplementPath1() 
+   TEST .T.                                                            DESCRIPTION "Complement( Rect )"         SAMPLE Example_ComplementPath2() 
+   TEST .T.                                                            DESCRIPTION "Complement( RectF )"        SAMPLE Example_ComplementPath3() 
+   TEST .T.                                                            DESCRIPTION "Complement( Region )"       SAMPLE Example_ComplementPath4() 
+   TEST .T.                                                            DESCRIPTION "Exclude( GraphicsPath )"    SAMPLE Example_Exclude1() 
+   TEST .T.                                                            DESCRIPTION "Exclude( Rect )"            SAMPLE Example_Exclude2() 
+   TEST .T.                                                            DESCRIPTION "Exclude( RectF )"           SAMPLE Example_Exclude3() 
+   TEST .T.                                                            DESCRIPTION "Exclude( Region )"          SAMPLE Example_Exclude4() 
+   TEST .T.                                                            DESCRIPTION "GetBounds( Rect )"          SAMPLE Example_GetBounds1() 
+   TEST .T.                                                            DESCRIPTION "GetBounds( RectF )"         SAMPLE Example_GetBounds2() 
+   TEST .T.                                                            DESCRIPTION "GetData(  )"                SAMPLE Example_RGGetData() 
+   TEST .T.                                                            DESCRIPTION "GetDataSize(  )"            SAMPLE Example_RGGetData() 
+   TEST .T.                                                            DESCRIPTION "GetHRGN(  )"                SAMPLE Example_RGGetHRGN() 
+   TEST .T.                                                            DESCRIPTION "GetTransform(  )"           SAMPLE Example_RGGetTransform() 
+   TEST .T.                                                            DESCRIPTION "Intersept( GraphicsPath )"  SAMPLE Example_IntersectPath()
+   TEST .T.                                                            DESCRIPTION "Intersept( Rect )"          SAMPLE Example_IntersectPath2()
+   TEST .T.                                                            DESCRIPTION "Intersept( RectF )"         SAMPLE Example_IntersectPath3()
+   TEST .T.                                                            DESCRIPTION "Intersept( Region )"        SAMPLE Example_IntersectPath4()
+   TEST .T.                                                            DESCRIPTION "MakeEmpty()"                SAMPLE Example_MakeEmpty()
+   TEST .T.                                                            DESCRIPTION "MakeInfinite()"             SAMPLE Example_MakeInfinite()
+   TEST .T.                                                            DESCRIPTION "Transform()"                SAMPLE Example_RGTransform()
+   TEST .T.                                                            DESCRIPTION "Translate()"                SAMPLE Example_RGTranslate()
+   TEST .T.                                                            DESCRIPTION "Xor( GraphicsPath )"        SAMPLE Example_RGXor1()
+   TEST .T.                                                            DESCRIPTION "Xor( Rect )"                SAMPLE Example_RGXor2()
+   TEST .T.                                                            DESCRIPTION "Xor( RectF )"               SAMPLE Example_RGXor3()
+   TEST .T.                                                            DESCRIPTION "Xor( Region )"              SAMPLE Example_RGXor4()
+   
    
 return nil
 
@@ -673,56 +685,56 @@ local oPen, oColor2, oBrush2, matrix
    
    SEPARADOR( "PEN" )
 
-//   TEST !empty( Pen( oPen ):handle )                       DESCRIPTION "Constructor Pen. Pen( oPen )"
-//   TEST !empty( Pen( oBrush, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
-//   TEST !empty( Pen( oColor, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
-//   TEST oPen:SetColor( oColor ) == 0                       DESCRIPTION "SetColor()" SAMPLE Example_PenSetColor()
-//   TEST oPen2:GetColor( @oColor2 ) == 0                    DESCRIPTION "GetColor()" SAMPLE Example_PenSetColor()
-//   TEST oPen:SetBrush( oBrush ) == 0                       DESCRIPTION "SetBrush()" SAMPLE Example_PenSetBrush()
-//   TEST oPen:GetBrush( @oBrush2 ) == 0                     DESCRIPTION "GetBrush()" SAMPLE Example_PenSetBrush()
-//   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
-//   TEST oPen2:GetCompoundArray( )==0                       DESCRIPTION "GetCompoundArray()" SAMPLE Example_SetCompoundArray()
+   TEST !empty( Pen( oPen ):handle )                       DESCRIPTION "Constructor Pen. Pen( oPen )"
+   TEST !empty( Pen( oBrush, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oBrush, 5 )"
+   TEST !empty( Pen( oColor, 5 ):handle )                  DESCRIPTION "Constructor Pen. Pen( oColor, 5 )"
+   TEST oPen:SetColor( oColor ) == 0                       DESCRIPTION "SetColor()" SAMPLE Example_PenSetColor()
+   TEST oPen2:GetColor( @oColor2 ) == 0                    DESCRIPTION "GetColor()" SAMPLE Example_PenSetColor()
+   TEST oPen:SetBrush( oBrush ) == 0                       DESCRIPTION "SetBrush()" SAMPLE Example_PenSetBrush()
+   TEST !empty( oPen:GetBrush():handle )                   DESCRIPTION "GetBrush()" SAMPLE Example_PenSetBrush()
+   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
+   TEST oPen2:GetCompoundArray( )==0                       DESCRIPTION "GetCompoundArray()" SAMPLE Example_SetCompoundArray()
 //   
-//   TEST oPen3:SetDashCap( DashCapTriangle )==0             DESCRIPTION "SetDashCap( )" SAMPLE Example_SetCustomStartCap()
-//   TEST oPen3:GetDashCap() == DashCapTriangle              DESCRIPTION "GetDashCap( )" 
+   TEST oPen3:SetDashCap( DashCapTriangle )==0             DESCRIPTION "SetDashCap( )" SAMPLE Example_SetCustomStartCap()
+   TEST oPen3:GetDashCap() == DashCapTriangle              DESCRIPTION "GetDashCap( )" 
+
+   TEST oPen3:SetDashOffset( 10 )==0                       DESCRIPTION "SetDashOffset( )" SAMPLE Example_SetDashOffset()
+   TEST oPen3:GetDashOffset( )==10                         DESCRIPTION "GetDashOffset( )" 
+
+   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
+   TEST oPen2:GetCompoundArrayCount()==6                   DESCRIPTION "GetCompoundArrayCount()"
+   TEST oPen3:SetDashPattern( { 5, 2, 15, 4 }, 4 )==0      DESCRIPTION "SetDashPattern( {} )" SAMPLE Example_SetDashPattern()
+   TEST oPen3:GetDashPattern() ==0                         DESCRIPTION "GetDashPattern( )"    SAMPLE Example_SetDashPattern()
+   
+   TEST oPen3:SetDashStyle( DashStyleDash )==0           DESCRIPTION "SetDashStyle( )" SAMPLE Example_SetDashStyle()   
+   TEST oPen3:GetDashStyle()==DashStyleDash              DESCRIPTION "GetDashStyle( )" 
+   
+   TEST oPen3:SetEndCap( LineCapArrowAnchor )==0           DESCRIPTION "SetEndCap( )"   SAMPLE Example_SetStartEndCap()
+   TEST oPen3:GetEndCap( )==LineCapArrowAnchor             DESCRIPTION "GetEndCap( )"   
+   
+   TEST oPen3:SetStartCap( LineCapArrowAnchor )==0         DESCRIPTION "SetStartCap( )" SAMPLE Example_SetStartEndCap()
+   TEST oPen3:GetStartCap( )==LineCapArrowAnchor           DESCRIPTION "GetStartCap( )" 
+   
+   TEST oPen3:SetLineCap(LineCapArrowAnchor, LineCapTriangle, DashCapRound)==0 DESCRIPTION "SetLineCap()" SAMPLE Example_SetLineCap()
+   
+   TEST oPen3:SetLineJoin(LineJoinBevel)==0                DESCRIPTION "SetLineJoin()" SAMPLE Example_SetLineJoin()
+   TEST oPen3:GetLineJoin()==LineJoinBevel                 DESCRIPTION "GetLineJoin()" 
 //
-//   TEST oPen3:SetDashOffset( 10 )==0                       DESCRIPTION "SetDashOffset( )" SAMPLE Example_SetDashOffset()
-//   TEST oPen3:GetDashOffset( )==10                         DESCRIPTION "GetDashOffset( )" 
-//
-//   TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
-//   TEST oPen2:GetCompoundArrayCount()==6                   DESCRIPTION "GetCompoundArrayCount()"
-//   TEST oPen3:SetDashPattern( { 5, 2, 15, 4 }, 4 )==0      DESCRIPTION "SetDashPattern( {} )" SAMPLE Example_SetDashPattern()
-//   TEST oPen3:GetDashPattern() ==0                         DESCRIPTION "GetDashPattern( )"    SAMPLE Example_SetDashPattern()
-//   
-//   TEST oPen3:SetDashStyle( DashStyleDash )==0           DESCRIPTION "SetDashStyle( )" SAMPLE Example_SetDashStyle()   
-//   TEST oPen3:GetDashStyle()==DashStyleDash              DESCRIPTION "GetDashStyle( )" 
-//   
-//   TEST oPen3:SetEndCap( LineCapArrowAnchor )==0           DESCRIPTION "SetEndCap( )"   SAMPLE Example_SetStartEndCap()
-//   TEST oPen3:GetEndCap( )==LineCapArrowAnchor             DESCRIPTION "GetEndCap( )"   
-//   
-//   TEST oPen3:SetStartCap( LineCapArrowAnchor )==0         DESCRIPTION "SetStartCap( )" SAMPLE Example_SetStartEndCap()
-//   TEST oPen3:GetStartCap( )==LineCapArrowAnchor           DESCRIPTION "GetStartCap( )" 
-//   
-//   TEST oPen3:SetLineCap(LineCapArrowAnchor, LineCapTriangle, DashCapRound)==0 DESCRIPTION "SetLineCap()" SAMPLE Example_SetLineCap()
-//   
-//   TEST oPen3:SetLineJoin(LineJoinBevel)==0                DESCRIPTION "SetLineJoin()" SAMPLE Example_SetLineJoin()
-//   TEST oPen3:GetLineJoin()==LineJoinBevel                 DESCRIPTION "GetLineJoin()" 
-//
-//   TEST oPen3:SetMiterLimit(10.0)==0                       DESCRIPTION "SetMiterLimit()" 
-//   TEST oPen3:GetMiterLimit()==10.0                        DESCRIPTION "GetMiterLimit()" 
+   TEST oPen3:SetMiterLimit(10.0)==0                       DESCRIPTION "SetMiterLimit()" 
+   TEST oPen3:GetMiterLimit()==10.0                        DESCRIPTION "GetMiterLimit()" 
 
    TEST oPen3:SetTransform(matrix(20, 0, 0, 10, 0, 0))==0  DESCRIPTION "SetTransform()" SAMPLE Example_SetTransformPen()
-   TEST oPen3:GetTransform( @matrix )==0                   DESCRIPTION "GetTransform()" SAMPLE Example_SetTransformPen()
+   TEST oPen3:GetTransform( @matrix )==0                   DESCRIPTION "GetTransform()" //SAMPLE Example_SetTransformPen()
 
-//   TEST oPen3:SetWidth(15)==0                              DESCRIPTION "SetWidth()"    SAMPLE Example_SetWidth()
-//   TEST oPen3:GetWidth()==15                             DESCRIPTION "GetWidth()"    SAMPLE Example_SetWidth()
-//      
-//
-//   TEST oPen:ScaleTransform( 8, 4 ) == 0                   DESCRIPTION "ScaleTransform()" SAMPLE Example_PenScaleTransform()
-//   TEST oPen:SetAlignment( PenAlignmentInset ) == 0        DESCRIPTION "oPen:SetAlignment()" SAMPLE Example_PenSetAlignment()
-//   TEST oPen:MultiplyTransform( Matrix( 1, 0, 0, 4, 0, 0 ), MatrixOrderPrepend ) == 0 DESCRIPTION "MultiplyTransform()" SAMPLE Example_MultiplyTrans()
-//   TEST oPen:ResetTransform() == 0                         DESCRIPTION "ResetTransform()" SAMPLE Example_ResetTransPen()
-//   TEST oPen:RotateTransform(30, MatrixOrderAppend)==0     DESCRIPTION "RotateTransform()" SAMPLE Example_RotateTransPen()
+   TEST oPen3:SetWidth(15)==0                              DESCRIPTION "SetWidth()"    SAMPLE Example_SetWidth()
+   TEST oPen3:GetWidth()==15                             DESCRIPTION "GetWidth()"    SAMPLE Example_SetWidth()
+      
+
+   TEST oPen:ScaleTransform( 8, 4 ) == 0                   DESCRIPTION "ScaleTransform()" SAMPLE Example_PenScaleTransform()
+   TEST oPen:SetAlignment( PenAlignmentInset ) == 0        DESCRIPTION "oPen:SetAlignment()" SAMPLE Example_PenSetAlignment()
+   TEST oPen:MultiplyTransform( Matrix( 1, 0, 0, 4, 0, 0 ), MatrixOrderPrepend ) == 0 DESCRIPTION "MultiplyTransform()" SAMPLE Example_MultiplyTrans()
+   TEST oPen:ResetTransform() == 0                         DESCRIPTION "ResetTransform()" SAMPLE Example_ResetTransPen()
+   TEST oPen:RotateTransform(30, MatrixOrderAppend)==0     DESCRIPTION "RotateTransform()" SAMPLE Example_RotateTransPen()
    
 return 0
 
@@ -1481,7 +1493,8 @@ return nil
 
 function Example_PenSetBrush( )
    local bPainted := { | hdc |
-
+       
+      local oBrush
       Graphics graphics(hdc)
       
       // Create a HatchBrush object.
@@ -1490,10 +1503,11 @@ function Example_PenSetBrush( )
       // Create a pen, and set the brush for the pen.
       Pen pen(Color(255, 255, 0, 0), 10)
       pen:SetBrush(solidBrush)
+      oBrush = pen:GetBrush()
       
       // Draw a line with the pen.
       graphics:DrawLine( pen, 0, 0, 200, 100)
-
+      graphics:FillRectangle(oBrush, 220, 10, 200, 100)
    }
    
    exampleWindow( bPainted )
@@ -4265,6 +4279,418 @@ function Example_RGGetTransform( )
    exampleWindow( bPainted )
    
 return nil 
+
+
+function Example_IntersectPath( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region rectRegion(rect)
+
+      // Update the region to the portion that intersects with the path.
+      rectRegion:Intersect(path)
+
+      graphics:FillRegion(solidBrush, rectRegion)
+      
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_IntersectPath2( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region pathRegion(path)
+
+      // Update the region to the portion that intersects with the rect.
+      pathRegion:Intersect(rect)
+
+      graphics:FillRegion(solidBrush, pathRegion)
+      
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_IntersectPath3( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      RectF rect(65, 15, 70, 45)
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region pathRegion(path)
+
+      // Update the region to the portion that intersects with the rectF.
+      pathRegion:Intersect(rect)
+
+      graphics:FillRegion(solidBrush, pathRegion)
+      
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_IntersectPath4( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region pathRegion(path)
+      Region rectRegion(rect)
+
+      // Update the region to the portion that intersects with another region
+      pathRegion:Intersect(rectRegion)
+
+      graphics:FillRegion(solidBrush, pathRegion)
+      
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_MakeEmpty( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Rect rect(65, 15, 70, 45)
+      SolidBrush redBrush(Color(255, 255, 0, 0))
+      SolidBrush blueBrush(Color(255, 0, 0, 255))
+      
+      // Create a region, and fill it with a red brush.
+      Region rectRegion(rect)
+      graphics:FillRegion(redBrush, rectRegion)
+      
+      // Make the region empty, and then fill it with a blue brush. 
+      rectRegion:MakeEmpty()
+      graphics:FillRegion(blueBrush, rectRegion)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil 
+
+function Example_MakeInfinite( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+      Rect rect(65, 15, 70, 45)
+      SolidBrush redBrush(Color(255, 255, 0, 0))
+      
+      // Create a region, and fill it with a red brush.
+      Region rectRegion(rect)
+      
+      rectRegion:MakeInfinite()
+      graphics:FillRegion(redBrush, rectRegion)
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_RGTransform( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region pathRegion(path)
+      graphics:FillRegion(solidBrush, pathRegion)
+
+      // Transform the region.
+      Matrix matrix(1, 0, 0, 3, 100, 0)  // vertical stretch, shift right
+      pathRegion:Transform(matrix)
+      graphics:FillRegion(solidBrush, pathRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_RGTranslate( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region pathRegion(path)
+      graphics:FillRegion(solidBrush, pathRegion)
+
+      // Translate the region.
+      dx = 100
+      dy = 60
+      pathRegion:Translate(dx, dy)
+      graphics:FillRegion(solidBrush, pathRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_RGXor1( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region rectRegion(rect)    
+      
+      // Perform an exclusive OR operation on the region and a path.
+      rectRegion:Xor(path)
+      
+      graphics:FillRegion(solidBrush, rectRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_RGXor2( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region pathRegion(path)    
+      
+      // Perform an exclusive OR operation on the region and a path.
+      pathRegion:Xor(rect)
+      
+      graphics:FillRegion(solidBrush, pathRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_RGXor3( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      RectF rect(65, 15, 70, 45)
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region pathRegion(path)    
+      
+      // Perform an exclusive OR operation on the region and a path.
+      pathRegion:Xor(rect)
+      
+      graphics:FillRegion(solidBrush, pathRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_RGXor4( )
+   local bPainted := { | hdc |
+      
+      local hRgn, hBrush
+      Graphics graphics(hdc)
+      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
+
+      points = {;
+         Point(110, 20),;
+         Point(120, 30),;
+         Point(100, 60),;
+         Point(120, 70),;
+         Point(150, 60),;
+         Point(140, 10)}
+      
+      Rect rect(65, 15, 70, 45)
+      GraphicsPath path()      
+      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+      path:AddClosedCurve(points)
+      
+      // Create a region from a rectangle.
+      Region pathRegion(path) 
+      Region rectRegion(rect) 
+      
+      // Perform an exclusive OR operation on the region and a path.
+      pathRegion:Xor(rectRegion)
+      
+      graphics:FillRegion(solidBrush, pathRegion)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+
+
 
 
 

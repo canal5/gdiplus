@@ -140,10 +140,10 @@ return nil
 return GPPenGetAlignment( ::handle )
 
 *********************************************************************************************************
-  METHOD GetBrush( oBrush ) CLASS GPPen
+  METHOD GetBrush() CLASS GPPen
 *********************************************************************************************************
 
-return GPPenGetBrush( ::handle, @oBrush )
+return GPPenGetBrush( ::handle )
 
 *********************************************************************************************************
   METHOD GetColor( oColor ) CLASS GPPen
@@ -451,10 +451,9 @@ HB_FUNC( GPPENGETBRUSH )
       switch( type ){
          case BrushTypeSolidColor:
             pitem = GPNewGDIPLUSObject( b, GP_IT_SOLIDBRUSH );
-            GDIPLUS_StoreParam( 2, pitem );
             break;   
       }
-      hb_retni(0);               
+      hb_itemReturnRelease( pitem );
 
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -471,7 +470,6 @@ HB_FUNC( GPPENGETCOLOR )
       Status sta;
       pitem = GPCreateObjectToFill( ( void**)&c, GP_IT_COLOR );
       sta = p->GetColor( c );
-//      pitem = GPNewGDIPLUSObject( &c, GP_IT_COLOR );
       GDIPLUS_StoreParam( 2, pitem );
         
       hb_retni( sta );      
@@ -684,7 +682,6 @@ HB_FUNC( GPPENGETTRANSFORM )
       Matrix * matrix;
       oMatrix = GPCreateObjectToFill( ( void **)&matrix, GP_IT_MATRIX );
       sta = p->GetTransform( matrix );
-//      oMatrix = GPNewGDIPLUSObject( &matrix, GP_IT_MATRIX );
       GDIPLUS_StoreParam( 2, oMatrix );
       hb_retni( sta );
     }else 
