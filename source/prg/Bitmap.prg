@@ -324,6 +324,12 @@ HB_FUNC( _GPBITMAP )
       case 2:
          o = new Bitmap( ( HBITMAP ) hb_parnl( 1 ), ( HPALETTE ) hb_parnl( 2 ) );
          break;
+      case 3:
+      {
+      	 GDIPLUS * pGrap = hb_GDIPLUS_par( 3 );
+      	 Graphics * g = ( Graphics * ) GP_GET( pGrap ); 
+         o = new Bitmap( hb_parni( 1 ), hb_parni( 2 ), g  );
+      }
    } 
    
    GP_SET( pObj, o );
