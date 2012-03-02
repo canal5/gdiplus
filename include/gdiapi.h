@@ -38,6 +38,7 @@ typedef struct __gdiplus
 #define GP_IT_CHARACTERRANGE ( ( int ) 0x00017 )
 #define GP_IT_REGION       ( ( int ) 0x00018 )
 #define GP_IT_REGIONDATA   ( ( int ) 0x00019 )
+#define GP_IT_LINEARGRADIENTBRUSH ( ( int ) 0x0001A )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
@@ -45,7 +46,8 @@ typedef struct __gdiplus
 #define GP_IS_IMAGE( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_IMAGE )    )
 #define GP_IS_COLOR( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_COLOR)     )
 #define GP_IS_SOLIDBRUSH( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_SOLIDBRUSH ) )
-#define GP_IS_BRUSH( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_SOLIDBRUSH ) )
+#define GP_IS_LINEARGRADIENTBRUSH( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_LINEARGRADIENTBRUSH ) ) 
+#define GP_IS_BRUSH( p )    ( GP_IS_SOLIDBRUSH( p ) || GP_IS_LINEARGRADIENTBRUSH( p ) )
 #define GP_IS_PEN( p )      ( ( GP_OBJECT_TYPE( p ) == GP_IT_PEN ) )
 #define GP_IS_POINT( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_POINT ) )
 #define GP_IS_POINTF( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_POINTF ) )
@@ -65,6 +67,7 @@ typedef struct __gdiplus
 #define GP_IS_CHARACTERRANGE( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_CHARACTERRANGE ) ) 
 #define GP_IS_REGION( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGION ) ) 
 #define GP_IS_REGIONDATA( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGIONDATA ) ) 
+
 
 #define HB_ISDOUBLE( n )    ( hb_param( n, HB_IT_DOUBLE ) != NULL )
 #define HB_ISINTEGER( n )    ( hb_param( n, HB_IT_INTEGER) != NULL )

@@ -1704,16 +1704,15 @@ HB_FUNC( GP_FILLRECTANGLE )
     GDIPLUS * pG = hb_GDIPLUS_par( 1 );
     GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
 
-    if( hb_pcount() > 2 ){    
+    if( hb_pcount() > 3 ){    
        Graphics *g = ( Graphics *) GP_GET( pG );
        Brush * brush = ( Brush *) GP_GET( pBrush );
-       
-       if( HB_IS_DOUBLE( hb_param( 3, HB_IT_ANY ) ) ){       
+
+       if( HB_ISDOUBLE( 3 ) ){       
           REAL x = ( REAL ) hb_parnd( 3 );
           REAL y = ( REAL ) hb_parnd( 4 );
           REAL width = ( REAL ) hb_parnd( 5 );
           REAL height = ( REAL ) hb_parnd( 6 );
-
           if( GP_IS_GRAPHICS( pG ) && GP_IS_BRUSH( pBrush ) )
           {
              hb_retni( g->FillRectangle( brush, x, y, width, height ) );
@@ -1721,12 +1720,12 @@ HB_FUNC( GP_FILLRECTANGLE )
           else
              hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
              
-         } else if( HB_IS_INTEGER( hb_param( 3, HB_IT_ANY ) ) ){
+         } else if( HB_ISINTEGER( 3 ) ){
            int x      = hb_parni( 3 );
            int y      = hb_parni( 4 );
            int width  = hb_parni( 5 );
-           int height = hb_parni( 6 );          
-           if( GP_IS_GRAPHICS( pG )  && GP_IS_BRUSH( pBrush ) )
+           int height = hb_parni( 6 );  
+           if( GP_IS_GRAPHICS( pG ) && GP_IS_BRUSH( pBrush ) )
            {
               hb_retni( g->FillRectangle( brush, x, y, width, height ) );
            }
@@ -1734,11 +1733,11 @@ HB_FUNC( GP_FILLRECTANGLE )
               hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );           
          } 
    
-    }else if( hb_pcount() > 1 ) { 
+    }else if( hb_pcount() < 4 ) { 
        GDIPLUS * pRect = hb_GDIPLUS_par( 3 );   
        Graphics *g = ( Graphics *) GP_GET( pG );
        Brush * brush = ( Brush *) GP_GET( pBrush );       
-       
+
        if( GP_IS_GRAPHICS( pG ) &&  GP_IS_RECT( pRect ) && GP_IS_BRUSH( pBrush ) ){
            Rect * rect = ( Rect *) GP_GET( pRect );            
            hb_retni( g->FillRectangle( brush, *rect ) );

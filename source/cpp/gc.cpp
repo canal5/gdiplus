@@ -137,7 +137,9 @@ void gdiplus_destroy( GDIPLUS * p ){
      case GP_IT_REGION:
      	   delete ( Region * ) p->pObject;
      	   break;     	   
-     	   
+     case GP_IT_LINEARGRADIENTBRUSH:
+     	   delete ( LinearGradientBrush * ) p->pObject;
+     	   break;     	        	   
    }
    hb_xfree( p );
 

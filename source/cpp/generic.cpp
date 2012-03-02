@@ -36,7 +36,8 @@ static const GPNEWOBJ _newo[] = {
    { "GPSTRINGFORMAT"           ,"STRINGFORMAT"           , GP_IT_STRINGFORMAT            , sizeof( StringFormat ) },
    { "GPCHARACTERRANGE"         ,"CHARACTERRANGE"         , GP_IT_CHARACTERRANGE          , sizeof( CharacterRange ) },
    { "GPREGION"                 ,"REGION"                 , GP_IT_REGION                  , sizeof( Region ) },
-   { ""                         ,""                       , GP_IT_REGIONDATA              , sizeof( BYTE ) }
+   { ""                         ,""                       , GP_IT_REGIONDATA              , sizeof( BYTE ) },
+   { "GPLINEARGRADIENTBRUSH"    ,"LINEARGRADIENTBRUSH"    , GP_IT_LINEARGRADIENTBRUSH     , sizeof( LinearGradientBrush ) }
 };
 
 

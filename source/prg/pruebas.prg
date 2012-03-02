@@ -11,23 +11,21 @@ Local oTest
 //      TestsPen()
 //      TestsColor()
 //      TestsBrush()
-//      TestsFont()
-//      TestsSizeF()
 //      TestMatrix()
-//      TestLinearGB()
-      
+      TestLinearGB()
+//      
 //      TestImage()
 //      TestSolidBrush()
 //      TestPoint()
 //      TestPointF()
 //      TestsRectF()
 //      TestsRect()
-  
+//  
 //      TestGraphicsPath()
 //      TestFontFamily()
 //      TestFont()
 //      TestStringFormat()    
-      TestRegion()
+//      TestRegion()
 //      TestBitmap( oTest )
 
       SHOW RESULT
@@ -411,21 +409,24 @@ return 0
    LinearGradientBrush oLGBLF( oRect, oColor1, oColor2, LinearGradientModeVertical )
    LinearGradientBrush oLGBL2( oRectF, oColor1, oColor2, 30, .T. )
    LinearGradientBrush oLGBLF2( oRect, oColor1, oColor2, 30, .T. )
-
+    
+   RectF oRect2() 
+    
    SEPARADOR( "LINEARGRADIENTBRUSH" )
-
+   
    TEST ! Empty( oLGB:handle )          DESCRIPTION "Constructor Point, Point, Color, Color"  SAMPLE TestLinearGB1( )
    TEST ! Empty( oLGBF:handle )         DESCRIPTION "Constructor PointF, PointF, Color, Color"
    TEST ! Empty( oLGBL:handle )         DESCRIPTION "Constructor Rect, Color, Color, LinearGradientMode"
    TEST ! Empty( oLGBLF:handle )        DESCRIPTION "Constructor RectF, Color, Color, LinearGradientMode"
    TEST ! Empty( oLGBL2:handle )        DESCRIPTION "Constructor Rect, Color, Color, angle, isAngleScalable"
    TEST ! Empty( oLGBLF2:handle )       DESCRIPTION "Constructor RectF, Color, Color, angle, isAngleScalable"
+
    TEST oLGB:GetBlendCount() > 0        DESCRIPTION "GetBlendCount = " + Str( oLGB:GetBlendCount() )
    TEST oLGB:SetBlend({ 0.0, 0.4, 0.6, 1.0}, {0.0, 0.2, 0.8, 1.0 } ) == 0 DESCRIPTION "SetBlend" SAMPLE Example_SetBlend()
    TEST oLGB:SetInterpolationColors ( aColor, ablendPositions ) == 0      DESCRIPTION "SetInterpolationColors "
    TEST oLGB:GetInterpolationColorCount() > 0                             DESCRIPTION "GetInterpolationColorCount = " + str( oLGB:GetInterpolationColorCount() )
    TEST oLGB:GetInterpolationColors ( @aColor2, @ablendPositions2 ) == 0  DESCRIPTION "GetInterpolationColors "
-   TEST oLGB:GetRectangle( @oRect2 ) == 0                             DESCRIPTION "GetRectangle"
+   TEST oLGB:GetRectangle( @oRect2 ) == 0                             DESCRIPTION "GetRectangle" SAMPLE Example_GetRect()
    TEST oLGB:SetTransform( @oMatrix2 ) == 0                            DESCRIPTION "SetTransform"
    TEST oLGB:GetTransform( @oMatrix ) == 0                             DESCRIPTION "GetTransform"
    TEST oLGB:SetWrapMode( WrapModeTileFlipX ) == 0                     DESCRIPTION "SetWrapMode = WrapModeTileFlipX"
@@ -442,18 +443,7 @@ return 0
    TEST oLGB:GetLinearColors( @aColor3 ) == 0                          DESCRIPTION "GetLinearColors "
    TEST oLGB:TranslateTransform( 2, 5, MatrixOrderAppend ) == 0        DESCRIPTION "TranslateTransform"
 
-//   xbrowse( aFactor )
-//   xbrowse( aPositions )
 
-//   xbrowse( aColor2 )
-//   xbrowse( ablendPositions2 )
-
-//   xbrowse( aColor3 )
-//   ? aColor3[ 1 ]:GetRed()
-
-//     ? oRect2:X(), oRect2:Y(), oRect2:Width(), oRect2:Height()
-//   oMatrix:GetElements( @aElements )
-//   xbrowse( aElements )
 
 
 return 0
@@ -1218,13 +1208,14 @@ function TestLinearGB1( )
 
 
    local bPainted := { | hDC |
-                      local myGraphics
-                      local linGrBrush
-                      Graphics myGraphics( hDC )
-                      LinearGradientBrush linGrBrush(  Point(50, 50),  Point(200, 100),  Color(255, 255, 0, 0),  Color(255, 0, 0, 255) )  // blue
-                      myGraphics:FillRectangle( linGrBrush, 0, 0, 300, 200)
-                      return nil
-                     }
+      local myGraphics
+      local linGrBrush
+      Graphics myGraphics( hDC )
+
+      LinearGradientBrush linGrBrush(  Point(50, 50),  Point(200, 100),  Color(255, 255, 0, 0),  Color(255, 0, 0, 255) )  // blue
+      myGraphics:FillRectangle( linGrBrush, 0, 0, 300, 200)
+      return nil
+     }
 
    exampleWindow( bPainted )
 
@@ -1369,7 +1360,6 @@ function  Example_SetBlend()
 
       linGrBrush:SetBlend({0.0, 0.4, 0.6, 1.0}, {0.0, 0.2, 0.8, 1.0})
       myGraphics:FillRectangle(linGrBrush, rect)
-      return nil
    }
 
    exampleWindow( bPainted )
@@ -1377,10 +1367,36 @@ function  Example_SetBlend()
 return nil
 
 
+function Example_GetRect()
+   local bPainted := { | hDC |
+   	 local rect
+     Graphics myGraphics(hdc)
+     
+     // Create a linear gradient brush.
+     LinearGradientBrush linGrBrush( ;
+        Point(20, 10),;
+        Point(60, 110),;
+        Color(255, 0, 0, 0), ;    // black
+        Color(255, 0, 0, 255))  // blue
+     
+     Rect rect()
+     linGrBrush:GetRectangle(@rect)
+     
+     // Draw the retrieved rectangle.
+     Pen myPen(Color(255, 0, 0, 0))
+     myGraphics:DrawRectangle(myPen, rect)
+   }
+   
+   exampleWindow( bPainted )         
+   
+return nil
+
+
 function Example_SetLinColors()
 
    local bPainted := { | hDC |
-      local myGraphics, linGrBrush, rect
+   local myGraphics, linGrBrush, rect
+   local aColors
    Graphics myGraphics(hdc)
 
    LinearGradientBrush linGrBrush( ;
@@ -1389,6 +1405,8 @@ function Example_SetLinColors()
       Color(255, 0, 0, 255),;  // blue
       LinearGradientModeHorizontal )
 
+   linGrBrush:GetLinearColors( @aColors )   
+   
    myGraphics:FillRectangle(linGrBrush, 0, 0, 100, 50)
 
    linGrBrush:SetLinearColors( ;
@@ -1396,6 +1414,11 @@ function Example_SetLinColors()
       Color(255, 0, 255, 0))  // green
 
    myGraphics:FillRectangle(linGrBrush, 0, 75, 100, 50)
+
+   linGrBrush:SetLinearColors( aColors[ 2 ], aColors[ 1 ] )
+   
+   myGraphics:FillRectangle(linGrBrush, 0, 150, 100, 50)
+   
 }
 
    exampleWindow( bPainted )

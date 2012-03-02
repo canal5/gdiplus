@@ -328,7 +328,7 @@ HB_FUNC( _GPBITMAP )
       {
       	 GDIPLUS * pGrap = hb_GDIPLUS_par( 3 );
       	 Graphics * g = ( Graphics * ) GP_GET( pGrap ); 
-         o = new Bitmap( hb_parni( 1 ), hb_parni( 2 ), g  );
+         o = new Bitmap( hb_parni( 1 ), hb_parni( 2 ), g );
       }
    } 
    
