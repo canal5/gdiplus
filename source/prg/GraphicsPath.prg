@@ -48,23 +48,15 @@ CLASS GPGraphicsPath
    METHOD CloseFigure()
    METHOD Flatten()
    METHOD GetBounds()
-   METHOD GetHashCode()
+   METHOD GetFillMode()
    METHOD GetLastPoint()
-   METHOD GetLifetimeService()
+   METHOD GetLastStatus( )
    METHOD GetPathData()
-   METHOD GetType()
-   METHOD InitializeLifetimeService()
+   METHOD GetPathPoints()
+   METHOD GetPointCount()
+   METHOD GetPathTypes()
    METHOD IsOutlineVisible()
    METHOD IsVisible()
-   METHOD ReferenceEquals()
-   METHOD Reset()
-   METHOD Reverse()
-   METHOD SetMarkers()
-   METHOD StartFigure()
-   METHOD ToString()
-   METHOD Transform()
-   METHOD Warp()
-   METHOD Widen()
 
 ENDCLASS
 
@@ -332,22 +324,26 @@ return GPGraphicsPathFlatten( ::handle, p1, flatness )
 return GPGraphicsPathGetBounds( ::handle, @oRect:handle, p1, p2 )
 
 ********************************************************************************************************
-   METHOD GetHashCode() CLASS GPGraphicsPath
+   METHOD GetFillMode() CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+return GPGraphicsPathGetFillMode( ::handle )
+
 
 ********************************************************************************************************
-   METHOD GetLastPoint() CLASS GPGraphicsPath
+   METHOD GetLastPoint( oPoint ) CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+return GPGraphicsPathGetLastPoint( ::handle, @oPoint )
+
 
 ********************************************************************************************************
-   METHOD GetLifetimeService() CLASS GPGraphicsPath
+   METHOD GetLastStatus( ) CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+return GPGraphicsPathGetLastStatus( ::handle )
+
+
 
 ********************************************************************************************************
    METHOD GetPathData( pathdata ) CLASS GPGraphicsPath
@@ -357,22 +353,40 @@ return GPGraphicsPathGetPathData( ::handle, @pathdata )
 
 
 ********************************************************************************************************
-   METHOD GetType() CLASS GPGraphicsPath
+   METHOD GetPathPoints( oPoint, nCount ) CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+   DEFAULT nCount := ::GetPointCount()
+
+return GPGraphicsPathGetPathPoints( ::handle, @oPoint, nCount )
 
 ********************************************************************************************************
-   METHOD InitializeLifetimeService() CLASS GPGraphicsPath
+   METHOD GetPointCount( ) CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+return GPGraphicsPathGetPointCount( ::handle )
+
 
 ********************************************************************************************************
-   METHOD IsOutlineVisible() CLASS GPGraphicsPath
+   METHOD GetPathTypes( aTypes ) CLASS GPGraphicsPath
 ********************************************************************************************************
 
-return 0
+return GPGraphicsPathGetPathTypes( ::handle, @aTypes )
+
+
+********************************************************************************************************
+   METHOD IsOutlineVisible( p1, p2, p3, p4 ) CLASS GPGraphicsPath
+********************************************************************************************************
+
+   local sta
+
+   if ValType( p1 ) == "N"
+      sta = GPGraphicsPathIsOutlineVisible( ::handle,  p1, p2, p3:handle, p4:handle  )
+   else 
+      sta = GPGraphicsPathIsOutlineVisible( ::handle, p1:handle, p2:handle, p3:handle  )
+   endif
+
+return sta
 
 ********************************************************************************************************
    METHOD IsVisible() CLASS GPGraphicsPath
@@ -380,59 +394,6 @@ return 0
 
 return 0
 
-********************************************************************************************************
-   METHOD ReferenceEquals() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
-
-********************************************************************************************************
-   METHOD Reset() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
-
-********************************************************************************************************
-   METHOD Reverse() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
-
-********************************************************************************************************
-   METHOD SetMarkers() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
-
-********************************************************************************************************
-   METHOD StartFigure() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
-
-********************************************************************************************************
-   METHOD ToString() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
-
-********************************************************************************************************
-   METHOD Transform() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
-
-********************************************************************************************************
-   METHOD Warp() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
-
-********************************************************************************************************
-   METHOD Widen() CLASS GPGraphicsPath
-********************************************************************************************************
-
-return 0
 
 //   AddArc                       Sobrecargado. Agrega un arco elíptico a la figura actual.
 //   AddBezier                    Sobrecargado. Agrega una curva Bézier cúbica a la figura actual.
@@ -1074,6 +1035,151 @@ HB_FUNC( GPGRAPHICSPATHGETBOUNDS )
          
       hb_retni( ( int ) sta );
 
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( GPGRAPHICSPATHGETFILLMODE )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      hb_retni( ( int ) gp->GetFillMode() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+
+HB_FUNC( GPGRAPHICSPATHGETLASTPOINT )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      PointF * point;
+      PHB_ITEM pitem = GPCreateObjectToFill( (void**)&point, GP_IT_POINTF );
+      sta = gp->GetLastPoint( point );     
+      GDIPLUS_StoreParam( 2, pitem );
+      hb_retni( ( int ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( GPGRAPHICSPATHGETLASTSTATUS )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      hb_retni( ( int ) gp->GetLastStatus() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( GPGRAPHICSPATHGETPATHPOINTS )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );   
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) && HB_ISARRAY( 2 ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      PHB_ITEM aPoints = hb_param( 2, HB_IT_ARRAY );
+      int iLen = hb_arrayLen( aPoints );
+      void * vPoint;
+      BOOL lF;
+      vPoint = ConvertArray2Point( aPoints, &lF );
+      if( lF ){
+         sta = gp->GetPathPoints( ( PointF * ) vPoint, iLen );
+      }
+      else{ 
+         sta = gp->GetPathPoints( ( Point * ) vPoint, iLen );
+      }
+      
+      hb_retni( ( int ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( GPGRAPHICSPATHGETPOINTCOUNT )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      hb_retni( gp->GetPointCount() );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+HB_FUNC( GPGRAPHICSPATHGETPATHTYPES )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );   
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      int count = gp->GetPointCount();
+      int j;
+      PHB_ITEM aTypes = hb_itemArrayNew( count );
+      BYTE * pTypes = ( BYTE * ) hb_xgrab( count );
+      sta = gp->GetPathTypes( pTypes, count );
+      for( j = 0; j < count; j ++ ){
+         hb_arraySetNI( aTypes, j+1, pTypes[ j ] );    
+      }
+      
+      GDIPLUS_StoreParam( 2, aTypes );
+      
+      hb_xfree( pTypes );
+      
+      hb_retni( ( int ) sta );
+   }else 
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( GPGRAPHICSPATHISOUTLINEVISIBLE )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   BOOL lOk;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      if( HB_ISPOINTER( 2 ) ){
+         GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+         GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+         GDIPLUS * p4 = hb_GDIPLUS_par( 4 );
+         if( ( GP_IS_POINT( p2 ) || GP_IS_POINTF( p2 ) ) && GP_IS_PEN( p3 ) && GP_IS_GRAPHICS( p4 ) ){
+         	  void * vPoint = GP_GET( p2 );
+         	  Pen * p = ( Pen * ) GP_GET( p3 );
+         	  Graphics * g = ( Graphics * ) GP_GET( p4 );
+            if( GP_IS_POINT( p2 ) ){
+               lOk = gp->IsOutlineVisible( *( ( Point * ) vPoint ), p, g );
+            }	else {
+            	 lOk = gp->IsOutlineVisible( *( ( PointF * ) vPoint ), p, g );            	
+            }
+            hb_retl( lOk );
+         }else
+            hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );      
+      }else {
+         GDIPLUS * p4 = hb_GDIPLUS_par( 4 );
+         GDIPLUS * p5 = hb_GDIPLUS_par( 5 );
+         if( GP_IS_PEN( p4 ) && GP_IS_GRAPHICS( p5 ) ){
+         	  Pen * p = ( Pen * ) GP_GET( p4 );
+         	  Graphics * g = ( Graphics * ) GP_GET( p5 );
+         	  if( HB_ISDOUBLE( 2 ) )
+         	     lOk = gp->IsOutlineVisible( ( REAL )hb_parnd( 2 ), ( REAL )hb_parnd( 3 ), p, g );            	
+         	  else 
+         	     lOk = gp->IsOutlineVisible( hb_parni( 2 ), hb_parni( 3 ), p, g );            	
+         	     
+         	  hb_retl( lOk );
+         }else
+            hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );      
+      }
+      
+      
    }else 
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 

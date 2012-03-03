@@ -1091,13 +1091,35 @@ return 0
 
 return nil
 
-function pppp()
-   Msginfo( "pàso" )
-return nil
-
 function _GPConvertHandle( o, h )
    o:handle = getGdiplusHandle( h )
 return o
+
+
+FUNCTION BuildPointArray( nCount )
+   
+   local aPoint := {}
+   local n
+   
+   for n = 1 to nCount 
+     AAdd( aPoint, GPPoint():New() )      
+   next
+
+RETURN aPoint
+
+
+FUNCTION BuildPointFArray( nCount )
+   
+   local aPoint := {}
+   local n
+   
+   for n = 1 to nCount 
+     AAdd( aPoint, GPPointF():New() )      
+   next
+
+RETURN aPoint
+
+
 
 #pragma BEGINDUMP
 #include <gc.h>

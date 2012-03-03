@@ -213,7 +213,7 @@ return nil
   function TestGraphicsPath()
 *****************************************************************************************
    
-   local gp, gp2
+   local gp, gp2, oPoint, aTypes
    local aPoint := { Point(50, 50)   ,; 
       Point(60, 20)   ,            ;
       Point(70, 100)  ,            ;
@@ -274,7 +274,7 @@ return nil
 //   TEST gp:AddLine(Point( 60, 60 ), Point( 100, 100 ))         == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
 //   TEST gp:AddLine(PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 )) == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine() 
 //   TEST gp:AddLines( { Point( 60, 60 ), Point( 100, 100 ) } )         == 0  DESCRIPTION "AddLines()"   SAMPLE Example_AddLines()
-//   TEST gp:AddLines( { PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 ) } ) == 0  DESCRIPTION "AddLines()"   SAMPLE Example_AddLines()  
+   TEST gp:AddLines( { PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 ) } ) == 0  DESCRIPTION "AddLines()"   SAMPLE Example_AddLines()  
 //   TEST gp2:Addpath( GraphicsPath(), .T. ) == 0  DESCRIPTION "AddPath()"   SAMPLE Example_AddPath( )    
 //   TEST gp2:AddPie( 50, 50, 100, 100, 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
 //   TEST gp2:AddPie( 50.0, 50.0, 100.0, 100.0, 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
@@ -282,22 +282,28 @@ return nil
 //   TEST gp2:AddPie( RectF( 50.0, 50.0, 100.0, 100.0 ), 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
 //   TEST gp2:AddPolygon( { Point( 20, 20 ), Point( 120, 20 ), Point( 120, 70 ) } ) == 0  DESCRIPTION "AddPolygon()"   SAMPLE Example_AddPolygon()
 //   TEST gp2:AddPolygon( { PointF( 20.0, 20.0 ), PointF( 120.0, 20.0 ), PointF( 120.0, 70.0 ) } ) == 0  DESCRIPTION "AddPolygon()"   SAMPLE Example_AddPolygon()
-   TEST gp2:AddRectangle( RectF( 20.0, 20.0, 100.0, 50.0 ) ) == 0  DESCRIPTION "AddRectangle()"   SAMPLE Example_AddRectangle()
-   TEST gp2:AddRectangles( { RectF( 20.0, 20.0, 100.0, 50.0 ),;
-                             RectF( 30.0, 30.0, 50.0, 100.0 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
-   TEST gp2:AddRectangles( { RectF( 20, 20, 100, 50 ),;
-                             RectF( 30, 30, 50, 100 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
-   TEST .T.                                                     DESCRIPTION "AddString( ... Rect ... )"     SAMPLE Example_GPAddString1()
-   TEST .T.                                                     DESCRIPTION "AddString( ... RectF ... )"    SAMPLE Example_GPAddString2()
-   TEST .T.                                                     DESCRIPTION "AddString( ... Point ... )"    SAMPLE Example_GPAddString3()
-   TEST .T.                                                     DESCRIPTION "AddString( ... PointF ... )"   SAMPLE Example_GPAddString4()
-   TEST gp2:ClearMarkers() == 0                                 DESCRIPTION "ClearMarkers() "
-   TEST !empty( gp2:Clone():handle )                            DESCRIPTION "Clone() "
-   TEST gp2:CloseAllFigures() == 0                              DESCRIPTION "CloseAllFigures()"             SAMPLE Example_CloseAllFigures()
-   TEST gp2:Flatten() == 0                                      DESCRIPTION "Flatten()"                     SAMPLE FlattenExample()
-   TEST gp2:Flatten() == 0                                      DESCRIPTION "Flatten() SAMPLE 2"            SAMPLE FlattenExample(2)
+//   TEST gp2:AddRectangle( RectF( 20.0, 20.0, 100.0, 50.0 ) ) == 0  DESCRIPTION "AddRectangle()"   SAMPLE Example_AddRectangle()
+//   TEST gp2:AddRectangles( { RectF( 20.0, 20.0, 100.0, 50.0 ),;
+//                             RectF( 30.0, 30.0, 50.0, 100.0 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
+//   TEST gp2:AddRectangles( { RectF( 20, 20, 100, 50 ),;
+//                             RectF( 30, 30, 50, 100 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
+//   TEST .T.                                                     DESCRIPTION "AddString( ... Rect ... )"     SAMPLE Example_GPAddString1()
+//   TEST .T.                                                     DESCRIPTION "AddString( ... RectF ... )"    SAMPLE Example_GPAddString2()
+//   TEST .T.                                                     DESCRIPTION "AddString( ... Point ... )"    SAMPLE Example_GPAddString3()
+//   TEST .T.                                                     DESCRIPTION "AddString( ... PointF ... )"   SAMPLE Example_GPAddString4()
+//   TEST gp2:ClearMarkers() == 0                                 DESCRIPTION "ClearMarkers() "
+//   TEST !empty( gp2:Clone():handle )                            DESCRIPTION "Clone() "
+//   TEST gp2:CloseAllFigures() == 0                              DESCRIPTION "CloseAllFigures()"             SAMPLE Example_CloseAllFigures()
+//   TEST gp2:Flatten() == 0                                      DESCRIPTION "Flatten()"                     SAMPLE FlattenExample()
+//   TEST gp2:Flatten() == 0                                      DESCRIPTION "Flatten() SAMPLE 2"            SAMPLE FlattenExample(2)
    TEST gp2:getBounds(@oRect) == 0                              DESCRIPTION "GetBounds()"                   SAMPLE GetBoundsExample()
-
+   TEST gp2:GetFillMode() == 0                                  DESCRIPTION "GetFillMode()"
+   TEST gp:GetLastPoint( @oPoint ) == 0                         DESCRIPTION "GetLastPoint()"
+   TEST gp:GetLastStatus( ) == 0                                DESCRIPTION "GetLastStatus()"
+   TEST .T.                                                     DESCRIPTION "GetPathPoints()"               SAMPLE GetPathPointsExample()
+   TEST gp:GetPathTypes( @aTypes ) == 0                         DESCRIPTION "GetPathTypes()"
+   TEST .T.                                                     DESCRIPTION "IsOutlineVisible()"            SAMPLE Example_IsOutlineVisibleExample()
+   
 return 0
 
 *****************************************************************************************
@@ -3300,6 +3306,93 @@ function GetBoundsExample()
    
 return nil
 
+
+function GetPathPointsExample()
+   local bPainted := { | hdc |
+	 local pts
+   Graphics graphics(hdc)
+   
+   GraphicsPath path()
+   
+   points = {;
+      Point(200, 200),;
+      Point(250, 240),;
+      Point(200, 300),;
+      Point(300, 310),;
+      Point(250, 350)}
+
+   path:AddLine(20, 100, 150, 200)
+   path:AddRectangle(Rect(40, 30, 80, 60))
+   path:AddEllipse(Rect(200, 30, 200, 100))
+   path:AddCurve(points, 5)
+
+   // Draw the path.
+   Pen pen(Color(255, 0, 0, 255))
+   graphics:DrawPath(pen, path)
+
+   // Get the path points.
+   count := path:GetPointCount()
+   
+   dataPoints = BuildPointArray( count )
+   
+   path:GetPathPoints(dataPoints, count)
+
+   // Draw the path's data points.
+   SolidBrush brush(Color(255, 255, 0, 0))
+   
+   for j = 1 to count
+      graphics:FillEllipse(      ;
+         brush,                  ;
+         dataPoints[j]:X - 3.0,  ;
+         dataPoints[j]:Y - 3.0,  ;
+         6.0,                    ;
+         6.0)
+   next 
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_IsOutlineVisibleExample()
+   local bPainted := { | hdc |
+	 local points
+   Graphics graphics(hdc)
+   
+   GraphicsPath path()
+
+   Pen yellowPen(Color(255, 255, 255, 0), 20)
+   SolidBrush brush(Color(255, 255, 0, 0))
+
+   // Create and draw a path.
+   path:AddEllipse(50, 50, 200, 100)
+   graphics:DrawPath(yellowPen, path)
+
+   // Create an array of three points, and determine whether each
+   // point in the array touches the outline of the path.
+   // If a point touches the outline, paint it green.
+   // If a point does not touch the outline, paint it red.
+      points = {;
+      Point(230, 138),;
+      Point(100, 120),;
+      Point(150, 170)}
+   
+   for j = 1 to 2
+      if(path:IsOutlineVisible(points[j], yellowPen, graphics))
+         brush:SetColor(Color(255, 0, 255, 0))
+      else
+         brush:SetColor(Color(255, 255, 0, 0))
+      endif
+   
+      graphics:FillEllipse(brush, points[j]:X - 3, points[j]:Y - 3, 6, 6)
+   next
+   
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
 
 
 //---------------------------------
