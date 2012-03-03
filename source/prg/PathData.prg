@@ -9,15 +9,19 @@ return GPPathData():New()
 CLASS GPPathData
 
   DATA handle
-  DATA Count
-  DATA Points
-  DATA Types
+  DATA xCount
+  DATA xPoints
+  DATA xTypes
 
 
   METHOD New() CONSTRUCTOR
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
+  
+  METHOD Points() SETGET
+  METHOD Count()  SETGET
+  METHOD Types()  SETGET
 
 ENDCLASS
 
@@ -25,24 +29,7 @@ ENDCLASS
   METHOD New() CLASS GPPathData
 *********************************************************************************************************
 
-local iParams := PCount()
-
-
-  if iParams == 0
-     ::handle := _GPPathData()
-  elseif iParams == 1
-     ::handle := _GPPathData( p1 )                               //
-  elseif iParams == 3
-     ::handle := _GPPathData( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := _GPPathData( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := _GPPathData( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := _GPPathData( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := _GPPathData( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
+  ::handle = _GPPathData()
 
 return self
 
@@ -53,6 +40,38 @@ return self
   ::handle := nil
 
 return nil
+
+
+*********************************************************************************************************
+  METHOD Count() CLASS GPPathData
+*********************************************************************************************************
+
+   if ::xCount == NIL 
+      ::xCount = GPPathDataCount(::handle)
+   endif
+
+return ::xCount
+
+*********************************************************************************************************
+  METHOD Points() CLASS GPPathData
+*********************************************************************************************************
+
+   if ::xPoints == NIL 
+      ::xPoints = GPPathDataPoint(::handle)
+   endif
+
+return ::xPoints
+
+
+*********************************************************************************************************
+  METHOD Types() CLASS GPPathData
+*********************************************************************************************************
+
+   if ::xTypes == NIL 
+      ::xTypes = GPPathDataTypes(::handle)
+   endif
+
+return ::xTypes
 
 //*********************************************************************************************************
 //  METHOD () CLASS GPPathData
@@ -79,41 +98,88 @@ return nil
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
+#include <hbapiitm.h>
 
 HB_FUNC( _GPPATHDATA )
 {
-   //PathData* ptr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    ptr = new PathData();
-   //else if (iParams == 1 )
-   //    ptr = new PathData( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    ptr = new PathData( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    ptr = new PathData( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*) ptr );
+
+   GDIPLUS * pObj = gdiplus_new( GP_IT_PATHDATA );  
+   PathData* ptr;
+   ptr = new PathData();
+   
+   GP_SET( pObj, ptr );
+   hb_GDIPLUS_ret( pObj );
+
 }
 
-HB_FUNC( DELETEPATHDATA )
+HB_FUNC( GPPATHDATACOUNT )
 {
-   //PathData* clr = (PathData*) hb_parptr( 1 );
-   //delete (PathData*) clr;
-   //hb_ret();
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PATHDATA( p ) ){
+      PathData * o = ( PathData * ) GP_GET( p );
+      hb_retni( o->Count );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
 }
 
-//HB_FUNC( GPPATHDATA... )
-//{
-//   PathData* ptr = (PathData*) hb_parptr( 1 );
-//}
+HB_FUNC( GPPATHDATAPOINT )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PATHDATA( p ) ){
+      PathData * o = ( PathData * ) GP_GET( p );
+      PHB_ITEM pArray = hb_itemArrayNew( o->Count );
+      int j;
+      
+      for( j = 0; j < o->Count; j++ ){
+         PHB_ITEM pitem = GPNewGDIPLUSObject( &o->Points[ j ], GP_IT_POINTF );
+         hb_arraySet( pArray, j + 1, pitem );
+         hb_itemRelease( pitem );
+      }
+      
+      hb_itemReturnRelease( pArray );
 
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+HB_FUNC( GPPATHDATATYPES )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PATHDATA( p ) ){
+      PathData * o = ( PathData * ) GP_GET( p );
+      PHB_ITEM pArray = hb_itemArrayNew( o->Count );
+      int j;
+      
+      for( j = 0; j < o->Count; j++ ){
+         hb_arraySetNI( pArray, j + 1, o->Types[ j ] );
+      }
+      
+      hb_itemReturnRelease( pArray );
+
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+
+
+/*
+HB_FUNC( GPPATHDATA... )
+{
+  
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_PATHDATA( p ) ){
+      PathData * o = ( PathData * ) GP_GET( p );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+  
+}
+*/
 #pragma ENDDUMP
 
 

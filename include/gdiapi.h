@@ -39,6 +39,7 @@ typedef struct __gdiplus
 #define GP_IT_REGION       ( ( int ) 0x00018 )
 #define GP_IT_REGIONDATA   ( ( int ) 0x00019 )
 #define GP_IT_LINEARGRADIENTBRUSH ( ( int ) 0x0001A )
+#define GP_IT_PATHDATA     ( ( int ) 0x0001B )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
@@ -55,22 +56,22 @@ typedef struct __gdiplus
 #define GP_IS_SIZEF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_SIZEF ) )
 #define GP_IS_MATRIX( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_MATRIX ) )
 #define GP_IS_GRAPHICSPATH( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICSPATH ) )
-#define GP_IS_BITMAP( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_BITMAP ) )
+#define GP_IS_BITMAP( p )         ( ( GP_OBJECT_TYPE( p ) == GP_IT_BITMAP ) )
 #define GP_IS_INSTALLEDFONTCOLLECTION( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_INSTALLEDFONTCOLLECTION ) )
 #define GP_IS_PRIVATEFONTCOLLECTION( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_PRIVATEFONTCOLLECTION ) )
 #define GP_IS_FONTCOLLECTION( p )          ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONTCOLLECTION ) || GP_IS_INSTALLEDFONTCOLLECTION( p ) || GP_IS_PRIVATEFONTCOLLECTION( p ) )
-#define GP_IS_FONTFAMILY( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONTFAMILY ) ) 
-#define GP_IS_FONT( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONT ) ) 
-#define GP_IS_LOGFONTA( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTA ) ) 
-#define GP_IS_LOGFONTW( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTB ) ) 
-#define GP_IS_STRINGFORMAT( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_STRINGFORMAT ) ) 
+#define GP_IS_FONTFAMILY( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONTFAMILY ) ) 
+#define GP_IS_FONT( p )           ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONT ) ) 
+#define GP_IS_LOGFONTA( p )       ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTA ) ) 
+#define GP_IS_LOGFONTW( p )       ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTB ) ) 
+#define GP_IS_STRINGFORMAT( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_STRINGFORMAT ) ) 
 #define GP_IS_CHARACTERRANGE( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_CHARACTERRANGE ) ) 
-#define GP_IS_REGION( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGION ) ) 
-#define GP_IS_REGIONDATA( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGIONDATA ) ) 
-
-
-#define HB_ISDOUBLE( n )    ( hb_param( n, HB_IT_DOUBLE ) != NULL )
-#define HB_ISINTEGER( n )    ( hb_param( n, HB_IT_INTEGER) != NULL )
+#define GP_IS_REGION( p )         ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGION ) ) 
+#define GP_IS_REGIONDATA( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGIONDATA ) ) 
+#define GP_IS_PATHDATA( p )       ( ( GP_OBJECT_TYPE( p ) == GP_IT_PATHDATA ) ) 
+                                  
+#define HB_ISDOUBLE( n )   ( hb_param( n, HB_IT_DOUBLE ) != NULL )
+#define HB_ISINTEGER( n )  ( hb_param( n, HB_IT_INTEGER) != NULL )
 
 //gdiplus core
 GDIPLUS * gdiplus_new( int type );

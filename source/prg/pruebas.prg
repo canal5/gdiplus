@@ -12,7 +12,7 @@ Local oTest
 //      TestsColor()
 //      TestsBrush()
 //      TestMatrix()
-      TestLinearGB()
+//      TestLinearGB()
 //      
 //      TestImage()
 //      TestSolidBrush()
@@ -21,7 +21,7 @@ Local oTest
 //      TestsRectF()
 //      TestsRect()
 //  
-//      TestGraphicsPath()
+      TestGraphicsPath()
 //      TestFontFamily()
 //      TestFont()
 //      TestStringFormat()    
@@ -232,10 +232,12 @@ return nil
       PointF(270.0, 130.0)               ;
       }  
    
+   local oRect
    SEPARADOR( "GRAPHICS PATH" )
    
    GraphicsPath gp()
    GraphicsPath gp2()
+   Rect oRect()
 
 //   TEST !empty( GraphicsPath():handle )                       DESCRIPTION "GraphicsPath()"
 //   TEST !empty( GraphicsPath( FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( FillMode )"
@@ -285,7 +287,17 @@ return nil
                              RectF( 30.0, 30.0, 50.0, 100.0 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
    TEST gp2:AddRectangles( { RectF( 20, 20, 100, 50 ),;
                              RectF( 30, 30, 50, 100 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
-   
+   TEST .T.                                                     DESCRIPTION "AddString( ... Rect ... )"     SAMPLE Example_GPAddString1()
+   TEST .T.                                                     DESCRIPTION "AddString( ... RectF ... )"    SAMPLE Example_GPAddString2()
+   TEST .T.                                                     DESCRIPTION "AddString( ... Point ... )"    SAMPLE Example_GPAddString3()
+   TEST .T.                                                     DESCRIPTION "AddString( ... PointF ... )"   SAMPLE Example_GPAddString4()
+   TEST gp2:ClearMarkers() == 0                                 DESCRIPTION "ClearMarkers() "
+   TEST !empty( gp2:Clone():handle )                            DESCRIPTION "Clone() "
+   TEST gp2:CloseAllFigures() == 0                              DESCRIPTION "CloseAllFigures()"             SAMPLE Example_CloseAllFigures()
+   TEST gp2:Flatten() == 0                                      DESCRIPTION "Flatten()"                     SAMPLE FlattenExample()
+   TEST gp2:Flatten() == 0                                      DESCRIPTION "Flatten() SAMPLE 2"            SAMPLE FlattenExample(2)
+   TEST gp2:getBounds(@oRect) == 0                              DESCRIPTION "GetBounds()"                   SAMPLE GetBoundsExample()
+
 return 0
 
 *****************************************************************************************
@@ -3071,6 +3083,223 @@ function Example_AddRectangles( )
    exampleWindow( bPainted )
    
 return nil
+
+function Example_GPAddString1( )
+   local bPainted := { | hdc |
+   	local oRect
+   Graphics graphics(hdc)
+   FontFamily fontFamily("Times New Roman")
+   GraphicsPath path()
+
+   Rect oRect(50, 50, 150, 100)
+   
+   
+   path:AddString(;
+      "Hello World", ;
+      fontFamily, ;
+      FontStyleRegular,;
+      48, ;
+      oRect, NIL )
+
+     Pen pen(Color(255, 255, 0, 0))
+     path:AddRectangles( { oRect } )
+     graphics:DrawPath(pen, path)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+function Example_GPAddString2( )
+   local bPainted := { | hdc |
+   	local oRect
+   Graphics graphics(hdc)
+   FontFamily fontFamily("Times New Roman")
+   GraphicsPath path()
+
+   RectF oRect(50, 50, 150, 100)
+   
+   
+   path:AddString(;
+      "Hello World", ;
+      fontFamily, ;
+      FontStyleRegular,;
+      48, ;
+      oRect, NIL )
+
+     Pen pen(Color(255, 255, 0, 0))
+     path:AddRectangles( { oRect } )
+     graphics:DrawPath(pen, path)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_GPAddString3( )
+   local bPainted := { | hdc |
+   	local oRect
+   Graphics graphics(hdc)
+   FontFamily fontFamily("Times New Roman")
+   GraphicsPath path()
+
+   
+   path:AddString(;
+      "Hello World", ;
+      fontFamily, ;
+      FontStyleRegular,;
+      48, ;
+      Point( 50, 50 ), NIL )
+
+     Pen pen(Color(255, 255, 0, 0))
+     graphics:DrawPath(pen, path)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+
+function Example_GPAddString4( )
+   local bPainted := { | hdc |
+   	local oRect
+   Graphics graphics(hdc)
+   FontFamily fontFamily("Times New Roman")
+   GraphicsPath path()
+
+   
+   path:AddString(;
+      "Hello World", ;
+      fontFamily, ;
+      FontStyleRegular,;
+      48, ;
+      PointF( 50, 50 ), NIL )
+
+     Pen pen(Color(255, 255, 0, 0))
+     graphics:DrawPath(pen, path)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function Example_CloseAllFigures( )
+   local bPainted := { | hdc |
+   Graphics graphics(hdc)
+
+   Rect rect1(20, 20, 50, 100)
+   Rect rect2(40, 40, 50, 100)
+
+   GraphicsPath path()
+   path:AddArc(rect1, 0.0, 180.0)  // first figure
+   path:StartFigure()
+   path:AddArc(rect2, 0.0, 180.0)  // second figure
+   path:CloseAllFigures()
+
+   // Draw the path.
+   Pen pen(Color(255, 255, 0, 0))
+   graphics:DrawPath(pen, path)
+
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function FlattenExample( nSample )
+   local bPainted := { | hdc |
+   	local pts
+   	local matrix, pathData
+   	DEFAULT nSample := 1
+   Graphics graphics(hdc)
+   // Begin example.
+   pts = {Point(20,50),; 
+          Point(40,70),; 
+          Point(60,10),; 
+          Point(80,50)}
+
+   GraphicsPath path()
+   path:AddCurve(pts)
+   path:AddEllipse(20, 100, 150, 80)
+   path:AddBezier(20, 200, 20, 250, 50, 210, 100, 260)
+
+   // Draw the path before flattening.
+   Pen pen(Color(255, 0, 0, 255))
+   graphics:DrawPath(pen, path)
+
+   if nSample == 2
+     Matrix matrix()
+     matrix:Rotate(30.0)
+     matrix:Translate(200.0, 0.0, MatrixOrderAppend)   
+   endif
+   
+   path:Flatten(matrix, 8.0)
+
+   // Draw the flattened path.
+   pen:SetColor(Color(255, 0, 255, 0))
+   graphics:DrawPath(pen, path)
+
+   // Get the path data from the flattened path.
+
+   path:GetPathData(@pathData)
+
+   // Draw the data points of the flattened path.
+   SolidBrush brush(Color(255, 255, 0, 0))
+   for j = 1 to pathData:Count()
+      graphics:FillEllipse(;
+         brush, ;
+         pathData:Points[j]:X - 3.0, ;
+         pathData:Points[j]:Y - 3.0,;
+         6.0,;
+         6.0)
+   next
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
+
+function GetBoundsExample()
+   local bPainted := { | hdc |
+	 local pts
+   Graphics graphics(hdc)
+   Pen blackPen(Color(255, 0, 0, 0), 1)
+   Pen yellowPen(Color(255, 255, 255, 0), 10)
+   Pen redPen(Color(255, 255, 0, 0), 1)
+
+   pts         = {Point(120,120),;
+                  Point(200,130),;
+                  Point(150,200),;
+                  Point(130,180)}
+
+   // Create a path that has one curve and one ellipse.
+   GraphicsPath path()
+   path:AddClosedCurve(pts)
+   path:AddEllipse(120, 220, 100, 40)
+
+   // Draw the path with a thick yellow pen and a thin black pen.
+   graphics:DrawPath(yellowPen, path)
+   graphics:DrawPath(blackPen, path)
+ 
+   // Get the path's bounding rectangle.
+   Rect rect()
+   path:GetBounds(@rect, NIL, yellowPen)
+   graphics:DrawRectangle(redPen, rect)  
+   }
+   
+   exampleWindow( bPainted )
+   
+return nil
+
 
 
 //---------------------------------

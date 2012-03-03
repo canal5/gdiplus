@@ -139,7 +139,10 @@ void gdiplus_destroy( GDIPLUS * p ){
      	   break;     	   
      case GP_IT_LINEARGRADIENTBRUSH:
      	   delete ( LinearGradientBrush * ) p->pObject;
-     	   break;     	        	   
+     	   break;     	     
+     case GP_IT_PATHDATA:
+     	   delete ( PathData * ) p->pObject;
+     	   break;       	      	   
    }
    hb_xfree( p );
 

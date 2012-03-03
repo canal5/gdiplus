@@ -1933,6 +1933,13 @@ HB_FUNC( GP_GETTRANSFORM )
   
 }
 
+
+/*
+HB_FUNC( XXX ){
+   HDC hdc = ( HDC ) hb_parnl( 1 );
+   
+}
+*/
 #pragma ENDDUMP
 
 

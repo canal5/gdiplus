@@ -28,7 +28,7 @@
 #xcommand FONT               <o>       ( <par1>[,<par2> ][,<par3> ][,<par4> ][,<par5>] )              => <o>       := Font               ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>] )
 #xcommand STRINGFORMAT       <o>       ( [<par1> [,<par2> ] ] )                                       => <o>       := StringFormat       ( [<par1>][, <par2>] )
 #xcommand REGION             <o>       ( [<par1> [,<par2> ] ] )                                       => <o>       := Region             ( [<par1>][, <par2>] )
-
+#xcommand PATHDATA           <o>       ()                                                             => <o>       := PathData           ()
 
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"
