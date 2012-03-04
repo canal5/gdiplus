@@ -12,19 +12,19 @@ Local oTest
 //      TestsColor()
 //      TestsBrush()
 //      TestMatrix()
-//      TestLinearGB()
-//      
+      TestLinearGB()
+//
 //      TestImage()
 //      TestSolidBrush()
 //      TestPoint()
 //      TestPointF()
 //      TestsRectF()
 //      TestsRect()
-//  
+//
       TestGraphicsPath()
 //      TestFontFamily()
 //      TestFont()
-//      TestStringFormat()    
+//      TestStringFormat()
 //      TestRegion()
 //      TestBitmap( oTest )
 
@@ -51,28 +51,28 @@ function TestRegion()
    GraphicsPath path()
 
    path:AddPolygon(aPoints, 4)
-   
+
    SEPARADOR( "REGION" )
-   
-   TEST !Empty( Region():handle )                                      DESCRIPTION "Constructor Region()"   
-   TEST !Empty( Region( RectF( 10.0, 10.0, 100.0, 100.0 ) ):handle )   DESCRIPTION "Constructor Region()"   
-   TEST !Empty( Region( Rect( 10, 10, 100, 100 ) ):handle )            DESCRIPTION "Constructor Region()"   
-   TEST !Empty( oRegion:Clone():handle )                               DESCRIPTION "Clone()"                    SAMPLE Example_RGClone() 
-  
-   TEST .T.                                                            DESCRIPTION "Complement( GraphicsPath )" SAMPLE Example_ComplementPath1() 
-   TEST .T.                                                            DESCRIPTION "Complement( Rect )"         SAMPLE Example_ComplementPath2() 
-   TEST .T.                                                            DESCRIPTION "Complement( RectF )"        SAMPLE Example_ComplementPath3() 
-   TEST .T.                                                            DESCRIPTION "Complement( Region )"       SAMPLE Example_ComplementPath4() 
-   TEST .T.                                                            DESCRIPTION "Exclude( GraphicsPath )"    SAMPLE Example_Exclude1() 
-   TEST .T.                                                            DESCRIPTION "Exclude( Rect )"            SAMPLE Example_Exclude2() 
-   TEST .T.                                                            DESCRIPTION "Exclude( RectF )"           SAMPLE Example_Exclude3() 
-   TEST .T.                                                            DESCRIPTION "Exclude( Region )"          SAMPLE Example_Exclude4() 
-   TEST .T.                                                            DESCRIPTION "GetBounds( Rect )"          SAMPLE Example_GetBounds1() 
-   TEST .T.                                                            DESCRIPTION "GetBounds( RectF )"         SAMPLE Example_GetBounds2() 
-   TEST .T.                                                            DESCRIPTION "GetData(  )"                SAMPLE Example_RGGetData() 
-   TEST .T.                                                            DESCRIPTION "GetDataSize(  )"            SAMPLE Example_RGGetData() 
-   TEST .T.                                                            DESCRIPTION "GetHRGN(  )"                SAMPLE Example_RGGetHRGN() 
-   TEST .T.                                                            DESCRIPTION "GetTransform(  )"           SAMPLE Example_RGGetTransform() 
+
+   TEST !Empty( Region():handle )                                      DESCRIPTION "Constructor Region()"
+   TEST !Empty( Region( RectF( 10.0, 10.0, 100.0, 100.0 ) ):handle )   DESCRIPTION "Constructor Region()"
+   TEST !Empty( Region( Rect( 10, 10, 100, 100 ) ):handle )            DESCRIPTION "Constructor Region()"
+   TEST !Empty( oRegion:Clone():handle )                               DESCRIPTION "Clone()"                    SAMPLE Example_RGClone()
+
+   TEST .T.                                                            DESCRIPTION "Complement( GraphicsPath )" SAMPLE Example_ComplementPath1()
+   TEST .T.                                                            DESCRIPTION "Complement( Rect )"         SAMPLE Example_ComplementPath2()
+   TEST .T.                                                            DESCRIPTION "Complement( RectF )"        SAMPLE Example_ComplementPath3()
+   TEST .T.                                                            DESCRIPTION "Complement( Region )"       SAMPLE Example_ComplementPath4()
+   TEST .T.                                                            DESCRIPTION "Exclude( GraphicsPath )"    SAMPLE Example_Exclude1()
+   TEST .T.                                                            DESCRIPTION "Exclude( Rect )"            SAMPLE Example_Exclude2()
+   TEST .T.                                                            DESCRIPTION "Exclude( RectF )"           SAMPLE Example_Exclude3()
+   TEST .T.                                                            DESCRIPTION "Exclude( Region )"          SAMPLE Example_Exclude4()
+   TEST .T.                                                            DESCRIPTION "GetBounds( Rect )"          SAMPLE Example_GetBounds1()
+   TEST .T.                                                            DESCRIPTION "GetBounds( RectF )"         SAMPLE Example_GetBounds2()
+   TEST .T.                                                            DESCRIPTION "GetData(  )"                SAMPLE Example_RGGetData()
+   TEST .T.                                                            DESCRIPTION "GetDataSize(  )"            SAMPLE Example_RGGetData()
+   TEST .T.                                                            DESCRIPTION "GetHRGN(  )"                SAMPLE Example_RGGetHRGN()
+   TEST .T.                                                            DESCRIPTION "GetTransform(  )"           SAMPLE Example_RGGetTransform()
    TEST .T.                                                            DESCRIPTION "Intersept( GraphicsPath )"  SAMPLE Example_IntersectPath()
    TEST .T.                                                            DESCRIPTION "Intersept( Rect )"          SAMPLE Example_IntersectPath2()
    TEST .T.                                                            DESCRIPTION "Intersept( RectF )"         SAMPLE Example_IntersectPath3()
@@ -85,65 +85,65 @@ function TestRegion()
    TEST .T.                                                            DESCRIPTION "Xor( Rect )"                SAMPLE Example_RGXor2()
    TEST .T.                                                            DESCRIPTION "Xor( RectF )"               SAMPLE Example_RGXor3()
    TEST .T.                                                            DESCRIPTION "Xor( Region )"              SAMPLE Example_RGXor4()
-   
-   
+
+
 return nil
 
 
-function TestStringFormat() 
+function TestStringFormat()
 
    local oSF
 
    SEPARADOR( "STRINGFORMAT" )
-       
+
    StringFormat oSF()
 
-  
-   TEST !Empty( oSF:handle )                                      DESCRIPTION "StringFormat( )"   
-   TEST !Empty( StringFormat( oSF ):handle )                      DESCRIPTION "StringFormat( )"   
-   TEST !Empty( StringFormat( StringFormatFlagsNoWrap ):handle )  DESCRIPTION "StringFormat( )"      
-   TEST !Empty( oSF:Clone():handle )                              DESCRIPTION "Clone( )"              SAMPLE Example_SFClone()   
+
+   TEST !Empty( oSF:handle )                                      DESCRIPTION "StringFormat( )"
+   TEST !Empty( StringFormat( oSF ):handle )                      DESCRIPTION "StringFormat( )"
+   TEST !Empty( StringFormat( StringFormatFlagsNoWrap ):handle )  DESCRIPTION "StringFormat( )"
+   TEST !Empty( oSF:Clone():handle )                              DESCRIPTION "Clone( )"              SAMPLE Example_SFClone()
    TEST !Empty( oSF:GenericDefault():handle )                     DESCRIPTION "GenericDefault( )"     SAMPLE Example_SFGenericDefault()
    TEST !Empty( oSF:GenericTypographic():handle )                 DESCRIPTION "GenericTypographic( )" SAMPLE Example_SFGenericTypographic()
    TEST oSF:SetAlignment( StringAlignmentFar ) == 0               DESCRIPTION "SetAlignment( )"       SAMPLE Example_SFSetAlignment()
    TEST oSF:GetAlignment( ) >  0                                  DESCRIPTION "GetAlignment( )"       //SAMPLE Example_SFSetAlignment()
-   
-   TEST oSF:SetDigitSubstitution(0, StringDigitSubstituteNone ) == 0  DESCRIPTION "GenericTypographic( )" 
-   
+
+   TEST oSF:SetDigitSubstitution(0, StringDigitSubstituteNone ) == 0  DESCRIPTION "GenericTypographic( )"
+
    TEST oSF:SetFormatFlags( StringFormatFlagsNoClip ) == 0        DESCRIPTION "SetFormatFlags( )"     SAMPLE Example_SFSetFormatFlags()
    TEST oSF:GetFormatFlags( ) > 0                                 DESCRIPTION "GetFormatFlags( )"    // SAMPLE Example_SFSetFormatFlags()
-   
+
    TEST oSF:SetHotkeyPrefix(HotkeyPrefixShow)         == 0        DESCRIPTION "SetHotkeyPrefix( )"    SAMPLE Example_SFSetHotkeyPrefix()
    TEST oSF:GetHotkeyPrefix( ) > 0                                DESCRIPTION "GetHotkeyPrefix( )"    //SAMPLE Example_SFSetHotkeyPrefix()
-   
+
    TEST oSF:SetLineAlignment( StringAlignmentFar ) == 0           DESCRIPTION "SetLineAlignment( )"   SAMPLE Example_SFSetLineAlignment()
    TEST oSF:GetLineAlignment() > 0                                DESCRIPTION "GetLineAlignment( )"   //SAMPLE Example_SFSetLineAlignment()
-   
+
    TEST .T.                                                       DESCRIPTION "SetMeasurableCharacterRanges( )"   SAMPLE Example_SetMeasCharRanges()
    TEST oSF:SetTabStops( 1, {10,20,30 } ) == 0                    DESCRIPTION "SetTabStops( )"         SAMPLE Example_SFSetTabStops()
-   
+
    TEST oSF:SetTrimming(StringTrimmingEllipsisWord) == 0          DESCRIPTION "SetTrimming( )"         SAMPLE Example_SFSetTrimming()
    TEST oSF:GetTrimming() > 0                                     DESCRIPTION "GetTrimming( )"         //SAMPLE Example_SFSetTrimming()
-   
+
 return 0
 
 
-function TestFont() 
+function TestFont()
 
    local oFont
    local oFontFamily
    local oLog
 
    SEPARADOR( "FONT" )
-   
+
    Font oFont( "Arial", 16, FontStyleItalic )
 
    oFont:GetFamily( @oFontFamily )
 
-   
-   TEST !Empty( oFont:handle )         DESCRIPTION "Font( )"   
-   TEST !Empty( oFont:Clone():handle ) DESCRIPTION "Clone( )"   
-   TEST !Empty( oFontFamily:handle )   DESCRIPTION "GetFamily( )"   
+
+   TEST !Empty( oFont:handle )         DESCRIPTION "Font( )"
+   TEST !Empty( oFont:Clone():handle ) DESCRIPTION "Clone( )"
+   TEST !Empty( oFontFamily:handle )   DESCRIPTION "GetFamily( )"
    TEST oFont:GetHeight( 96 ) > 0      DESCRIPTION "GetHeight( )"   SAMPLE Example_GetHeight()
    TEST oFont:GetLastStatus() == 0     DESCRIPTION "GetLastStatus( )"
    TEST .T.                            DESCRIPTION "GetLogFontA( )" SAMPLE Example_GetLogFontA()
@@ -153,16 +153,16 @@ function TestFont()
    TEST oFont:GetUnit() > 0            DESCRIPTION "GetUnit( )"     SAMPLE Example_GetUnit()
    TEST oFont:IsAvailable()            DESCRIPTION "IsAvailable( )" SAMPLE Example_IsAvailable()
 
-   
+
 return 0
 
 
-function TestFontFamily() 
+function TestFontFamily()
 
    SEPARADOR( "FONTFAMILY" )
 
-   TEST !Empty( FontFamily():handle )                           DESCRIPTION "FontFamily()" 
-   TEST !Empty( FontFamily("arial"):handle )                    DESCRIPTION "FontFamily()" 
+   TEST !Empty( FontFamily():handle )                           DESCRIPTION "FontFamily()"
+   TEST !Empty( FontFamily("arial"):handle )                    DESCRIPTION "FontFamily()"
    TEST !Empty( FontFamily("arial"):Clone():handle )            DESCRIPTION "Clone()"            SAMPLE Example_FontFamilyClone()
    TEST !Empty( FontFamily("arial"):GenericMonospace():handle ) DESCRIPTION "GenericMonospace()" SAMPLE Example_GenericMonospace()
    TEST !Empty( FontFamily("arial"):GenericSansSerif():handle ) DESCRIPTION "GenericSansSerif()" SAMPLE Example_GenericSansSerif()
@@ -171,17 +171,17 @@ function TestFontFamily()
    TEST FontFamily("arial"):GetCellDescent( FontStyleRegular ) > 0  DESCRIPTION "GetCellDescent()"   SAMPLE Example_GetCellDescent()
    TEST FontFamily("arial"):GetEmHeight( FontStyleRegular ) > 0     DESCRIPTION "GetEmHeight()"      SAMPLE Example_GetEmHeight()
    TEST .T.                                                         DESCRIPTION "GetFamilyName()"      SAMPLE Example_GetFamilyName()
-   TEST FontFamily("arial"):GetLastStatus() == 0                    DESCRIPTION "GetLastStatus()"     
+   TEST FontFamily("arial"):GetLastStatus() == 0                    DESCRIPTION "GetLastStatus()"
    TEST FontFamily("arial"):GetLineSpacing( FontStyleRegular ) > 0  DESCRIPTION "GetLineSpacing()"  SAMPLE Example_GetLineSpacing()
-   TEST FontFamily("arial"):IsAvailable()                             DESCRIPTION "IsAvailable()" 
-   TEST FontFamily("arial"):IsStyleAvailable( FontStyleRegular )      DESCRIPTION "IsStyleAvailable()" 
+   TEST FontFamily("arial"):IsAvailable()                             DESCRIPTION "IsAvailable()"
+   TEST FontFamily("arial"):IsStyleAvailable( FontStyleRegular )      DESCRIPTION "IsStyleAvailable()"
 return 0
 
 
 function TestBitmap( oTest )
-   
+
    local hBmp
-   
+
    SEPARADOR( "BITMAP" )
 
    TEST .T. DESCRIPTION "CaptureWnd()" SAMPLE Example_CaptureWnd( oTest )
@@ -191,30 +191,30 @@ return 0
 
 
 function Example_CaptureWnd( oTest )
-   local bPainted 
-   
+   local bPainted
+
    bPainted := { | hdc, ps, oWnd |
       local hBmp := MakeBmpFromHWND( oTest:oWnd:hWnd )
       local oBmp
       Bitmap oBmp( hBmp, 0 )
-      DeleteObject( hBmp )      
+      DeleteObject( hBmp )
 
       Graphics graphics(hdc)
-      
-      graphics:DrawImage( oBmp, 0, 0, oWnd:nWidth, oWnd:nHeight )      
+
+      graphics:DrawImage( oBmp, 0, 0, oWnd:nWidth, oWnd:nHeight )
    }
 
    exampleWindow( bPainted )
-   
+
 return nil
 
 
 *****************************************************************************************
   function TestGraphicsPath()
 *****************************************************************************************
-   
+
    local gp, gp2, oPoint, aTypes
-   local aPoint := { Point(50, 50)   ,; 
+   local aPoint := { Point(50, 50)   ,;
       Point(60, 20)   ,            ;
       Point(70, 100)  ,            ;
       Point(80, 50),               ;
@@ -222,19 +222,19 @@ return nil
       Point(150,80),               ;
       Point(170, 30)               ;
       }
-      
-   local aPointF := { PointF(150.0, 150.0)   ,; 
+
+   local aPointF := { PointF(150.0, 150.0)   ,;
       PointF(160.0, 120.0)   ,            ;
       PointF(170.0, 200.0)  ,            ;
       PointF(180.0, 150.0),               ;
       PointF(220.0, 140.0),              ;
       PointF(250.0,180.0),               ;
       PointF(270.0, 130.0)               ;
-      }  
-   
+      }
+
    local oRect
    SEPARADOR( "GRAPHICS PATH" )
-   
+
    GraphicsPath gp()
    GraphicsPath gp2()
    Rect oRect()
@@ -243,39 +243,39 @@ return nil
 //   TEST !empty( GraphicsPath( FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( FillMode )"
 //   TEST !empty( GraphicsPath( { Point( 10, 10 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( ... )"
 //   TEST !empty( GraphicsPath( { PointF( 10.0, 20.0 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle ) DESCRIPTION "GraphicsPath( ... )"
-//   
+//
 //   TEST gp:AddArc( Rect(20, 20, 50, 100), 0.0, 180.0 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
 //   TEST gp:AddArc( RectF(20.0, 20.0, 50.0, 100.0), 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
 //   TEST gp:AddArc( 20, 20, 50, 100, 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
 //   TEST gp:AddArc( 20, 20, 50, 100, 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
-//   TEST gp:AddBezier( Point(50, 50), Point(60, 20), Point(70, 100), Point(80, 50) ) == 0      DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()   
+//   TEST gp:AddBezier( Point(50, 50), Point(60, 20), Point(70, 100), Point(80, 50) ) == 0      DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
 //   TEST gp:AddBezier( PointF(50, 50), PointF(60, 20), PointF(70, 100), PointF(80, 50) ) == 0  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
 //   TEST gp:AddBezier( Point(50, 50), Point(60, 20), Point(70, 100), Point(80, 50) ) == 0      DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
-//   TEST gp:AddBezier( 50.0, 50.0, 60.0, 20.0, 70.0, 100.0, 80.0, 50.0 ) == 0  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()   
-//   TEST gp:AddBezier( 50, 50, 60, 20, 70, 100, 80, 50 ) == 0                  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()   
-//   TEST gp:AddBeziers( aPointF ) == 0  DESCRIPTION "AddBeziers()"    SAMPLE Example_AddBeziers()   
-//   TEST gp:AddBeziers( aPoint)   == 0  DESCRIPTION "AddBeziers()"    SAMPLE Example_AddBeziers()  
+//   TEST gp:AddBezier( 50.0, 50.0, 60.0, 20.0, 70.0, 100.0, 80.0, 50.0 ) == 0  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
+//   TEST gp:AddBezier( 50, 50, 60, 20, 70, 100, 80, 50 ) == 0                  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
+//   TEST gp:AddBeziers( aPointF ) == 0  DESCRIPTION "AddBeziers()"    SAMPLE Example_AddBeziers()
+//   TEST gp:AddBeziers( aPoint)   == 0  DESCRIPTION "AddBeziers()"    SAMPLE Example_AddBeziers()
 //   TEST gp:AddClosedCurve( aPoint,  1 )   == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
 //   TEST gp:AddClosedCurve( aPointF,  1 )  == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
 //   TEST gp:AddClosedCurve( aPoint )       == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
-//   TEST gp:AddClosedCurve( aPointF )      == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()   
+//   TEST gp:AddClosedCurve( aPointF )      == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
 //   TEST gp:AddCurve( aPointF )              == 0  DESCRIPTION "AdddCurve()"    SAMPLE AddCurveExample2()
-//   TEST gp:AddCurve( aPointF, 1 )           == 0  DESCRIPTION "AdddCurve()"    
-//   TEST gp:AddCurve( aPointF, 2, 4, 1 )     == 0  DESCRIPTION "AdddCurve()"    
-//   TEST gp:AddCurve( aPoint )               == 0  DESCRIPTION "AdddCurve()"    
-//   TEST gp:AddCurve( aPoint, 1 )            == 0  DESCRIPTION "AdddCurve()"    
-//   TEST gp:AddCurve( aPoint, 2, 4, 1 )      == 0  DESCRIPTION "AdddCurve()"    
+//   TEST gp:AddCurve( aPointF, 1 )           == 0  DESCRIPTION "AdddCurve()"
+//   TEST gp:AddCurve( aPointF, 2, 4, 1 )     == 0  DESCRIPTION "AdddCurve()"
+//   TEST gp:AddCurve( aPoint )               == 0  DESCRIPTION "AdddCurve()"
+//   TEST gp:AddCurve( aPoint, 1 )            == 0  DESCRIPTION "AdddCurve()"
+//   TEST gp:AddCurve( aPoint, 2, 4, 1 )      == 0  DESCRIPTION "AdddCurve()"
 //   TEST gp:AddEllipse(20, 20, 200, 100)     == 0  DESCRIPTION "AddEllipse()"   SAMPLE Example_AddEllipse()
 //   TEST gp:AddEllipse(20.0, 20.0, 200.0, 100.0)            == 0  DESCRIPTION "AddEllipse()"  SAMPLE Example_AddEllipse()
 //   TEST gp:AddEllipse( Rect( 20, 20, 200, 100 ) )          == 0  DESCRIPTION "AddEllipse()"  SAMPLE Example_AddEllipse()
-//   TEST gp:AddEllipse( RectF( 20.0, 20.0, 200.0, 100.0 ) ) == 0  DESCRIPTION "AddEllipse()"  SAMPLE Example_AddEllipse() 
+//   TEST gp:AddEllipse( RectF( 20.0, 20.0, 200.0, 100.0 ) ) == 0  DESCRIPTION "AddEllipse()"  SAMPLE Example_AddEllipse()
 //   TEST gp:AddLine(20, 20, 200, 100)         == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
-//   TEST gp:AddLine(20.0, 20.0, 200.0, 100.0) == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()    
+//   TEST gp:AddLine(20.0, 20.0, 200.0, 100.0) == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
 //   TEST gp:AddLine(Point( 60, 60 ), Point( 100, 100 ))         == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
-//   TEST gp:AddLine(PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 )) == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine() 
+//   TEST gp:AddLine(PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 )) == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
 //   TEST gp:AddLines( { Point( 60, 60 ), Point( 100, 100 ) } )         == 0  DESCRIPTION "AddLines()"   SAMPLE Example_AddLines()
-   TEST gp:AddLines( { PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 ) } ) == 0  DESCRIPTION "AddLines()"   SAMPLE Example_AddLines()  
-//   TEST gp2:Addpath( GraphicsPath(), .T. ) == 0  DESCRIPTION "AddPath()"   SAMPLE Example_AddPath( )    
+   TEST gp:AddLines( { PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 ) } ) == 0  DESCRIPTION "AddLines()"   SAMPLE Example_AddLines()
+//   TEST gp2:Addpath( GraphicsPath(), .T. ) == 0  DESCRIPTION "AddPath()"   SAMPLE Example_AddPath( )
 //   TEST gp2:AddPie( 50, 50, 100, 100, 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
 //   TEST gp2:AddPie( 50.0, 50.0, 100.0, 100.0, 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
 //   TEST gp2:AddPie( Rect( 50, 50, 100, 100 ), 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
@@ -303,7 +303,7 @@ return nil
    TEST .T.                                                     DESCRIPTION "GetPathPoints()"               SAMPLE GetPathPointsExample()
    TEST gp:GetPathTypes( @aTypes ) == 0                         DESCRIPTION "GetPathTypes()"
    TEST .T.                                                     DESCRIPTION "IsOutlineVisible()"            SAMPLE Example_IsOutlineVisibleExample()
-   
+
 return 0
 
 *****************************************************************************************
@@ -312,11 +312,11 @@ return 0
 
    local oPlus
    local oMinus
-   
+
    oPlus := PointF( 40.5, 10 ) + PointF( -20, -30.2 )
-   
+
    oMinus:= PointF( 40.5, 10 ) - PointF( -20, -30.2 )
-   
+
    SEPARADOR( "POINTF" )
 
    TEST !empty( PointF():handle )                       DESCRIPTION "PointF()"
@@ -326,7 +326,7 @@ return 0
    TEST PointF( 20.4, 20.4 ) == PointF( 20.4, 20.4 )    DESCRIPTION "Equals"
    TEST oPlus:isKindOf( "GPPOINTF" )                    DESCRIPTION "PointF( 40.5, 10 ) + PointF( -20, -30.2 )" SAMPLE ( MsgInfo( oPlus:X, "X Value" ), MsgInfo( oPlus:Y, "Y Value" ) )
    TEST oMinus:isKindOf( "GPPOINTF" )                   DESCRIPTION "PointF( 40.5, 10 ) - PointF( -20, -30.2 )" SAMPLE ( MsgInfo( oMinus:X, "X Value" ), MsgInfo( oMinus:Y, "Y Value" ) )
-   
+
 return 0
 
 *****************************************************************************************
@@ -335,10 +335,10 @@ return 0
 
    local oPlus
    local oMinus
-   
+
    oPlus := Point( 40, 10 ) + Point( -20, -30 )
    oMinus:= Point( 40, 10 ) - Point( -20, -30 )
-   
+
    SEPARADOR( "POINT" )
 
    TEST !empty( Point():handle )                      DESCRIPTION "Point()"
@@ -348,7 +348,7 @@ return 0
    TEST Point( 20, 20 ) == Point( 20, 20 )            DESCRIPTION "Equals"
    TEST oPlus:isKindOf( "GPPOINT" )                   DESCRIPTION "Point( 40, 10 ) + Point( -20, -30 )" SAMPLE ( MsgInfo( oPlus:X, "X Value" ), MsgInfo( oPlus:Y, "Y Value" ) )
    TEST oMinus:isKindOf( "GPPOINT" )                  DESCRIPTION "Point( 40, 10 ) + Point( -20, -30 )" SAMPLE ( MsgInfo( oMinus:X, "X Value" ), MsgInfo( oMinus:Y, "Y Value" ) )
-   
+
 return 0
 
 
@@ -376,11 +376,11 @@ local oSB, oColor
 
    SEPARADOR( "SOLID BRUSH" )
 
-   TEST ! Empty( oSB:handle )          DESCRIPTION "Constructor Solid Brush"  
-   TEST oSB:GetColor( @oColor ) == 0   DESCRIPTION "GetColor" SAMPLE Example_GetColor()   
+   TEST ! Empty( oSB:handle )          DESCRIPTION "Constructor Solid Brush"
+   TEST oSB:GetColor( @oColor ) == 0   DESCRIPTION "GetColor" SAMPLE Example_GetColor()
    TEST oSB:SetColor( oColor ) == 0    DESCRIPTION "SetColor" SAMPLE Example_SetColor()
-   
-   
+
+
 return 0
 
 
@@ -427,14 +427,14 @@ return 0
    LinearGradientBrush oLGBLF( oRect, oColor1, oColor2, LinearGradientModeVertical )
    LinearGradientBrush oLGBL2( oRectF, oColor1, oColor2, 30, .T. )
    LinearGradientBrush oLGBLF2( oRect, oColor1, oColor2, 30, .T. )
-    
-   RectF oRect2() 
-    
+
+   RectF oRect2()
+
    SEPARADOR( "LINEARGRADIENTBRUSH" )
-   
+
    TEST ! Empty( oLGB:handle )          DESCRIPTION "Constructor Point, Point, Color, Color"  SAMPLE TestLinearGB1( )
    TEST ! Empty( oLGBF:handle )         DESCRIPTION "Constructor PointF, PointF, Color, Color"
-   TEST ! Empty( oLGBL:handle )         DESCRIPTION "Constructor Rect, Color, Color, LinearGradientMode"
+   TEST ! Empty( oLGBL:handle )         DESCRIPTION "Constructor Rect, Color, Color, LinearGradientMode" SAMPLE TestLinearGB2( )
    TEST ! Empty( oLGBLF:handle )        DESCRIPTION "Constructor RectF, Color, Color, LinearGradientMode"
    TEST ! Empty( oLGBL2:handle )        DESCRIPTION "Constructor Rect, Color, Color, angle, isAngleScalable"
    TEST ! Empty( oLGBLF2:handle )       DESCRIPTION "Constructor RectF, Color, Color, angle, isAngleScalable"
@@ -495,13 +495,13 @@ return 0
   AAdd( aPointF, PointF( 150, 125 ) )
   AAdd( aPointF, PointF( 200, 100 ) )
   AAdd( aPointF, PointF( 250, 150 ) )
-// 
+//
   SEPARADOR( "MATRIX" )
 
   TEST ! empty( oMatrix:handle )                       DESCRIPTION "Constructor "
   TEST ! empty( oMatrix2:handle )                      DESCRIPTION "Constructor Matrix( RectF, PointF )"
   TEST ! empty( oMatrix3:handle )                      DESCRIPTION "Constructor Matrix( REAL, REAL, REAL, REAL, REAL, REAL )"
-  
+
   TEST !Empty( ( oClone := oMatrix3:Clone() ):handle )  DESCRIPTION "Clone"
   TEST oMatrix3:Equals( oClone )                        DESCRIPTION "Equals"
   TEST oMatrix3:GetElements( @aElements ) == 0          DESCRIPTION "GetElements"
@@ -690,7 +690,7 @@ local oPen, oColor2, oBrush2, matrix
    Pen oPen2(Color(255, 0, 0, 255), 30)
    Pen oPen3(Color(255, 0, 0, 255), 30)
    Pen oPen4(Color(255, 0, 0, 255), 30)
-   
+
    SEPARADOR( "PEN" )
 
    TEST !empty( Pen( oPen ):handle )                       DESCRIPTION "Constructor Pen. Pen( oPen )"
@@ -702,48 +702,48 @@ local oPen, oColor2, oBrush2, matrix
    TEST !empty( oPen:GetBrush():handle )                   DESCRIPTION "GetBrush()" SAMPLE Example_PenSetBrush()
    TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
    TEST oPen2:GetCompoundArray( )==0                       DESCRIPTION "GetCompoundArray()" SAMPLE Example_SetCompoundArray()
-//   
+//
    TEST oPen3:SetDashCap( DashCapTriangle )==0             DESCRIPTION "SetDashCap( )" SAMPLE Example_SetCustomStartCap()
-   TEST oPen3:GetDashCap() == DashCapTriangle              DESCRIPTION "GetDashCap( )" 
+   TEST oPen3:GetDashCap() == DashCapTriangle              DESCRIPTION "GetDashCap( )"
 
    TEST oPen3:SetDashOffset( 10 )==0                       DESCRIPTION "SetDashOffset( )" SAMPLE Example_SetDashOffset()
-   TEST oPen3:GetDashOffset( )==10                         DESCRIPTION "GetDashOffset( )" 
+   TEST oPen3:GetDashOffset( )==10                         DESCRIPTION "GetDashOffset( )"
 
    TEST oPen2:SetCompoundArray( {0.0, 0.2, 0.5, 0.7, 0.9, 1.0} )==0 DESCRIPTION "SetCompoundArray()" SAMPLE Example_SetCompoundArray()
    TEST oPen2:GetCompoundArrayCount()==6                   DESCRIPTION "GetCompoundArrayCount()"
    TEST oPen3:SetDashPattern( { 5, 2, 15, 4 }, 4 )==0      DESCRIPTION "SetDashPattern( {} )" SAMPLE Example_SetDashPattern()
    TEST oPen3:GetDashPattern() ==0                         DESCRIPTION "GetDashPattern( )"    SAMPLE Example_SetDashPattern()
-   
-   TEST oPen3:SetDashStyle( DashStyleDash )==0           DESCRIPTION "SetDashStyle( )" SAMPLE Example_SetDashStyle()   
-   TEST oPen3:GetDashStyle()==DashStyleDash              DESCRIPTION "GetDashStyle( )" 
-   
+
+   TEST oPen3:SetDashStyle( DashStyleDash )==0           DESCRIPTION "SetDashStyle( )" SAMPLE Example_SetDashStyle()
+   TEST oPen3:GetDashStyle()==DashStyleDash              DESCRIPTION "GetDashStyle( )"
+
    TEST oPen3:SetEndCap( LineCapArrowAnchor )==0           DESCRIPTION "SetEndCap( )"   SAMPLE Example_SetStartEndCap()
-   TEST oPen3:GetEndCap( )==LineCapArrowAnchor             DESCRIPTION "GetEndCap( )"   
-   
+   TEST oPen3:GetEndCap( )==LineCapArrowAnchor             DESCRIPTION "GetEndCap( )"
+
    TEST oPen3:SetStartCap( LineCapArrowAnchor )==0         DESCRIPTION "SetStartCap( )" SAMPLE Example_SetStartEndCap()
-   TEST oPen3:GetStartCap( )==LineCapArrowAnchor           DESCRIPTION "GetStartCap( )" 
-   
+   TEST oPen3:GetStartCap( )==LineCapArrowAnchor           DESCRIPTION "GetStartCap( )"
+
    TEST oPen3:SetLineCap(LineCapArrowAnchor, LineCapTriangle, DashCapRound)==0 DESCRIPTION "SetLineCap()" SAMPLE Example_SetLineCap()
-   
+
    TEST oPen3:SetLineJoin(LineJoinBevel)==0                DESCRIPTION "SetLineJoin()" SAMPLE Example_SetLineJoin()
-   TEST oPen3:GetLineJoin()==LineJoinBevel                 DESCRIPTION "GetLineJoin()" 
+   TEST oPen3:GetLineJoin()==LineJoinBevel                 DESCRIPTION "GetLineJoin()"
 //
-   TEST oPen3:SetMiterLimit(10.0)==0                       DESCRIPTION "SetMiterLimit()" 
-   TEST oPen3:GetMiterLimit()==10.0                        DESCRIPTION "GetMiterLimit()" 
+   TEST oPen3:SetMiterLimit(10.0)==0                       DESCRIPTION "SetMiterLimit()"
+   TEST oPen3:GetMiterLimit()==10.0                        DESCRIPTION "GetMiterLimit()"
 
    TEST oPen3:SetTransform(matrix(20, 0, 0, 10, 0, 0))==0  DESCRIPTION "SetTransform()" SAMPLE Example_SetTransformPen()
    TEST oPen3:GetTransform( @matrix )==0                   DESCRIPTION "GetTransform()" //SAMPLE Example_SetTransformPen()
 
    TEST oPen3:SetWidth(15)==0                              DESCRIPTION "SetWidth()"    SAMPLE Example_SetWidth()
    TEST oPen3:GetWidth()==15                             DESCRIPTION "GetWidth()"    SAMPLE Example_SetWidth()
-      
+
 
    TEST oPen:ScaleTransform( 8, 4 ) == 0                   DESCRIPTION "ScaleTransform()" SAMPLE Example_PenScaleTransform()
    TEST oPen:SetAlignment( PenAlignmentInset ) == 0        DESCRIPTION "oPen:SetAlignment()" SAMPLE Example_PenSetAlignment()
    TEST oPen:MultiplyTransform( Matrix( 1, 0, 0, 4, 0, 0 ), MatrixOrderPrepend ) == 0 DESCRIPTION "MultiplyTransform()" SAMPLE Example_MultiplyTrans()
    TEST oPen:ResetTransform() == 0                         DESCRIPTION "ResetTransform()" SAMPLE Example_ResetTransPen()
    TEST oPen:RotateTransform(30, MatrixOrderAppend)==0     DESCRIPTION "RotateTransform()" SAMPLE Example_RotateTransPen()
-   
+
 return 0
 
 
@@ -752,7 +752,7 @@ return 0
 *********************************************************************************************************************
 
    SEPARADOR( "GRAPHICS" )
-   
+
    TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
    TEST .T.      DESCRIPTION "DrawCurve( pen, point ) "  SAMPLE Example_DrawCurve1()
    TEST .T.      DESCRIPTION "SetTransform( matrix ) "  SAMPLE Example_SetTransformG()
@@ -892,7 +892,7 @@ local Y := 20
 
 RectF oRect( nLeft, nTop, nWidth, nHeight )
 PointF oPoint( X, Y )
-       
+
 oRect:Inflate( oPoint )
 
 return oRect:GetLeft()   == nLeft          - X .and. ;
@@ -1100,7 +1100,7 @@ local Y := 20
 
 Rect oRect( nLeft, nTop, nWidth, nHeight )
 Point oPoint( X, Y )
-       
+
 oRect:Inflate( oPoint )
 
 return oRect:GetLeft()   == nLeft          - X .and. ;
@@ -1232,6 +1232,26 @@ function TestLinearGB1( )
 
       LinearGradientBrush linGrBrush(  Point(50, 50),  Point(200, 100),  Color(255, 255, 0, 0),  Color(255, 0, 0, 255) )  // blue
       myGraphics:FillRectangle( linGrBrush, 0, 0, 300, 200)
+      return nil
+     }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function TestLinearGB2( )
+
+
+   local bPainted := { | hDC |
+      local myGraphics
+      local linGrBrush
+      Graphics myGraphics( hDC )
+      RectF oRect( 0, 0, 100, 100 )
+
+      LinearGradientBrush linGrBrush( oRect, Color(255, 255, 0, 0),  Color(255, 0, 0, 255), LinearGradientModeVertical )
+
+      myGraphics:FillRectangle( linGrBrush, oRect )
+
       return nil
      }
 
@@ -1389,24 +1409,24 @@ function Example_GetRect()
    local bPainted := { | hDC |
    	 local rect
      Graphics myGraphics(hdc)
-     
+
      // Create a linear gradient brush.
      LinearGradientBrush linGrBrush( ;
         Point(20, 10),;
         Point(60, 110),;
         Color(255, 0, 0, 0), ;    // black
         Color(255, 0, 0, 255))  // blue
-     
+
      Rect rect()
      linGrBrush:GetRectangle(@rect)
-     
+
      // Draw the retrieved rectangle.
      Pen myPen(Color(255, 0, 0, 0))
      myGraphics:DrawRectangle(myPen, rect)
    }
-   
-   exampleWindow( bPainted )         
-   
+
+   exampleWindow( bPainted )
+
 return nil
 
 
@@ -1423,8 +1443,8 @@ function Example_SetLinColors()
       Color(255, 0, 0, 255),;  // blue
       LinearGradientModeHorizontal )
 
-   linGrBrush:GetLinearColors( @aColors )   
-   
+   linGrBrush:GetLinearColors( @aColors )
+
    myGraphics:FillRectangle(linGrBrush, 0, 0, 100, 50)
 
    linGrBrush:SetLinearColors( ;
@@ -1434,9 +1454,9 @@ function Example_SetLinColors()
    myGraphics:FillRectangle(linGrBrush, 0, 75, 100, 50)
 
    linGrBrush:SetLinearColors( aColors[ 2 ], aColors[ 1 ] )
-   
+
    myGraphics:FillRectangle(linGrBrush, 0, 150, 100, 50)
-   
+
 }
 
    exampleWindow( bPainted )
@@ -1486,8 +1506,8 @@ return nil
 
 function Example_GetColor()
    local bPainted :=  {| hDC |
-   
-   local oColor     
+
+   local oColor
    Graphics graphics(hdc)
 
    // Create a solid brush, and use it to fill a rectangle.
@@ -1503,9 +1523,9 @@ function Example_GetColor()
    // Paint a second rectangle with the second solid brush.
    graphics:FillRectangle(solidBrush2, 220, 10, 200, 100)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -1514,71 +1534,71 @@ function Example_SetColor()
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
-      
+
       // Create a solid brush, and use it to fill a rectangle.
       SolidBrush solidBrush(Color(255, 0, 0, 255))  // blue
-      
+
       graphics:FillRectangle(solidBrush, 10, 10, 200, 100)
-      
+
       // Change the color of the brush, and fill another rectangle.
       solidBrush:SetColor(Color(255, 255, 0, 0))    // red
-      
+
       graphics:FillRectangle(solidBrush, 220, 10, 200, 100)
-   
+
    }
 
    exampleWindow( bPainted )
-   
-return nil   
+
+return nil
 
 
 function Example_PenSetBrush( )
    local bPainted := { | hdc |
-       
+
       local oBrush
       Graphics graphics(hdc)
-      
+
       // Create a HatchBrush object.
       SolidBrush solidBrush(Color(255, 0, 0, 255))  // blue
-      
+
       // Create a pen, and set the brush for the pen.
       Pen pen(Color(255, 255, 0, 0), 10)
       pen:SetBrush(solidBrush)
       oBrush = pen:GetBrush()
-      
+
       // Draw a line with the pen.
       graphics:DrawLine( pen, 0, 0, 200, 100)
       graphics:FillRectangle(oBrush, 220, 10, 200, 100)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_PenSetColor( )
    local bPainted := { | hdc |
       local oColor
-      
+
       Graphics graphics(hdc)
-      
+
       // Create a red pen, and use it to draw a line.
       Pen pen(Color(255, 255, 0, 0), 5)
       graphics:DrawLine(pen, 0, 0, 200, 100)
-      
+
       // Change the pen's color to blue, and draw a second line.
       pen:SetColor(Color(255, 0, 0, 255))
       graphics:DrawLine(pen, 0, 40, 200, 140)
-      
+
       pen:GetColor( @oColor )
       pen:SetColor( oColor )
       graphics:DrawLine(pen, 0, 80, 200, 140)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_PenScaleTransform( )
    local bPainted := { | hdc |
@@ -1587,17 +1607,17 @@ function Example_PenScaleTransform( )
       // Create a pen, and use it to draw a rectangle.
       Pen pen(Color(255, 0, 0, 255), 2)
       graphics:DrawRectangle(pen, 50, 50, 150, 100)
-      
+
       // Apply a scaling transformation to the pen.
       pen:ScaleTransform(8, 4)
-      
+
       // Draw a rectangle with the transformed pen.
       graphics:DrawRectangle(pen, 250, 50, 150, 100)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_PenSetAlignment( )
    local bPainted := { | hdc |
@@ -1607,19 +1627,19 @@ function Example_PenSetAlignment( )
       // Create a black and a green pen.
       Pen blackPen(Color(255, 0, 0, 0), 1)
       Pen greenPen(Color(255, 0, 255, 0), 15)
-      
+
       // Set the alignment of the green pen.
       greenPen:SetAlignment(PenAlignmentInset)
-      
+
       // Draw two lines using each pen.
       graphics:DrawEllipse(greenPen, 0, 0, 100, 200)
       graphics:DrawEllipse(blackPen, 0, 0, 100, 200)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_MultiplyTrans( )
    local bPainted := { | hdc |
@@ -1627,18 +1647,18 @@ function Example_MultiplyTrans( )
       Graphics graphics(hdc)
 
       Matrix matrix(1, 0, 0, 4, 0, 0)  // vertical stretch
-      
+
       Pen pen(Color(255, 0, 0, 255))
       pen:SetWidth(5)
       pen:RotateTransform(30)                             // first rotate
       pen:MultiplyTransform(matrix, MatrixOrderPrepend)  // then stretch
-      
+
       graphics:DrawEllipse(pen, 50, 50, 200, 200)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_ResetTransPen( )
@@ -1650,19 +1670,19 @@ function Example_ResetTransPen( )
       // Create a pen, and set its transformation:
       Pen pen(Color(255, 0, 0, 255), 2)
       pen:ScaleTransform(8, 4)
-      
+
       // Draw a rectangle with the transformed pen:
       graphics:DrawRectangle(pen, 50, 50, 150, 100)
-      
+
       pen:ResetTransform()
-      
+
       // Draw a rectangle with no pen transformation:
       graphics:DrawRectangle(pen, 250, 50, 150, 100)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -1676,41 +1696,41 @@ function Example_RotateTransPen( )
       pen:ScaleTransform(1, 4)                     // first stretch
       pen:RotateTransform(60, MatrixOrderAppend)   // then rotate
       graphics:DrawEllipse(pen, 50, 50, 200, 200)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_SetCompoundArray( )
    local bPainted := { | hdc |
       local compVals := {0.0, 0.5, 0.6, 0.8, 0.9, 1.0}
       local aRes
-      
+
       Graphics graphics(hdc)
 
 
        // Create an array of real numbers and a Pen object.
-       
+
        Pen pen(Color(255, 0, 0, 255), 30)
        Pen pen2(Color(255, 255, 0, 255), 40)
-       
+
        // Set the compound array of the pen.
        pen:SetCompoundArray(compVals, 6)
-       
+
        pen:GetCompoundArray( @aRes )
 
        pen:SetCompoundArray( aRes, Len( aRes ) )
-       
+
        // Draw a line with the pen.
        graphics:DrawLine(pen, 5, 20, 405, 200)
        graphics:DrawLine(pen, 5, 100, 405, 280)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_SetDashStyle( )
@@ -1720,23 +1740,23 @@ function Example_SetDashStyle( )
 
       // Create a Pen object.
       Pen pen(Color(255, 0, 0, 255), 15)
-      
+
       // Set the dash style for the pen, and draw a dashed line.
       pen:SetDashStyle(DashStyleDash)
       graphics:DrawLine(pen, 0, 50, 400, 150)
-      
+
       // Reset the dash style for the pen, and draw a second line.
       pen:SetDashStyle(DashStyleDot)
       graphics:DrawLine(pen, 0, 80, 400, 180)
-      
+
       // Reset the dash style for the pen, and draw a third line.
       pen:SetDashStyle(DashStyleDashDot)
       graphics:DrawLine(pen, 0, 110, 400, 210)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_SetCustomStartCap( )
@@ -1751,14 +1771,14 @@ function Example_SetCustomStartCap( )
 
       // Set a triangular dash cap for the pen.
       pen:SetDashCap(DashCapTriangle)
-      
+
       // Draw a line using the pen.
       graphics:DrawLine(pen, 20, 20, 200, 100)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -1771,15 +1791,15 @@ function Example_SetDashOffset( )
       Pen pen(Color(255, 0, 0, 255), 15)
       pen:SetDashStyle(DashStyleDash)
       graphics:DrawLine(pen, 0, 50, 400, 50)
-      
+
       // Set the dash offset value for the pen, and draw a second line.
       pen:SetDashOffset(10)
       graphics:DrawLine(pen, 0, 80, 400, 80)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -1789,26 +1809,26 @@ function Example_SetDashPattern( )
          5.0,;   // dash length 5
          2.0,;   // space length 2
          15.0,;  // dash length 15
-         4.0} 
+         4.0}
       local aRes
       Graphics graphics(hdc)
 
       // Create a Pen object.
       Pen pen(Color(255, 0, 0, 0), 5)
       Pen pen2(Color(255, 255, 0, 0), 5)
-      
+
       // Set the dash pattern for the custom dashed line.
       pen:SetDashPattern(dashVals, 4)
       pen:GetDashPattern( @aRes )
       pen2:SetDashPattern(aRes, Len( aRes ) )
-      
+
       // Draw the custom dashed line.
       graphics:DrawLine(pen, 5, 20, 405, 200)
       graphics:DrawLine(pen2, 5, 100, 405, 280)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_SetStartEndCap( )
@@ -1818,25 +1838,25 @@ function Example_SetStartEndCap( )
 
       // Create a Pen object.
       Pen pen(Color(255, 0, 0, 255), 15)
-   
+
       // Set the end cap of the pen, and draw a line.
       pen:SetEndCap(LineCapArrowAnchor)
       pen:SetStartCap(LineCapRound)
       graphics:DrawLine(pen, 10, 50, 400, 150)
-   
+
       // Reset the end cap, and draw a second line.
       pen:SetEndCap(LineCapTriangle)
       pen:SetStartCap(LineCapArrowAnchor)
       graphics:DrawLine(pen, 10, 80, 400, 180)
-   
+
       // Reset the end cap, and draw a third line.
       pen:SetEndCap(LineCapRound)
       pen:SetStartCap(LineCapTriangle)
       graphics:DrawLine(pen, 10, 110, 400, 210)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_SetLineCap( )
@@ -1845,19 +1865,19 @@ function Example_SetLineCap( )
       Graphics graphics(hdc)
       // Create a pen.
       Pen pen(Color(255, 0, 0, 255), 15)
-      
+
       // Set line caps for the pen.
       pen:SetLineCap(LineCapArrowAnchor, LineCapTriangle, DashCapRound)
-      
+
       // Set the dash style for the pen.
       pen:SetDashStyle(DashStyleDash)
-      
+
       // Draw a line.
       graphics:DrawLine(pen, 50, 50, 420, 200)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -1877,9 +1897,9 @@ function Example_SetLineJoin( )
    pen:SetLineJoin(LineJoinBevel)
    graphics:DrawRectangle(pen, 200, 20, 150, 100)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -1889,29 +1909,29 @@ function Example_SetTransformPen( )
       Graphics graphics(hdc)
 
       Matrix matrix(20, 0, 0, 10, 0, 0)  // scale
-      
+
       // Create a pen, and use it to draw a rectangle.
       Pen pen(Color(255, 0, 0, 255), 2)
       Pen pen2(Color(255, 255, 0, 255), 2)
-      
+
       graphics:DrawRectangle(pen, 10, 50, 150, 100)
-      
-      // Scale the pen width by a factor of 20 in the horizontal 
+
+      // Scale the pen width by a factor of 20 in the horizontal
       // direction and a factor of 10 in the vertical direction.
       pen:SetTransform(matrix)
-      
+
       // Draw a rectangle with the transformed pen.
       graphics:DrawRectangle(pen, 200, 50, 150, 100)
 
       pen:GetTransform(@matrix2)
-      
+
       pen2:SetTransform(matrix2)
-            
+
       graphics:DrawRectangle(pen2, 200, 180, 150, 100)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_SetWidth( )
@@ -1922,14 +1942,14 @@ function Example_SetWidth( )
       // Create a pen of width 2, and use it to draw a rectangle.
       Pen pen(Color(255, 0, 0, 255), 2)
       graphics:DrawRectangle(pen, 10, 50, 150, 100)
-      
+
       // Reset the pen's width to 15, and draw another rectangle.
       pen:SetWidth(15)
       graphics:DrawRectangle(pen, 200, 50, 150, 100)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -1942,40 +1962,40 @@ function Example_GetBoundsF( )
       Graphics graphics(hdc)
       RectF rect1(50, 40, 200, 100)
       rect1:Offset(30, 20)
-      
-      
+
+
       rect1:GetBounds(@rect2)
 
-      
+
       Pen pen(Color(255, 0, 0, 255))
       graphics:DrawRectangle(pen, rect2)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_GetLocationF( )
    local bPainted := { | hdc |
-      
+
       local pen, location, rect
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 255))
       RectF rect(50, 40, 200, 50)
-      
+
       // Get the location of the upper-left corner of the rectangle.
       rect:GetLocation(@location)
 
       // Draw the rectangle.
       graphics:DrawRectangle(pen, rect)
-      
+
       // Draw a line from the upper-left corner of the rectangle to (0, 0).
       graphics:DrawLine(pen, location, PointF(0, 0))
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_InflatePointF( )
@@ -1984,49 +2004,49 @@ function Example_InflatePointF( )
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 0))
       PointF point(20, 10)
-      
+
       RectF rect(100, 100, 80, 40)
       graphics:DrawRectangle(pen, rect)
 
       rect:Inflate(point)
       graphics:DrawRectangle(pen, rect)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_InflatePointF2( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 0))
-      
+
       RectF rect(100, 100, 80, 40)
       graphics:DrawRectangle(pen, rect)
 
       rect:Inflate( 40, 40 )
       graphics:DrawRectangle(pen, rect)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_IntersectABCF( )
    local bPainted := { | hdc |
       local graphics, pGreenPen, rectA, rectB, rectC, blackPen
       Graphics graphics(hdc)
-      
+
       // Create three RectF objects.
       RectF rectA(50, 50, 200, 100)
       RectF rectB(70, 20, 100, 200)
-      
+
       // Draw rectA and rectB with a thin black pen.
       Pen blackPen(Color(255, 0, 0, 0), 1)
       graphics:DrawRectangle(blackPen, rectA)
       graphics:DrawRectangle(blackPen, rectB)
-      
+
       // Draw the rectangle that indicates the intersection of the two rectangles.
       if(rectA:Intersect(@rectC, rectA, rectB))
 //         // rectC is not empty.
@@ -2037,10 +2057,10 @@ function Example_IntersectABCF( )
 
       return nil
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_IntersectRectF( )
    local bPainted := { | hdc |
@@ -2049,23 +2069,23 @@ function Example_IntersectRectF( )
       // Create two RectF objects.
       RectF rect1(50, 50, 200, 100)
       RectF rect2(70, 20, 100, 200)
-      
+
       // Draw rect1 and rect2 with a thin black pen.
       Pen blackPen(Color(255, 0, 0, 0), 1)
       graphics:DrawRectangle(blackPen, rect1)
       graphics:DrawRectangle(blackPen, rect2)
-      
+
       // Form the intersection of rect1 and rect2, and store
       // the result in rect1.
       rect1:Intersect(rect2)
-      
+
       // Draw the new rect1 with a thick green pen.
       Pen greenPen(Color(255, 0, 255, 0), 7)
       graphics:DrawRectangle(greenPen, rect1)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -2074,96 +2094,96 @@ function Example_IntersectsWithF( )
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 0), 1)
-   
+
       // Create two RectF objects.
       RectF rect1(50, 50, 200, 100)
       RectF rect2(70, 20, 100, 200)
-    
+
       // Draw rect1.   graphics.DrawRectangle(&pen, rect1);
       // If rect1 intersects with rect2 then draw rect2.
       if(rect2:IntersectsWith(rect1))
          graphics:DrawRectangle(pen, rect2)
       endif
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_OffsetPointABF( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 0))
-      
+
       // Create a RectF object, and draw the rectangle.
       RectF rect(100, 100, 80, 40)
       graphics:DrawRectangle(pen, rect)
-      
+
       // Offset the rectangle by the PointF object.
       rect:Offset( 30, 20 )
-      
+
       // Redraw the rectangle.
       graphics:DrawRectangle(pen, rect)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_OffsetPointF( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 0))
-      
+
       // Create a PointF object.
       PointF point(30, 20)
-      
+
       // Create a RectF object, and draw the rectangle.
       RectF rect(100, 100, 80, 40)
       graphics:DrawRectangle(pen, rect)
-      
+
       // Offset the rectangle by the PointF object.
       rect:Offset(point)
-      
+
       // Redraw the rectangle.
       graphics:DrawRectangle(pen, rect)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_UnionABCF( )
    local bPainted := { | hdc |
       local rectRes
-      
+
       Graphics graphics(hdc)
-            
+
       // Create three RectF objects.
       RectF rectA(50, 50, 400, 100)
       RectF rectB(70, 20, 100, 200)
       RectF rectC()
-      
+
       // Determine the union of rectA and rectB, and store the result in rectC.
       if(rectC:Union(@rectRes, rectA, rectB))
          // rectC is not empty.
          // Draw the union with a thick green pen.
          Pen pGreenPen(Color(255, 0, 255, 0), 7)
-         graphics:DrawRectangle(pGreenPen, rectRes)         
+         graphics:DrawRectangle(pGreenPen, rectRes)
       endif
       // Draw rectA and rectB with a thin black pen.
       Pen blackPen(Color(255, 0, 0, 0), 1)
       graphics:DrawRectangle(blackPen, rectA)
       graphics:DrawRectangle(blackPen, rectB)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 //--------------------
 //RECT
@@ -2175,40 +2195,40 @@ function Example_GetBounds( )
       Graphics graphics(hdc)
       Rect rect1(50, 40, 200, 100)
       rect1:Offset(30, 20)
-      
-      
+
+
       rect1:GetBounds(@rect2)
 
-      
+
       Pen pen(Color(255, 0, 0, 255))
       graphics:DrawRectangle(pen, rect2)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_GetLocation( )
    local bPainted := { | hdc |
-      
+
       local pen, location, rect
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 255))
       Rect rect(50, 40, 200, 50)
-      
+
       // Get the location of the upper-left corner of the rectangle.
       rect:GetLocation(@location)
 
       // Draw the rectangle.
       graphics:DrawRectangle(pen, rect)
-      
+
       // Draw a line from the upper-left corner of the rectangle to (0, 0).
       graphics:DrawLine(pen, location, PointF(0, 0))
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 
@@ -2218,49 +2238,49 @@ function Example_InflatePoint( )
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 0))
       Point point(20, 10)
-      
+
       Rect rect(100, 100, 80, 40)
       graphics:DrawRectangle(pen, rect)
 
       rect:Inflate(point)
       graphics:DrawRectangle(pen, rect)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_InflatePoint2( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 0))
-      
+
       Rect rect(100, 100, 80, 40)
       graphics:DrawRectangle(pen, rect)
 
       rect:Inflate( 40, 40 )
       graphics:DrawRectangle(pen, rect)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_IntersectABC( )
    local bPainted := { | hdc |
       local graphics, pGreenPen, rectA, rectB, rectC, blackPen
       Graphics graphics(hdc)
-      
+
       // Create three RectF objects.
       Rect rectA(50, 50, 200, 100)
       Rect rectB(70, 20, 100, 200)
-      
+
       // Draw rectA and rectB with a thin black pen.
       Pen blackPen(Color(255, 0, 0, 0), 1)
       graphics:DrawRectangle(blackPen, rectA)
       graphics:DrawRectangle(blackPen, rectB)
-      
+
       // Draw the rectangle that indicates the intersection of the two rectangles.
       if(rectA:Intersect(@rectC, rectA, rectB))
 //         // rectC is not empty.
@@ -2271,10 +2291,10 @@ function Example_IntersectABC( )
 
       return nil
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_IntersectRect( )
    local bPainted := { | hdc |
@@ -2283,23 +2303,23 @@ function Example_IntersectRect( )
       // Create two RectF objects.
       Rect rect1(50, 50, 200, 100)
       Rect rect2(70, 20, 100, 200)
-      
+
       // Draw rect1 and rect2 with a thin black pen.
       Pen blackPen(Color(255, 0, 0, 0), 1)
       graphics:DrawRectangle(blackPen, rect1)
       graphics:DrawRectangle(blackPen, rect2)
-      
+
       // Form the intersection of rect1 and rect2, and store
       // the result in rect1.
       rect1:Intersect(rect2)
-      
+
       // Draw the new rect1 with a thick green pen.
       Pen greenPen(Color(255, 0, 255, 0), 7)
       graphics:DrawRectangle(greenPen, rect1)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -2308,96 +2328,96 @@ function Example_IntersectsWith( )
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 0), 1)
-   
+
       // Create two RectF objects.
       Rect rect1(50, 50, 200, 100)
       Rect rect2(70, 20, 100, 200)
-    
+
       // Draw rect1.   graphics.DrawRectangle(&pen, rect1);
       // If rect1 intersects with rect2 then draw rect2.
       if(rect2:IntersectsWith(rect1))
          graphics:DrawRectangle(pen, rect2)
       endif
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_OffsetPointAB( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 0))
-      
+
       // Create a RectF object, and draw the rectangle.
       Rect rect(100, 100, 80, 40)
       graphics:DrawRectangle(pen, rect)
-      
+
       // Offset the rectangle by the PointF object.
       rect:Offset( 30, 20 )
-      
+
       // Redraw the rectangle.
       graphics:DrawRectangle(pen, rect)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_OffsetPoint( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 0))
-      
+
       // Create a PointF object.
       Point point(30, 20)
-      
+
       // Create a RectF object, and draw the rectangle.
       Rect rect(100, 100, 80, 40)
       graphics:DrawRectangle(pen, rect)
-      
+
       // Offset the rectangle by the PointF object.
       rect:Offset(point)
-      
+
       // Redraw the rectangle.
       graphics:DrawRectangle(pen, rect)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_UnionABC( )
    local bPainted := { | hdc |
       local rectRes
-      
+
       Graphics graphics(hdc)
-            
+
       // Create three RectF objects.
       Rect rectA(50, 50, 400, 100)
       Rect rectB(70, 20, 100, 200)
       Rect rectC()
-      
+
       // Determine the union of rectA and rectB, and store the result in rectC.
       if(rectC:Union(@rectRes, rectA, rectB))
          // rectC is not empty.
          // Draw the union with a thick green pen.
          Pen pGreenPen(Color(255, 0, 255, 0), 7)
-         graphics:DrawRectangle(pGreenPen, rectRes)         
+         graphics:DrawRectangle(pGreenPen, rectRes)
       endif
       // Draw rectA and rectB with a thin black pen.
       Pen blackPen(Color(255, 0, 0, 0), 1)
       graphics:DrawRectangle(blackPen, rectA)
       graphics:DrawRectangle(blackPen, rectB)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 //--------------------
 //MATRIX
@@ -2406,107 +2426,107 @@ return nil
 function Example_Invert( )
    local bPainted := { | hdc |
       local a
-      
+
       Graphics graphics(hdc)
-      
+
       Pen myPen(Color(255, 0, 0, 255))
-      
+
       Matrix matrix(1.0, 0.0, 0.0, 1.0, 30.0, 20.0)
-      
+
       graphics:SetTransform(matrix)
       graphics:DrawRectangle(myPen, 0, 0, 200, 100)
       matrix:Invert()
       graphics:SetTransform(matrix)
       graphics:DrawRectangle(myPen, 0, 0, 200, 100)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_MultiplyM( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 255))
-      
+
       Matrix matrix1(3.0, 0.0, 0.0, 1.0, 0.0, 0.0)    // horizontal scale
       Matrix matrix2(1.0, 0.0, 0.0, 1.0, 20.0, 40.0)  // translation
-      
+
       matrix1:Multiply(matrix2, MatrixOrderAppend)
-      
+
       graphics:SetTransform(matrix1)
       graphics:DrawRectangle(pen, 0, 0, 100, 100)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_OffsetMatrix( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 255))
-      
+
       Matrix matrix(1.0, 0.0, 0.0, 1.0, 50.0, 30.0)
       xTranslation = matrix:OffsetX()
       yTranslation = matrix:OffsetY()
-      
+
       graphics:DrawLine(pen, 0.0, 0.0, xTranslation, yTranslation)
       graphics:SetTransform(matrix)
       graphics:DrawRectangle(pen, 0, 0, 20, 20)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_Reset( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 255))
-      
+
       Matrix matrix(5.0, 0.0, 0.0, 3.0, 0.0, 0.0)
       matrix:Reset()
       matrix:Translate(50.0, 40.0)
-      
+
       graphics:SetTransform(matrix)
       graphics:DrawRectangle(pen, 0, 0, 100, 100)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_RotateMatrix( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 255))
-      
+
       Matrix matrix()
       matrix:Translate(40.0, 0.0)            // first a translation
       matrix:Rotate(30.0, MatrixOrderAppend)  // then a rotation
-      
+
       graphics:SetTransform(matrix)
       graphics:DrawEllipse(pen, 0, 0, 100, 50)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_RotateAtMatrix( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 255))
-      
+
       Matrix matrix()
-      matrix:Translate(150.0, 100.0)  
+      matrix:Translate(150.0, 100.0)
       matrix:RotateAt(30.0, PointF(150.0, 100.0), MatrixOrderAppend)
 
       graphics:SetTransform(matrix)
@@ -2517,53 +2537,53 @@ function Example_RotateAtMatrix( )
 
       // Draw rotated axes with the origin at the center o the ellipse.
       graphics:DrawLine(pen, -50, 0, 50, 0)
-      graphics:DrawLine(pen, 0, -50, 0, 50)  
+      graphics:DrawLine(pen, 0, -50, 0, 50)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_ScaleMatrix( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 255))
-      
+
       Matrix matrix()
-      matrix:Rotate(30.0)  
+      matrix:Rotate(30.0)
       matrix:Scale(3.0, 2.0, MatrixOrderAppend)
-      
+
       graphics:SetTransform(matrix)
-      
+
       // Draw a tramsformed ellipse. The composite transformation
       // is rotate 30 degrees and then scale by a factor of 3
       // in the horizontal direction and 2 in the vertical direction.
       graphics:DrawEllipse(pen, 0, 0, 80, 40)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_SetElements( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 255))
-      
+
       Matrix matrix()
       matrix:SetElements(1.0, 0.0, 0.0, 1.0, 30.0, 50.0)
-      
+
       graphics:SetTransform(matrix)
-      graphics:DrawRectangle(pen, 0, 0, 80, 40) 
-   
+      graphics:DrawRectangle(pen, 0, 0, 80, 40)
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_Shear( )
@@ -2571,18 +2591,18 @@ function Example_Shear( )
 
       Graphics graphics(hdc)
       Pen pen(Color(255, 0, 0, 255))
-      
+
       Matrix matrix()
       matrix:Scale(2.0, 2.0)                     // first a scaling
       matrix:Shear(3.0, 0.0, MatrixOrderAppend)  // then a shear
-      
+
       graphics:SetTransform(matrix)
-      graphics:DrawRectangle(pen, 0, 0, 100, 50)  
-   
+      graphics:DrawRectangle(pen, 0, 0, 100, 50)
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_TransPoints( )
@@ -2590,7 +2610,7 @@ function Example_TransPoints( )
 
       local aPoint := {}
       Graphics graphics(hdc)
-      
+
       Pen pen(Color(255, 0, 0, 255))
 
       AAdd( aPoint, Point( 50, 100 ) )
@@ -2598,27 +2618,27 @@ function Example_TransPoints( )
       AAdd( aPoint, Point( 150, 125 ) )
       AAdd( aPoint, Point( 200, 100 ) )
       AAdd( aPoint, Point( 250, 150 ) )
-      
+
       Matrix matrix(1.0, 0.0, 0.0, 2.0, 5.0, 10.0)
 
       graphics:DrawCurve(pen, aPoint, 5)
-      
+
       matrix:TransformPoints( @aPoint, 5)
-      
+
       graphics:DrawCurve(pen, aPoint, 5)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_TransPointsF( )
    local bPainted := { | hdc |
 
       local aPoint := {}
       Graphics graphics(hdc)
-      
+
       Pen pen(Color(255, 0, 0, 255))
 
       AAdd( aPoint, PointF( 50, 100 ) )
@@ -2626,20 +2646,20 @@ function Example_TransPointsF( )
       AAdd( aPoint, PointF( 150, 125 ) )
       AAdd( aPoint, PointF( 200, 100 ) )
       AAdd( aPoint, PointF( 250, 150 ) )
-      
+
       Matrix matrix(1.0, 0.0, 0.0, 2.0, 5.0, 10.0)
 
       graphics:DrawCurve(pen, aPoint, 5)
-      
+
       matrix:TransformPoints( @aPoint, 5)
-      
+
       graphics:DrawCurve(pen, aPoint, 5)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_TransVectors( )
@@ -2647,36 +2667,36 @@ function Example_TransVectors( )
 
       local aPoint := {}
       Graphics graphics(hdc)
-      
+
       Pen pen(Color(255, 0, 0, 255), 7)
       pen:SetEndCap(LineCapArrowAnchor)
       SolidBrush brush(Color(255, 0, 0, 255))
-      
+
       // A point and a vector, same representation but different behavior
       Point point(100, 50)
       Point vector(100, 50)
-      
+
       // Draw the original point and vector in blue.
       graphics:FillEllipse(brush, point:X - 5, point:Y - 5, 10, 10)
-      
+
       graphics:DrawLine(pen, Point(0, 0), vector)
-      
+
       // Transform.
       Matrix matrix(0.8, 0.6, -0.6, 0.8, 100.0, 0.0)
       matrix:TransformPoints( { point } )
       matrix:TransformVectors( { vector } )
-      
+
       // Draw the transformed point and vector in red.
       pen:SetColor(Color(255, 255, 0, 0))
       brush:SetColor(Color(255, 255, 0, 0))
       graphics:FillEllipse(brush, point:X - 5, point:Y - 5, 10, 10)
       graphics:DrawLine(pen, Point(0, 0), vector)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 //--------------------
 //GRAPHICS
@@ -2685,7 +2705,7 @@ return nil
 function Example_DrawCurve1( )
    local bPainted := { | hdc |
       local aPoint := {}
-      
+
       Graphics graphics(hdc)
       // Define a Pen object and an array of Point objects.
       Pen greenPen(Color( 0, 255, 0 ), 3)
@@ -2694,11 +2714,11 @@ function Example_DrawCurve1( )
       AAdd( aPoint, Point( 200, 50 ) )
       AAdd( aPoint, Point( 400, 10 ) )
       AAdd( aPoint, Point( 500, 100 ) )
-      
-     
+
+
       // Draw the curve.
       graphics:DrawCurve(greenPen, aPoint, 4)
-      
+
       //Draw the points in the curve.
       SolidBrush redBrush( Color( 255, 0, 0 ) )
       graphics:FillEllipse(redBrush, Rect(95, 95, 10, 10))
@@ -2706,31 +2726,31 @@ function Example_DrawCurve1( )
       graphics:FillEllipse(redBrush, Rect(395, 5, 10, 10))
       graphics:FillEllipse(redBrush, Rect(495, 95, 10, 10))
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_SetTransformG( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc);
-      
+
       // Create a rotation matrix.
       Matrix transformMatrix()
       transformMatrix:Rotate(45.0)
-      
+
       // Set the transformation matrix of the Graphics object.
       graphics:SetTransform(transformMatrix)
-      
+
       // Draw a rotated rectangle.
       Pen pen(Color(255, 0, 0, 0))
       graphics:DrawRectangle(pen, 120, 0, 100, 50)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 //--------------------
@@ -2743,62 +2763,62 @@ function AddArcExample2( )
       Graphics graphics(hdc)
 
       GraphicsPath path()
-      
+
       path:AddArc(20, 20, 50, 100, 0.0, 180.0)
       path:CloseFigure()
-      
+
       // Draw the path.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_AddBezier( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
       GraphicsPath  path()
-      
-      Point pt1(50, 50) 
+
+      Point pt1(50, 50)
       Point pt2(60, 20)
       Point pt3(70, 100)
       Point pt4(80, 50)
-      
-      Point pt1f(450, 550) 
+
+      Point pt1f(450, 550)
       Point pt2f(460, 520)
       Point pt3f(470, 500)
-      Point pt4f(480, 450)      
-      
+      Point pt4f(480, 450)
+
       path:AddBezier(150.0, 150.0, 160.0, 120.0, 170.0, 200.0, 180.0, 150.0)
       path:CloseFigure()
-      
+
       path:AddBezier(250, 250, 260, 220, 270, 300, 280, 250)
       path:CloseFigure()
-      
+
       path:AddBezier(pt1, pt2, pt3, pt4)
       path:CloseFigure()
 
       path:AddBezier(pt1f, pt2f, pt3f, pt4f)
-      path:CloseFigure()      
-      
+      path:CloseFigure()
+
       // Draw the path.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_AddBeziers( )
    local bPainted := { | hdc |
       local aPoint, aPointF
       Graphics graphics(hdc)
       GraphicsPath  path()
-      aPoint = { Point(50, 50)   ,; 
+      aPoint = { Point(50, 50)   ,;
       Point(60, 20)   ,            ;
       Point(70, 100)  ,            ;
       Point(80, 50),               ;
@@ -2806,20 +2826,20 @@ function Example_AddBeziers( )
       Point(150,80),               ;
       Point(170, 30)               ;
       }
-      
-      aPointF = { PointF(150.0, 150.0)   ,; 
+
+      aPointF = { PointF(150.0, 150.0)   ,;
       PointF(160.0, 120.0)   ,            ;
       PointF(170.0, 200.0)  ,            ;
       PointF(180.0, 150.0),               ;
       PointF(220.0, 140.0),              ;
       PointF(250.0,180.0),               ;
       PointF(270.0, 130.0)               ;
-      }   
-      
-      
+      }
+
+
       path:AddBeziers( aPointF )
       path:CloseFigure()
-      
+
       path:AddBeziers( aPoint )
       path:CloseFigure()
 
@@ -2827,17 +2847,17 @@ function Example_AddBeziers( )
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_AddClosedCurve( )
    local bPainted := { | hdc |
       local aPoint, aPointF
       Graphics graphics(hdc)
       GraphicsPath  path()
-      aPoint = { Point(50, 50)   ,; 
+      aPoint = { Point(50, 50)   ,;
       Point(60, 20)   ,            ;
       Point(70, 100)  ,            ;
       Point(80, 50),               ;
@@ -2845,20 +2865,20 @@ function Example_AddClosedCurve( )
       Point(150,80),               ;
       Point(170, 30)               ;
       }
-      
-      aPointF = { PointF(150.0, 150.0)   ,; 
+
+      aPointF = { PointF(150.0, 150.0)   ,;
       PointF(160.0, 120.0)   ,            ;
       PointF(170.0, 200.0)  ,            ;
       PointF(180.0, 150.0),               ;
       PointF(220.0, 140.0),              ;
       PointF(250.0,180.0),               ;
       PointF(270.0, 130.0)               ;
-      }   
-      
-      
+      }
+
+
       path:AddClosedCurve( aPointF )
       path:CloseFigure()
-      
+
       path:AddClosedCurve( aPoint, ,1 )
       path:CloseFigure()
 
@@ -2866,10 +2886,10 @@ function Example_AddClosedCurve( )
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function AddCurveExample2( )
    local bPainted := { | hdc |
@@ -2884,9 +2904,9 @@ function AddCurveExample2( )
                      Point(180, 30),;
                      Point(210, 120),;
                      Point(240, 80)}
-                     
+
       path:AddCurve(;
-         aPoint,; 
+         aPoint,;
          3,;     // Start at the point with index 2.
          4,;     // Four segments. End at the point with index 6.
          1.0)
@@ -2894,15 +2914,15 @@ function AddCurveExample2( )
       graphics:DrawPath(pen, path)
       // Draw all eight points in the array.
       SolidBrush brush(Color(255, 255, 0, 0))
-      
-      for j = 1 to 8 
+
+      for j = 1 to 8
          graphics:FillEllipse(brush, aPoint[j]:X - 3, aPoint[j]:Y - 3, 6, 6)
       next
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_AddEllipse( )
@@ -2914,15 +2934,15 @@ function Example_AddEllipse( )
       path:AddEllipse(40.0, 40.0, 220.0, 120.0)
       path:AddEllipse( Rect( 60, 60, 100, 100 ) )
       path:AddEllipse( Rect( 100.0, 120.0, 120.0, 120.0 ) )
-      
+
       // Draw the path.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_AddLine( )
    local bPainted := { | hdc |
@@ -2933,21 +2953,21 @@ function Example_AddLine( )
       path:AddLine(40.0, 40.0, 220.0, 120.0)
       path:AddLine( Point( 60, 60 ), Point( 100, 100 ) )
       path:AddLine( PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 ) )
-      
+
       // Draw the path.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_AddLines( )
    local bPainted := { | hdc |
-      
+
       local aPoint, aPointF
-      
+
       aPoint = {Point(20, 20),  ;
                   Point(30, 30),;
                   Point(40, 25),;
@@ -2959,20 +2979,20 @@ function Example_AddLines( )
                   PointF(140.0, 125.0),;
                   PointF(150.0, 130.0),;
                   PointF(160.0, 120.0)}
-                                    
+
       Graphics graphics(hdc)
       GraphicsPath path()
       path:AddLines( aPoint )
       path:AddLines( aPointF )
-      
+
       // Draw the path.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_AddPath( gp2 )
@@ -2981,20 +3001,20 @@ function Example_AddPath( gp2 )
       GraphicsPath path1()
       path1:AddArc(10, 10, 50, 20, 0.0, 150.0)
       path1:AddBezier(10, 50, 60, 50, 10, 80, 60, 80)
-      
+
       GraphicsPath path2()
       path2:AddArc(10, 110, 50, 20, 0.0, 150.0)
       path2:AddBezier(10, 150, 60, 150, 10, 180, 60, 180)
-      
+
       path1:AddPath(path2, .T.)
-      
+
       Pen pen(Color(255, 0, 0, 255))
       graphics:DrawPath(pen, path1)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_AddPie( )
    local bPainted := { | hdc |
@@ -3005,25 +3025,25 @@ function Example_AddPie( )
       path:AddPie(50.0, 50.0, 100.0, 100.0, 20.0, 45.0)
       path:AddPie(Rect( 50, 50, 100, 100 ), 120.0, 45.0)
       path:AddPie(RectF( 50.0, 50.0, 100.0, 100.0), 170.0, 45.0)
-      
+
       // Draw the path.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
       graphics:DrawPath(pen, path)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_AddPolygon( )
    local bPainted := { | hdc |
 
       local aPoint, aPointF
-      
+
       Graphics graphics(hdc)
       GraphicsPath path()
-      
+
       aPoint = {Point(20, 20),  ;
                   Point(30, 30),;
                   Point(40, 25),;
@@ -3035,18 +3055,18 @@ function Example_AddPolygon( )
                   PointF(140.0, 125.0),;
                   PointF(150.0, 130.0),;
                   PointF(160.0, 120.0)}
-                                    
+
       path:AddPolygon( aPoint )
       path:AddPolygon( aPointF )
-      
+
       // Draw the path.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
       graphics:DrawPath(pen, path)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_AddRectangle( )
@@ -3057,15 +3077,15 @@ function Example_AddRectangle( )
 
       path:AddRectangle(Rect( 50, 50, 100, 100 ))
       path:AddRectangle(RectF( 150.0, 150.0, 100.0, 100.0))
-      
+
       // Draw the path.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
       graphics:DrawPath(pen, path)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_AddRectangles( )
@@ -3076,18 +3096,18 @@ function Example_AddRectangles( )
 
       aRectF = { RectF( 50.0, 50.0, 100.0, 100.0 ), RectF( 150.0, 150.0, 100.0, 100.0) }
       aRect  = { Rect( 100, 50, 100, 100 ), Rect( 250, 50, 100, 100) }
-      
+
       path:AddRectangles( aRectF )
       path:AddRectangles( aRect )
-      
+
       // Draw the path.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawPath(pen, path)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_GPAddString1( )
@@ -3098,8 +3118,8 @@ function Example_GPAddString1( )
    GraphicsPath path()
 
    Rect oRect(50, 50, 150, 100)
-   
-   
+
+
    path:AddString(;
       "Hello World", ;
       fontFamily, ;
@@ -3112,9 +3132,9 @@ function Example_GPAddString1( )
      graphics:DrawPath(pen, path)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_GPAddString2( )
@@ -3125,8 +3145,8 @@ function Example_GPAddString2( )
    GraphicsPath path()
 
    RectF oRect(50, 50, 150, 100)
-   
-   
+
+
    path:AddString(;
       "Hello World", ;
       fontFamily, ;
@@ -3139,9 +3159,9 @@ function Example_GPAddString2( )
      graphics:DrawPath(pen, path)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3152,7 +3172,7 @@ function Example_GPAddString3( )
    FontFamily fontFamily("Times New Roman")
    GraphicsPath path()
 
-   
+
    path:AddString(;
       "Hello World", ;
       fontFamily, ;
@@ -3164,9 +3184,9 @@ function Example_GPAddString3( )
      graphics:DrawPath(pen, path)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3178,7 +3198,7 @@ function Example_GPAddString4( )
    FontFamily fontFamily("Times New Roman")
    GraphicsPath path()
 
-   
+
    path:AddString(;
       "Hello World", ;
       fontFamily, ;
@@ -3190,9 +3210,9 @@ function Example_GPAddString4( )
      graphics:DrawPath(pen, path)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3214,9 +3234,9 @@ function Example_CloseAllFigures( )
    graphics:DrawPath(pen, path)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3227,9 +3247,9 @@ function FlattenExample( nSample )
    	DEFAULT nSample := 1
    Graphics graphics(hdc)
    // Begin example.
-   pts = {Point(20,50),; 
-          Point(40,70),; 
-          Point(60,10),; 
+   pts = {Point(20,50),;
+          Point(40,70),;
+          Point(60,10),;
           Point(80,50)}
 
    GraphicsPath path()
@@ -3244,9 +3264,9 @@ function FlattenExample( nSample )
    if nSample == 2
      Matrix matrix()
      matrix:Rotate(30.0)
-     matrix:Translate(200.0, 0.0, MatrixOrderAppend)   
+     matrix:Translate(200.0, 0.0, MatrixOrderAppend)
    endif
-   
+
    path:Flatten(matrix, 8.0)
 
    // Draw the flattened path.
@@ -3268,9 +3288,9 @@ function FlattenExample( nSample )
          6.0)
    next
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3295,15 +3315,15 @@ function GetBoundsExample()
    // Draw the path with a thick yellow pen and a thin black pen.
    graphics:DrawPath(yellowPen, path)
    graphics:DrawPath(blackPen, path)
- 
+
    // Get the path's bounding rectangle.
    Rect rect()
    path:GetBounds(@rect, NIL, yellowPen)
-   graphics:DrawRectangle(redPen, rect)  
+   graphics:DrawRectangle(redPen, rect)
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3311,9 +3331,9 @@ function GetPathPointsExample()
    local bPainted := { | hdc |
 	 local pts
    Graphics graphics(hdc)
-   
+
    GraphicsPath path()
-   
+
    points = {;
       Point(200, 200),;
       Point(250, 240),;
@@ -3332,14 +3352,14 @@ function GetPathPointsExample()
 
    // Get the path points.
    count := path:GetPointCount()
-   
+
    dataPoints = BuildPointArray( count )
-   
+
    path:GetPathPoints(dataPoints, count)
 
    // Draw the path's data points.
    SolidBrush brush(Color(255, 255, 0, 0))
-   
+
    for j = 1 to count
       graphics:FillEllipse(      ;
          brush,                  ;
@@ -3347,11 +3367,11 @@ function GetPathPointsExample()
          dataPoints[j]:Y - 3.0,  ;
          6.0,                    ;
          6.0)
-   next 
+   next
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3359,7 +3379,7 @@ function Example_IsOutlineVisibleExample()
    local bPainted := { | hdc |
 	 local points
    Graphics graphics(hdc)
-   
+
    GraphicsPath path()
 
    Pen yellowPen(Color(255, 255, 255, 0), 20)
@@ -3377,21 +3397,21 @@ function Example_IsOutlineVisibleExample()
       Point(230, 138),;
       Point(100, 120),;
       Point(150, 170)}
-   
+
    for j = 1 to 2
       if(path:IsOutlineVisible(points[j], yellowPen, graphics))
          brush:SetColor(Color(255, 0, 255, 0))
       else
          brush:SetColor(Color(255, 255, 0, 0))
       endif
-   
+
       graphics:FillEllipse(brush, points[j]:X - 3, points[j]:Y - 3, 6, 6)
    next
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3401,11 +3421,11 @@ return nil
 function Example_GetLogFontA( )
    local bPainted := { | hdc |
       local logFont
-      
+
       Graphics graphics(hdc)
       // Create a Font object.
       Font myFont("Arial", 16)
-      
+
       // Get attributes of myFont.
       myFont:GetLogFontA( graphics, @logFont)
       // Create a second Font object from logFont.
@@ -3415,19 +3435,19 @@ function Example_GetLogFontA( )
       graphics:DrawString("Font from a LOGFONT",  logfontFont, PointF(0, 0), solidbrush)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_GetLogFontW( )
    local bPainted := { | hdc |
       local logFont
-      
+
       Graphics graphics(hdc)
       // Create a Font object.
       Font myFont("Arial", 16)
-      
+
       // Get attributes of myFont.
       myFont:GetLogFontW( graphics, @logFont)
       // Create a second Font object from logFont.
@@ -3437,10 +3457,10 @@ function Example_GetLogFontW( )
       graphics:DrawString("Font from a LOGFONT",  logfontFont, PointF(0, 0), solidbrush)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_GetHeight( )
    local bPainted := { | hdc |
@@ -3448,27 +3468,27 @@ function Example_GetHeight( )
       Graphics graphics(hdc)
       // Create a Font object.
       Font myFont("Arial", 16);
-   
+
       // Draw text with myFont.
       SolidBrush solidbrush_1(Color(255, 0, 0, 0))
       string = "The first line of text"
       graphics:DrawString(string, myFont, PointF(0, 0), solidbrush_1)
-   
+
       // Get the height of myFont.
 
        height := myFont:GetHeight(graphics)
-   
+
       // Draw text immediately below the first line of text.
       SolidBrush solidbrush_2(Color(255, 255, 0, 0))
       string = "The second line of text"
-      graphics:DrawString(string, myFont, PointF(0, height), solidbrush_2) 
+      graphics:DrawString(string, myFont, PointF(0, height), solidbrush_2)
 
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_GetSize( )
    local bPainted := { | hdc |
@@ -3477,23 +3497,23 @@ function Example_GetSize( )
 
       // Create a Font object.
       Font myFont("Arial", 16)
-      
+
       // Get the size of myFont.
       size = myFont:GetSize()
-      
+
       // Create a second Font object with the same emSize as myFont.
       Font sizeFont("Arial", size)
-      
+
       // Draw text using sizeFont.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       string = "Font with an acquired size"
       graphics:DrawString(string, sizeFont, PointF(0, 0), solidbrush)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_GetStyle( )
@@ -3502,23 +3522,23 @@ function Example_GetStyle( )
       Graphics graphics(hdc)
       // Create a Font object.
       Font myFont("Arial", 16, FontStyleItalic)
-   
+
       // Get the style of myFont.
       style = myFont:GetStyle()
-   
+
       // Create a second Font object with the same emSize as myFont.
       Font styleFont("Arial", 20, style)
-   
+
       // Draw text using sizeFont.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       string = "Font with an acquired style"
       graphics:DrawString(string, styleFont, PointF(0, 0), solidbrush)
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_GetUnit( )
@@ -3528,23 +3548,23 @@ function Example_GetUnit( )
 
       // Create a Font object.
       Font myFont("Arial", 12)
-      
+
       // Get the unit of measure for myFont.
       unit = myFont:GetUnit()
-      
+
       // Set the Graphics units of graphics to the retrieved unit value.
       graphics:SetPageUnit(unit)
-      
+
       // Draw text using sizeFont.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       string = "Here is some text"
       graphics:DrawString(string, myFont, PointF(0, 0), solidbrush)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_IsAvailable( )
    local bPainted := { | hdc |
@@ -3553,10 +3573,10 @@ function Example_IsAvailable( )
 
       // Create a Font object.
       Font myFont("Arial", 18)
-      
+
       // Check whether myFont is available.
       available = myFont:IsAvailable()
-      
+
       // Draw text using myFont, if it is availiable.
       if available
           SolidBrush solidbrush(Color(255, 0, 0, 0))
@@ -3565,10 +3585,10 @@ function Example_IsAvailable( )
       endif
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 
@@ -3582,20 +3602,20 @@ function Example_FontFamilyClone( )
       Graphics graphics(hdc)
       // Create a FontFamily object.
       FontFamily arialFontFamily("arial")
-   
+
       // Clone the FontFamily object and use it to create a Font object.
       cloneFontFamily = arialFontFamily:Clone()
       Font arialFont(cloneFontFamily, 16)
-   
+
       // Draw text using the new font.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       graphics:DrawString("This is an Arial font",;
                            arialFont, PointF(0, 0), solidbrush)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_GenericMonospace( )
@@ -3604,18 +3624,18 @@ function Example_GenericMonospace( )
       Graphics graphics(hdc)
       // Use a generic monospace FontFamily object to create a Font object.
       Font generic( FontFamily():GenericMonospace(), 16)
-   
+
       // Draw text using the new font.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       graphics:DrawString("This is a generic monospace font", generic, PointF(0, 0), solidbrush);
-                          
-   }
-   
-   exampleWindow( bPainted )
-   
-return nil 
 
-  
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
 
 function Example_GenericSansSerif( )
    local bPainted := { | hdc |
@@ -3623,16 +3643,16 @@ function Example_GenericSansSerif( )
       Graphics graphics(hdc)
       // Use a generic monospace FontFamily object to create a Font object.
       Font generic( FontFamily():GenericSansSerif(), 16)
-   
+
       // Draw text using the new font.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       graphics:DrawString("This is a generic SansSerif font", generic, PointF(0, 0), solidbrush);
-                          
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 
@@ -3642,16 +3662,16 @@ function Example_GenericSerif( )
       Graphics graphics(hdc)
       // Use a generic monospace FontFamily object to create a Font object.
       Font generic( FontFamily():GenericSerif(), 16)
-   
+
       // Draw text using the new font.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       graphics:DrawString("This is a generic Serif font", generic, PointF(0, 0), solidbrush);
-                          
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_GetCellAscent( )
@@ -3661,10 +3681,10 @@ function Example_GetCellAscent( )
 
       // Create a FontFamily object.
       FontFamily ascentFontFamily("arial")
-      
+
       // Get the cell ascent of the font family in design units.
       cellAscent = ascentFontFamily:GetCellAscent(FontStyleRegular)
-   
+
       // Copy the cell ascent into a string and draw the string.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       Font       font(ascentFontFamily, 16)
@@ -3672,9 +3692,9 @@ function Example_GetCellAscent( )
       graphics:DrawString(string, font, PointF(0, 0), solidbrush)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3685,10 +3705,10 @@ function Example_GetCellDescent( )
 
       // Create a FontFamily object.
       FontFamily ascentFontFamily("arial")
-      
+
       // Get the cell ascent of the font family in design units.
       cellDesc = ascentFontFamily:GetCellDescent(FontStyleRegular)
-   
+
       // Copy the cell ascent into a string and draw the string.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       Font       font(ascentFontFamily, 16)
@@ -3696,9 +3716,9 @@ function Example_GetCellDescent( )
       graphics:DrawString(string, font, PointF(0, 0), solidbrush)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3709,10 +3729,10 @@ function Example_GetEmHeight( )
 
       // Create a FontFamily object.
       FontFamily ascentFontFamily("arial")
-      
+
       // Get the cell ascent of the font family in design units.
       emHeight = ascentFontFamily:GetEmHeight(FontStyleRegular)
-   
+
       // Copy the cell ascent into a string and draw the string.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       Font       font(ascentFontFamily, 16)
@@ -3720,10 +3740,10 @@ function Example_GetEmHeight( )
       graphics:DrawString(string, font, PointF(0, 0), solidbrush)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_GetFamilyName( )
@@ -3732,19 +3752,19 @@ function Example_GetFamilyName( )
       Graphics graphics(hdc)
       // Create a FontFamily object.
       FontFamily nameFontFamily("arial")
-      
+
       // Get the cell ascent of the font family in design units.
       nameFontFamily:GetFamilyName(@familyName)
       // Copy the cell ascent into a string and draw the string.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       Font       font(nameFontFamily, 16)
       graphics:DrawString(familyName, font, PointF(0, 0), solidbrush)
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_GetLineSpacing( )
@@ -3754,10 +3774,10 @@ function Example_GetLineSpacing( )
 
       // Create a FontFamily object.
       FontFamily lineSpacingFontFamily("arial")
-      
+
       // Get the cell ascent of the font family in design units.
       lineSpacing = lineSpacingFontFamily:GetLineSpacing(FontStyleRegular)
-   
+
       // Copy the cell ascent into a string and draw the string.
       SolidBrush solidbrush(Color(255, 0, 0, 0))
       Font       font(lineSpacingFontFamily, 16)
@@ -3765,11 +3785,11 @@ function Example_GetLineSpacing( )
       graphics:DrawString(string, font, PointF(0, 0), solidbrush)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
-   
+
+return nil
+
 
 //---------------------------------
 //STRINGFORMAT
@@ -3779,7 +3799,7 @@ function Example_SFClone( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
-      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      SolidBrush  solidBrush(Color(255, 255, 0, 0))
       FontFamily  fontFamily("Times New Roman")
       Font        font(fontFamily, 24, FontStyleRegular, UnitPixel)
       // Create a StringFormat object.
@@ -3798,18 +3818,18 @@ function Example_SFClone( )
       // Draw the rectangle that encloses the text.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawRectangle(pen, 30, 30, 200, 200)
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_SFSetAlignment( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
-      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      SolidBrush  solidBrush(Color(255, 255, 0, 0))
       FontFamily  fontFamily("Times New Roman")
       Font        font(fontFamily, 24, FontStyleRegular, UnitPixel)
       // Create a StringFormat object.
@@ -3827,22 +3847,22 @@ function Example_SFSetAlignment( )
       // Draw the rectangle that encloses the text.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawRectangle(pen, 30, 30, 150, 200)
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_SFGenericDefault( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
-      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      SolidBrush  solidBrush(Color(255, 255, 0, 0))
       FontFamily  fontFamily("Times New Roman")
       Font        font(fontFamily, 12, FontStyleRegular, UnitPixel)
       // Create a StringFormat object.
-      
+
       pStringFormat = StringFormat():GenericDefault()
 
       // Use the cloned StringFormat object in a call to DrawString.
@@ -3856,11 +3876,11 @@ function Example_SFGenericDefault( )
       // Draw the rectangle that encloses the text.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawRectangle(pen, 30, 30, 150, 200)
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -3868,11 +3888,11 @@ function Example_SFGenericTypographic( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
-      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      SolidBrush  solidBrush(Color(255, 255, 0, 0))
       FontFamily  fontFamily("Times New Roman")
       Font        font(fontFamily, 12, FontStyleRegular, UnitPixel)
       // Create a StringFormat object.
-      
+
       pStringFormat = StringFormat():GenericTypographic()
 
       // Use the cloned StringFormat object in a call to DrawString.
@@ -3886,11 +3906,11 @@ function Example_SFGenericTypographic( )
       // Draw the rectangle that encloses the text.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawRectangle(pen, 30, 30, 150, 200)
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_SFSetFormatFlags( )
@@ -3900,60 +3920,60 @@ function Example_SFSetFormatFlags( )
       SolidBrush  solidBrush(Color(255, 255, 0, 0))
       FontFamily  fontFamily("Times New Roman")
       Font        font(fontFamily, 24, FontStyleRegular, UnitPoint)
-      
+
       StringFormat stringFormat()
       stringFormat:SetFormatFlags( hb_bitOr( StringFormatFlagsDirectionVertical, StringFormatFlagsNoFitBlackBox ) )
-      
+
       graphics:DrawString(;
          "This text is vertical because of a format flag.",;
          font, ;
          RectF(30, 30, 150, 200), ;
          stringFormat, ;
          solidBrush)
-      
+
       // Draw the rectangle that encloses the text.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawRectangle(pen, 30, 30, 150, 200)
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_SFSetHotkeyPrefix( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
-      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      SolidBrush  solidBrush(Color(255, 255, 0, 0))
       FontFamily  fontFamily("Times New Roman")
       Font        font(fontFamily, 24, FontStyleRegular, UnitPixel)
-      
+
       StringFormat stringFormat()
       stringFormat:SetHotkeyPrefix(HotkeyPrefixShow)
-      
+
       graphics:DrawString(;
          "This &text has some &underlined cha&r&acters.", ;
          font, ;
          RectF(30, 30, 160, 200), ;
          stringFormat, ;
          solidBrush)
-      
+
       // Draw the rectangle that encloses the text.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawRectangle(pen, 30, 30, 160, 200)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_SFSetLineAlignment( )
    local bPainted := { | hdc |
 
       Graphics graphics(hdc)
-      SolidBrush  solidBrush(Color(255, 255, 0, 0)) 
+      SolidBrush  solidBrush(Color(255, 255, 0, 0))
       FontFamily  fontFamily("Times New Roman")
       Font        font(fontFamily, 24, FontStyleRegular, UnitPixel)
       // Create a StringFormat object.
@@ -3971,56 +3991,56 @@ function Example_SFSetLineAlignment( )
       // Draw the rectangle that encloses the text.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawRectangle(pen, 30, 30, 150, 200)
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_SetMeasCharRanges( )
    local bPainted := { | hdc |
-   /*   
+   /*
       local charRanges :={}
-      
+
       Graphics graphics(hdc)
       // Brushes and pens used for drawing and painting
       SolidBrush blueBrush(Color(255, 0, 0, 255))
       SolidBrush redBrush(Color(100, 255, 0, 0))
       Pen        blackPen(Color(255, 0, 0, 0))
-   
+
       // Layout rectangles used for drawing strings
       RectF   layoutRect_A(20.0, 20.0, 130.0, 130.0)
       RectF   layoutRect_B(160.0, 20.0, 165.0, 130.0)
       RectF   layoutRect_C(335.0, 20.0, 165.0, 130.0)
-   
+
       // Three ranges of character positions within the string
       charRanges = { CharacterRange(3, 5),;
                      CharacterRange(15, 2),;
                      CharacterRange(30, 15) }
-   
+
       // Font and string format used to apply to string when drawing
       Font         myFont("Times New Roman", 16.0)
       StringFormat strFormat()
-   
-  
+
+
        // Other variables
       Region* pCharRangeRegions // pointer to CharacterRange regions
       short   i                 // loop counter
       INT     count             // number of character ranges set
       string = "The quick, brown fox easily jumps over the lazy dog."
-   
-   
+
+
       // Set three ranges of character positions.
       strFormat:SetMeasurableCharacterRanges(charRanges)
-   
-      // Get the number of ranges that have been set, and allocate memory to 
+
+      // Get the number of ranges that have been set, and allocate memory to
       // store the regions that correspond to the ranges.
       count = strFormat.GetMeasurableCharacterRangeCount()
       pCharRangeRegions = new Region[count]
-   
+
       // Get the regions that correspond to the ranges within the string when
-      // layout rectangle A is used. Then draw the string, and show the 
+      // layout rectangle A is used. Then draw the string, and show the
       // regions.
       graphics.MeasureCharacterRanges(string, -1,
          &myFont, layoutRect_A, &strFormat, count, pCharRangeRegions)
@@ -4031,9 +4051,9 @@ function Example_SetMeasCharRanges( )
       {
          graphics.FillRegion(&redBrush, pCharRangeRegions + i)
       }
-   
+
       // Get the regions that correspond to the ranges within the string when
-      // layout rectangle B is used. Then draw the string, and show the 
+      // layout rectangle B is used. Then draw the string, and show the
       // regions.
       graphics.MeasureCharacterRanges(string, -1,
          &myFont, layoutRect_B, &strFormat, count, pCharRangeRegions)
@@ -4044,7 +4064,7 @@ function Example_SetMeasCharRanges( )
       {
          graphics.FillRegion(&redBrush, pCharRangeRegions + i)
       }
-   
+
       // Get the regions that correspond to the ranges within the string when
       // layout rectangle C is used. Set trailing spaces to be included in the
       // regions. Then draw the string, and show the regions.
@@ -4059,10 +4079,10 @@ function Example_SetMeasCharRanges( )
          graphics.FillRegion(&redBrush, pCharRangeRegions + i)
       }*/
    }
-   
+
  //  exampleWindow( bPainted )
    ? "Not ready yet!!!"
-return nil 
+return nil
 
 function Example_SFSetTabStops( )
    local bPainted := { | hdc |
@@ -4072,7 +4092,7 @@ function Example_SFSetTabStops( )
       FontFamily   fontFamily("Courier New")
       Font         font(fontFamily, 12, FontStyleRegular, UnitPoint)
       SolidBrush   solidBrush(Color(255, 0, 0, 255))
-      
+
       StringFormat stringFormat()
       stringFormat:SetTabStops(2, tabs)
       graphics:DrawString(;
@@ -4081,16 +4101,16 @@ function Example_SFSetTabStops( )
          RectF(20, 20, 500, 100),;
          stringFormat, ;
          solidBrush)
-      
+
       // Draw the rectangle that encloses the text.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawRectangle(pen, 20, 20, 500, 100)
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_SFSetTrimming( )
@@ -4100,26 +4120,26 @@ function Example_SFSetTrimming( )
       SolidBrush  solidBrush(Color(255, 255, 0, 0))
       FontFamily  fontFamily("Times New Roman")
       Font        font(fontFamily, 24, FontStyleRegular, UnitPixel)
-      
+
       StringFormat stringFormat()
       stringFormat:SetTrimming(StringTrimmingEllipsisWord)
-      
+
       graphics:DrawString(;
          "One two three four five six seven eight nine ten", ;
          font, ;
          RectF(30, 30, 160, 60),;
          stringFormat, ;
          solidBrush)
-      
+
       // Draw the rectangle that encloses the text.
       Pen pen(Color(255, 255, 0, 0))
       graphics:DrawRectangle(pen, 30, 30, 160, 60)
 //   EXAMPLE_SETTRIMMING( hDC )
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_RGClone( )
@@ -4128,7 +4148,7 @@ function Example_RGClone( )
       Graphics graphics(hdc)
       SolidBrush solidBrush(Color(255, 255, 0, 0))
       SolidBrush alphaBrush(Color(128, 0, 0, 255))
-//      
+//
       points = {   ;
          Point(110, 20), ;
          Point(120, 30), ;
@@ -4136,36 +4156,36 @@ function Example_RGClone( )
          Point(120, 70), ;
          Point(150, 60), ;
          Point(140, 10) }
-      
+
       Rect rect(65, 15, 70, 45)
       GraphicsPath path()
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
-      Region rectRegion(rect) 
-      
+      Region rectRegion(rect)
+
       // Create a region from a curved path.
       Region pathRegion(path)
-      
-      
+
+
       // Make a copy (clone) of the curved region.
       pClonedRegion := pathRegion:Clone()
-      
+
       // Fill the cloned region with a red brush.
       graphics:FillRegion(solidBrush, pClonedRegion)
-      
+
       // Form the union of the cloned region and the rectangular region.
       pClonedRegion:Union(rectRegion)
-      
+
       // Fill the union of the two regions with a semitransparent blue brush.
       graphics:FillRegion(alphaBrush, pClonedRegion)
-      
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_ComplementPath1( )
@@ -4174,7 +4194,7 @@ function Example_ComplementPath1( )
       Graphics graphics(hdc)
 
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       points = {;
          Point(110, 20),;
          Point(120, 30),;
@@ -4182,26 +4202,26 @@ function Example_ComplementPath1( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10) }
-      
+
       Rect rect(65, 15, 70, 45)
       GraphicsPath path()
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
-      Region region(rect); 
-      
+      Region region(rect);
+
       // Update the region so that it consists of all points inside a path but
       // outside the rectangular region.
       region:Complement(path);
-      
+
       graphics:FillRegion(solidBrush, region);
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_ComplementPath2( )
@@ -4210,7 +4230,7 @@ function Example_ComplementPath2( )
       Graphics graphics(hdc)
 
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       points = {;
          Point(110, 20),;
          Point(120, 30),;
@@ -4218,26 +4238,26 @@ function Example_ComplementPath2( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10) }
-      
+
       Rect rect(65, 15, 70, 45)
       GraphicsPath path()
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
-      Region region(path); 
-      
+      Region region(path);
+
       // Update the region so that it consists of all points inside a path but
       // outside the rectangular region.
       region:Complement(rect);
-      
+
       graphics:FillRegion(solidBrush, region);
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_ComplementPath3( )
    local bPainted := { | hdc |
@@ -4245,7 +4265,7 @@ function Example_ComplementPath3( )
       Graphics graphics(hdc)
 
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       points = {;
          Point(110, 20),;
          Point(120, 30),;
@@ -4253,26 +4273,26 @@ function Example_ComplementPath3( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10) }
-      
+
       RectF rect(65, 15, 70, 45)
       GraphicsPath path()
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
-      Region region(path); 
-      
+      Region region(path);
+
       // Update the region so that it consists of all points inside a path but
       // outside the rectangular region.
       region:Complement(rect);
-      
+
       graphics:FillRegion(solidBrush, region);
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_ComplementPath4( )
@@ -4281,7 +4301,7 @@ function Example_ComplementPath4( )
       Graphics graphics(hdc)
 
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       points = {;
          Point(110, 20),;
          Point(120, 30),;
@@ -4289,28 +4309,28 @@ function Example_ComplementPath4( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10) }
-      
+
       Rect rect(65, 15, 70, 45)
       GraphicsPath path()
-      
+
       path:AddClosedCurve(points)
-      
-      Region region(rect); 
-      
+
+      Region region(rect);
+
       // Create a region from a rectangle.
-      Region pathregion(path); 
-      
+      Region pathregion(path);
+
       // Update the region so that it consists of all points inside a path but
       // outside the rectangular region.
       region:Complement(pathregion);
-      
+
       graphics:FillRegion(solidBrush, region);
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_Exclude1( )
    local bPainted := { | hdc |
@@ -4324,26 +4344,26 @@ function Example_Exclude1( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       Rect rect(65, 15, 70, 45)
       GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       path:AddClosedCurve(points, 6)
-      
+
       // Create a region from a rectangle.
       Region rectRegion(rect)
-      
+
       // Exclude the intersecting portion of the path interior from the region.
       rectRegion:Exclude(path)
-      
+
       graphics:FillRegion(solidBrush, rectRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_Exclude2( )
    local bPainted := { | hdc |
@@ -4357,26 +4377,26 @@ function Example_Exclude2( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       Rect rect(65, 15, 70, 45)
       GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
       Region rectRegion(path)
-      
+
       // Exclude the intersecting portion of the path interior from the region.
       rectRegion:Exclude(rect)
-      
+
       graphics:FillRegion(solidBrush, rectRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_Exclude3( )
    local bPainted := { | hdc |
@@ -4390,26 +4410,26 @@ function Example_Exclude3( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       RectF rect(65, 15, 70, 45)
       GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
       Region rectRegion(path)
-      
+
       // Exclude the intersecting portion of the path interior from the region.
       rectRegion:Exclude(rect)
-      
+
       graphics:FillRegion(solidBrush, rectRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_Exclude4( )
    local bPainted := { | hdc |
@@ -4423,28 +4443,28 @@ function Example_Exclude4( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       RectF rect(65, 15, 70, 45)
       GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
       Region rectRegion(rect)
-      
+
       Region pathRegion(path);
-      
+
       // Exclude the intersecting portion of the path interior from the region.
       pathRegion:Exclude(rectRegion)
-      
+
       graphics:FillRegion(solidBrush, pathRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_GetBounds1( )
@@ -4459,27 +4479,27 @@ function Example_GetBounds1( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
-      GraphicsPath path()      
+
+      GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
       Pen pen(Color(255, 0, 0, 0))
       Rect rect()
-      
+
       path:AddClosedCurve(points)
-      
+
       Region pathRegion(path);
-      
+
       // Get the region's enclosing rectangle.
       pathRegion:GetBounds( @rect, graphics )
-      
+
       graphics:FillRegion(solidBrush, pathRegion)
       graphics:DrawRectangle(pen, rect);
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_GetBounds2( )
@@ -4494,35 +4514,35 @@ function Example_GetBounds2( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
-      GraphicsPath path()      
+
+      GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
       Pen pen(Color(255, 0, 0, 0))
       RectF rect()
-      
+
       path:AddClosedCurve(points)
-      
+
       Region pathRegion(path);
-      
+
       // Get the region's enclosing rectangle.
       pathRegion:GetBounds( @rect, graphics )
-      
+
       graphics:FillRegion(solidBrush, pathRegion)
       graphics:DrawRectangle(pen, rect);
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_RGGetData( )
    local bPainted := { | hdc |
-      
+
       local pData, sizeFilled := 0
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4532,32 +4552,32 @@ function Example_RGGetData( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
-      GraphicsPath path()      
+
+      GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
       path:AddClosedCurve(points)
-      
+
       Region pathRegion(path);
-      
+
       pathRegion:GetData(@pData, ,@sizeFilled );
-       
+
       Region newRegion( pData, sizeFilled );
-     
+
       graphics:FillRegion(solidBrush, newRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
 function Example_RGGetHRGN( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4567,33 +4587,33 @@ function Example_RGGetHRGN( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
-      GraphicsPath path()      
+
+      GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
       path:AddClosedCurve(points)
-      
+
       Region pathRegion(path);
-      
+
       hRgn = pathRegion:GetHRGN( graphics )
-      
+
       hBrush = CreateSolidBrush( CLR_HRED )
 
       FillRgn(hdc, Ptr2Long( hRgn ), hBrush)
 
       DeleteObject(hBrush)
       DeleteObject( Ptr2Long( hRgn ) )
-      
+
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
 function Example_RGGetTransform( )
    local bPainted := { | hdc |
-      
+
       local oMatrix, rects, matrix, count
       Graphics graphics(hdc)
 
@@ -4602,36 +4622,36 @@ function Example_RGGetTransform( )
       GraphicsPath path()
 
       count = 0;
-   
+
       // Create a region from a path.
       path:AddEllipse(10, 10, 50, 300)
       Region pathRegion(path)
       graphics:FillRegion(solidBrush, pathRegion)
-   
+
       // Get the rectangles.
       graphics:GetTransform(@matrix)
- 
+
       pathRegion:GetRegionScans(matrix, @rects, @count)
 
-//      
+//
       // Draw the rectangles.
       for j = 1 to count
          graphics:DrawRectangle( pen, rects[ j ] )
       next
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 
 function Example_IntersectPath( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4641,13 +4661,13 @@ function Example_IntersectPath( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       Rect rect(65, 15, 70, 45)
-      GraphicsPath path()      
+      GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
       Region rectRegion(rect)
 
@@ -4655,20 +4675,20 @@ function Example_IntersectPath( )
       rectRegion:Intersect(path)
 
       graphics:FillRegion(solidBrush, rectRegion)
-      
+
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_IntersectPath2( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4678,13 +4698,13 @@ function Example_IntersectPath2( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       Rect rect(65, 15, 70, 45)
-      GraphicsPath path()      
+      GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
       Region pathRegion(path)
 
@@ -4692,21 +4712,21 @@ function Example_IntersectPath2( )
       pathRegion:Intersect(rect)
 
       graphics:FillRegion(solidBrush, pathRegion)
-      
+
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
 function Example_IntersectPath3( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4716,13 +4736,13 @@ function Example_IntersectPath3( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       RectF rect(65, 15, 70, 45)
-      GraphicsPath path()      
+      GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
       Region pathRegion(path)
 
@@ -4730,21 +4750,21 @@ function Example_IntersectPath3( )
       pathRegion:Intersect(rect)
 
       graphics:FillRegion(solidBrush, pathRegion)
-      
+
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
 function Example_IntersectPath4( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4754,13 +4774,13 @@ function Example_IntersectPath4( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       Rect rect(65, 15, 70, 45)
-      GraphicsPath path()      
+      GraphicsPath path()
       SolidBrush solidBrush(Color(255, 255, 0, 0))
-      
+
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
       Region pathRegion(path)
       Region rectRegion(rect)
@@ -4769,12 +4789,12 @@ function Example_IntersectPath4( )
       pathRegion:Intersect(rectRegion)
 
       graphics:FillRegion(solidBrush, pathRegion)
-      
+
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -4785,20 +4805,20 @@ function Example_MakeEmpty( )
       Rect rect(65, 15, 70, 45)
       SolidBrush redBrush(Color(255, 255, 0, 0))
       SolidBrush blueBrush(Color(255, 0, 0, 255))
-      
+
       // Create a region, and fill it with a red brush.
       Region rectRegion(rect)
       graphics:FillRegion(redBrush, rectRegion)
-      
-      // Make the region empty, and then fill it with a blue brush. 
+
+      // Make the region empty, and then fill it with a blue brush.
       rectRegion:MakeEmpty()
       graphics:FillRegion(blueBrush, rectRegion)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 
 function Example_MakeInfinite( )
    local bPainted := { | hdc |
@@ -4806,25 +4826,25 @@ function Example_MakeInfinite( )
       Graphics graphics(hdc)
       Rect rect(65, 15, 70, 45)
       SolidBrush redBrush(Color(255, 255, 0, 0))
-      
+
       // Create a region, and fill it with a red brush.
       Region rectRegion(rect)
-      
+
       rectRegion:MakeInfinite()
       graphics:FillRegion(redBrush, rectRegion)
-   
+
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_RGTransform( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4834,11 +4854,11 @@ function Example_RGTransform( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
-      GraphicsPath path()      
-      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+
+      GraphicsPath path()
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
       Region pathRegion(path)
       graphics:FillRegion(solidBrush, pathRegion)
@@ -4849,18 +4869,18 @@ function Example_RGTransform( )
       graphics:FillRegion(solidBrush, pathRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
 function Example_RGTranslate( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4870,11 +4890,11 @@ function Example_RGTranslate( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
-      GraphicsPath path()      
-      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+
+      GraphicsPath path()
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
       Region pathRegion(path)
       graphics:FillRegion(solidBrush, pathRegion)
@@ -4886,18 +4906,18 @@ function Example_RGTranslate( )
       graphics:FillRegion(solidBrush, pathRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
 function Example_RGXor1( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4907,32 +4927,32 @@ function Example_RGXor1( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       Rect rect(65, 15, 70, 45)
-      GraphicsPath path()      
-      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+      GraphicsPath path()
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
-      Region rectRegion(rect)    
-      
+      Region rectRegion(rect)
+
       // Perform an exclusive OR operation on the region and a path.
       rectRegion:Xor(path)
-      
+
       graphics:FillRegion(solidBrush, rectRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_RGXor2( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4942,32 +4962,32 @@ function Example_RGXor2( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       Rect rect(65, 15, 70, 45)
-      GraphicsPath path()      
-      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+      GraphicsPath path()
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
-      Region pathRegion(path)    
-      
+      Region pathRegion(path)
+
       // Perform an exclusive OR operation on the region and a path.
       pathRegion:Xor(rect)
-      
+
       graphics:FillRegion(solidBrush, pathRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_RGXor3( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -4977,32 +4997,32 @@ function Example_RGXor3( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       RectF rect(65, 15, 70, 45)
-      GraphicsPath path()      
-      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+      GraphicsPath path()
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
-      Region pathRegion(path)    
-      
+      Region pathRegion(path)
+
       // Perform an exclusive OR operation on the region and a path.
       pathRegion:Xor(rect)
-      
+
       graphics:FillRegion(solidBrush, pathRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 function Example_RGXor4( )
    local bPainted := { | hdc |
-      
+
       local hRgn, hBrush
       Graphics graphics(hdc)
-      
+
       SolidBrush solidBrush(Color(255, 255, 0, 0))
 
       points = {;
@@ -5012,25 +5032,25 @@ function Example_RGXor4( )
          Point(120, 70),;
          Point(150, 60),;
          Point(140, 10)}
-      
+
       Rect rect(65, 15, 70, 45)
-      GraphicsPath path()      
-      SolidBrush solidBrush(Color(255, 255, 0, 0))      
+      GraphicsPath path()
+      SolidBrush solidBrush(Color(255, 255, 0, 0))
       path:AddClosedCurve(points)
-      
+
       // Create a region from a rectangle.
-      Region pathRegion(path) 
-      Region rectRegion(rect) 
-      
+      Region pathRegion(path)
+      Region rectRegion(rect)
+
       // Perform an exclusive OR operation on the region and a path.
       pathRegion:Xor(rectRegion)
-      
+
       graphics:FillRegion(solidBrush, pathRegion)
 
    }
-   
+
    exampleWindow( bPainted )
-   
+
 return nil
 
 
@@ -5046,10 +5066,10 @@ function Example_( )
       Graphics graphics(hdc)
 
    }
-   
+
    exampleWindow( bPainted )
-   
-return nil 
+
+return nil
 */
 init procedure entrada
 
