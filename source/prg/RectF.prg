@@ -41,7 +41,10 @@ CLASS GPRectF
   METHOD Y()       SETGET
   METHOD Width()   SETGET
   METHOD Height()  SETGET
-
+  METHOD Top()     INLINE ::GetTop()
+  METHOD Left()    INLINE ::GetLeft()
+  METHOD Bottom()  INLINE ::GetBottom()
+  METHOD Right()   INLINE ::GetRight()
 
   METHOD Clone()     HIDDEN
   METHOD Contains()
@@ -57,6 +60,7 @@ CLASS GPRectF
   METHOD Intersect(rc)
   METHOD IntersectsWith()
   METHOD IsEmptyArea()
+
   METHOD Offset()
   METHOD Union()
 
