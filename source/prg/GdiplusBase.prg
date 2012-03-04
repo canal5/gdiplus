@@ -30,19 +30,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := _GPGdiplusBase()
+     ::handle := C5_GPGdiplusBase()
   elseif iParams == 1
-     ::handle := _GPGdiplusBase( p1 )                               //
+     ::handle := C5_GPGdiplusBase( p1 )                               //
   elseif iParams == 3
-     ::handle := _GPGdiplusBase( p1, p2, p3 )                       //
+     ::handle := C5_GPGdiplusBase( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := _GPGdiplusBase( p1, p2, p3 )                       //
+     ::handle := C5_GPGdiplusBase( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := _GPGdiplusBase( p1, p2, p3, p4, p5 )               //
+     ::handle := C5_GPGdiplusBase( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := _GPGdiplusBase( p1, p2, p3, p4, p5, p6 )           //
+     ::handle := C5_GPGdiplusBase( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := _GPGdiplusBase( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := C5_GPGdiplusBase( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -89,7 +89,7 @@ return nil
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPGDIPLUSBASE )
+HB_FUNC( C5_GPGDIPLUSBASE )
 {
    //GdiplusBase* ptr;
    //int iParams = hb_pcount();
@@ -106,7 +106,7 @@ HB_FUNC( _GPGDIPLUSBASE )
    //hb_retptr( (void*) ptr );
 }
 
-HB_FUNC( DELETEGDIPLUSBASE )
+HB_FUNC( C5DELETEGDIPLUSBASE )
 {
    //GdiplusBase* clr = (GdiplusBase*) hb_parptr( 1 );
    //delete (GdiplusBase*) clr;

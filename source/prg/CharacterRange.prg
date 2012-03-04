@@ -2,16 +2,16 @@
 
 
 function CharacterRange( A, B )
-   
+
    local o
 
-   if A != NIL 
-      o = GPCharacterRange():New( A, B ) 
-   else 
-      o = GPCharacterRange():New() 
+   if A != NIL
+      o = GPCharacterRange():New( A, B )
+   else
+      o = GPCharacterRange():New()
    endif
 
-return o 
+return o
 
 
 CLASS GPCharacterRange
@@ -22,7 +22,7 @@ CLASS GPCharacterRange
 
   METHOD Destroy()
   DESTRUCTOR Destroy()
-  
+
   METHOD First( nValue )  SETGET
   METHOD Length( nValue ) SETGET
 
@@ -36,9 +36,9 @@ ENDCLASS
 *********************************************************************************************************
 
   if A != 0
-     ::handle := _GPCharacterRange()
+     ::handle := C5_GPCharacterRange()
   else
-     ::handle := _GPCharacterRange( A, B )                               
+     ::handle := C5_GPCharacterRange( A, B )
   endif
 
 return self
@@ -56,26 +56,26 @@ return nil
 //*********************************************************************************************************
 
    if pcount() > 0
-      return GPCharacterFirst(::handle, nValue)
+      return C5GPCharacterFirst(::handle, nValue)
    endif
 
-return GPCharacterFirst(::handle)
+return C5GPCharacterFirst(::handle)
 
 //*********************************************************************************************************
   METHOD Length( nValue ) CLASS GPCharacterRange
 //*********************************************************************************************************
 
    if pcount() > 0
-      return GPCharacterLength(::handle, nValue)
+      return C5GPCharacterLength(::handle, nValue)
    endif
 
-return GPCharacterLength(::handle)
+return C5GPCharacterLength(::handle)
 
 //*********************************************************************************************************
   METHOD Assigment( p ) CLASS GPCharacterRange
 //*********************************************************************************************************
 
-return GPCharacterAssigment( ::handle, p )
+return C5GPCharacterAssigment( ::handle, p )
 
 
 //Constructors
@@ -109,13 +109,13 @@ return GPCharacterAssigment( ::handle, p )
 #pragma BEGINDUMP
 #include <gc.h>
 
-HB_FUNC( _GPCHARACTERRANGE )
+HB_FUNC( C5_GPCHARACTERRANGE )
 {
    CharacterRange * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_CHARACTERRANGE );
    int iParams = hb_pcount();
-   BOOL lOk = true;   
-   
+   BOOL lOk = true;
+
    switch( iParams ){
    	   case 0:
    	      o = new CharacterRange();
@@ -124,56 +124,56 @@ HB_FUNC( _GPCHARACTERRANGE )
    	      o = new CharacterRange( hb_parni( 1 ), hb_parni( 2 ) );
    	      break;
    }
-   
+
    GP_SET( pObj, ( void * ) o );
-   hb_GDIPLUS_ret( pObj );   
-   
+   hb_GDIPLUS_ret( pObj );
+
 }
 
-HB_FUNC( GPCHARACTERFIRST ){
-  
+HB_FUNC( C5GPCHARACTERFIRST ){
+
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_CHARACTERRANGE( p ) ){
       CharacterRange * o = ( CharacterRange * ) GP_GET( p );
-      
+
       if( hb_pcount() > 1 )
          o->First = hb_parni( 2 );
-         
+
       hb_retni( o->First );
-      
+
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+
 }
 
-HB_FUNC( GPCHARACTERLENGTH ){
-  
+HB_FUNC( C5GPCHARACTERLENGTH ){
+
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_CHARACTERRANGE( p ) ){
       CharacterRange * o = ( CharacterRange * ) GP_GET( p );
-      
+
       if( hb_pcount() > 1 )
          o->Length = hb_parni( 2 );
-         
+
       hb_retni( o->Length );
-      
+
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+
 }
 
 
-HB_FUNC( GPCHARACTERASSIGMENT ){
-  
+HB_FUNC( C5GPCHARACTERASSIGMENT ){
+
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
    if( GP_IS_CHARACTERRANGE( p ) ){
       CharacterRange * o  = ( CharacterRange * ) GP_GET( p );
       CharacterRange * o2 = ( CharacterRange * ) GP_GET( p2 );
-      *o = *o2;      
+      *o = *o2;
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+
 }
 
 

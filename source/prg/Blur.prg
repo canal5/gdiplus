@@ -30,19 +30,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := _GPBlur()
+     ::handle := C5_GPBlur()
   elseif iParams == 1
-     ::handle := _GPBlur( p1 )                               //
+     ::handle := C5_GPBlur( p1 )                               //
   elseif iParams == 3
-     ::handle := _GPBlur( p1, p2, p3 )                       //
+     ::handle := C5_GPBlur( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := _GPBlur( p1, p2, p3 )                       //
+     ::handle := C5_GPBlur( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := _GPBlur( p1, p2, p3, p4, p5 )               //
+     ::handle := C5_GPBlur( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := _GPBlur( p1, p2, p3, p4, p5, p6 )           //
+     ::handle := C5_GPBlur( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := _GPBlur( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := C5_GPBlur( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -103,7 +103,7 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPBLUR )
+HB_FUNC( C5_GPBLUR )
 {
    //Blur* clr;
    //int iParams = hb_pcount();
@@ -120,7 +120,7 @@ HB_FUNC( _GPBLUR )
    //hb_retptr( (void*)  );
 }
 
-HB_FUNC( DELETEBLUR )
+HB_FUNC( C5DELETEBLUR )
 {
    //Blur* clr = (Blur*) hb_parptr( 1 );
    //delete (Blur*) clr;

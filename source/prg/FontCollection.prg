@@ -25,7 +25,7 @@ ENDCLASS
   METHOD New() CLASS GPFontCollection
 *********************************************************************************************************
 
-   ::handle := _GPFontCollection()
+   ::handle := C5_GPFontCollection()
 
 return self
 
@@ -42,13 +42,13 @@ return nil
   METHOD GetFamilies( A, B, C ) CLASS GPFontCollection
 *********************************************************************************************************
 
-return GPFontColGetFamilies( ::handle, A, @B, @C )
+return C5GPFontColGetFamilies( ::handle, A, @B, @C )
 
 *********************************************************************************************************
   METHOD GetFamilyCount() CLASS GPFontCollection
 *********************************************************************************************************
 
-return GPFontColGetFamilyCount( ::handle )
+return C5GPFontColGetFamilyCount( ::handle )
 
 *********************************************************************************************************
   METHOD GetLastStatus() CLASS GPFontCollection
@@ -84,19 +84,19 @@ return 0
 #pragma BEGINDUMP
 #include <gc.h>
 
-HB_FUNC( _GPFONTCOLLECTION )
+HB_FUNC( C5_GPFONTCOLLECTION )
 {
    FontCollection * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_FONTCOLLECTION );
-   
+
    o = new FontCollection();
-    
+
    GP_SET( pObj, ( void * ) o );
-   hb_GDIPLUS_ret( pObj ); 
-   
+   hb_GDIPLUS_ret( pObj );
+
 }
 
-HB_FUNC( GPFONTCOLGETFAMILIES )
+HB_FUNC( C5GPFONTCOLGETFAMILIES )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -111,24 +111,24 @@ HB_FUNC( GPFONTCOLGETFAMILIES )
       sta = o->GetFamilies( numFamilies, families, &numFound );
       pArray = hb_itemArrayNew( numFound );
       for( j = 0; j < numFound; j++ ){
-         hb_arraySet( pArray, j + 1, GPNewGDIPLUSObject( families+j, GP_IT_FONTCOLLECTION ) );         
+         hb_arraySet( pArray, j + 1, GPNewGDIPLUSObject( families+j, GP_IT_FONTCOLLECTION ) );
       }
-      
+
       hb_itemPutNI( pItem, numFound );
-      
+
       if( !hb_itemParamStoreRelease( 3, pArray ))
-           hb_itemRelease( pArray );      
+           hb_itemRelease( pArray );
 
       if( !hb_itemParamStoreRelease( 4, pItem ))
-           hb_itemRelease( pItem );     
-      
+           hb_itemRelease( pItem );
+
       hb_retni( ( Status ) sta );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
-HB_FUNC( GPFONTCOLGETFAMILYCOUNT  )
+HB_FUNC( C5GPFONTCOLGETFAMILYCOUNT  )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -136,12 +136,12 @@ HB_FUNC( GPFONTCOLGETFAMILYCOUNT  )
    {
       FontCollection * o = ( FontCollection * ) GP_GET( pObj );
       hb_retni( o->GetFamilyCount() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
-HB_FUNC( GPFONTCOLGETLASTSTATUS  )
+HB_FUNC( C5GPFONTCOLGETLASTSTATUS  )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -149,7 +149,7 @@ HB_FUNC( GPFONTCOLGETLASTSTATUS  )
    {
       FontCollection * o = ( FontCollection * ) GP_GET( pObj );
       hb_retni( ( Status ) o->GetLastStatus() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 

@@ -23,7 +23,7 @@ ENDCLASS
   METHOD New(oBitmap, graphics) CLASS GPCachedBitmap
 *********************************************************************************************************
 
-  ::handle := _GPCachedBitmap(oBitmap:handle, graphics:handle)
+  ::handle := C5_GPCachedBitmap(oBitmap:handle, graphics:handle)
 
 return self
 
@@ -39,7 +39,7 @@ return nil
   METHOD GetLastStatus() CLASS GPCachedBitmap
 *********************************************************************************************************
 
-return GPCachedBitmapGetLastStatus(::handle)
+return C5GPCachedBitmapGetLastStatus(::handle)
 
 
 
@@ -50,7 +50,7 @@ return GPCachedBitmapGetLastStatus(::handle)
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPCACHEDBITMAP )
+HB_FUNC( C5_GPCACHEDBITMAP )
 {
    Bitmap* bmp = (Bitmap*) hb_parptr( 1 );
    Graphics* gr = (Graphics*) hb_parptr( 2 );
@@ -60,7 +60,7 @@ HB_FUNC( _GPCACHEDBITMAP )
    hb_retptr( (void*) cbmp );
 }
 
-HB_FUNC( GPCACHEDBITMAPGETLASTSTATUS )
+HB_FUNC( C5GPCACHEDBITMAPGETLASTSTATUS )
 {
    CachedBitmap* ptr = (CachedBitmap*) hb_parptr( 1 );
    hb_retni( ptr->GetLastStatus() );

@@ -68,7 +68,7 @@ CLASS GPColor
   METHOD SetFromCOLORREF()
   METHOD SetValue( argbColor )
   METHOD ToCOLORREF()
-  
+
 ENDCLASS
 
 *********************************************************************************************************
@@ -76,23 +76,23 @@ ENDCLASS
 *********************************************************************************************************
 
 local iParams := PCount()
-local handle 
+local handle
 
    switch iParams
       case 0
-         handle = _GPColor()
+         handle = C5_GPColor()
          exit
       case 1
-         handle = _GPColor( nA )
+         handle = C5_GPColor( nA )
          exit
       case 3
-         handle = _GPColor( nA, nR, nG )
+         handle = C5_GPColor( nA, nR, nG )
          exit
       case 4
-         handle = _GPColor( nA, nR, nG, nB )
+         handle = C5_GPColor( nA, nR, nG, nB )
         exit
    endswitch
-   
+
    ::handle = handle
 
 return self
@@ -110,73 +110,73 @@ return nil
   METHOD GetA() CLASS GPColor
 *********************************************************************************************************
 
-return GPColorGetA(::handle)
+return C5GPColorGetA(::handle)
 
 *********************************************************************************************************
   METHOD GetAlpha() CLASS GPColor
 *********************************************************************************************************
 
-return GPColorGetAlpha(::handle)
+return C5GPColorGetAlpha(::handle)
 
 *********************************************************************************************************
   METHOD GetB() CLASS GPColor
 *********************************************************************************************************
 
-return GPColorGetB(::handle)
+return C5GPColorGetB(::handle)
 
 *********************************************************************************************************
   METHOD GetBlue() CLASS GPColor
 *********************************************************************************************************
 
-return GPColorGetBlue(::handle)
+return C5GPColorGetBlue(::handle)
 
 *********************************************************************************************************
   METHOD GetG() CLASS GPColor
 *********************************************************************************************************
 
-return GPColorGetG(::handle)
+return C5GPColorGetG(::handle)
 
 *********************************************************************************************************
   METHOD GetGreen() CLASS GPColor
 *********************************************************************************************************
 
-return GPColorGetGreen(::handle)
+return C5GPColorGetGreen(::handle)
 
 *********************************************************************************************************
   METHOD GetR() CLASS GPColor
 *********************************************************************************************************
 
-return GPColorGetR(::handle)
+return C5GPColorGetR(::handle)
 
 *********************************************************************************************************
   METHOD GetRed() CLASS GPColor
 *********************************************************************************************************
 
-return GPColorGetRed(::handle)
+return C5GPColorGetRed(::handle)
 
 *********************************************************************************************************
   METHOD GetValue() CLASS GPColor
 *********************************************************************************************************
 
-return GPColorGetValue(::handle)
+return C5GPColorGetValue(::handle)
 
 *********************************************************************************************************
   METHOD SetFromCOLORREF( rgbColor ) CLASS GPColor
 *********************************************************************************************************
 
-return GPColorSetFromCOLORREF(::handle, rgbColor)
+return C5GPColorSetFromCOLORREF(::handle, rgbColor)
 
 *********************************************************************************************************
   METHOD SetValue( argbColor ) CLASS GPColor
 *********************************************************************************************************
 
-return GPColorSetValue(::handle, argbColor)
+return C5GPColorSetValue(::handle, argbColor)
 
 *********************************************************************************************************
   METHOD ToCOLORREF() CLASS GPColor
 *********************************************************************************************************
 
-return GPColorToCOLORREF(::handle)
+return C5GPColorToCOLORREF(::handle)
 
 
 // Color::GetA               The Color::GetA method gets the alpha component of this Color object.
@@ -198,12 +198,12 @@ return GPColorToCOLORREF(::handle)
 #include <gc.h>
 
 
-HB_FUNC( _GPCOLOR )
+HB_FUNC( C5_GPCOLOR )
 {
    Color* clr;
    GDIPLUS *  pObj = gdiplus_new( GP_IT_COLOR );
    int iParams = hb_pcount();
-   
+
    switch (iParams){
       case 0:
           clr = new Color();
@@ -222,136 +222,136 @@ HB_FUNC( _GPCOLOR )
    hb_GDIPLUS_ret( pObj );
 }
 
-HB_FUNC( GPCOLORGETA )
+HB_FUNC( C5GPCOLORGETA )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetA() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+
 }
 
-HB_FUNC( GPCOLORGETALPHA )
+HB_FUNC( C5GPCOLORGETALPHA )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetAlpha() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
-HB_FUNC( GPCOLORGETB )
+HB_FUNC( C5GPCOLORGETB )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetB() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPCOLORGETBLUE )
+HB_FUNC( C5GPCOLORGETBLUE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetBlue() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPCOLORGETG )
+HB_FUNC( C5GPCOLORGETG )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetG() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 }
 
-HB_FUNC( GPCOLORGETGREEN )
+HB_FUNC( C5GPCOLORGETGREEN )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetGreen() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 }
 
-HB_FUNC( GPCOLORGETR )
+HB_FUNC( C5GPCOLORGETR )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetR() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 }
 
-HB_FUNC( GPCOLORGETRED )
+HB_FUNC( C5GPCOLORGETRED )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetRed() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPCOLORGETVALUE )
+HB_FUNC( C5GPCOLORGETVALUE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       hb_retni( clr->GetValue() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 }
 
-HB_FUNC( GPCOLORSETFROMCOLORREF )
+HB_FUNC( C5GPCOLORSETFROMCOLORREF )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       clr->SetFromCOLORREF( (COLORREF) hb_parnl( 2 ) );
       hb_ret();
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
-HB_FUNC( GPCOLORSETVALUE )
+HB_FUNC( C5GPCOLORSETVALUE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       clr->SetValue( (ARGB) hb_parnl( 2 ) );
       hb_ret();
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-      
-   
+
+
 }
 
-HB_FUNC( GPCOLORTOCOLORREF )
+HB_FUNC( C5GPCOLORTOCOLORREF )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObj ) ){
       Color* clr = ( Color * ) GP_GET( pObj );
       hb_retnl( (long) clr->ToCOLORREF() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 }
 
 HB_FUNC( MAKEARGB )

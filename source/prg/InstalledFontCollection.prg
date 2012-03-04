@@ -26,8 +26,8 @@ ENDCLASS
   METHOD New() CLASS GPInstalledFontCollection
 *********************************************************************************************************
 
-   ::handle := _GPInstalledFontCollection()
-   
+   ::handle := C5_GPInstalledFontCollection()
+
 return self
 
 *********************************************************************************************************
@@ -50,15 +50,15 @@ return nil
 #pragma BEGINDUMP
 #include <gc.h>
 
-HB_FUNC( _GPINSTALLEDFONTCOLLECTION )
+HB_FUNC( C5_GPINSTALLEDFONTCOLLECTION )
 {
    InstalledFontCollection * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_INSTALLEDFONTCOLLECTION );
-   
+
    o = new InstalledFontCollection();
-    
+
    GP_SET( pObj, ( void * ) o );
-   hb_GDIPLUS_ret( pObj ); 
+   hb_GDIPLUS_ret( pObj );
 }
 #pragma ENDDUMP
 

@@ -35,9 +35,9 @@ CLASS GPPoint
   METHOD Y( nValue ) SETGET
   METHOD Equals2( p ) OPERATOR "=="
   METHOD Equals( p ) INLINE Self == p
-  
+
   METHOD Substract OPERATOR "-"
-  METHOD Add       OPERATOR "+"  
+  METHOD Add       OPERATOR "+"
 
 //Constructor
 //Point::Point()
@@ -61,13 +61,13 @@ local iParams := PCount()
 
   switch( iParams )
      case 0
-        ::handle := _GPPoint()
+        ::handle := C5_GPPoint()
         exit
      case 1
-        ::handle = _GPPoint( p1:handle )
+        ::handle = C5_GPPoint( p1:handle )
         exit
      case 2
-        ::handle := _GPPoint( p1, p2 )
+        ::handle := C5_GPPoint( p1, p2 )
   endswitch
 
 return self
@@ -85,10 +85,10 @@ return nil
 *********************************************************************************************************
 
 if pcount() > 0
-   return GPPointX(::handle, nValue)
+   return C5GPPointX(::handle, nValue)
 endif
 
-return GPPointX(::handle)
+return C5GPPointX(::handle)
 
 
 *********************************************************************************************************
@@ -96,28 +96,28 @@ return GPPointX(::handle)
 *********************************************************************************************************
 
 if pcount() > 0
-   return GPPointY(::handle, nValue)
+   return C5GPPointY(::handle, nValue)
 endif
 
-return GPPointY(::handle)
+return C5GPPointY(::handle)
 
 *********************************************************************************************************
   METHOD Substract( p ) CLASS GPPoint
 *********************************************************************************************************
-   
-return GPPointSubstract( ::handle, p:handle )
+
+return C5GPPointSubstract( ::handle, p:handle )
 
 *********************************************************************************************************
   METHOD Add( p ) CLASS GPPoint
 *********************************************************************************************************
 
-return GPPointAdd( ::handle, p:handle )
+return C5GPPointAdd( ::handle, p:handle )
 
 *********************************************************************************************************
   METHOD Equals2( p ) CLASS GPPoint
 *********************************************************************************************************
 
-return GPPointEquals( ::handle, p:handle )
+return C5GPPointEquals( ::handle, p:handle )
 
 
 //*********************************************************************************************************
@@ -152,14 +152,14 @@ return GPPointEquals( ::handle, p:handle )
 #include <gc.h>
 
 
-HB_FUNC( _GPPOINT )
+HB_FUNC( C5_GPPOINT )
 {
-   GDIPLUS * pObj = gdiplus_new( GP_IT_POINT );   
+   GDIPLUS * pObj = gdiplus_new( GP_IT_POINT );
    Point* ptr;
    int iParams = hb_pcount();
 
    switch( iParams ){
-      case 0: 
+      case 0:
          ptr = new Point();
          break;
       case 1:
@@ -167,17 +167,17 @@ HB_FUNC( _GPPOINT )
          GDIPLUS * p2 = hb_GDIPLUS_par( 1 );
          if( GP_IS_POINT( p2 ) ){
             Point * point = ( Point * ) GP_GET( p2 );
-            ptr =  new Point( *point ); 
+            ptr =  new Point( *point );
          } else if( GP_IS_SIZE( p2 ) ){
             Size * size = ( Size * ) GP_GET( p2 );
-            ptr =  new Point( *size );            
+            ptr =  new Point( *size );
          }
          break;
        }
       case 2:
          ptr = new Point( hb_parni( 1 ), hb_parni( 2 ) );
          break;
-      
+
    }
 
    GP_SET( pObj, ptr );
@@ -186,25 +186,25 @@ HB_FUNC( _GPPOINT )
 }
 
 
-HB_FUNC( GPPOINTX )
+HB_FUNC( C5GPPOINTX )
 {
-  
+
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_POINT( p ) ){
       Point * ptr = ( Point * ) GP_GET( p );
-      
+
       if( hb_pcount() > 1 )
          ptr->X = hb_parni( 2 );
-         
+
       hb_retni( ptr->X );
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+
 }
 
-HB_FUNC( GPPOINTY )
+HB_FUNC( C5GPPOINTY )
 {
-  
+
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_POINT( p ) ){
       Point * ptr = ( Point * ) GP_GET( p );
@@ -217,55 +217,55 @@ HB_FUNC( GPPOINTY )
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPPOINTSUBSTRACT )
-{ 
+HB_FUNC( C5GPPOINTSUBSTRACT )
+{
    GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-   
+
    if( GP_IS_POINT( p1 ) && GP_IS_POINT( p2 ) ){
       PHB_ITEM pitem;
       Point * ptr1 = ( Point * ) GP_GET( p1 );
       Point * ptr2 = ( Point * ) GP_GET( p2 );
       Point point3 = *ptr1 - *ptr2;
-      
+
       pitem = GPNewGDIPLUSObject( &point3, GP_IT_POINT );
-      
+
       hb_itemReturnRelease( pitem );
-              
+
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPPOINTADD )
-{ 
+HB_FUNC( C5GPPOINTADD )
+{
    GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-   
+
    if( GP_IS_POINT( p1 ) && GP_IS_POINT( p2 ) ){
       PHB_ITEM pitem;
       Point * ptr1 = ( Point * ) GP_GET( p1 );
       Point * ptr2 = ( Point * ) GP_GET( p2 );
       Point point3 = *ptr1 + *ptr2;
       pitem = GPNewGDIPLUSObject( &point3, GP_IT_POINT );
-      
+
       hb_itemReturnRelease( pitem );
-              
+
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPPOINTEQUALS )
-{ 
+HB_FUNC( C5GPPOINTEQUALS )
+{
    GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-   
+
    if( GP_IS_POINT( p1 ) && GP_IS_POINT( p2 ) ){
       PHB_ITEM pitem;
       Point * ptr1 = ( Point * ) GP_GET( p1 );
       Point * ptr2 = ( Point * ) GP_GET( p2 );
-      
-      hb_retl( ptr1->Equals( *ptr2 ) ); 
-                     
+
+      hb_retl( ptr1->Equals( *ptr2 ) );
+
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }

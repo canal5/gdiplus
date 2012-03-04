@@ -5,7 +5,7 @@ function Bitmap( ... )
    local aParams := hb_aparams()
    local oBmp
    local nLen := Len( aParams )
-   
+
    switch nLen
       case 1
          oBmp = GPBitmap():New( aParams[ 1 ] )
@@ -15,10 +15,10 @@ function Bitmap( ... )
         exit
       case 3
          oBmp = GPBitmap():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
-        exit        
+        exit
       case 5
          oBmp = GPBitmap():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
-        exit        
+        exit
    endswitch
 
 return oBmp
@@ -80,24 +80,24 @@ ENDCLASS
 
    local aParams := hb_aparams()
    local iParams := Len( aParams )
-   
+
    switch iParams
       case 1
-         ::handle = _GPBitmap( aParams[ 1 ] )
+         ::handle = C5_GPBitmap( aParams[ 1 ] )
          exit
       case 2
-         ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ] )
+         ::handle = C5_GPBitmap( aParams[ 1 ], aParams[ 2 ] )
         exit
       case 3
          if ValType( aParams[ 3 ] ) == "O"
-            ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ]:handle )
-         else 
-            ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
+            ::handle = C5_GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ]:handle )
+         else
+            ::handle = C5_GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
          endif
-        exit        
+        exit
       case 5
-         ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
-        exit        
+         ::handle = C5_GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
+        exit
    endswitch
 
 return self
@@ -317,30 +317,30 @@ return 0
 #pragma BEGINDUMP
 #include <gc.h>
 
-HB_FUNC( _GPBITMAP )
+HB_FUNC( C5_GPBITMAP )
 {
    Bitmap * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_BITMAP );
    int iParams = hb_pcount();
    BOOL lOk = true;
-   
-   switch (iParams){  
+
+   switch (iParams){
       case 2:
          o = new Bitmap( ( HBITMAP ) hb_parnl( 1 ), ( HPALETTE ) hb_parnl( 2 ) );
          break;
       case 3:
       {
       	 GDIPLUS * pGrap = hb_GDIPLUS_par( 3 );
-      	 Graphics * g = ( Graphics * ) GP_GET( pGrap ); 
+      	 Graphics * g = ( Graphics * ) GP_GET( pGrap );
          o = new Bitmap( hb_parni( 1 ), hb_parni( 2 ), g );
       }
-   } 
-   
+   }
+
    GP_SET( pObj, o );
-   hb_GDIPLUS_ret( pObj );   
+   hb_GDIPLUS_ret( pObj );
 }
 
-HB_FUNC( DELETEBITMAP )
+HB_FUNC( C5DELETEBITMAP )
 {
 //   Bitmap* clr = (Bitmap*) hb_parptr( 1 );
 //   delete (Bitmap*) clr;

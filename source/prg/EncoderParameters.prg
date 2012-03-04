@@ -30,19 +30,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := _GPEncoderParameters()
+     ::handle := C5_GPEncoderParameters()
   elseif iParams == 1
-     ::handle := _GPEncoderParameters( p1 )                               //
+     ::handle := C5_GPEncoderParameters( p1 )                               //
   elseif iParams == 3
-     ::handle := _GPEncoderParameters( p1, p2, p3 )                       //
+     ::handle := C5_GPEncoderParameters( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := _GPEncoderParameters( p1, p2, p3 )                       //
+     ::handle := C5_GPEncoderParameters( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := _GPEncoderParameters( p1, p2, p3, p4, p5 )               //
+     ::handle := C5_GPEncoderParameters( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := _GPEncoderParameters( p1, p2, p3, p4, p5, p6 )           //
+     ::handle := C5_GPEncoderParameters( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := _GPEncoderParameters( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := C5_GPEncoderParameters( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -80,7 +80,7 @@ return nil
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPENCODERPARAMETERS )
+HB_FUNC( C5_GPENCODERPARAMETERS )
 {
    //EncoderParameters* ptr;
    //int iParams = hb_pcount();
@@ -97,7 +97,7 @@ HB_FUNC( _GPENCODERPARAMETERS )
    //hb_retptr( (void*) ptr );
 }
 
-HB_FUNC( DELETEENCODERPARAMETERS )
+HB_FUNC( C5DELETEENCODERPARAMETERS )
 {
    //EncoderParameters* clr = (EncoderParameters*) hb_parptr( 1 );
    //delete (EncoderParameters*) clr;

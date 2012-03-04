@@ -26,7 +26,7 @@ ENDCLASS
 
 local iParams := PCount()
 
-     ::handle := _GPPrivateFontCollection()
+     ::handle := C5_GPPrivateFontCollection()
 
 return self
 
@@ -43,13 +43,13 @@ return nil
   METHOD AddFontFile( cFilename ) CLASS GPPrivateFontCollection
 *********************************************************************************************************
 
-return GPPrivateAddFontFile( ::handle, cFilename )
+return C5GPPrivateAddFontFile( ::handle, cFilename )
 
 *********************************************************************************************************
   METHOD AddMemoryFont( ptr, nLen ) CLASS GPPrivateFontCollection
 *********************************************************************************************************
 
-return GPPrivateAddMemoryFont( ::handle, ptr, nLen )
+return C5GPPrivateAddMemoryFont( ::handle, ptr, nLen )
 
 
 
@@ -82,18 +82,18 @@ return GPPrivateAddMemoryFont( ::handle, ptr, nLen )
 #pragma BEGINDUMP
 #include <gc.h>
 
-HB_FUNC( _GPPRIVATEFONTCOLLECTION )
+HB_FUNC( C5_GPPRIVATEFONTCOLLECTION )
 {
    PrivateFontCollection * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_PRIVATEFONTCOLLECTION );
-   
+
    o = new PrivateFontCollection();
-    
+
    GP_SET( pObj, ( void * ) o );
-   hb_GDIPLUS_ret( pObj ); 
+   hb_GDIPLUS_ret( pObj );
 }
 
-HB_FUNC( GPPRIVATEADDFONTFILE  )
+HB_FUNC( C5GPPRIVATEADDFONTFILE  )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -104,11 +104,11 @@ HB_FUNC( GPPRIVATEADDFONTFILE  )
       sta = o->AddFontFile( filename );
       hb_xfree( filename );
       hb_retni( ( Status ) sta );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPPRIVATEADDMEMORYFONT )
+HB_FUNC( C5GPPRIVATEADDMEMORYFONT )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -117,7 +117,7 @@ HB_FUNC( GPPRIVATEADDMEMORYFONT )
       PrivateFontCollection * o = ( PrivateFontCollection * ) GP_GET( pObj );
       sta = o->AddMemoryFont( hb_parptr( 2 ), hb_parni( 3 ) );
       hb_retni( ( Status ) sta );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 

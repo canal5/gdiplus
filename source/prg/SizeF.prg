@@ -58,13 +58,13 @@ local iParams := PCount()
 
   switch( iParams )
      case 0
-        ::handle := _GPSizeF()
+        ::handle := C5_GPSizeF()
         exit
      case 1
-        ::handle := _GPSizeF( p1:handle )
+        ::handle := C5_GPSizeF( p1:handle )
         exit
      case 2
-        ::handle := _GPSizeF( p1, p2 )
+        ::handle := C5_GPSizeF( p1, p2 )
         exit
   endswitch
 
@@ -82,25 +82,25 @@ return nil
   METHOD Empty() CLASS GPSizeF
 *********************************************************************************************************
 
-return GPSizeFEmpty(::handle)
+return C5GPSizeFEmpty(::handle)
 
 *********************************************************************************************************
   METHOD Equals( sz ) CLASS GPSizeF
 *********************************************************************************************************
 
-return GPSizeFEquals(::handle, sz:handle )
+return C5GPSizeFEquals(::handle, sz:handle )
 
 *********************************************************************************************************
   METHOD Substract( sz ) CLASS GPSizeF
 *********************************************************************************************************
-   
-return GPSizeFSubstract( ::handle, sz:handle )
+
+return C5GPSizeFSubstract( ::handle, sz:handle )
 
 *********************************************************************************************************
   METHOD Add( sz ) CLASS GPSizeF
 *********************************************************************************************************
 
-return GPSizeFAdd( ::handle, sz:handle )
+return C5GPSizeFAdd( ::handle, sz:handle )
 
 
 
@@ -137,14 +137,14 @@ return GPSizeFAdd( ::handle, sz:handle )
 #pragma BEGINDUMP
 #include <gc.h>
 
-HB_FUNC( _GPSIZEF )
+HB_FUNC( C5_GPSIZEF )
 {
-   GDIPLUS * pObj = gdiplus_new( GP_IT_SIZEF );   
+   GDIPLUS * pObj = gdiplus_new( GP_IT_SIZEF );
    SizeF * ptr;
    int iParams = hb_pcount();
 
    switch( iParams ){
-      case 0: 
+      case 0:
          ptr = new SizeF();
          break;
       case 1:
@@ -152,13 +152,13 @@ HB_FUNC( _GPSIZEF )
          GDIPLUS * p2 = hb_GDIPLUS_par( 1 );
          if( GP_IS_SIZEF( p2 ) ){
             SizeF * point = ( SizeF * ) GP_GET( p2 );
-            ptr =  new SizeF( *point ); 
+            ptr =  new SizeF( *point );
          }
          break;
        }
       case 2:
          ptr = new SizeF( (REAL) hb_parnd( 1 ), (REAL) hb_parnd( 2 ) );
-         break;       
+         break;
    }
 
    GP_SET( pObj, ptr );
@@ -166,39 +166,39 @@ HB_FUNC( _GPSIZEF )
    hb_GDIPLUS_ret( pObj );
 }
 
-HB_FUNC( GPSIZEFEMPTY )
+HB_FUNC( C5GPSIZEFEMPTY )
 {
-  
+
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_SIZEF( p ) ){
       SizeF * ptr = ( SizeF * ) GP_GET( p );
-         
+
       hb_retl( ptr->Empty() );
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+
 }
 
-HB_FUNC( GPSIZEFSUBSTRACT )
-{ 
+HB_FUNC( C5GPSIZEFSUBSTRACT )
+{
    GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-   
+
    if( GP_IS_SIZEF( p1 ) && GP_IS_SIZEF( p2 ) ){
       PHB_ITEM pitem;
       SizeF * ptr1 = ( SizeF * ) GP_GET( p1 );
       SizeF * ptr2 = ( SizeF * ) GP_GET( p2 );
       SizeF point3 = *ptr1 - *ptr2;
       pitem = GPNewGDIPLUSObject( &point3, GP_IT_SIZEF );
-      
+
       hb_itemReturnRelease( pitem );
-              
+
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPSIZEFADD )
-{ 
+HB_FUNC( C5GPSIZEFADD )
+{
    GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
 
@@ -211,24 +211,24 @@ HB_FUNC( GPSIZEFADD )
       pitem = GPNewGDIPLUSObject( &point3, GP_IT_SIZEF );
 
       hb_itemReturnRelease( pitem );
-              
+
    }else{
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
 
-HB_FUNC( GPSIZEFEQUALS )
-{ 
+HB_FUNC( C5GPSIZEFEQUALS )
+{
    GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-   
+
    if( GP_IS_SIZEF( p1 ) && GP_IS_SIZEF( p2 ) ){
       PHB_ITEM pitem;
       SizeF * ptr1 = ( SizeF * ) GP_GET( p1 );
       SizeF * ptr2 = ( SizeF * ) GP_GET( p2 );
-      
-      hb_retl( ptr1->Equals( *ptr2 ) ); 
-                     
+
+      hb_retl( ptr1->Equals( *ptr2 ) );
+
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }

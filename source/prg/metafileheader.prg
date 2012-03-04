@@ -204,7 +204,7 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPMETAFILEHEADER )
+HB_FUNC( C5_GPMETAFILEHEADER )
 {
    //Metafile(
    //  [in]  const WCHAR *filename
@@ -217,7 +217,7 @@ HB_FUNC( _GPMETAFILEHEADER )
 }
 
 
-HB_FUNC( GPDELETEMETAFILEHEADER )
+HB_FUNC( C5GPDELETEMETAFILEHEADER )
 {
 
    //Metafile* p = (Metafile*) hb_parptr( 1 );

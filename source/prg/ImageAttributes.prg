@@ -56,19 +56,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := _GPImageAttributes()
+     ::handle := C5_GPImageAttributes()
   elseif iParams == 1
-     ::handle := _GPImageAttributes( p1 )                               //
+     ::handle := C5_GPImageAttributes( p1 )                               //
   elseif iParams == 3
-     ::handle := _GPImageAttributes( p1, p2, p3 )                       //
+     ::handle := C5_GPImageAttributes( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := _GPImageAttributes( p1, p2, p3 )                       //
+     ::handle := C5_GPImageAttributes( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := _GPImageAttributes( p1, p2, p3, p4, p5 )               //
+     ::handle := C5_GPImageAttributes( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := _GPImageAttributes( p1, p2, p3, p4, p5, p6 )           //
+     ::handle := C5_GPImageAttributes( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := _GPImageAttributes( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := C5_GPImageAttributes( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -298,7 +298,7 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPIMAGEATTRIBUTES )
+HB_FUNC( C5_GPIMAGEATTRIBUTES )
 {
    //ImageAttributes* ptr;
    //int iParams = hb_pcount();
@@ -315,7 +315,7 @@ HB_FUNC( _GPIMAGEATTRIBUTES )
    //hb_retptr( (void*) ptr );
 }
 
-HB_FUNC( DELETEIMAGEATTRIBUTES )
+HB_FUNC( C5DELETEIMAGEATTRIBUTES )
 {
    ImageAttributes* clr = (ImageAttributes*) hb_parptr( 1 );
    delete (ImageAttributes*) clr;

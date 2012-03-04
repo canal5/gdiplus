@@ -73,12 +73,12 @@ ENDCLASS
 **************************************************************************************************************
    local iParams := PCount()
 
-   if p5 != NIL 
-      ::handle = _GPLGB( p1:handle, p2:handle, p3:handle, p4, p5 )
+   if p5 != NIL
+      ::handle = C5_GPLGB( p1:handle, p2:handle, p3:handle, p4, p5 )
    elseif valType( p4 ) == "O"
-      ::handle = _GPLGB( p1:handle, p2:handle, p3:handle, p4:handle )
-   else 
-      ::handle = _GPLGB( p1:handle, p2:handle, p3:handle, p4 )
+      ::handle = C5_GPLGB( p1:handle, p2:handle, p3:handle, p4:handle )
+   else
+      ::handle = C5_GPLGB( p1:handle, p2:handle, p3:handle, p4 )
    endif
 
 return self
@@ -96,43 +96,43 @@ return nil
   METHOD GetBlend( aFactor, aPosition ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBGETBLEND( ::handle, @aFactor, @aPosition )
+return C5_GPLGBGETBLEND( ::handle, @aFactor, @aPosition )
 
 *********************************************************************************************************
   METHOD GetBlendCount() CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBGETBLENDCOUNT( ::handle )
+return C5_GPLGBGETBLENDCOUNT( ::handle )
 
 *********************************************************************************************************
   METHOD GetGammaCorrection() CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBGetGammaCorrection( ::handle )
+return C5_GPLGBGetGammaCorrection( ::handle )
 
 *********************************************************************************************************
   METHOD GetInterpolationColorCount() CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBGetInterpolationColorCount( ::handle )
+return C5_GPLGBGetInterpolationColorCount( ::handle )
 
 *********************************************************************************************************
   METHOD GetInterpolationColors( apresetColors, ablendPositions ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBGetInterpolationColors( ::handle, @apresetColors, @ablendPositions )
+return C5_GPLGBGetInterpolationColors( ::handle, @apresetColors, @ablendPositions )
 
 *********************************************************************************************************
   METHOD GetLinearColors( apresetColors ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBGetLinearColors( ::handle, @apresetColors )
+return C5_GPLGBGetLinearColors( ::handle, @apresetColors )
 
 *********************************************************************************************************
   METHOD GetRectangle( oRect ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBGetRectangle( ::handle, @oRect:handle )
+return C5_GPLGBGetRectangle( ::handle, @oRect:handle )
 
 *********************************************************************************************************
   METHOD GetRectangle2() CLASS GPLinearGradientBrush
@@ -144,26 +144,26 @@ return 0
   METHOD GetTransform( oMatrix ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBGetTransform( ::handle, @oMatrix )
+return C5_GPLGBGetTransform( ::handle, @oMatrix )
 
 
 *********************************************************************************************************
   METHOD GetWrapMode() CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBGetWrapMode( ::handle )
+return C5_GPLGBGetWrapMode( ::handle )
 
 *********************************************************************************************************
   METHOD MultiplyTransform( oMatrix, nOrder ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBMultiplyTransform( ::handle, oMatrix:handle, nOrder )
+return C5_GPLGBMultiplyTransform( ::handle, oMatrix:handle, nOrder )
 
 *********************************************************************************************************
   METHOD ResetTransform() CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBResetTransform( ::handle )
+return C5_GPLGBResetTransform( ::handle )
 
 *********************************************************************************************************
   METHOD RotateTransform( nAngle, nOrder ) CLASS GPLinearGradientBrush
@@ -173,7 +173,7 @@ return _GPLGBResetTransform( ::handle )
    DEFAULT nOrder := 0
 
 
-return _GPLGBRotateTransform( ::handle, nAngle, nOrder )
+return C5_GPLGBRotateTransform( ::handle, nAngle, nOrder )
 
 *********************************************************************************************************
   METHOD ScaleTransform( nX, nY, nOrder ) CLASS GPLinearGradientBrush
@@ -183,13 +183,13 @@ return _GPLGBRotateTransform( ::handle, nAngle, nOrder )
    DEFAULT nY := 0
    DEFAULT nOrder := 0
 
-return _GPLGBScaleTransform( ::handle, nX, nY, nOrder )
+return C5_GPLGBScaleTransform( ::handle, nX, nY, nOrder )
 
 *********************************************************************************************************
   METHOD SetBlend( aFactor, aPosition ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBSETBLEND( ::handle, aFactor, aPosition )
+return C5_GPLGBSETBLEND( ::handle, aFactor, aPosition )
 
 *********************************************************************************************************
   METHOD SetBlendBellShape( nFocus, nScale ) CLASS GPLinearGradientBrush
@@ -197,7 +197,7 @@ return _GPLGBSETBLEND( ::handle, aFactor, aPosition )
    DEFAULT nFocus := 0
    DEFAULT nScale := 0
 
-return _GPLGBSetBlendBellShape( ::handle, nFocus, nScale )
+return C5_GPLGBSetBlendBellShape( ::handle, nFocus, nScale )
 
 *********************************************************************************************************
   METHOD SetBlendTriangularShape( nFocus, nScale ) CLASS GPLinearGradientBrush
@@ -205,32 +205,32 @@ return _GPLGBSetBlendBellShape( ::handle, nFocus, nScale )
    DEFAULT nFocus := 0
    DEFAULT nScale := 0
 
-return _GPLGBSetBlendTriangularShape( ::handle, nFocus, nScale )
+return C5_GPLGBSetBlendTriangularShape( ::handle, nFocus, nScale )
 
 *********************************************************************************************************
   METHOD SetGammaCorrection( useGamma ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
    DEFAULT useGamma := .T.
 
-return _GPLGBSetGammaCorrection( ::handle, useGamma )
+return C5_GPLGBSetGammaCorrection( ::handle, useGamma )
 
 *********************************************************************************************************
   METHOD SetInterpolationColors( aColor, ablendPositions ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBSetInterpolationColors( ::handle, aColor, ablendPositions )
+return C5_GPLGBSetInterpolationColors( ::handle, aColor, ablendPositions )
 
 *********************************************************************************************************
   METHOD SetLinearColors( oColor1, oColor2 ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBSetLinearColors( ::handle, oColor1:handle, oColor2:handle )
+return C5_GPLGBSetLinearColors( ::handle, oColor1:handle, oColor2:handle )
 
 *********************************************************************************************************
   METHOD SetTransform( oMatrix ) CLASS GPLinearGradientBrush
 *********************************************************************************************************
 
-return _GPLGBSetTransform( ::handle, oMatrix:handle )
+return C5_GPLGBSetTransform( ::handle, oMatrix:handle )
 
 *********************************************************************************************************
   METHOD SetWrapMode( nwrapMode ) CLASS GPLinearGradientBrush
@@ -238,7 +238,7 @@ return _GPLGBSetTransform( ::handle, oMatrix:handle )
 
    DEFAULT nwrapMode := 0
 
-return _GPLGBSetWrapMode( ::handle, nwrapMode )
+return C5_GPLGBSetWrapMode( ::handle, nwrapMode )
 
 
 *********************************************************************************************************
@@ -249,7 +249,7 @@ return _GPLGBSetWrapMode( ::handle, nwrapMode )
    DEFAULT nY := 0
    DEFAULT nOrder := 0
 
-return _GPLGBTranslateTransform( ::handle, nX, nY, nOrder )
+return C5_GPLGBTranslateTransform( ::handle, nX, nY, nOrder )
 
 
 //Constructors
@@ -301,38 +301,38 @@ return _GPLGBTranslateTransform( ::handle, nX, nY, nOrder )
 #include <gc.h>
 #include <hbapicls.h>
 
-HB_FUNC( _GPLGB )
+HB_FUNC( C5_GPLGB )
 {
-   GDIPLUS * pObj = gdiplus_new( GP_IT_LINEARGRADIENTBRUSH );  
+   GDIPLUS * pObj = gdiplus_new( GP_IT_LINEARGRADIENTBRUSH );
    LinearGradientBrush * pLGB;
    int iParams = hb_pcount();
    BOOL lOk = true;
-   
+
    if( iParams == 4 ){
       GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
       GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-      GDIPLUS * p3 = hb_GDIPLUS_par( 3 );      	 
+      GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
       if( HB_ISINTEGER( 4 ) ){
       	 LinearGradientMode  mode = ( LinearGradientMode  ) hb_parni( 4 );
       	 void * u;
       	 u = GP_GET( p1 );
-      	 if( GP_IS_RECTF( p1 ) ) {      	 	  
+      	 if( GP_IS_RECTF( p1 ) ) {
       	    if( GP_IS_COLOR( p2 ) && GP_IS_COLOR( p3 ) ){
       	    	Color * color1 = ( Color * ) GP_GET( p2 );
       	    	Color * color2 = ( Color * ) GP_GET( p3 );
-      	    	pLGB = new LinearGradientBrush( *( ( RectF * ) u ), *color1, *color2, mode );      	    	
-      	    }else 
-      	       lOk = false;      	 
+      	    	pLGB = new LinearGradientBrush( *( ( RectF * ) u ), *color1, *color2, mode );
+      	    }else
+      	       lOk = false;
       	 }else if( GP_IS_RECT( p1 ) ){
       	    if( GP_IS_COLOR( p2 ) && GP_IS_COLOR( p3 ) ){
       	    	Color * color1 = ( Color * ) GP_GET( p2 );
       	    	Color * color2 = ( Color * ) GP_GET( p3 );
-      	    	pLGB = new LinearGradientBrush( *( ( Rect * ) u ), *color1, *color2, mode );      	    	
-      	    }else 
-      	       lOk = false;      	      	 	      	 	
+      	    	pLGB = new LinearGradientBrush( *( ( Rect * ) u ), *color1, *color2, mode );
+      	    }else
+      	       lOk = false;
       	 }
       }else if( HB_ISPOINTER( 4 ) ){
-      	 GDIPLUS * p4 = hb_GDIPLUS_par( 4 );      	 
+      	 GDIPLUS * p4 = hb_GDIPLUS_par( 4 );
          void * u1 = GP_GET( p1 );
          void * u2 = GP_GET( p2 );
          Color * color1 = ( Color * ) GP_GET( p3 );
@@ -342,36 +342,36 @@ HB_FUNC( _GPLGB )
       	 }else if( GP_IS_POINTF( p1 ) && GP_IS_POINTF( p2 ) ){
       	 	  pLGB = new LinearGradientBrush( *( ( PointF * ) u1 ), *( ( PointF * ) u2 ), *color1, *color2 );
       	 }
-      }   	
+      }
    }else if( iParams == 5 ){
       GDIPLUS * p1 = hb_GDIPLUS_par( 1 );
       GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
-      GDIPLUS * p3 = hb_GDIPLUS_par( 3 );   
+      GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
       REAL angle = ( REAL ) hb_parnd( 4 );
       BOOL is    = hb_parl( 5 );
    	  if( ( GP_IS_RECTF( p1 ) || GP_IS_RECT( p1 ) ) && GP_IS_COLOR( p2 ) && GP_IS_COLOR( p3 ) ){
          void * u1 = GP_GET( p1 );
          Color * color1 = ( Color * ) GP_GET( p2 );
-      	 Color * color2 = ( Color * ) GP_GET( p3 );   	  	
+      	 Color * color2 = ( Color * ) GP_GET( p3 );
       	 if( GP_IS_RECT( p1 ) )
       	    pLGB = new LinearGradientBrush( *( ( RectF * ) u1 ), *color1, *color2, angle, is );
-      	 else 
+      	 else
       	    pLGB = new LinearGradientBrush( *( ( Rect * ) u1 ), *color1, *color2, angle, is );
-   	  }else 
-   	     lOk = false;   	  
+   	  }else
+   	     lOk = false;
    }
-   
+
    if( lOk ){
       GP_SET( pObj, pLGB );
       hb_GDIPLUS_ret( pObj );
    }
-      
+
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
-HB_FUNC( _GPLGBGETBLEND )
+HB_FUNC( C5_GPLGBGETBLEND )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
@@ -381,7 +381,7 @@ HB_FUNC( _GPLGBGETBLEND )
       PHB_ITEM itemFactor, itemPositions;
       int blendCount = linGrBrush->GetBlendCount();
       if( blendCount > 0 ){
-      	 
+
          int j;
          Status sta;
          factors   = ( REAL * ) hb_xgrab( sizeof( REAL ) * blendCount );
@@ -398,24 +398,24 @@ HB_FUNC( _GPLGBGETBLEND )
          }
          if( !hb_itemParamStoreRelease( 2, itemFactor ) && itemFactor )
               hb_itemRelease( itemFactor );
-         
+
          if( !hb_itemParamStoreRelease( 3, itemPositions ) && itemPositions )
               hb_itemRelease( itemPositions );
-         
+
          hb_xfree( factors );
          hb_xfree( positions );
-         
+
          hb_retni( sta );
-      }      
-      
+      }
+
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+
 }
 
-HB_FUNC( _GPLGBGETBLENDCOUNT )
+HB_FUNC( C5_GPLGBGETBLENDCOUNT )
 {
-  
+
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
       LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );
@@ -424,9 +424,9 @@ HB_FUNC( _GPLGBGETBLENDCOUNT )
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( _GPLGBGETGAMMACORRECTION )
+HB_FUNC( C5_GPLGBGETGAMMACORRECTION )
 {
-  
+
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
       LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );
@@ -437,7 +437,7 @@ HB_FUNC( _GPLGBGETGAMMACORRECTION )
 
 
 
-HB_FUNC( _GPLGBSETBLEND )
+HB_FUNC( C5_GPLGBSETBLEND )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) && HB_ISARRAY( 2 ) && HB_ISARRAY( 3 ) ){
@@ -450,13 +450,13 @@ HB_FUNC( _GPLGBSETBLEND )
       REAL * factors = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
       REAL * positions = ( REAL * ) hb_xgrab( sizeof( REAL ) * iLen );
       Status sta;
-      
-      for( j = 0; j < iLen; j++ ){      
+
+      for( j = 0; j < iLen; j++ ){
          if( hb_arrayGetType( itemFactor, j + 1 ) == HB_IT_DOUBLE )
             factors[ j ] = ( REAL ) hb_arrayGetND( itemFactor, j + 1 );
          else
             factors[ j ] = ( REAL ) hb_arrayGetNI( itemFactor, j + 1 );
-         
+
          if( hb_arrayGetType( itemPositions, j + 1 ) == HB_IT_DOUBLE )
             positions[ j ] = ( REAL ) hb_arrayGetND( itemPositions, j + 1 );
          else
@@ -465,7 +465,7 @@ HB_FUNC( _GPLGBSETBLEND )
       sta = linGrBrush->SetBlend( factors, positions, iLen );
       hb_xfree( factors );
       hb_xfree( positions );
-      
+
       hb_retni( sta );
 
      }else
@@ -474,7 +474,7 @@ HB_FUNC( _GPLGBSETBLEND )
 }
 
 
-HB_FUNC( _GPLGBGETINTERPOLATIONCOLORCOUNT )
+HB_FUNC( C5_GPLGBGETINTERPOLATIONCOLORCOUNT )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
@@ -486,7 +486,7 @@ HB_FUNC( _GPLGBGETINTERPOLATIONCOLORCOUNT )
 }
 
 
-HB_FUNC( _GPLGBSETINTERPOLATIONCOLORS )
+HB_FUNC( C5_GPLGBSETINTERPOLATIONCOLORS )
 {
 
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
@@ -504,7 +504,7 @@ HB_FUNC( _GPLGBSETINTERPOLATIONCOLORS )
          for( n = 0; n < iLen; n++ ){
          	 GDIPLUS * hHandle;
          	 Color * c;
-         	 pObj = hb_arrayGetItemPtr( aColor, n + 1);         	 
+         	 pObj = hb_arrayGetItemPtr( aColor, n + 1);
          	 hb_objSendMsg( pObj, "HANDLE", 0 );
          	 hHandle = hb_GDIPLUS_par( -1 );
          	 c = ( Color * ) GP_GET( hHandle );
@@ -513,8 +513,8 @@ HB_FUNC( _GPLGBSETINTERPOLATIONCOLORS )
               blendPositions[ n ] = ( REAL ) hb_arrayGetND( aReal, n + 1 );
            else
               blendPositions[ n ] = ( REAL ) hb_arrayGetNI( aReal, n + 1 );
-              
-              
+
+
         }
         sta = linGrBrush->SetInterpolationColors( color1, blendPositions, iLen );
 
@@ -530,7 +530,7 @@ HB_FUNC( _GPLGBSETINTERPOLATIONCOLORS )
 }
 
 
-HB_FUNC( _GPLGBGETINTERPOLATIONCOLORS )
+HB_FUNC( C5_GPLGBGETINTERPOLATIONCOLORS )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
@@ -545,26 +545,26 @@ HB_FUNC( _GPLGBGETINTERPOLATIONCOLORS )
          REAL * positions = ( REAL * ) hb_xgrab( sizeof( REAL ) * colorCount );
          PHB_ITEM aColor, aposition;
          PHB_ITEM pitemColor;
-         
+
          sta = linGrBrush->GetInterpolationColors( colors, positions, colorCount );
          aColor = hb_itemArrayNew( colorCount );
          aposition = hb_itemArrayNew( colorCount );
-         
+
          for( j = 0; j < colorCount; j++ ){
 
              pitemColor = GPNewGDIPLUSObject( &colors[ j ], GP_IT_COLOR );
              hb_arraySet( aColor, j + 1, pitemColor );
-             hb_itemRelease( pitemColor );         	
+             hb_itemRelease( pitemColor );
              hb_arraySetND( aposition, j + 1, ( double ) positions[ j ] );
 
          }
-         
+
          if( !hb_itemParamStoreRelease( 2, aColor ) && aColor )
               hb_itemRelease( aColor );
-         
+
          if( !hb_itemParamStoreRelease( 3, aposition ) && aposition )
               hb_itemRelease( aposition );
-         
+
          hb_xfree( ( void * ) colors );
          hb_xfree( ( void * ) positions );
 
@@ -576,7 +576,7 @@ HB_FUNC( _GPLGBGETINTERPOLATIONCOLORS )
 
 }
 
-HB_FUNC( _GPLGBGETLINEARCOLORS )
+HB_FUNC( C5_GPLGBGETLINEARCOLORS )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
@@ -609,20 +609,20 @@ HB_FUNC( _GPLGBGETLINEARCOLORS )
 }
 
 
-HB_FUNC( _GPLGBGETRECTANGLE  )
+HB_FUNC( C5_GPLGBGETRECTANGLE  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) && ( GP_IS_RECT( p2 ) || GP_IS_RECTF( p2 ) ) ){
       LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );
       int j;
-      Status sta;      
-      void * uRect = GP_GET( p2 );     
-       
+      Status sta;
+      void * uRect = GP_GET( p2 );
+
       if( GP_IS_RECT( p2 ) ){
-         sta = linGrBrush->GetRectangle( ( Rect * ) uRect );	
+         sta = linGrBrush->GetRectangle( ( Rect * ) uRect );
       }else
-         sta = linGrBrush->GetRectangle( ( RectF * ) uRect );	
+         sta = linGrBrush->GetRectangle( ( RectF * ) uRect );
 
      hb_retni( sta );
 
@@ -632,7 +632,7 @@ HB_FUNC( _GPLGBGETRECTANGLE  )
 }
 
 
-HB_FUNC( _GPLGBGETTRANSFORM  )
+HB_FUNC( C5_GPLGBGETTRANSFORM  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
@@ -641,7 +641,7 @@ HB_FUNC( _GPLGBGETTRANSFORM  )
       Status sta;
       PHB_ITEM pitem;
       Matrix * matrix;
-      
+
       pitem = GPCreateObjectToFill( ( void**)&matrix, GP_IT_MATRIX );
 
       sta = linGrBrush->GetTransform( matrix );
@@ -656,7 +656,7 @@ HB_FUNC( _GPLGBGETTRANSFORM  )
 
 }
 
-HB_FUNC( _GPLGBSETTRANSFORM  )
+HB_FUNC( C5_GPLGBSETTRANSFORM  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
@@ -671,11 +671,11 @@ HB_FUNC( _GPLGBSETTRANSFORM  )
 
 }
 
-HB_FUNC( _GPLGBSETWRAPMODE  )
+HB_FUNC( C5_GPLGBSETWRAPMODE  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
-      LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );                 
+      LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );
       Status sta;
       sta = linGrBrush->SetWrapMode( ( WrapMode ) hb_parni( 2 ) );
       hb_retni( sta );
@@ -684,11 +684,11 @@ HB_FUNC( _GPLGBSETWRAPMODE  )
 
 }
 
-HB_FUNC( _GPLGBGETWRAPMODE  )
+HB_FUNC( C5_GPLGBGETWRAPMODE  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
-      LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );                 
+      LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );
       WrapMode wrapmode;
       wrapmode = linGrBrush->GetWrapMode();
       hb_retni( wrapmode );
@@ -697,11 +697,11 @@ HB_FUNC( _GPLGBGETWRAPMODE  )
 
 }
 
-HB_FUNC( _GPLGBSETGAMMACORRECTION  )
+HB_FUNC( C5_GPLGBSETGAMMACORRECTION  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
-      LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );                 
+      LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );
       Status sta;
       sta = linGrBrush->SetGammaCorrection( hb_parl( 2 ) );
       hb_retni( sta );
@@ -711,12 +711,12 @@ HB_FUNC( _GPLGBSETGAMMACORRECTION  )
 }
 
 
-HB_FUNC( _GPLGBMULTIPLYTRANSFORM  )
+HB_FUNC( C5_GPLGBMULTIPLYTRANSFORM  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) && GP_IS_MATRIX( p2 ) ){
-      LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );                 
+      LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );
       Matrix * matrix = ( Matrix * ) GP_GET( p2 );
       MatrixOrder order = ( MatrixOrder ) hb_parni( 3 );
       Status sta;
@@ -727,7 +727,7 @@ HB_FUNC( _GPLGBMULTIPLYTRANSFORM  )
 
 }
 
-HB_FUNC( _GPLGBRESETTRANSFORM )
+HB_FUNC( C5_GPLGBRESETTRANSFORM )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
@@ -740,7 +740,7 @@ HB_FUNC( _GPLGBRESETTRANSFORM )
 
 }
 
-HB_FUNC( _GPLGBROTATETRANSFORM  )
+HB_FUNC( C5_GPLGBROTATETRANSFORM  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
@@ -755,7 +755,7 @@ HB_FUNC( _GPLGBROTATETRANSFORM  )
 
 }
 
-HB_FUNC( _GPLGBSCALETRANSFORM  )
+HB_FUNC( C5_GPLGBSCALETRANSFORM  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
@@ -771,11 +771,11 @@ HB_FUNC( _GPLGBSCALETRANSFORM  )
 
 }
 
-HB_FUNC( _GPLGBSETBLENDBELLSHAPE  )
+HB_FUNC( C5_GPLGBSETBLENDBELLSHAPE  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
-      LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );                         
+      LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );
       REAL focus = ( REAL ) hb_parnd( 2 );
       REAL scale = ( REAL ) hb_parnd( 3 );
       Status sta;
@@ -786,7 +786,7 @@ HB_FUNC( _GPLGBSETBLENDBELLSHAPE  )
 
 }
 
-HB_FUNC( _GPLGBSETBLENDTRIANGULARSHAPE  )
+HB_FUNC( C5_GPLGBSETBLENDTRIANGULARSHAPE  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
@@ -801,7 +801,7 @@ HB_FUNC( _GPLGBSETBLENDTRIANGULARSHAPE  )
 
 }
 
-HB_FUNC( _GPLGBSETLINEARCOLORS )
+HB_FUNC( C5_GPLGBSETLINEARCOLORS )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
@@ -819,7 +819,7 @@ HB_FUNC( _GPLGBSETLINEARCOLORS )
 
 }
 
-HB_FUNC( _GPLGBTRANSLATETRANSFORM  )
+HB_FUNC( C5_GPLGBTRANSLATETRANSFORM  )
 {
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
@@ -839,15 +839,15 @@ HB_FUNC( _GPLGBTRANSLATETRANSFORM  )
 #pragma ENDDUMP
 
 /*
-HB_FUNC( _GPLGB... )
+HB_FUNC( C5_GPLGB... )
 {
-  
+
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
    if( GP_IS_LINEARGRADIENTBRUSH( p ) ){
       LinearGradientBrush * linGrBrush = ( LinearGradientBrush * ) GP_GET( p );
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-  
+
 }
 */
 

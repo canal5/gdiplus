@@ -32,19 +32,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := _GPEffect()
+     ::handle := C5_GPEffect()
   elseif iParams == 1
-     ::handle := _GPEffect( p1 )                               //
+     ::handle := C5_GPEffect( p1 )                               //
   elseif iParams == 3
-     ::handle := _GPEffect( p1, p2, p3 )                       //
+     ::handle := C5_GPEffect( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := _GPEffect( p1, p2, p3 )                       //
+     ::handle := C5_GPEffect( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := _GPEffect( p1, p2, p3, p4, p5 )               //
+     ::handle := C5_GPEffect( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := _GPEffect( p1, p2, p3, p4, p5, p6 )           //
+     ::handle := C5_GPEffect( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := _GPEffect( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := C5_GPEffect( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -111,7 +111,7 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPEFFECT )
+HB_FUNC( C5_GPEFFECT )
 {
    //Effect* ptr;
    //int iParams = hb_pcount();
@@ -128,7 +128,7 @@ HB_FUNC( _GPEFFECT )
    //hb_retptr( (void*) ptr );
 }
 
-HB_FUNC( DELETEEFFECT )
+HB_FUNC( C5DELETEEFFECT )
 {
    //Effect* clr = (Effect*) hb_parptr( 1 );
    //delete (Effect*) clr;

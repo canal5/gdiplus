@@ -28,19 +28,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := _GPColorCurve()
+     ::handle := C5_GPColorCurve()
   elseif iParams == 1
-     ::handle := _GPColorCurve( p1 )                               //
+     ::handle := C5_GPColorCurve( p1 )                               //
   elseif iParams == 3
-     ::handle := _GPColorCurve( p1, p2, p3 )                       //
+     ::handle := C5_GPColorCurve( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := _GPColorCurve( p1, p2, p3 )                       //
+     ::handle := C5_GPColorCurve( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := _GPColorCurve( p1, p2, p3, p4, p5 )               //
+     ::handle := C5_GPColorCurve( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := _GPColorCurve( p1, p2, p3, p4, p5, p6 )           //
+     ::handle := C5_GPColorCurve( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := _GPColorCurve( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := C5_GPColorCurve( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -96,7 +96,7 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPCOLORCURVE )
+HB_FUNC( C5_GPCOLORCURVE )
 {
    //ColorCurve* clr;
    //int iParams = hb_pcount();
@@ -113,7 +113,7 @@ HB_FUNC( _GPCOLORCURVE )
    //hb_retptr( (void*)  );
 }
 
-HB_FUNC( DELETECOLORCURVE )
+HB_FUNC( C5DELETECOLORCURVE )
 {
    //ColorCurve* clr = (ColorCurve*) hb_parptr( 1 );
    //delete (ColorCurve*) clr;

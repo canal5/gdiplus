@@ -11,7 +11,7 @@ function FontFamily( ... )
          exit
       case 1
          oFont = GPFontFamily():New( aParams[ 1 ] )
-         exit         
+         exit
       case 2
          oFont = GPFontFamily():New( aParams[ 1 ], aParams[ 2 ] )
          exit
@@ -49,23 +49,23 @@ ENDCLASS
   METHOD New( ... ) CLASS GPFontFamily
 *******************************************************************************************
 local iParams := PCount()
-local handle 
+local handle
 local aParams := hb_aparams()
 
    switch iParams
       case 0
-         handle = _GPFontFamily()
+         handle = C5_GPFontFamily()
          exit
       case 1
-         handle = _GPFontFamily( aParams[ 1 ] )
+         handle = C5_GPFontFamily( aParams[ 1 ] )
          exit
       case 2
-         handle = _GPFontFamily( aParams[ 1 ], aParams[ 2 ]:handle )
+         handle = C5_GPFontFamily( aParams[ 1 ], aParams[ 2 ]:handle )
         exit
    endswitch
-   
+
    ::handle = handle
-  
+
 return self
 
 *******************************************************************************************
@@ -81,75 +81,75 @@ return self
    METHOD Clone() CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyClone( ::handle )
+return C5GPFontFamilyClone( ::handle )
 
 
 *******************************************************************************************
     METHOD GenericMonospace() CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyGenericMonospace( ::handle )
+return C5GPFontFamilyGenericMonospace( ::handle )
 
 *******************************************************************************************
     METHOD GenericSansSerif() CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyGenericSansSerif( ::handle )
+return C5GPFontFamilyGenericSansSerif( ::handle )
 
 *******************************************************************************************
     METHOD GenericSerif() CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyGenericSerif( ::handle )
+return C5GPFontFamilyGenericSerif( ::handle )
 
 *******************************************************************************************
     METHOD GetCellAscent( n ) CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyGetCellAscent( ::handle, n )
+return C5GPFontFamilyGetCellAscent( ::handle, n )
 
 *******************************************************************************************
     METHOD GetCellDescent( n ) CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyGetCellDescent( ::handle, n )
+return C5GPFontFamilyGetCellDescent( ::handle, n )
 
 
 *******************************************************************************************
     METHOD GetEmHeight( n ) CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyGetEmHeight( ::handle, n )
+return C5GPFontFamilyGetEmHeight( ::handle, n )
 
 *******************************************************************************************
     METHOD GetFamilyName( name, lang ) CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyGetFamilyName( ::handle, @name, lang  )
+return C5GPFontFamilyGetFamilyName( ::handle, @name, lang  )
 
 *******************************************************************************************
     METHOD GetLastStatus() CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyGetLastStatus( ::handle )
+return C5GPFontFamilyGetLastStatus( ::handle )
 
 *******************************************************************************************
     METHOD GetLineSpacing( n ) CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyGetLineSpacing( ::handle, n )
+return C5GPFontFamilyGetLineSpacing( ::handle, n )
 
 *******************************************************************************************
     METHOD IsAvailable() CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyIsAvailable( ::handle )
+return C5GPFontFamilyIsAvailable( ::handle )
 
 *******************************************************************************************
     METHOD IsStyleAvailable( n ) CLASS GPFontFamily
 *******************************************************************************************
 
-return GPFontFamilyIsStyleAvailable( ::handle, n )
+return C5GPFontFamilyIsStyleAvailable( ::handle, n )
 
 //Constructors
 //
@@ -185,18 +185,18 @@ return GPFontFamilyIsStyleAvailable( ::handle, n )
 #pragma BEGINDUMP
 #include <gc.h>
 
-HB_FUNC( _GPFONTFAMILY )
+HB_FUNC( C5_GPFONTFAMILY )
 {
    FontFamily * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_FONTFAMILY );
    int iParams = hb_pcount();
-   BOOL lOk = true;   
-   
+   BOOL lOk = true;
+
    switch( iParams ){
       case 0:
          o = new FontFamily();
          break;
-      case 1:{         
+      case 1:{
             WCHAR* filename = hb_GDIPLUS_parw( 1 );
             o = new FontFamily( filename, NULL );
             hb_xfree( filename );
@@ -204,28 +204,28 @@ HB_FUNC( _GPFONTFAMILY )
          break;
       case 2:{
             GDIPLUS * pFont = hb_GDIPLUS_par( 2 );
-            WCHAR* filename = hb_GDIPLUS_parw( 1 );                  
+            WCHAR* filename = hb_GDIPLUS_parw( 1 );
             if( ( lOk = GP_IS_FONTCOLLECTION( pFont ) ) ){
                 FontCollection * font = ( FontCollection * ) GP_GET( pFont );
-               o = new FontFamily( filename, font );            
-            }            
+               o = new FontFamily( filename, font );
+            }
             hb_xfree( filename );
          }
          break;
    }
-   
+
    if( lOk )
    {
       GP_SET( pObj, ( void * ) o );
-      hb_GDIPLUS_ret( pObj ); 
-   }else 
+      hb_GDIPLUS_ret( pObj );
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 }
 
 
-HB_FUNC( GPFONTFAMILYCLONE ){
-  
+HB_FUNC( C5GPFONTFAMILYCLONE ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_FONTFAMILY( pObj ) )
    {
@@ -235,13 +235,13 @@ HB_FUNC( GPFONTFAMILYCLONE ){
       oClone = o->Clone();
       pClone = GPNewGDIPLUSObject( oClone, GP_IT_FONTFAMILY );
       hb_itemReturnRelease( pClone );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPFONTFAMILYGENERICMONOSPACE ){
-  
+HB_FUNC( C5GPFONTFAMILYGENERICMONOSPACE ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_FONTFAMILY( pObj ) )
    {
@@ -251,13 +251,13 @@ HB_FUNC( GPFONTFAMILYGENERICMONOSPACE ){
       oClone = ( FontFamily * ) o->GenericMonospace();
       pClone = GPNewGDIPLUSObject( oClone, GP_IT_FONTFAMILY );
       hb_itemReturnRelease( pClone );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPFONTFAMILYGENERICSANSSERIF ){
-  
+HB_FUNC( C5GPFONTFAMILYGENERICSANSSERIF ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_FONTFAMILY( pObj ) )
    {
@@ -267,14 +267,14 @@ HB_FUNC( GPFONTFAMILYGENERICSANSSERIF ){
       oClone = ( FontFamily * )o->GenericSansSerif();
       pClone = GPNewGDIPLUSObject( oClone, GP_IT_FONTFAMILY );
       hb_itemReturnRelease( pClone );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
-HB_FUNC( GPFONTFAMILYGENERICSERIF ){
-  
+HB_FUNC( C5GPFONTFAMILYGENERICSERIF ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_FONTFAMILY( pObj ) )
    {
@@ -284,63 +284,63 @@ HB_FUNC( GPFONTFAMILYGENERICSERIF ){
       oClone = ( FontFamily * )o->GenericSerif();
       pClone = GPNewGDIPLUSObject( oClone, GP_IT_FONTFAMILY );
       hb_itemReturnRelease( pClone );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
-HB_FUNC( GPFONTFAMILYGETCELLASCENT ){
-  
+HB_FUNC( C5GPFONTFAMILYGETCELLASCENT ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_FONTFAMILY( pObj ) )
-   {  
+   {
    	  int style;
       FontFamily * o = ( FontFamily * ) GP_GET( pObj );
       style = o->GetCellAscent( hb_parni( 2 ) );
       hb_retni( style );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPFONTFAMILYGETCELLDESCENT ){
-  
+HB_FUNC( C5GPFONTFAMILYGETCELLDESCENT ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_FONTFAMILY( pObj ) )
-   {  
+   {
    	  int style;
       FontFamily * o = ( FontFamily * ) GP_GET( pObj );
       style = o->GetCellDescent( hb_parni( 2 ) );
       hb_retni( style );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
-HB_FUNC( GPFONTFAMILYGETEMHEIGHT ){
-  
+HB_FUNC( C5GPFONTFAMILYGETEMHEIGHT ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_FONTFAMILY( pObj ) )
-   {  
+   {
    	  int style;
       FontFamily * o = ( FontFamily * ) GP_GET( pObj );
       style = o->GetEmHeight( hb_parni( 2 ) );
       hb_retni( style );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
-HB_FUNC( GPFONTFAMILYGETFAMILYNAME ){
-  
+HB_FUNC( C5GPFONTFAMILYGETFAMILYNAME ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
    if( GP_IS_FONTFAMILY( pObj ) )
-   {  
-   	  int style;   	  
+   {
+   	  int style;
       FontFamily * o = ( FontFamily * ) GP_GET( pObj );
       WCHAR familyName[LF_FACESIZE];
       char * sOut;
@@ -348,14 +348,14 @@ HB_FUNC( GPFONTFAMILYGETFAMILYNAME ){
       sta = o->GetFamilyName( familyName, lang );
       sOut = hb_wctomb( familyName );
       hb_storvc( sOut, 2 );
-      
+
       hb_retni( sta );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPFONTFAMILYGETLASTSTATUS  )
+HB_FUNC( C5GPFONTFAMILYGETLASTSTATUS  )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -363,27 +363,27 @@ HB_FUNC( GPFONTFAMILYGETLASTSTATUS  )
    {
       FontFamily * o = ( FontFamily * ) GP_GET( pObj );
       hb_retni( ( Status ) o->GetLastStatus() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
 
-HB_FUNC( GPFONTFAMILYGETLINESPACING ){
-  
+HB_FUNC( C5GPFONTFAMILYGETLINESPACING ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_FONTFAMILY( pObj ) )
-   {  
+   {
    	  int style;
       FontFamily * o = ( FontFamily * ) GP_GET( pObj );
       style = o->GetLineSpacing( hb_parni( 2 ) );
       hb_retni( style );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPFONTFAMILYISAVAILABLE )
+HB_FUNC( C5GPFONTFAMILYISAVAILABLE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -391,22 +391,22 @@ HB_FUNC( GPFONTFAMILYISAVAILABLE )
    {
       FontFamily * o = ( FontFamily * ) GP_GET( pObj );
       hb_retl( o->IsAvailable() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
-HB_FUNC( GPFONTFAMILYISSTYLEAVAILABLE ){
-  
+HB_FUNC( C5GPFONTFAMILYISSTYLEAVAILABLE ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_FONTFAMILY( pObj ) )
-   {  
+   {
    	  int style;
       FontFamily * o = ( FontFamily * ) GP_GET( pObj );
       hb_retl( o->IsStyleAvailable( hb_parni( 2 ) ) );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 

@@ -8,7 +8,7 @@ function Font( ... )
    switch nLen
       case 1
          oFont = GPFont():New( aParams[ 1 ] )
-         exit         
+         exit
       case 2
          oFont = GPFont():New( aParams[ 1 ], aParams[ 2 ] )
          exit
@@ -18,13 +18,13 @@ function Font( ... )
       case 4
          if ValType( aParams[ 1 ] ) == "O"
             oFont = GPFont():New( aParams[ 1 ]:handle, aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
-         else 
+         else
             oFont = GPFont():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
          endif
-         exit                  
+         exit
       case 5
          oFont = GPFont():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
-         exit                           
+         exit
    endswitch
 
 return oFont
@@ -65,33 +65,33 @@ ENDCLASS
   METHOD New( ... ) CLASS GPFont
 *********************************************************************************************************
 local iParams := PCount()
-local handle 
+local handle
 local aParams := hb_aparams()
 
    switch iParams
       case 1
-         handle = _GPFont( aParams[ 1 ] )
+         handle = C5_GPFont( aParams[ 1 ] )
          exit
       case 2
          if( ValType( aParams[ 1 ] ) == "O" )
-            handle = _GPFont( aParams[ 1 ]:handle, aParams[ 2 ] )
-         else 
-            handle = _GPFont( aParams[ 1 ], aParams[ 2 ] )
+            handle = C5_GPFont( aParams[ 1 ]:handle, aParams[ 2 ] )
+         else
+            handle = C5_GPFont( aParams[ 1 ], aParams[ 2 ] )
          endif
          exit
       case 3
-         handle = _GPFont( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
+         handle = C5_GPFont( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
          exit
       case 4
-         handle = _GPFont( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
+         handle = C5_GPFont( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ] )
          exit
       case 5
-         handle = _GPFont( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
-         exit                                    
+         handle = C5_GPFont( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
+         exit
    endswitch
-   
+
    ::handle = handle
-  
+
 return self
 
 *********************************************************************************************************
@@ -106,13 +106,13 @@ return nil
   METHOD Clone() CLASS GPFont
 *********************************************************************************************************
 
-return GPFontClone( ::handle )
+return C5GPFontClone( ::handle )
 
 *********************************************************************************************************
   METHOD GetFamily( oFontFamily  ) CLASS GPFont
 *********************************************************************************************************
 
-return GPFontGetFamily( ::handle, @oFontFamily )
+return C5GPFontGetFamily( ::handle, @oFontFamily )
 
 *********************************************************************************************************
   METHOD GetHeight( A ) CLASS GPFont
@@ -120,9 +120,9 @@ return GPFontGetFamily( ::handle, @oFontFamily )
    local nHeight
 
    if valType( A ) == "O"
-      nHeight = GPFontGetHeight( ::handle, A:handle )
-   else 
-      nHeight = GPFontGetHeight( ::handle, A )
+      nHeight = C5GPFontGetHeight( ::handle, A:handle )
+   else
+      nHeight = C5GPFontGetHeight( ::handle, A )
    endif
 
 return nHeight
@@ -132,43 +132,43 @@ return nHeight
   METHOD GetLastStatus() CLASS GPFont
 *********************************************************************************************************
 
-return GPFontGetLastStatus( ::handle )
+return C5GPFontGetLastStatus( ::handle )
 
 *********************************************************************************************************
   METHOD GetLogFontA( oGrap, oLog ) CLASS GPFont
 *********************************************************************************************************
- 
-return GPFontGetLogFontA( ::handle, oGrap:handle, @oLog )
+
+return C5GPFontGetLogFontA( ::handle, oGrap:handle, @oLog )
 
 *********************************************************************************************************
   METHOD GetLogFontW( oGrap, oLog ) CLASS GPFont
 *********************************************************************************************************
 
-return GPFontGetLogFontW( ::handle, oGrap:handle, @oLog )
+return C5GPFontGetLogFontW( ::handle, oGrap:handle, @oLog )
 
 *********************************************************************************************************
   METHOD GetSize() CLASS GPFont
 *********************************************************************************************************
 
-return  GPFontGetSize( ::handle )
+return  C5GPFontGetSize( ::handle )
 
 *********************************************************************************************************
   METHOD GetStyle() CLASS GPFont
 *********************************************************************************************************
 
-return GPFontGetStyle( ::handle )
+return C5GPFontGetStyle( ::handle )
 
 *********************************************************************************************************
   METHOD GetUnit() CLASS GPFont
 *********************************************************************************************************
 
-return GPFontGetUnit( ::handle )
+return C5GPFontGetUnit( ::handle )
 
 *********************************************************************************************************
   METHOD IsAvailable() CLASS GPFont
 *********************************************************************************************************
 
-return GPFontIsAvailable( ::handle )
+return C5GPFontIsAvailable( ::handle )
 
 
 //Constructors
@@ -208,18 +208,18 @@ return GPFontIsAvailable( ::handle )
 #include <gc.h>
 #include <hbapiitm.h>
 
-HB_FUNC( _GPFONT )
+HB_FUNC( C5_GPFONT )
 {
    Font * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_FONT );
    int iParams = hb_pcount();
-   BOOL lOk = true;   
-   
+   BOOL lOk = true;
+
    switch( iParams ){
       case 1:
          o = new Font( ( HDC ) hb_parnl( 1 ) );
          break;
-         
+
       case 2:
          if( HB_ISPOINTER( 1 ) ){
             GDIPLUS * pFont = hb_GDIPLUS_par( 1 );
@@ -227,7 +227,7 @@ HB_FUNC( _GPFONT )
             if( lOk ){
                FontFamily * font = ( FontFamily * ) GP_GET( pFont );
                o = new Font( font, ( REAL ) hb_parnd( 2 ) );
-            }   
+            }
          }else if( HB_ISCHAR( 1 ) ){
             WCHAR * filename = hb_GDIPLUS_parw( 1 );
             o = new Font( filename, ( REAL ) hb_parnd( 2 ) );
@@ -237,18 +237,18 @@ HB_FUNC( _GPFONT )
                o = new Font( ( HDC ) hb_parnl( 1 ), ( HFONT ) hb_parnl( 2 ) );
             else if( HB_ISPOINTER( 2 ) ){
                GDIPLUS * log = hb_GDIPLUS_par( 2 );
-               if( GP_IS_LOGFONTA( log ) ){                
+               if( GP_IS_LOGFONTA( log ) ){
                   LOGFONTA * pLog = ( LOGFONTA * ) GP_GET( log );
                   o = new Font( ( HDC ) hb_parnl( 1 ), pLog );
                }else {
                   LOGFONTW * pLog = ( LOGFONTW * ) GP_GET( log );
-                  o = new Font( ( HDC ) hb_parnl( 1 ), pLog );               
+                  o = new Font( ( HDC ) hb_parnl( 1 ), pLog );
                }
             }
          }else{
             lOk = false;
             }
-            
+
          break;
 
       case 3:
@@ -258,56 +258,56 @@ HB_FUNC( _GPFONT )
             if( lOk ){
                FontFamily * font = ( FontFamily * ) GP_GET( pFont );
                o = new Font( font, ( REAL ) hb_parnd( 2 ), hb_parni( 3 ) );
-            }   
+            }
          }else if( HB_ISCHAR( 1 ) ){
             WCHAR * filename = hb_GDIPLUS_parw( 1 );
             o = new Font( filename, ( REAL ) hb_parnd( 2 ), hb_parni( 3 ) );
-            hb_xfree( filename );       
-         }else 
+            hb_xfree( filename );
+         }else
             lOk = false;
          break;
       case 4:{
-      	
+
          if( HB_ISPOINTER( 1 ) && ! HB_ISCHAR( 1 ) ){
             GDIPLUS * pFont = hb_GDIPLUS_par( 1 );
             lOk = GP_IS_FONTFAMILY( pFont );
             if( lOk ){
                FontFamily * font = ( FontFamily * ) GP_GET( pFont );
                o = new Font( font, ( REAL ) hb_parnd( 2 ), hb_parni( 3 ), ( Unit ) hb_parni( 4 ) );
-            }   
+            }
          }else if( HB_ISCHAR( 1 ) ){
             WCHAR * filename = hb_GDIPLUS_parw( 1 );
-            
+
             o = new Font( filename, ( REAL ) hb_parnd( 2 ), hb_parni( 3 ), ( Unit ) hb_parni( 4 ) );
-            hb_xfree( filename );       
+            hb_xfree( filename );
          }else
             lOk = false;
-         break;   
+         break;
       case 5:
          WCHAR * filename = hb_GDIPLUS_parw( 1 );
          GDIPLUS * pFont = hb_GDIPLUS_par( 5 );
          lOk = GP_IS_FONTCOLLECTION( pFont );
          if( lOk ){
             FontCollection * font = ( FontCollection * ) GP_GET( pFont );
-            
+
             o = new Font( filename, ( REAL ) hb_parnd( 2 ), hb_parni( 3 ), ( Unit ) hb_parni( 4 ), font );
-         }                       
-         hb_xfree( filename );              
+         }
+         hb_xfree( filename );
       }
    }
 
    if( lOk )
    {
       GP_SET( pObj, ( void * ) o );
-      hb_GDIPLUS_ret( pObj ); 
-   }else 
+      hb_GDIPLUS_ret( pObj );
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
 
-HB_FUNC( GPFONTCLONE ){
-  
+HB_FUNC( C5GPFONTCLONE ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_FONT( pObj ) )
    {
@@ -317,13 +317,13 @@ HB_FUNC( GPFONTCLONE ){
       oClone = o->Clone();
       pClone = GPNewGDIPLUSObject( oClone, GP_IT_FONT );
       hb_itemReturnRelease( pClone );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPFONTGETFAMILY ){
-  
+HB_FUNC( C5GPFONTGETFAMILY ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
    if( GP_IS_FONT( pObj ) )
@@ -335,14 +335,14 @@ HB_FUNC( GPFONTGETFAMILY ){
       pFont  = GPNewGDIPLUSObject( &fontFamily, GP_IT_FONTFAMILY );
       GDIPLUS_StoreParam( 2, pFont );
       hb_retni( ( Status ) sta );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
-HB_FUNC( GPFONTGETHEIGHT ){
-  
+HB_FUNC( C5GPFONTGETHEIGHT ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
    if( GP_IS_FONT( pObj ) )
@@ -350,7 +350,7 @@ HB_FUNC( GPFONTGETHEIGHT ){
       Font * o = ( Font * ) GP_GET( pObj );
       REAL height;
       if( HB_ISNUM( 2 ) ){
-         height = o->GetHeight( ( REAL ) hb_parnd( 2 ) );       
+         height = o->GetHeight( ( REAL ) hb_parnd( 2 ) );
       }else{
          GDIPLUS * p = hb_GDIPLUS_par( 2 );
          if( GP_IS_GRAPHICS( p ) ){
@@ -359,12 +359,12 @@ HB_FUNC( GPFONTGETHEIGHT ){
          }
       }
       hb_retnd( ( double ) height );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPFONTGETLASTSTATUS  )
+HB_FUNC( C5GPFONTGETLASTSTATUS  )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -372,12 +372,12 @@ HB_FUNC( GPFONTGETLASTSTATUS  )
    {
       Font * o = ( Font * ) GP_GET( pObj );
       hb_retni( ( Status ) o->GetLastStatus() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPFONTGETLOGFONTA ){
-  
+HB_FUNC( C5GPFONTGETLOGFONTA ){
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    GDIPLUS * p = hb_GDIPLUS_par( 2 );
    Status sta;
@@ -395,15 +395,15 @@ HB_FUNC( GPFONTGETLOGFONTA ){
       GDIPLUS_StoreParam( 3, pRet );
       hb_retni( ( Status ) sta );
 
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
 
-HB_FUNC( GPFONTGETLOGFONTW ){
-  
-  
+HB_FUNC( C5GPFONTGETLOGFONTW ){
+
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    GDIPLUS * p = hb_GDIPLUS_par( 2 );
    Status sta;
@@ -421,12 +421,12 @@ HB_FUNC( GPFONTGETLOGFONTW ){
       GDIPLUS_StoreParam( 3, pRet );
       hb_retni( ( Status ) sta );
 
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPFONTGETSIZE )
+HB_FUNC( C5GPFONTGETSIZE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -434,11 +434,11 @@ HB_FUNC( GPFONTGETSIZE )
    {
       Font * o = ( Font * ) GP_GET( pObj );
       hb_retnd( ( double ) o->GetSize() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPFONTGETSTYLE )
+HB_FUNC( C5GPFONTGETSTYLE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -446,11 +446,11 @@ HB_FUNC( GPFONTGETSTYLE )
    {
       Font * o = ( Font * ) GP_GET( pObj );
       hb_retni( o->GetStyle() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPFONTGETUNIT )
+HB_FUNC( C5GPFONTGETUNIT )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -458,11 +458,11 @@ HB_FUNC( GPFONTGETUNIT )
    {
       Font * o = ( Font * ) GP_GET( pObj );
       hb_retni( ( Unit ) o->GetUnit() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPFONTISAVAILABLE )
+HB_FUNC( C5GPFONTISAVAILABLE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -470,7 +470,7 @@ HB_FUNC( GPFONTISAVAILABLE )
    {
       Font * o = ( Font * ) GP_GET( pObj );
       hb_retl( o->IsAvailable() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 

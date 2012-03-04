@@ -22,7 +22,7 @@ ENDCLASS
   METHOD New( oColor ) CLASS GPSolidBrush
 *********************************************************************************************************
 
-  ::handle := _GPSolidBrush( oColor:handle )
+  ::handle := C5_GPSolidBrush( oColor:handle )
 
 return self
 
@@ -39,13 +39,13 @@ return nil
   METHOD GetColor( oColor ) CLASS GPSolidBrush
 *********************************************************************************************************
 
-return _GPSolidBrushGetColor( ::handle, @oColor )
+return C5_GPSolidBrushGetColor( ::handle, @oColor )
 
 *********************************************************************************************************
   METHOD SetColor( oColor ) CLASS GPSolidBrush
 *********************************************************************************************************
 
-return _GPSolidBrushSetColor( ::handle, oColor:handle )
+return C5_GPSolidBrushSetColor( ::handle, oColor:handle )
 
 
 
@@ -73,10 +73,10 @@ return _GPSolidBrushSetColor( ::handle, oColor:handle )
 #include <hbvm.h>
 #include <gc.h>
 
-HB_FUNC( _GPSOLIDBRUSH )
+HB_FUNC( C5_GPSOLIDBRUSH )
 {
 
-   GDIPLUS * pObj = gdiplus_new( GP_IT_SOLIDBRUSH ); 
+   GDIPLUS * pObj = gdiplus_new( GP_IT_SOLIDBRUSH );
    GDIPLUS * pObjClr = hb_GDIPLUS_par( 1 );
    if( GP_IS_COLOR( pObjClr ) ){
       Color * c = ( Color * ) pObjClr->pObject;
@@ -90,28 +90,28 @@ HB_FUNC( _GPSOLIDBRUSH )
 }
 
 
-HB_FUNC( _GPSOLIDBRUSHSETCOLOR )
+HB_FUNC( C5_GPSOLIDBRUSHSETCOLOR )
 {
    GDIPLUS * pBrush = hb_GDIPLUS_par( 1 );
    GDIPLUS * pColor = hb_GDIPLUS_par( 2 );
-     
+
    if( GP_IS_COLOR( pColor ) && GP_IS_SOLIDBRUSH( pBrush ) ){
      Color * c = ( Color * ) pColor->pObject;
      Color hColor( c->GetValue() );
      SolidBrush* b = ( SolidBrush * ) GP_GET( pBrush);
      hb_retni( b->SetColor( hColor ) );
-  
+
   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
-HB_FUNC( _GPSOLIDBRUSHGETCOLOR )
+HB_FUNC( C5_GPSOLIDBRUSHGETCOLOR )
 {
    GDIPLUS * pBrush = hb_GDIPLUS_par( 1 );
 
    if( GP_IS_SOLIDBRUSH( pBrush ) )
-   {  
+   {
      PHB_ITEM pitemColor;
      Color c, *hColor;
      Status sta;
@@ -119,15 +119,15 @@ HB_FUNC( _GPSOLIDBRUSHGETCOLOR )
      sta = b->GetColor( &c );
 
      pitemColor = GPNewGDIPLUSObject( &c, GP_IT_COLOR );
-     
+
      GDIPLUS_StoreParam( 2, pitemColor );
 
      hb_retni( sta );
-  
+
   }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
-   
+
+
 
 }
 

@@ -88,7 +88,7 @@ ENDCLASS
 *********************************************************************************************************
 
   ::cFileName := cFileName
-  ::handle    := _GPImage( cFileName )
+  ::handle    := C5_GPImage( cFileName )
 
 return self
 
@@ -112,7 +112,7 @@ return ::Save( cFileName )
   METHOD Clone( oImage ) CLASS GPImage
 *********************************************************************************************************
 
-::handle := GPImageClone( oImage:handle )
+::handle := C5GPImageClone( oImage:handle )
 
 return self
 
@@ -145,7 +145,7 @@ return 0
   METHOD GetBounds( oRect, units ) CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetBounds( ::handle, oRect:handle, @units )
+return C5GPImageGetBounds( ::handle, oRect:handle, @units )
 
 *********************************************************************************************************
   METHOD GetEncoderParameterList() CLASS GPImage
@@ -187,13 +187,13 @@ return 0
   METHOD GetHeight() CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetHeight(::handle)
+return C5GPImageGetHeight(::handle)
 
 *********************************************************************************************************
   METHOD GetHorizontalResolution() CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetHorizontalResolution(::handle)
+return C5GPImageGetHorizontalResolution(::handle)
 
 *********************************************************************************************************
   METHOD GetItemData() CLASS GPImage
@@ -205,7 +205,7 @@ return 0
   METHOD GetLastStatus() CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetLastStatus(::handle)
+return C5GPImageGetLastStatus(::handle)
 
 *********************************************************************************************************
   METHOD GetPalette() CLASS GPImage
@@ -217,25 +217,25 @@ return 0
   METHOD GetPaletteSize() CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetPaletteSize(::handle)
+return C5GPImageGetPaletteSize(::handle)
 
 *********************************************************************************************************
   METHOD GetPhysicalDimension() CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetPhysicalDimension(::handle, oSize )
+return C5GPImageGetPhysicalDimension(::handle, oSize )
 
 *********************************************************************************************************
   METHOD GetPixelFormat() CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetPixelFormat(::handle)
+return C5GPImageGetPixelFormat(::handle)
 
 *********************************************************************************************************
   METHOD GetPropertyCount() CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetPropertyCount(::handle)
+return C5GPImageGetPropertyCount(::handle)
 
 *********************************************************************************************************
   METHOD GetPropertyIdList() CLASS GPImage
@@ -277,19 +277,19 @@ return 0
   METHOD GetType() CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetType(::handle)
+return C5GPImageGetType(::handle)
 
 *********************************************************************************************************
   METHOD GetVerticalResolution() CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetVerticalResolution(::handle)
+return C5GPImageGetVerticalResolution(::handle)
 
 *********************************************************************************************************
   METHOD GetWidth() CLASS GPImage
 *********************************************************************************************************
 
-return GPImageGetWidth(::handle)
+return C5GPImageGetWidth(::handle)
 
 *********************************************************************************************************
   METHOD RemovePropertyItem() CLASS GPImage
@@ -301,13 +301,13 @@ return 0
   METHOD RotateFlip( rotateFlipType ) CLASS GPImage
 *********************************************************************************************************
 
-return GPImageRotateFlip(::handle, rotateFlipType)
+return C5GPImageRotateFlip(::handle, rotateFlipType)
 
 *********************************************************************************************************
   METHOD Save(cFileName) CLASS GPImage
 *********************************************************************************************************
 
-return GPImageSave(::handle, cFileName)
+return C5GPImageSave(::handle, cFileName)
 
 *********************************************************************************************************
   METHOD SaveAdd() CLASS GPImage
@@ -447,13 +447,13 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 
 
 
-HB_FUNC( _GPIMAGE )
+HB_FUNC( C5_GPIMAGE )
 {
    LPWSTR cFileName = hb_mbtowc( (LPSTR) hb_parc( 1 ));
    GDIPLUS *  pObj = gdiplus_new( GP_IT_IMAGE );
    Image* cimg = new Image( cFileName );
-   
-   GP_SET( pObj, cimg );   
+
+   GP_SET( pObj, cimg );
 
    hb_xfree( cFileName );
    hb_GDIPLUS_ret( pObj );
@@ -461,155 +461,155 @@ HB_FUNC( _GPIMAGE )
 }
 
 
-HB_FUNC( GPIMAGECLONE )
+HB_FUNC( C5GPIMAGECLONE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* ptr = ( Image * ) GP_GET( pObj );
       GDIPLUS * pObjClone = gdiplus_new( GP_IT_IMAGE );
-      pObjClone->pObject = ( void * ) ptr->Clone(); 
+      pObjClone->pObject = ( void * ) ptr->Clone();
       hb_GDIPLUS_ret( pObjClone );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   
+
 
 }
 
 //GPImageGetBounds( ::handle, oRect:handle, @units )
-HB_FUNC( GPIMAGEGETBOUNDS )
+HB_FUNC( C5GPIMAGEGETBOUNDS )
 {
 }
 
-HB_FUNC( GPIMAGEGETHEIGHT )
+HB_FUNC( C5GPIMAGEGETHEIGHT )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->GetHeight() );
-   }else 
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
 
-HB_FUNC( GPIMAGEGETHORIZONTALRESOLUTION )
+HB_FUNC( C5GPIMAGEGETHORIZONTALRESOLUTION )
 {
 
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retnd( cimg->GetHorizontalResolution() );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-   
+
 }
 
-HB_FUNC( GPIMAGEGETLASTSTATUS )
+HB_FUNC( C5GPIMAGEGETLASTSTATUS )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
      hb_retnd( cimg->GetLastStatus() );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-        
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPIMAGEGETPALETTESIZE )
+HB_FUNC( C5GPIMAGEGETPALETTESIZE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->GetPaletteSize() );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-   
+
 }
 
-HB_FUNC( GPIMAGEGETPHYSICALDIMENSION )
+HB_FUNC( C5GPIMAGEGETPHYSICALDIMENSION )
 {
 
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       SizeF* csize = hb_SizeF_par( 2 );
-      
+
       hb_retni( cimg->GetPhysicalDimension(csize) );
-      
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-   
+
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPIMAGEGETPIXELFORMAT )
+HB_FUNC( C5GPIMAGEGETPIXELFORMAT )
 {
-  
+
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->GetPixelFormat() );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-   
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPIMAGEGETPROPERTYCOUNT )
+HB_FUNC( C5GPIMAGEGETPROPERTYCOUNT )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->GetPropertyCount() );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-   
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPIMAGEGETTYPE )
+HB_FUNC( C5GPIMAGEGETTYPE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->GetType() );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-   
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPIMAGEGETVERTICALRESOLUTION )
+HB_FUNC( C5GPIMAGEGETVERTICALRESOLUTION )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retnd( cimg->GetVerticalResolution() );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );   
-   
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPIMAGEGETWIDTH )
+HB_FUNC( C5GPIMAGEGETWIDTH )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( (int)cimg->GetWidth() );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );   
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( GPIMAGEROTATEFLIP )
+HB_FUNC( C5GPIMAGEROTATEFLIP )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( GP_IS_IMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->RotateFlip( (RotateFlipType) hb_parni(2) ) );
-   }else 
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );   
-   
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-HB_FUNC( GPIMAGESAVE )
+HB_FUNC( C5GPIMAGESAVE )
 {
 //  Status Save(
 //    [in]  const WCHAR *filename,
@@ -619,8 +619,8 @@ HB_FUNC( GPIMAGESAVE )
 
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
    if( ! GP_IS_IMAGE( pObj ) )
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS ); 
-  
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
   Image* img = ( Image * ) GP_GET( pObj );
 
   WCHAR* filename;

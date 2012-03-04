@@ -33,7 +33,7 @@ ENDCLASS
   METHOD New( cFileName ) CLASS GPMetafile
 *******************************************************************************
 
-  ::handle := _GPMetafile( cFileName )
+  ::handle := C5_GPMetafile( cFileName )
 
 return self
 
@@ -151,25 +151,25 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPMETAFILE )
+HB_FUNC( C5_GPMETAFILE )
 {
    //Metafile(
    //  [in]  const WCHAR *filename
    //);
 
-   LPWSTR cFileName = hb_mbtowc( (LPSTR) hb_parc( 1 ));
-   Metafile * mf = new Metafile( cFileName );
-   hb_retptr( (void*) mf );
+   //LPWSTR cFileName = hb_mbtowc( (LPSTR) hb_parc( 1 ));
+   //Metafile * mf = new Metafile( cFileName );
+   //hb_retptr( (void*) mf );
 
 }
 
 
-HB_FUNC( GPDELETEMETAFILE )
+HB_FUNC( C5GPDELETEMETAFILE )
 {
 
-   Metafile* p = (Metafile*) hb_parptr( 1 );
-   delete (Metafile*) p;
-   hb_ret();
+  // Metafile* p = (Metafile*) hb_parptr( 1 );
+  // delete (Metafile*) p;
+  // hb_ret();
 
 }
 

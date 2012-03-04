@@ -34,19 +34,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := _GPBitmapData()
+     ::handle := C5_GPBitmapData()
   elseif iParams == 1
-     ::handle := _GPBitmapData( p1 )                               //
+     ::handle := C5_GPBitmapData( p1 )                               //
   elseif iParams == 3
-     ::handle := _GPBitmapData( p1, p2, p3 )                       //
+     ::handle := C5_GPBitmapData( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := _GPBitmapData( p1, p2, p3 )                       //
+     ::handle := C5_GPBitmapData( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := _GPBitmapData( p1, p2, p3, p4, p5 )               //
+     ::handle := C5_GPBitmapData( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := _GPBitmapData( p1, p2, p3, p4, p5, p6 )           //
+     ::handle := C5_GPBitmapData( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := _GPBitmapData( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := C5_GPBitmapData( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -93,7 +93,7 @@ return nil
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPBITMAPDATA )
+HB_FUNC( C5_GPBITMAPDATA )
 {
    //BitmapData* clr;
    //int iParams = hb_pcount();
@@ -110,7 +110,7 @@ HB_FUNC( _GPBITMAPDATA )
    //hb_retptr( (void*)  );
 }
 
-HB_FUNC( DELETEBITMAPDATA )
+HB_FUNC( C5DELETEBITMAPDATA )
 {
    //BitmapData* clr = (BitmapData*) hb_parptr( 1 );
    //delete (BitmapData*) clr;

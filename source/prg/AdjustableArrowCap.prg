@@ -36,19 +36,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := GPAdjustableArrowCap()
+     ::handle := C5GPAdjustableArrowCap()
   elseif iParams == 1
-     ::handle := GPAdjustableArrowCap( p1 )                               //
+     ::handle := C5GPAdjustableArrowCap( p1 )                               //
   elseif iParams == 3
-     ::handle := GPAdjustableArrowCap( p1, p2, p3 )                       //
+     ::handle := C5GPAdjustableArrowCap( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := GPAdjustableArrowCap( p1, p2, p3 )                       //
+     ::handle := C5GPAdjustableArrowCap( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := GPAdjustableArrowCap( p1, p2, p3, p4, p5 )               //
+     ::handle := C5GPAdjustableArrowCap( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := GPAdjustableArrowCap( p1, p2, p3, p4, p5, p6 )           //
+     ::handle := C5GPAdjustableArrowCap( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := GPAdjustableArrowCap( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := C5GPAdjustableArrowCap( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -137,7 +137,7 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPADJUSTABLEARROWCAP )
+HB_FUNC( C5GPADJUSTABLEARROWCAP )
 {
 //   AdjustableArrowCap* clr;
 //   int iParams = hb_pcount();
@@ -154,14 +154,14 @@ HB_FUNC( _GPADJUSTABLEARROWCAP )
 //   hb_retptr( (void*)  );
 }
 
-HB_FUNC( DELETEADJUSTABLEARROWCAP )
+HB_FUNC( C5DELETEADJUSTABLEARROWCAP )
 {
 //   AdjustableArrowCap* clr = (AdjustableArrowCap*) hb_parptr( 1 );
 //   delete (AdjustableArrowCap*) clr;
 //   hb_ret();
 }
 
-//HB_FUNC( GPADJUSTABLEARROWCAP... )
+//HB_FUNC( C5GPADJUSTABLEARROWCAP... )
 //{
 //   AdjustableArrowCap* ptr = (AdjustableArrowCap*) hb_parptr( 1 );
 //   hb_retni( ptr->GetA() );

@@ -7,9 +7,9 @@ function TextureBrush( ... )
    local nLen := Len( aParams )
 
    switch nLen
-      case 2 
+      case 2
          oObj = GPTextureBrush():New( aParams[ 1 ], aParams[ 2 ] )
-         exit      
+         exit
       case 3
          oObj = GPTextureBrush():New( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
          exit
@@ -57,15 +57,15 @@ ENDCLASS
 
 local iParams := PCount()
 
-   
+
    switch iParams
       case 2
-        ::handle := _GPTextureBrush_1( p1, p2 )
+        ::handle := C5_GPTextureBrush_1( p1, p2 )
         exit
-      case 3     
+      case 3
       case 6
    endswitch
-   
+
 return self
 
 *********************************************************************************************************
@@ -178,7 +178,7 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPTEXTUREBRUSH_1 )
+HB_FUNC( C5_GPTEXTUREBRUSH_1 )
 {
    //TextureBrush* ptr;
    //int iParams = hb_pcount();
@@ -195,7 +195,7 @@ HB_FUNC( _GPTEXTUREBRUSH_1 )
    //hb_retptr( (void*) ptr );
 }
 
-HB_FUNC( DELETETEXTUREBRUSH )
+HB_FUNC( C5DELETETEXTUREBRUSH )
 {
    //TextureBrush* clr = (TextureBrush*) hb_parptr( 1 );
    //delete (TextureBrush*) clr;

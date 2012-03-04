@@ -31,19 +31,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := _GPBrush()
+     ::handle := C5_GPBrush()
   elseif iParams == 1
-     ::handle := _GPBrush( p1 )                               //
+     ::handle := C5_GPBrush( p1 )                               //
   elseif iParams == 3
-     ::handle := _GPBrush( p1, p2, p3 )                       //
+     ::handle := C5_GPBrush( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := _GPBrush( p1, p2, p3 )                       //
+     ::handle := C5_GPBrush( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := _GPBrush( p1, p2, p3, p4, p5 )               //
+     ::handle := C5_GPBrush( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := _GPBrush( p1, p2, p3, p4, p5, p6 )           //
+     ::handle := C5_GPBrush( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := _GPBrush( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := C5_GPBrush( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -103,7 +103,7 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPBRUSH )
+HB_FUNC( C5_GPBRUSH )
 {
    //Brush* clr;
    //int iParams = hb_pcount();
@@ -120,7 +120,7 @@ HB_FUNC( _GPBRUSH )
    //hb_retptr( (void*)  );
 }
 
-HB_FUNC( DELETEBRUSH )
+HB_FUNC( C5DELETEBRUSH )
 {
    //Brush* clr = (Brush*) hb_parptr( 1 );
    //delete (Brush*) clr;

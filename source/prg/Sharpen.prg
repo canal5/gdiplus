@@ -28,19 +28,19 @@ local iParams := PCount()
 
 
   if iParams == 0
-     ::handle := _GPSharpen()
+     ::handle := C5_GPSharpen()
   elseif iParams == 1
-     ::handle := _GPSharpen( p1 )                               //
+     ::handle := C5_GPSharpen( p1 )                               //
   elseif iParams == 3
-     ::handle := _GPSharpen( p1, p2, p3 )                       //
+     ::handle := C5_GPSharpen( p1, p2, p3 )                       //
   elseif iParams == 4
-     ::handle := _GPSharpen( p1, p2, p3 )                       //
+     ::handle := C5_GPSharpen( p1, p2, p3 )                       //
   elseif iParams == 5
-     ::handle := _GPSharpen( p1, p2, p3, p4, p5 )               //
+     ::handle := C5_GPSharpen( p1, p2, p3, p4, p5 )               //
   elseif iParams == 6
-     ::handle := _GPSharpen( p1, p2, p3, p4, p5, p6 )           //
+     ::handle := C5_GPSharpen( p1, p2, p3, p4, p5, p6 )           //
   elseif iParams == 7
-     ::handle := _GPSharpen( p1, p2, p3, p4, p5, p6, p7 )       //
+     ::handle := C5_GPSharpen( p1, p2, p3, p4, p5, p6, p7 )       //
   endif
 
 return self
@@ -94,7 +94,7 @@ return 0
 
 using namespace Gdiplus;
 
-HB_FUNC( _GPSHARPEN )
+HB_FUNC( C5_GPSHARPEN )
 {
    //Sharpen* ptr;
    //int iParams = hb_pcount();
@@ -111,7 +111,7 @@ HB_FUNC( _GPSHARPEN )
    //hb_retptr( (void*) ptr );
 }
 
-HB_FUNC( DELETESHARPEN )
+HB_FUNC( C5DELETESHARPEN )
 {
    //Sharpen* clr = (Sharpen*) hb_parptr( 1 );
    //delete (Sharpen*) clr;
