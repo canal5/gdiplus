@@ -37,10 +37,10 @@ CLASS GPRectF
   METHOD Destroy()
   DESTRUCTOR Destroy()
 
-  METHOD X()
-  METHOD Y()
-  METHOD Width()
-  METHOD Height()
+  METHOD X()       SETGET
+  METHOD Y()       SETGET
+  METHOD Width()   SETGET
+  METHOD Height()  SETGET
 
 
   METHOD Clone()     HIDDEN
@@ -224,26 +224,42 @@ return nil
 return C5GPRectFUnion(::handle, @rc1, rc2:handle, rc3:handle )
 
 *********************************************************************************************************
-  METHOD X() CLASS GPRectF
+  METHOD X( nNewVal ) CLASS GPRectF
 *********************************************************************************************************
+
+if pcount() > 0
+   C5GPRectFX(::handle, nNewVal)
+endif
 
 return C5GPRectFX(::handle)
 
 *********************************************************************************************************
-  METHOD Y() CLASS GPRectF
+  METHOD Y( nNewVal ) CLASS GPRectF
 *********************************************************************************************************
+
+if pcount() > 0
+   C5GPRectFY(::handle, nNewVal )
+endif
 
 return C5GPRectFY(::handle)
 
 *********************************************************************************************************
-  METHOD Width() CLASS GPRectF
+  METHOD Width( nNewVal ) CLASS GPRectF
 *********************************************************************************************************
+
+if pcount() > 0
+   C5GPRectFWidth(::handle, nNewVal)
+endif
 
 return C5GPRectFWidth(::handle)
 
 *********************************************************************************************************
-  METHOD Height() CLASS GPRectF
+  METHOD Height( nNewVal ) CLASS GPRectF
 *********************************************************************************************************
+
+if pcount() > 0
+   C5GPRectFHeight(::handle, nNewVal)
+endif
 
 return C5GPRectFHeight(::handle)
 
@@ -629,6 +645,8 @@ HB_FUNC( C5GPRECTFX )
 
    if( GP_IS_RECTF( pObj ) ){
       RectF * ptr = ( RectF * ) GP_GET( pObj );
+      if( hb_pcount() == 2 )
+          ptr->X = (REAL) hb_parnd( 2 );
       hb_retni( (int) ptr->X );
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -641,6 +659,8 @@ HB_FUNC( C5GPRECTFY )
 
    if( GP_IS_RECTF( pObj ) ){
       RectF * ptr = ( RectF * ) GP_GET( pObj );
+      if( hb_pcount() == 2 )
+          ptr->Y = (REAL) hb_parnd( 2 );
       hb_retni( (int) ptr->Y );
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -653,6 +673,8 @@ HB_FUNC( C5GPRECTFWIDTH )
 
    if( GP_IS_RECTF( pObj ) ){
       RectF * ptr = ( RectF * ) GP_GET( pObj );
+      if( hb_pcount() == 2 )
+         ptr->Width = (REAL) hb_parnd( 2 );
       hb_retni( (int) ptr->Width );
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -665,6 +687,8 @@ HB_FUNC( C5GPRECTFHEIGHT )
 
    if( GP_IS_RECTF( pObj ) ){
       RectF * ptr = ( RectF * ) GP_GET( pObj );
+      if( hb_pcount() == 2 )
+         ptr->Height == (REAL) hb_parnd( 2 );
       hb_retni( (int) ptr->Height );
    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
