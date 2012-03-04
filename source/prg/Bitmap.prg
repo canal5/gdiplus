@@ -89,7 +89,11 @@ ENDCLASS
          ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ] )
         exit
       case 3
-         ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
+         if ValType( aParams[ 3 ] ) == "O"
+            ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ]:handle )
+         else 
+            ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
+         endif
         exit        
       case 5
          ::handle = _GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
