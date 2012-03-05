@@ -7,7 +7,7 @@ Local oTest
 
    DEFINE SUITTEST oTest
 
-//      TestsGraphics()
+      TestsGraphics()
 //      TestsPen()
 //      TestsColor()
 //      TestsBrush()
@@ -760,11 +760,20 @@ return 0
   function TestsGraphics()
 *********************************************************************************************************************
 
+   local hDC := CreateDC("DISPLAY",0,0,0)
+   local g := Graphics(hDC)
+
    SEPARADOR( "GRAPHICS" )
 
    TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
    TEST .T.      DESCRIPTION "DrawCurve( pen, point ) "  SAMPLE Example_DrawCurve1()
-   TEST .T.      DESCRIPTION "SetTransform( matrix ) "  SAMPLE Example_SetTransformG()
+   TEST .T.      DESCRIPTION "SetClip( GraphicsPath )"   SAMPLE Example_SetClip3()
+   TEST .T.      DESCRIPTION "SetClip( Region )"         SAMPLE Example_SetClip6()
+   TEST .T.      DESCRIPTION "SetClip( Rect )"           SAMPLE Example_SetClip4()
+   TEST .T.      DESCRIPTION "SetClip( RectF )"          SAMPLE Example_SetClip5()
+   TEST .T.      DESCRIPTION "SetClip( HRGN )"           SAMPLE Example_SetClip2()
+   TEST g:ResetClip() == 0  DESCRIPTION "ResetClip()"    SAMPLE Example_ResetClip()
+   TEST .T.      DESCRIPTION "SetTransform( matrix ) "   SAMPLE Example_SetTransformG()
 
 return 0
 
@@ -2740,10 +2749,139 @@ function Example_DrawCurve1( )
 
 return nil
 
+
+function Example_ResetClip( )
+   local bPainted := { | hdc |
+
+   Graphics graphics(hdc)
+   // Set the clipping region, and draw its outline.
+   graphics:SetClip(Rect(100, 50, 200, 120))
+   Pen blackPen(Color(255, 0, 0, 0), 2.0)
+   graphics:DrawRectangle(blackPen, 100, 50, 200, 120)
+
+   // Fill a clipped ellipse in red.
+   SolidBrush redBrush(Color(255, 255, 0, 0))
+   graphics:FillEllipse(redBrush, 80, 40, 100, 70)
+
+   // Reset the clipping region.
+   graphics:ResetClip()
+
+   // Fill an unclipped ellipse with blue.
+   SolidBrush blueBrush(Color(255, 0, 0, 255))
+   graphics:FillEllipse(blueBrush, 160, 150, 100, 60)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+
+function Example_SetClip3( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+   // Create a GraphicsPath object.
+   GraphicsPath clipPath()
+   clipPath:AddEllipse(0, 0, 200, 100)
+
+   // Set the clipping region with hRegion.
+   graphics:SetClip(clipPath)
+
+   // Fill a rectangle to demonstrate the clipping region.
+   graphics:FillRectangle(SolidBrush(Color(255, 0, 0, 0)), 0, 0, 500, 500)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+function Example_SetClip6( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+   // Create a Region object.
+   Region clipRegion(Rect(0, 0, 200, 100))
+
+   // Set the clipping region with hRegion.
+   graphics:SetClip(clipRegion)
+
+   // Fill a rectangle to demonstrate the clipping region.
+   graphics:FillRectangle(SolidBrush(Color(255, 0, 0, 0)), 0, 0, 500, 500)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+
+function Example_SetClip4( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+   // Create a Rect object.
+   Rect clipRect(0, 0, 200, 100)
+
+   // Set the clipping region with hRegion.
+   graphics:SetClip(clipRect)
+
+   // Fill a rectangle to demonstrate the clipping region.
+   graphics:FillRectangle(SolidBrush(Color(255, 0, 0, 0)), 0, 0, 500, 500)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+function Example_SetClip5( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+   // Create a Rect object.
+   RectF clipRect(0, 0, 200, 100)
+
+   // Set the clipping region with hRegion.
+   graphics:SetClip(clipRect)
+
+   // Fill a rectangle to demonstrate the clipping region.
+   graphics:FillRectangle(SolidBrush(Color(255, 0, 0, 0)), 0, 0, 500, 500)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+function Example_SetClip2( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+   // Create a Region object, and get its handle.
+   Region region(Rect(0, 0, 100, 100))
+   hRegion := region:GetHRGN(graphics)
+   
+   graphics:SetClip(hRegion)
+
+   // Fill a rectangle to demonstrate the clipping region.
+   graphics:FillRectangle(SolidBrush(Color(255, 0, 0, 0)), 0, 0, 500, 500)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
 function Example_SetTransformG( )
    local bPainted := { | hdc |
 
-      Graphics graphics(hdc);
+      Graphics graphics(hdc)
 
       // Create a rotation matrix.
       Matrix transformMatrix()
@@ -5300,6 +5438,10 @@ HB_FUNC( PTR2LONG ){
    hb_retnl( ( LONG ) ptr );
 }
 
+HB_FUNC( LONG2PTR ){
+	 void * l = ( void * ) hb_parnl( 1 );
+   hb_retptr( l );
+}
 
 #pragma ENDDUMP
 

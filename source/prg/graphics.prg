@@ -361,15 +361,21 @@ return nil
   METHOD AddMetafileComment( cComment ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GPAddMetafileComment( ::handle, cComment )
-
-return 0
+return C5GPAddMetafileComment( ::handle, cComment )
 
 **********************************************************************************************************
-  METHOD BeginContainer( ) CLASS GPGraphics
+  METHOD BeginContainer( p1, p2, p3  ) CLASS GPGraphics
 **********************************************************************************************************
+   
+   if( p1 != NIL )
+      p1 = p1:handle 
+   endif
 
-return C5GPBeginContainer(::handle)
+   if( p2 != NIL )
+      p2 = p2:handle 
+   endif   
+
+return C5GPBeginContainer(::handle, p1, p2, p3 )
 
 **********************************************************************************************************
   METHOD BitBlt( oImage, nTop, nLeft, nTopSrc, nLeftSrc, nWidth, nHeight, units ) CLASS GPGraphics
@@ -798,9 +804,10 @@ return 0
 **********************************************************************************************************
   METHOD ResetClip( ) CLASS GPGraphics
 **********************************************************************************************************
+   local sta
+   sta = C5GResetClip( ::handle )
+return sta
 
-
-return 0
 
 **********************************************************************************************************
   METHOD ResetTransform( ) CLASS GPGraphics
@@ -958,9 +965,7 @@ return nil
   METHOD ScaleTransform( hor, ver, order ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GP_ScaleTransform( ::handle, hor, ver, order )
-
-return nil
+return C5GP_ScaleTransform( ::handle, hor, ver, order )
 
 **********************************************************************************************************
   METHOD SetAbort( ) CLASS GPGraphics
@@ -970,16 +975,24 @@ return nil
 return 0
 
 **********************************************************************************************************
-  METHOD SetClip( ) CLASS GPGraphics
+  METHOD SetClip( p1, p2 ) CLASS GPGraphics
 **********************************************************************************************************
 
+   local sta 
 
-return 0
+   if( ValType( p1 ) == "O" )
+      p1 = p1:handle 
+   elseif( ValType( p1 ) == "N" )
+      p1 = Long2Ptr( p1 )
+   endif
+   
+   sta = C5GSetClip( ::handle, p1, p2 )
+   
+return sta
 
 **********************************************************************************************************
   METHOD SetCompositingMode( ) CLASS GPGraphics
 **********************************************************************************************************
-
 
 return 0
 
@@ -1202,6 +1215,8 @@ HB_FUNC( C5GPADDMETAFILECOMMENT )
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
+
+
 HB_FUNC( C5GPBEGINCONTAINER )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
@@ -1210,8 +1225,23 @@ HB_FUNC( C5GPBEGINCONTAINER )
    {
      Graphics *g = ( Graphics * ) pObj->pObject;
      GraphicsContainer gc;
-     gc = g->BeginContainer();
-     hb_retni( gc );
+     if( HB_ISPOINTER( 2 ) ){
+        GDIPLUS * p2 = hb_GDIPLUS_par( 2 );	
+        GDIPLUS * p3 = hb_GDIPLUS_par( 3 );	
+        Unit p4 = ( Unit ) hb_parni( 4 );
+        if( GP_IS_RECT( p2 ) ){
+           Rect * r1 = ( Rect * )	GP_GET( p2 );
+           Rect * r2 = ( Rect * )	GP_GET( p3 );
+        	 gc = g->BeginContainer( *r1, *r2, p4 );
+        }else {
+           RectF * r1 = ( RectF * )	GP_GET( p2 );
+           RectF * r2 = ( RectF * )	GP_GET( p3 );
+        	 gc = g->BeginContainer( *r1, *r2, p4 );        	
+        }
+     }else
+        gc = g->BeginContainer( );
+        
+     hb_retnl( gc );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -1809,6 +1839,18 @@ HB_FUNC( C5GP_FILLRECT )
     hb_ret();
 }
 
+HB_FUNC( C5GRESETCLIP )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_GRAPHICS( p ) ){
+      Graphics * o = ( Graphics * ) GP_GET( p );
+      hb_retni( ( int ) o->ResetClip() );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
 
 //typedef enum  {
 //  MatrixOrderPrepend   = 0,
@@ -1843,6 +1885,50 @@ HB_FUNC( C5GP_SCALETRANSFORM )
 
    hb_ret();
 }
+
+
+HB_FUNC( C5GSETCLIP )
+{
+
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   CombineMode q = (CombineMode) hb_parni( 3 );
+   Status sta;   
+
+   if( GP_IS_GRAPHICS( pG ) )
+   {
+      Graphics * g = ( Graphics *) GP_GET( pG );
+      void * p = hb_parptr( 2 );
+      BOOL lOk = true;
+
+      if( GetObjectType( ( HGDIOBJ ) p ) ){
+         sta = g->SetClip( ( HRGN ) p, q );
+      }else {
+         GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+         if( GP_IS_RECT( p2 ) ){
+            sta = g->SetClip( *( ( Rect * ) GP_GET( p2 ) ), q );         
+         }else if( GP_IS_RECTF( p2 ) ){
+            sta = g->SetClip( *( ( RectF * ) GP_GET( p2 ) ), q );         
+         }else if( GP_IS_REGION( p2 ) ){
+            sta = g->SetClip( ( Region * ) GP_GET( p2 ), q );         
+         }else if( GP_IS_GRAPHICS( p2 ) ){
+            sta = g->SetClip( ( Graphics * ) GP_GET( p2 ), q );         
+         }else if( GP_IS_GRAPHICSPATH( p2 ) ){
+
+            sta = g->SetClip( ( GraphicsPath * ) GP_GET( p2 ), q );
+         }else 
+            lOk = false;
+
+         if( lOk )
+            hb_retni( ( int ) sta );
+         else
+            hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );         
+      }
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
 
 HB_FUNC( C5GP_TRANSLATETRANSFORM )
 {
@@ -1964,7 +2050,7 @@ HB_FUNC( C5XXX ){
 
 
 /*
-HB_FUNC( C5GP_... )
+HB_FUNC( C5G_... )
 {
 
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
