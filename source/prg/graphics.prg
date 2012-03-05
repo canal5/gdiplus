@@ -1704,11 +1704,11 @@ HB_FUNC( C5GP_FILLPATH )
    GDIPLUS * p1 = hb_GDIPLUS_par( 2 );
    GDIPLUS * p2 = hb_GDIPLUS_par( 3 );
 
-   if( GP_IS_GRAPHICS( pG ) && GP_IS_BRUSH( p1 ), && GP_IS_GRAPHICSPATH( p2 ) ){
+   if( GP_IS_GRAPHICS( pG ) && GP_IS_BRUSH( p1 ) && GP_IS_GRAPHICSPATH( p2 ) ){
       Graphics * g = ( Graphics * ) GP_GET( pG );
       Brush * brush = (Brush*) GP_GET( p1 );
       GraphicsPath* gp = (GraphicsPath*) GP_GET( p2 );
-      hb_retni( ( int ) g->FillPath( brush, gp );
+      hb_retni( ( int ) g->FillPath( brush, gp ) );
    }
    else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
