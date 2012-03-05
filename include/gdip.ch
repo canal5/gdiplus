@@ -1223,6 +1223,9 @@
 #xtranslate StringTrimmingEllipsisWord                    => 4
 #xtranslate StringTrimmingEllipsisPath                    => 5
 
+#xtranslate WarpModePerspective                           => 0 
+#xtranslate WarpModeBilinear                              => 1
+
 // ---------------------------------------------------------------------------
 #define GDIP_EMFPLUSFLAGS_DISPLAY     1
 // ---------------------------------------------------------------------------

@@ -239,63 +239,63 @@ return nil
    GraphicsPath gp2()
    Rect oRect()
 
-//   TEST !empty( GraphicsPath():handle )                       DESCRIPTION "GraphicsPath()"
-//   TEST !empty( GraphicsPath( FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( FillMode )"
-//   TEST !empty( GraphicsPath( { Point( 10, 10 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( ... )"
-//   TEST !empty( GraphicsPath( { PointF( 10.0, 20.0 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle ) DESCRIPTION "GraphicsPath( ... )"
-//
-//   TEST gp:AddArc( Rect(20, 20, 50, 100), 0.0, 180.0 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
-//   TEST gp:AddArc( RectF(20.0, 20.0, 50.0, 100.0), 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
-//   TEST gp:AddArc( 20, 20, 50, 100, 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
-//   TEST gp:AddArc( 20, 20, 50, 100, 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
-//   TEST gp:AddBezier( Point(50, 50), Point(60, 20), Point(70, 100), Point(80, 50) ) == 0      DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
-//   TEST gp:AddBezier( PointF(50, 50), PointF(60, 20), PointF(70, 100), PointF(80, 50) ) == 0  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
-//   TEST gp:AddBezier( Point(50, 50), Point(60, 20), Point(70, 100), Point(80, 50) ) == 0      DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
-//   TEST gp:AddBezier( 50.0, 50.0, 60.0, 20.0, 70.0, 100.0, 80.0, 50.0 ) == 0  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
-//   TEST gp:AddBezier( 50, 50, 60, 20, 70, 100, 80, 50 ) == 0                  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
-//   TEST gp:AddBeziers( aPointF ) == 0  DESCRIPTION "AddBeziers()"    SAMPLE Example_AddBeziers()
-//   TEST gp:AddBeziers( aPoint)   == 0  DESCRIPTION "AddBeziers()"    SAMPLE Example_AddBeziers()
-//   TEST gp:AddClosedCurve( aPoint,  1 )   == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
-//   TEST gp:AddClosedCurve( aPointF,  1 )  == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
-//   TEST gp:AddClosedCurve( aPoint )       == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
-//   TEST gp:AddClosedCurve( aPointF )      == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
-//   TEST gp:AddCurve( aPointF )              == 0  DESCRIPTION "AdddCurve()"    SAMPLE AddCurveExample2()
-//   TEST gp:AddCurve( aPointF, 1 )           == 0  DESCRIPTION "AdddCurve()"
-//   TEST gp:AddCurve( aPointF, 2, 4, 1 )     == 0  DESCRIPTION "AdddCurve()"
-//   TEST gp:AddCurve( aPoint )               == 0  DESCRIPTION "AdddCurve()"
-//   TEST gp:AddCurve( aPoint, 1 )            == 0  DESCRIPTION "AdddCurve()"
-//   TEST gp:AddCurve( aPoint, 2, 4, 1 )      == 0  DESCRIPTION "AdddCurve()"
-//   TEST gp:AddEllipse(20, 20, 200, 100)     == 0  DESCRIPTION "AddEllipse()"   SAMPLE Example_AddEllipse()
-//   TEST gp:AddEllipse(20.0, 20.0, 200.0, 100.0)            == 0  DESCRIPTION "AddEllipse()"  SAMPLE Example_AddEllipse()
-//   TEST gp:AddEllipse( Rect( 20, 20, 200, 100 ) )          == 0  DESCRIPTION "AddEllipse()"  SAMPLE Example_AddEllipse()
-//   TEST gp:AddEllipse( RectF( 20.0, 20.0, 200.0, 100.0 ) ) == 0  DESCRIPTION "AddEllipse()"  SAMPLE Example_AddEllipse()
-//   TEST gp:AddLine(20, 20, 200, 100)         == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
-//   TEST gp:AddLine(20.0, 20.0, 200.0, 100.0) == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
-//   TEST gp:AddLine(Point( 60, 60 ), Point( 100, 100 ))         == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
-//   TEST gp:AddLine(PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 )) == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
-//   TEST gp:AddLines( { Point( 60, 60 ), Point( 100, 100 ) } )         == 0  DESCRIPTION "AddLines()"   SAMPLE Example_AddLines()
+   TEST !empty( GraphicsPath():handle )                       DESCRIPTION "GraphicsPath()"
+   TEST !empty( GraphicsPath( FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( FillMode )"
+   TEST !empty( GraphicsPath( { Point( 10, 10 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle )      DESCRIPTION "GraphicsPath( ... )"
+   TEST !empty( GraphicsPath( { PointF( 10.0, 20.0 ) }, { PathPointTypeBezier }, 0, FillModeWinding ):handle ) DESCRIPTION "GraphicsPath( ... )"
+
+   TEST gp:AddArc( Rect(20, 20, 50, 100), 0.0, 180.0 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
+   TEST gp:AddArc( RectF(20.0, 20.0, 50.0, 100.0), 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
+   TEST gp:AddArc( 20, 20, 50, 100, 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
+   TEST gp:AddArc( 20, 20, 50, 100, 0, 180 ) == 0                         DESCRIPTION "AddArc()" SAMPLE AddArcExample2()
+   TEST gp:AddBezier( Point(50, 50), Point(60, 20), Point(70, 100), Point(80, 50) ) == 0      DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
+   TEST gp:AddBezier( PointF(50, 50), PointF(60, 20), PointF(70, 100), PointF(80, 50) ) == 0  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
+   TEST gp:AddBezier( Point(50, 50), Point(60, 20), Point(70, 100), Point(80, 50) ) == 0      DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
+   TEST gp:AddBezier( 50.0, 50.0, 60.0, 20.0, 70.0, 100.0, 80.0, 50.0 ) == 0  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
+   TEST gp:AddBezier( 50, 50, 60, 20, 70, 100, 80, 50 ) == 0                  DESCRIPTION "AddBezier()"    SAMPLE Example_AddBezier()
+   TEST gp:AddBeziers( aPointF ) == 0  DESCRIPTION "AddBeziers()"    SAMPLE Example_AddBeziers()
+   TEST gp:AddBeziers( aPoint)   == 0  DESCRIPTION "AddBeziers()"    SAMPLE Example_AddBeziers()
+   TEST gp:AddClosedCurve( aPoint,  1 )   == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
+   TEST gp:AddClosedCurve( aPointF,  1 )  == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
+   TEST gp:AddClosedCurve( aPoint )       == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
+   TEST gp:AddClosedCurve( aPointF )      == 0  DESCRIPTION "AddClosedCurve()"    SAMPLE Example_AddClosedCurve()
+   TEST gp:AddCurve( aPointF )              == 0  DESCRIPTION "AdddCurve()"    SAMPLE AddCurveExample2()
+   TEST gp:AddCurve( aPointF, 1 )           == 0  DESCRIPTION "AdddCurve()"
+   TEST gp:AddCurve( aPointF, 2, 4, 1 )     == 0  DESCRIPTION "AdddCurve()"
+   TEST gp:AddCurve( aPoint )               == 0  DESCRIPTION "AdddCurve()"
+   TEST gp:AddCurve( aPoint, 1 )            == 0  DESCRIPTION "AdddCurve()"
+   TEST gp:AddCurve( aPoint, 2, 4, 1 )      == 0  DESCRIPTION "AdddCurve()"
+   TEST gp:AddEllipse(20, 20, 200, 100)     == 0  DESCRIPTION "AddEllipse()"   SAMPLE Example_AddEllipse()
+   TEST gp:AddEllipse(20.0, 20.0, 200.0, 100.0)            == 0  DESCRIPTION "AddEllipse()"  SAMPLE Example_AddEllipse()
+   TEST gp:AddEllipse( Rect( 20, 20, 200, 100 ) )          == 0  DESCRIPTION "AddEllipse()"  SAMPLE Example_AddEllipse()
+   TEST gp:AddEllipse( RectF( 20.0, 20.0, 200.0, 100.0 ) ) == 0  DESCRIPTION "AddEllipse()"  SAMPLE Example_AddEllipse()
+   TEST gp:AddLine(20, 20, 200, 100)         == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
+   TEST gp:AddLine(20.0, 20.0, 200.0, 100.0) == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
+   TEST gp:AddLine(Point( 60, 60 ), Point( 100, 100 ))         == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
+   TEST gp:AddLine(PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 )) == 0  DESCRIPTION "AddLine()"   SAMPLE Example_AddLine()
+   TEST gp:AddLines( { Point( 60, 60 ), Point( 100, 100 ) } )         == 0  DESCRIPTION "AddLines()"   SAMPLE Example_AddLines()
    TEST gp:AddLines( { PointF( 100.0, 120.0 ), PointF( 120.0, 120.0 ) } ) == 0  DESCRIPTION "AddLines()"   SAMPLE Example_AddLines()
-//   TEST gp2:Addpath( GraphicsPath(), .T. ) == 0  DESCRIPTION "AddPath()"   SAMPLE Example_AddPath( )
-//   TEST gp2:AddPie( 50, 50, 100, 100, 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
-//   TEST gp2:AddPie( 50.0, 50.0, 100.0, 100.0, 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
-//   TEST gp2:AddPie( Rect( 50, 50, 100, 100 ), 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
-//   TEST gp2:AddPie( RectF( 50.0, 50.0, 100.0, 100.0 ), 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
-//   TEST gp2:AddPolygon( { Point( 20, 20 ), Point( 120, 20 ), Point( 120, 70 ) } ) == 0  DESCRIPTION "AddPolygon()"   SAMPLE Example_AddPolygon()
-//   TEST gp2:AddPolygon( { PointF( 20.0, 20.0 ), PointF( 120.0, 20.0 ), PointF( 120.0, 70.0 ) } ) == 0  DESCRIPTION "AddPolygon()"   SAMPLE Example_AddPolygon()
-//   TEST gp2:AddRectangle( RectF( 20.0, 20.0, 100.0, 50.0 ) ) == 0  DESCRIPTION "AddRectangle()"   SAMPLE Example_AddRectangle()
-//   TEST gp2:AddRectangles( { RectF( 20.0, 20.0, 100.0, 50.0 ),;
-//                             RectF( 30.0, 30.0, 50.0, 100.0 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
-//   TEST gp2:AddRectangles( { RectF( 20, 20, 100, 50 ),;
-//                             RectF( 30, 30, 50, 100 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
-//   TEST .T.                                                     DESCRIPTION "AddString( ... Rect ... )"     SAMPLE Example_GPAddString1()
-//   TEST .T.                                                     DESCRIPTION "AddString( ... RectF ... )"    SAMPLE Example_GPAddString2()
-//   TEST .T.                                                     DESCRIPTION "AddString( ... Point ... )"    SAMPLE Example_GPAddString3()
-//   TEST .T.                                                     DESCRIPTION "AddString( ... PointF ... )"   SAMPLE Example_GPAddString4()
-//   TEST gp2:ClearMarkers() == 0                                 DESCRIPTION "ClearMarkers() "
-//   TEST !empty( gp2:Clone():handle )                            DESCRIPTION "Clone() "
-//   TEST gp2:CloseAllFigures() == 0                              DESCRIPTION "CloseAllFigures()"             SAMPLE Example_CloseAllFigures()
-//   TEST gp2:Flatten() == 0                                      DESCRIPTION "Flatten()"                     SAMPLE FlattenExample()
-//   TEST gp2:Flatten() == 0                                      DESCRIPTION "Flatten() SAMPLE 2"            SAMPLE FlattenExample(2)
+   TEST gp2:Addpath( GraphicsPath(), .T. ) == 0  DESCRIPTION "AddPath()"   SAMPLE Example_AddPath( )
+   TEST gp2:AddPie( 50, 50, 100, 100, 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
+   TEST gp2:AddPie( 50.0, 50.0, 100.0, 100.0, 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
+   TEST gp2:AddPie( Rect( 50, 50, 100, 100 ), 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
+   TEST gp2:AddPie( RectF( 50.0, 50.0, 100.0, 100.0 ), 20.0, 45.0 ) == 0  DESCRIPTION "AddPie()"   SAMPLE Example_AddPie()
+   TEST gp2:AddPolygon( { Point( 20, 20 ), Point( 120, 20 ), Point( 120, 70 ) } ) == 0  DESCRIPTION "AddPolygon()"   SAMPLE Example_AddPolygon()
+   TEST gp2:AddPolygon( { PointF( 20.0, 20.0 ), PointF( 120.0, 20.0 ), PointF( 120.0, 70.0 ) } ) == 0  DESCRIPTION "AddPolygon()"   SAMPLE Example_AddPolygon()
+   TEST gp2:AddRectangle( RectF( 20.0, 20.0, 100.0, 50.0 ) ) == 0  DESCRIPTION "AddRectangle()"   SAMPLE Example_AddRectangle()
+   TEST gp2:AddRectangles( { RectF( 20.0, 20.0, 100.0, 50.0 ),;
+                             RectF( 30.0, 30.0, 50.0, 100.0 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
+   TEST gp2:AddRectangles( { RectF( 20, 20, 100, 50 ),;
+                             RectF( 30, 30, 50, 100 ) } ) == 0  DESCRIPTION "AddRectangles()"   SAMPLE Example_AddRectangles()
+   TEST .T.                                                     DESCRIPTION "AddString( ... Rect ... )"     SAMPLE Example_GPAddString1()
+   TEST .T.                                                     DESCRIPTION "AddString( ... RectF ... )"    SAMPLE Example_GPAddString2()
+   TEST .T.                                                     DESCRIPTION "AddString( ... Point ... )"    SAMPLE Example_GPAddString3()
+   TEST .T.                                                     DESCRIPTION "AddString( ... PointF ... )"   SAMPLE Example_GPAddString4()
+   TEST gp2:ClearMarkers() == 0                                 DESCRIPTION "ClearMarkers() "
+   TEST !empty( gp2:Clone():handle )                            DESCRIPTION "Clone() "
+   TEST gp2:CloseAllFigures() == 0                              DESCRIPTION "CloseAllFigures()"             SAMPLE Example_CloseAllFigures()
+   TEST gp2:Flatten() == 0                                      DESCRIPTION "Flatten()"                     SAMPLE FlattenExample()
+   TEST gp2:Flatten() == 0                                      DESCRIPTION "Flatten() SAMPLE 2"            SAMPLE FlattenExample(2)
    TEST gp2:getBounds(@oRect) == 0                              DESCRIPTION "GetBounds()"                   SAMPLE GetBoundsExample()
    TEST gp2:GetFillMode() == 0                                  DESCRIPTION "GetFillMode()"
    TEST gp:GetLastPoint( @oPoint ) == 0                         DESCRIPTION "GetLastPoint()"
@@ -305,7 +305,14 @@ return nil
    TEST .T.                                                     DESCRIPTION "IsOutlineVisible()"            SAMPLE Example_IsOutlineVisibleExample()
    TEST .T.                                                     DESCRIPTION "IsVisible()"                   SAMPLE IsVisibleExample()
    TEST .T.                                                     DESCRIPTION "OutLine()"                     SAMPLE OutlineExample()
-
+   TEST gp:Reset() == 0                                         DESCRIPTION "Reset()"                     
+   TEST gp2:Reverse() == 0                                      DESCRIPTION "Reverse()"                     SAMPLE ReverseExample()
+   TEST gp2:SetFillMode( FillModeAlternate ) == 0               DESCRIPTION "SetFillMode()"
+   TEST gp2:SetMarker() == 0                                    DESCRIPTION "SetMarket()"
+   TEST gp2:StartFigure() == 0                                  DESCRIPTION "StartFigure()"                 SAMPLE StartFigureExample()
+   TEST gp2:Transform( Matrix() ) == 0                          DESCRIPTION "Transform()"                   SAMPLE GPTransformExample()
+   TEST .T.                                                     DESCRIPTION "Warp()"                        SAMPLE WarpExample()
+   
 return 0
 
 *****************************************************************************************
@@ -3482,6 +3489,132 @@ function OutlineExample()
 
    graphics:TranslateTransform(180.0, 60.0)
    graphics:DrawPath(bluePen, path)
+
+   }
+   exampleWindow( bPainted )
+
+return nil
+
+
+
+function ReverseExample()
+   local bPainted := { | hdc |
+   local pts
+   Graphics graphics(hdc)
+   GraphicsPath path()
+
+   // Set up and call Reverse.
+   pts = {Point(10, 60),;
+                  Point(50, 110),;
+                  Point(90, 60)}
+                  
+   path:AddLines(pts)
+   path:Reverse()
+
+   // Draw the path.
+   graphics:DrawPath(Pen(Color(128, 255, 0, 0), 2), path)
+
+   }
+   exampleWindow( bPainted )
+
+return nil
+
+
+
+function StartFigureExample()
+   local bPainted := { | hdc |
+   local pts
+   Graphics graphics(hdc)
+   Pen pen(Color(255, 0, 0, 255))
+   Rect rect(0, 0, 100, 50)
+   GraphicsPath path()
+
+   path:AddArc(0, 0, 100, 50, 0.0, 180.0)
+   path:AddArc(0, 60, 100, 50, 0.0, 180.0)
+   path:AddArc(0, 120, 100, 50, 0.0, 180.0)
+
+   // Start a new figure (subpath).
+   // Do not close the current figure.
+   path:StartFigure()
+   path:AddArc(0, 180, 100, 50, 0.0, 180.0)
+   path:AddArc(0, 240, 100, 50, 0.0, 180.0)
+
+   graphics:DrawPath(pen, path)
+
+   }
+   exampleWindow( bPainted )
+
+return nil
+
+
+function GPTransformExample()
+   local bPainted := { | hdc |
+   local pts
+   Graphics graphics(hdc)
+   GraphicsPath path()
+   path:AddRectangle(Rect(40, 10, 200, 50))
+
+   // Draw the path in blue before applying a transformation.
+   graphics:DrawPath(Pen(Color(255, 0, 0, 255)), path)
+
+   // Transform the path.
+   Matrix matrix()
+   matrix:Rotate(30.0)
+   path:Transform(matrix)
+
+   // Draw the transformed path in red.
+   graphics:DrawPath(Pen(Color(255, 255, 0,  0)), path)
+
+   }
+   exampleWindow( bPainted )
+
+return nil
+
+
+function WarpExample()
+   local bPainted := { | hdc |
+   local points, destPts
+   Graphics graphics(hdc)
+   // Create a path.
+   points ={;
+      PointF(20.0, 60.0), ;
+      PointF(30.0, 90.0), ;
+      PointF(15.0, 110.0),;
+      PointF(15.0, 145.0),;
+      PointF(55.0, 145.0),;
+      PointF(55.0, 110.0),;
+      PointF(40.0, 90.0), ;
+      PointF(50.0, 60.0)}
+
+   GraphicsPath path()
+   path:AddLines(points)
+   path:CloseFigure()
+
+   // Draw the path before applying a warp transformation.
+   Pen bluePen(Color(255, 0, 0, 255))
+   graphics:DrawPath(bluePen, path)
+
+   // Define a warp transformation, and warp the path.
+   RectF srcRect(10.0, 50.0, 50.0, 100.0)
+
+   destPts = {;
+      PointF(220.0, 10.0), ;
+      PointF(280.0, 10.0), ;
+      PointF(100.0, 150.0),;
+      PointF(400.0, 150.0)}
+      
+   path:Warp(destPts, srcRect)
+   
+   // Draw the warped path.
+   graphics:DrawPath(bluePen, path)
+
+   // Draw the source rectangle and the destination polygon.
+   Pen blackPen(Color(255, 0, 0, 0))
+   graphics:DrawRectangle(blackPen, srcRect)
+   graphics:DrawLine(blackPen, destPts[1], destPts[2])
+   graphics:DrawLine(blackPen, destPts[1], destPts[3])
+   graphics:DrawLine(blackPen, destPts[2], destPts[4])
+   graphics:DrawLine(blackPen, destPts[3], destPts[4])
 
    }
    exampleWindow( bPainted )

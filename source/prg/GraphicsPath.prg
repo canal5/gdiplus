@@ -58,6 +58,13 @@ CLASS GPGraphicsPath
    METHOD IsOutlineVisible()
    METHOD IsVisible()
    METHOD Outline() 
+   METHOD Reset()
+   METHOD Reverse( )
+   METHOD SetFillMode( )
+   METHOD SetMarker( )
+   METHOD StartFigure( )
+   METHOD Transform( )
+   METHOD Warp()
    METHOD Widen()
 
 ENDCLASS
@@ -419,6 +426,77 @@ return sta
    sta = C5GPGraphicsPathOutline( ::handle, p1, p2 )
       
 return sta
+
+********************************************************************************************************
+   METHOD Reset( ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+   
+   sta = C5GPGraphicsPathReset( ::handle )
+   
+return sta   
+
+********************************************************************************************************
+   METHOD Reverse( ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+   
+   sta = C5GPGraphicsPathReverse( ::handle )
+   
+return sta   
+
+
+********************************************************************************************************
+   METHOD SetFillMode( p1 ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+   
+   sta = C5GPGraphicsPathSetFillMode( ::handle, p1 )
+   
+return sta   
+
+
+********************************************************************************************************
+   METHOD SetMarker( ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+   
+   sta = C5GPGraphicsPathSetMarker( ::handle )
+   
+return sta   
+
+
+********************************************************************************************************
+   METHOD StartFigure( ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+   
+   sta = C5GPGraphicsPathStartFigure( ::handle )
+   
+return sta   
+
+********************************************************************************************************
+   METHOD Transform( p1 ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+   
+   sta = C5GPGraphicsPathTransform( ::handle, p1:handle )
+   
+return sta   
+
+********************************************************************************************************
+   METHOD Warp( p1, p2, p3, p4, p5  ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+   
+   if p3 != NIL 
+      p3 = p3:handle 
+   endif
+
+   sta = C5GPGraphicsPathWarp( ::handle, p1, NIL, p2:handle, p3, p4, p5 )
+   
+return sta   
+
 
 ********************************************************************************************************
    METHOD Widen( p1, p2, p3 ) CLASS GPGraphicsPath
@@ -1306,6 +1384,113 @@ HB_FUNC( C5GPGRAPHICSPATHOUTLINE )
 
 }
 
+HB_FUNC( C5GPGRAPHICSPATHRESET )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      hb_retni( gp->Reset() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( C5GPGRAPHICSPATHREVERSE )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      hb_retni( gp->Reverse() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( C5GPGRAPHICSPATHSETFILLMODE )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      hb_retni( gp->SetFillMode( ( FillMode ) hb_parni( 2 ) ) );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( C5GPGRAPHICSPATHSETMARKER )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      hb_retni( gp->SetMarker() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( C5GPGRAPHICSPATHSTARTFIGURE )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      hb_retni( gp->StartFigure() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( C5GPGRAPHICSPATHTRANSFORM )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2   = hb_GDIPLUS_par( 2 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      Matrix * m = ( Matrix * ) GP_GET( p2 );
+      hb_retni( ( int ) gp->Transform( m ) );      
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+
+HB_FUNC( C5GPGRAPHICSPATHWARP )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p4   = hb_GDIPLUS_par( 4 );
+   WarpMode p6 = ( WarpMode ) hb_parni( 6 );
+   REAL p7     = ( REAL ) hb_parnd( 7 );
+   void * p5 = NULL;
+   Status sta;
+
+   if( GP_IS_GRAPHICSPATH( pObj ) && HB_ISARRAY( 2 ) && GP_IS_RECTF( p4 ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      RectF * rect = ( RectF * ) GP_GET( p4 );
+      PHB_ITEM aPoints = hb_param( 2, HB_IT_ARRAY );
+      BOOL lF;
+      void * pts = ConvertArray2Point( aPoints, &lF );
+
+      if( HB_ISPOINTER( 5 ) ){
+         GDIPLUS * p = hb_GDIPLUS_par( 5 );
+         p5 = GP_GET( p );
+      }
+
+      if( p7 != 0 )
+      	 sta = gp->Warp( ( PointF * ) pts, hb_arrayLen( aPoints ), *rect, ( Matrix * ) p5, p6, p7 );
+      else
+         sta = gp->Warp( ( PointF * ) pts, hb_arrayLen( aPoints ), *rect, ( Matrix * ) p5, p6 );
+
+      hb_retni( ( int ) sta );
+      hb_xfree( pts );
+      
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
 
 HB_FUNC( C5GPGRAPHICSPATHWIDEN )
 {
@@ -1336,35 +1521,6 @@ HB_FUNC( C5GPGRAPHICSPATHWIDEN )
 
 }
 
-VOID OutlineExample(HDC hdc)
-{
-   Graphics graphics(hdc);
-
-   Pen bluePen(Color(255, 0, 0, 255));
-   Pen greenPen(Color(255, 0, 255,  0), 10);
-
-   PointF points[] = {
-      PointF(20.0f, 20.0f),
-      PointF(160.0f, 100.0f),
-      PointF(140.0f, 60.0f),
-      PointF(60.0f, 100.0f)};
-
-   GraphicsPath path;
-   path.AddClosedCurve(points, 4);
-
-   path.Widen(&greenPen);
-   graphics.DrawPath(&bluePen, &path);
-
-   path.Outline();
-
-   graphics.TranslateTransform(180.0f, 0.0f);
-   graphics.DrawPath(&bluePen, &path);
-}
-
-HB_FUNC( C5XXX ){
-   HDC hdc = ( HDC ) hb_parnl( 1 );
-   OutlineExample(hdc);
-}
 
 /*
 
