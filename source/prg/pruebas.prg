@@ -21,7 +21,7 @@ Local oTest
 //      TestsRectF()
 //      TestsRect()
 //
-      TestGraphicsPath()
+//      TestGraphicsPath()
 //      TestFontFamily()
 //      TestFont()
 //      TestStringFormat()

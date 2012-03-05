@@ -500,9 +500,7 @@ return 0
   METHOD FillPath( oPath ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GP_FillPath( ::oBrush:handle, oPath:handle )
-
-return 0
+return C5GP_FillPath( ::oBrush:handle, oPath:handle )
 
 **********************************************************************************************************
   METHOD FillPie( ) CLASS GPGraphics
@@ -1038,11 +1036,7 @@ return 0
 //    QualityModeHigh      = 2  // Best rendering quality
 //};
 
-DEFAULT nMode := 2 // SmoothingModeHighQuality
-
-C5SetSmoothingMode(::handle, nMode )
-
-return 0
+return C5SetSmoothingMode(::handle, nMode )
 
 
 
@@ -1706,18 +1700,18 @@ HB_FUNC( C5GP_FILLELLIPSE )
 
 HB_FUNC( C5GP_FILLPATH )
 {
-    Graphics *g = hb_Graphics_par( 1 );
-    SolidBrush* brush = (SolidBrush*) hb_parptr( 2 );
-    GraphicsPath* gp = (GraphicsPath*) hb_parptr( 3 );
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p1 = hb_GDIPLUS_par( 2 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 3 );
 
-   if( g && brush && gp )
-   {
-     g->FillPath(brush, gp );
+   if( GP_IS_GRAPHICS( pG ) && GP_IS_BRUSH( p1 ), && GP_IS_GRAPHICSPATH( p2 ) ){
+      Graphics * g = ( Graphics * ) GP_GET( pG );
+      Brush * brush = (Brush*) GP_GET( p1 );
+      GraphicsPath* gp = (GraphicsPath*) GP_GET( p2 );
+      hb_retni( ( int ) g->FillPath( brush, gp );
    }
    else
-      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-
-    hb_ret();
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
@@ -1867,16 +1861,18 @@ HB_FUNC( C5GP_TRANSLATETRANSFORM )
 
 HB_FUNC( C5SETSMOOTHINGMODE )
 {
-   Graphics *g = hb_Graphics_par( 1 );
-   SmoothingMode  q = (SmoothingMode ) hb_parni( 2 );
 
-   if( g && q )
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   SmoothingMode q = (SmoothingMode ) hb_parni( 2 );
+   Status sta;
+   if( GP_IS_GRAPHICS( pG ) )
    {
-      g->SetSmoothingMode(q);
+      Graphics * g = ( Graphics *) GP_GET( pG );
+      sta = g->SetSmoothingMode( q );
+      hb_retni( sta );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-
 
 }
 
