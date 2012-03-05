@@ -1087,9 +1087,9 @@ return 0
   METHOD TranslateTransform( hor, ver, order ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GP_TranslateTransform( ::handle, hor, ver, order )
+  
 
-return nil
+return C5GP_TranslateTransform( ::handle, hor, ver, order )
 
 function _GPConvertHandle( o, h )
    o:handle = getGdiplusHandle( h )
@@ -1852,17 +1852,17 @@ HB_FUNC( C5GP_SCALETRANSFORM )
 
 HB_FUNC( C5GP_TRANSLATETRANSFORM )
 {
-   Graphics *g = hb_Graphics_par( 1 );
-
-   if( g && hb_pcount() > 3 )
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICS( pG ) )
    {
-      g->TranslateTransform( (REAL) hb_parnd( 2 ), (REAL) hb_parnd( 3 ), (MatrixOrder) hb_parni( 4 ) );
+      Graphics * g = ( Graphics *) GP_GET( pG );
+      sta = g->TranslateTransform( (REAL) hb_parnd( 2 ), (REAL) hb_parnd( 3 ), (MatrixOrder) hb_parni( 4 ) );
+      hb_retni( sta );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-
-   hb_ret();
 }
 
 HB_FUNC( C5SETSMOOTHINGMODE )

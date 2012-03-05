@@ -57,6 +57,8 @@ CLASS GPGraphicsPath
    METHOD GetPathTypes()
    METHOD IsOutlineVisible()
    METHOD IsVisible()
+   METHOD Outline() 
+   METHOD Widen()
 
 ENDCLASS
 
@@ -389,10 +391,50 @@ return C5GPGraphicsPathGetPathTypes( ::handle, @aTypes )
 return sta
 
 ********************************************************************************************************
-   METHOD IsVisible() CLASS GPGraphicsPath
+   METHOD IsVisible( p1, p2, p3  ) CLASS GPGraphicsPath
 ********************************************************************************************************
+   local sta
+   
+   if ValType( p3 ) == "O"
+      sta = C5GPGraphicsPathIsVisible( ::handle, p1, p2, p3:handle )
+   elseif ValType( p2 ) == "O"
+      sta = C5GPGraphicsPathIsVisible( ::handle, p1:handle, p2:handle )
+   elseif ValType( p1 ) == "O"
+      sta = C5GPGraphicsPathIsVisible( ::handle, p1:handle )
+   else 
+      sta = C5GPGraphicsPathIsVisible( ::handle, p1, p2 )
+   endif
 
-return 0
+return sta
+
+********************************************************************************************************
+   METHOD Outline( p1, p2 ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+   
+   if p1 != NIL 
+      p1 = p1:handle 
+   endif 
+   
+   sta = C5GPGraphicsPathOutline( ::handle, p1, p2 )
+      
+return sta
+
+********************************************************************************************************
+   METHOD Widen( p1, p2, p3 ) CLASS GPGraphicsPath
+********************************************************************************************************
+   local sta
+   
+   if p2 != NIL 
+      p2 = p2:handle 
+   endif 
+
+   sta = C5GPGraphicsPathWiden( ::handle, p1:handle, p2, p3 )
+      
+return sta
+
+
+
 
 
 //   AddArc                       Sobrecargado. Agrega un arco elíptico a la figura actual.
@@ -1186,6 +1228,143 @@ HB_FUNC( C5GPGRAPHICSPATHISOUTLINEVISIBLE )
 }
 
 
+HB_FUNC( C5GPGRAPHICSPATHISVISIBLE )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      int iParams = hb_pcount();
+      BOOL lOk = true;
+      switch( iParams ){
+         case 2:{
+            GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+            void * pPoint = GP_GET( p2 );
+            if( GP_IS_POINT( p2 ) )
+               lOk = gp->IsVisible( *( ( Point * ) pPoint ) );            
+            else 
+               lOk = gp->IsVisible( *( ( PointF * ) pPoint ) );
+          }
+          break;
+          case 3:{
+             if( HB_ISPOINTER( 3 ) ){
+                GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+                GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+                void * pPoint = GP_GET( p2 );
+                Graphics * g = ( Graphics * ) GP_GET( p3 );
+                
+                if( GP_IS_POINT( p2 ) )
+                   lOk = gp->IsVisible( *( ( Point * ) pPoint ), g );
+                else 
+                   lOk = gp->IsVisible( *( ( PointF * ) pPoint ), g );
+             }else {
+                if( HB_ISDOUBLE( 2 ) )
+                   lOk = gp->IsVisible( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ) );
+                else 
+                   lOk = gp->IsVisible( hb_parni( 2 ), hb_parni( 3 ) );
+             }
+          }
+          break;
+          case 4:{
+             GDIPLUS * p4 = hb_GDIPLUS_par( 4 );
+             Graphics * g = ( Graphics * ) GP_GET( p4 );
+             if( HB_ISDOUBLE( 2 ) )
+                lOk = gp->IsVisible( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), g );
+             else 
+                lOk = gp->IsVisible( hb_parni( 2 ), hb_parni( 3 ), g );
+          }
+          break;
+      }
+      hb_retl( lOk );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+
+HB_FUNC( C5GPGRAPHICSPATHOUTLINE )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );      
+      void * p2 = NULL;
+      REAL r3 = ( REAL ) hb_parnd( 3 );
+      if( ! HB_ISNIL( 2 ) ){
+         GDIPLUS * p = hb_GDIPLUS_par( 2 );
+         p2 = GP_GET( p );         
+      }
+      
+      if( r3 != 0 )
+          sta = gp->Outline( ( Matrix * ) p2, r3 );
+      else
+         sta = gp->Outline( ( Matrix * ) p2 );
+      
+      hb_retni( ( int ) sta );
+      
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+
+HB_FUNC( C5GPGRAPHICSPATHWIDEN )
+{
+   GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   Status sta;
+   if( GP_IS_GRAPHICSPATH( pObj ) && GP_IS_PEN( p2 ) ){
+      GraphicsPath * gp = ( GraphicsPath * ) GP_GET( pObj );
+      Pen * pen = ( Pen * ) GP_GET( p2 );
+      void * p3 = NULL, *p4;
+      REAL r4 = ( REAL ) hb_parnd( 4 );
+
+      if( ! HB_ISNIL( 3 ) ){
+         GDIPLUS * p = hb_GDIPLUS_par( 3 );
+         p3 = GP_GET( p );         
+      }
+
+      if( r4 != 0 )
+         sta = gp->Widen( pen, ( Matrix * ) p3, r4 );     
+      else
+         sta = gp->Widen( pen, ( Matrix * ) p3 );     
+      
+      
+      hb_retni( ( int ) sta );
+
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+VOID OutlineExample(HDC hdc)
+{
+   Graphics graphics(hdc);
+
+   Pen bluePen(Color(255, 0, 0, 255));
+   Pen greenPen(Color(255, 0, 255,  0), 10);
+
+   PointF points[] = {
+      PointF(20.0f, 20.0f),
+      PointF(160.0f, 100.0f),
+      PointF(140.0f, 60.0f),
+      PointF(60.0f, 100.0f)};
+
+   GraphicsPath path;
+   path.AddClosedCurve(points, 4);
+
+   path.Widen(&greenPen);
+   graphics.DrawPath(&bluePen, &path);
+
+   path.Outline();
+
+   graphics.TranslateTransform(180.0f, 0.0f);
+   graphics.DrawPath(&bluePen, &path);
+}
+
+HB_FUNC( C5XXX ){
+   HDC hdc = ( HDC ) hb_parnl( 1 );
+   OutlineExample(hdc);
+}
 
 /*
 

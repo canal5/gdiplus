@@ -12,7 +12,7 @@ Local oTest
 //      TestsColor()
 //      TestsBrush()
 //      TestMatrix()
-      TestLinearGB()
+//      TestLinearGB()
 //
 //      TestImage()
 //      TestSolidBrush()
@@ -303,6 +303,8 @@ return nil
    TEST .T.                                                     DESCRIPTION "GetPathPoints()"               SAMPLE GetPathPointsExample()
    TEST gp:GetPathTypes( @aTypes ) == 0                         DESCRIPTION "GetPathTypes()"
    TEST .T.                                                     DESCRIPTION "IsOutlineVisible()"            SAMPLE Example_IsOutlineVisibleExample()
+   TEST .T.                                                     DESCRIPTION "IsVisible()"                   SAMPLE IsVisibleExample()
+   TEST .T.                                                     DESCRIPTION "OutLine()"                     SAMPLE OutlineExample()
 
 return 0
 
@@ -3410,6 +3412,78 @@ function Example_IsOutlineVisibleExample()
 
    }
 
+   exampleWindow( bPainted )
+
+return nil
+
+
+function IsVisibleExample()
+   local bPainted := { | hdc |
+	 local points, j
+   Graphics graphics(hdc)
+
+   GraphicsPath path()
+
+   Pen blackPen(Color(255, 0, 0, 0), 1)
+   SolidBrush brush(Color(255, 255, 0,  0))
+
+   path:AddEllipse(50, 50, 200, 100)
+   graphics:DrawPath(blackPen, path)
+
+   // Create an array of four points, and determine whether each
+   // point in the array touches the outline of the path.
+   // If a point touches the outline, paint it green.
+   // If a point does not touch the outline, paint it red.
+   points = {;
+      PointF(50, 100),  ;
+      PointF(250, 100), ;
+      PointF(150, 170), ;
+      PointF(180, 60)}
+
+   for j = 1 to 4
+      if(path:IsVisible(points[j], graphics))
+         brush:SetColor(Color(255, 0, 255, 0))
+      else
+         brush:SetColor(Color(255, 255, 0, 0))
+      endif
+
+      graphics:FillEllipse(brush, points[j]:X - 3, points[j]:Y - 3, 6, 6)
+   next
+
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+function OutlineExample()
+   local bPainted := { | hdc |
+   local points
+   Graphics graphics(hdc)
+   GraphicsPath path()
+
+   Pen bluePen(Color(255, 0, 0, 255))
+   Pen greenPen(Color(255, 0, 255,  0), 10)
+
+   points = {;
+      PointF(20.0, 20.0),  ;
+      PointF(160.0, 100.0),;  
+      PointF(140.0, 60.0), ;
+      PointF(60.0, 100.0)}
+
+   path:AddClosedCurve(points)
+
+   path:Widen(greenPen)
+
+   graphics:DrawPath(bluePen, path)
+
+   path:Outline()
+
+   graphics:TranslateTransform(180.0, 60.0)
+   graphics:DrawPath(bluePen, path)
+
+   }
    exampleWindow( bPainted )
 
 return nil
