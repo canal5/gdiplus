@@ -46,20 +46,17 @@ CLASS GPBitmap
   //Bitmap(IStream*,BOOL)
   //Bitmap(WCHAR*,BOOL)
 
-  METHOD ApplyEffect()
-  METHOD ApplyEffect2()
+  METHOD ApplyEffect()    INLINE Msginfo( "Not implemented" )
+  METHOD ApplyEffect2()   INLINE Msginfo( "Not implemented" )
   METHOD Clone()
-  METHOD Clone2()
-  METHOD Clone3()
-  METHOD Clone4()
   METHOD ConvertFormat()
-  METHOD FromBITMAPINFO()
+  METHOD FromBITMAPINFO() INLINE Msginfo( "Not implemented" )
   METHOD FromDirectDrawSurface7()
   METHOD FromFile()
   METHOD FromHBITMAP()
   METHOD FromHICON()
   METHOD FromResource()
-  METHOD FromStream()
+  METHOD FromStream()    INLINE Msginfo( "Not implemented" )
   METHOD GetHBITMAP()
   METHOD GetHICON()
   METHOD GetHistogram()
@@ -83,20 +80,26 @@ ENDCLASS
 
    switch iParams
       case 1
-         ::handle = C5_GPBitmap( aParams[ 1 ] )
+         ::handle = C5GPBitmap( aParams[ 1 ], .F. )
          exit
       case 2
-         ::handle = C5_GPBitmap( aParams[ 1 ], aParams[ 2 ] )
+         if ValType( aParams[ 1 ] ) == "N"
+            aParams[ 1 ] = Long2Ptr( aParams[ 1 ] )
+         endif
+         if ValType( aParams[ 2 ] ) == "N"
+            aParams[ 2 ] = Long2Ptr( aParams[ 2 ] )
+         endif
+         ::handle = C5GPBitmap( aParams[ 1 ], aParams[ 2 ] )
         exit
       case 3
          if ValType( aParams[ 3 ] ) == "O"
-            ::handle = C5_GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ]:handle )
+            ::handle = C5GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ]:handle )
          else
-            ::handle = C5_GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
+            ::handle = C5GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ] )
          endif
         exit
       case 5
-         ::handle = C5_GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
+         ::handle = C5GPBitmap( aParams[ 1 ], aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
         exit
    endswitch
 
@@ -111,38 +114,16 @@ return self
 return nil
 
 *********************************************************************************************************
-  METHOD ApplyEffect() CLASS GPBitmap
+  METHOD Clone( p1, p2, p3, p4, p5 ) CLASS GPBitmap
 *********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD ApplyEffect2() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Clone() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Clone2() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Clone3() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD Clone4() CLASS GPBitmap
-*********************************************************************************************************
+   
+   local oClone
+   
+   if ValType( p1 ) == "O"   
+      oClone = C5GPBitmapClone( p1:handle, p2 )
+   else 
+      oClone = C5GPBitmapClone( p1, p2, p3, p4, p5 )
+   endif
 
 return 0
 
@@ -317,7 +298,7 @@ return 0
 #pragma BEGINDUMP
 #include <gc.h>
 
-HB_FUNC( C5_GPBITMAP )
+HB_FUNC( C5GPBITMAP )
 {
    Bitmap * o;
    GDIPLUS * pObj = gdiplus_new( GP_IT_BITMAP );
@@ -325,33 +306,104 @@ HB_FUNC( C5_GPBITMAP )
    BOOL lOk = true;
 
    switch (iParams){
-      case 2:
-         o = new Bitmap( ( HBITMAP ) hb_parnl( 1 ), ( HPALETTE ) hb_parnl( 2 ) );
-         break;
+   	  case 1:
+   	     o = new Bitmap( ( HICON ) hb_parptr( 1 ) ); //HICON
+   	     break;
+      case 2:{
+      	 void * p1 = hb_parptr( 1 );      	 
+         if( GetObjectType( ( HGDIOBJ ) p1 ) && ! HB_ISCHAR( 2 ) ){
+         	  void * p2 = hb_parptr( 2 );
+            o = new Bitmap( ( HBITMAP ) p1, ( HPALETTE ) p2 ); //HBITMAP, HPALETTE
+         }
+         else if( HB_ISCHAR( 2 ) ){
+         	  WCHAR * p2 = hb_GDIPLUS_parw( 2 );
+            o = new Bitmap( ( HINSTANCE ) p1, p2 ); //HINSTANCE, WCHAR
+            hb_xfree( p2 );
+         }else if( HB_ISCHAR( 1 ) ){
+         	  WCHAR * p1 = hb_GDIPLUS_parw( 1 );
+            o = new Bitmap( p1, hb_parl( 2 ) ); //HINSTANCE, WCHAR
+            hb_xfree( p1 );         	         	
+         }else 
+            lOk = false;
+         
+      }
+      break;
       case 3:
       {
-      	 GDIPLUS * pGrap = hb_GDIPLUS_par( 3 );
-      	 Graphics * g = ( Graphics * ) GP_GET( pGrap );
-         o = new Bitmap( hb_parni( 1 ), hb_parni( 2 ), g );
+      	 if( HB_ISPOINTER( 3 ) ){
+      	    GDIPLUS * pGrap = hb_GDIPLUS_par( 3 );
+      	    Graphics * g = ( Graphics * ) GP_GET( pGrap );
+            o = new Bitmap( hb_parni( 1 ), hb_parni( 2 ), g );
+         }else
+            o = new Bitmap( hb_parni( 1 ), hb_parni( 2 ), ( PixelFormat ) hb_parni( 3 ) );
       }
    }
-
-   GP_SET( pObj, o );
-   hb_GDIPLUS_ret( pObj );
+   
+   if( lOk ){
+      GP_SET( pObj, o );
+      hb_GDIPLUS_ret( pObj );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
 }
 
-HB_FUNC( C5DELETEBITMAP )
+
+
+HB_FUNC( C5GPBITMAPCLONE )
 {
-//   Bitmap* clr = (Bitmap*) hb_parptr( 1 );
-//   delete (Bitmap*) clr;
-//   hb_ret();
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_GRAPHICS( p ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      int iParams = hb_pcount();
+      BOOL lOk = true;
+      Bitmap * oClone;
+      if( iParams == 3 ){
+         GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+         void * rect = GP_GET( p2 );
+         if( GP_IS_RECT( p2 ) ){
+             oClone = o->Clone( *( ( Rect * ) rect ), ( PixelFormat ) hb_parni( 3 ) );
+         }else if( GP_IS_RECTF( p2 ) ){
+         	   oClone = o->Clone( *( ( RectF * ) rect ), ( PixelFormat ) hb_parni( 3 ) );
+         }else 
+            lOk = false;
+      }else {
+
+         if( HB_ISDOUBLE( 2 ) ){
+         	   oClone = o->Clone( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( PixelFormat ) hb_parni( 6 ) );         	
+         }else{
+         	  oClone = o->Clone( hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), ( PixelFormat ) hb_parni( 6 ) );
+         }      	
+      }
+      
+      if( lOk ){
+         PHB_ITEM pClone = GPNewGDIPLUSObject( oClone, GP_IT_BITMAP );
+         hb_itemReturnRelease( pClone ); 
+      }else
+         hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );      
+         
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
 }
 
-//HB_FUNC( GPBitmap... )
-//{
-//   Bitmap* ptr = (Bitmap*) hb_parptr( 1 );
-//   hb_retni( ptr->GetA() );
-//}
+
+
+/*
+HB_FUNC( C5GPBITMAP... )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_GRAPHICS( p ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+*/
+
+
 
 //How to Create a Gdiplus::Bitmap from an HBITMAP, retaining the alpha channel information?
 //Gdiplus::Status HBitmapToBitmap( HBITMAP source, Gdiplus::PixelFormat pixel_format, Gdiplus::Bitmap** result_out )
@@ -390,7 +442,5 @@ HB_FUNC( C5DELETEBITMAP )
 //}
 
 #pragma ENDDUMP
-
-
 
 

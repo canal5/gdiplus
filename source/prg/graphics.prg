@@ -381,49 +381,63 @@ return C5GPBeginContainer(::handle, p1, p2, p3 )
   METHOD BitBlt( oImage, nTop, nLeft, nTopSrc, nLeftSrc, nWidth, nHeight, units ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GP_BitBlt( ::handle, oImage:handle, nTop, nLeft, nTopSrc, nLeftSrc, nWidth, nHeight, units )
 
-return 0
+return C5GBitBlt( ::handle, oImage:handle, nTop, nLeft, nTopSrc, nLeftSrc, nWidth, nHeight, units )
 
 
 **********************************************************************************************************
   METHOD Clear( oColor ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GP_Clear( ::handle, oColor:handle )
-
-return 0
+return C5GClear( ::handle, oColor:handle )
 
 
 
 **********************************************************************************************************
-  METHOD DrawArc( nTop, nLeft, nWidth, nHeight, nStartFrom, nAngle ) CLASS GPGraphics
+  METHOD DrawArc( p1, p2, p3, p4, p5, p6, p7 ) CLASS GPGraphics
+**********************************************************************************************************
+   
+   local sta
+
+   DEFAULT p1 := ::oPen
+
+   if valtype( p2 ) == "O"
+      sta = C5GDrawArc( ::handle, p1:handle, p2:handle, p3, p4 )
+   else
+      sta = C5GDrawArc( ::handle, p1:handle, p2, p3, p4, p5, p6, p7 )   
+   endif
+
+return sta
+
+**********************************************************************************************************
+  METHOD DrawBezier( p1, p2, p3, p4, p5, p6, p7, p8, p9  ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GP_DrawArc( ::handle, ::oPen:handle, nTop, nLeft, nWidth, nHeight, nStartFrom, nAngle )
+   local sta
 
-return 0
+   DEFAULT p1 := ::oPen 
+   
+   if ValType( p2 ) == "O" 
+      sta = C5GDrawBezier( ::handle, p1:handle, p2:handle, p3:handle, p4:handle, p5:handle )
+   else 
+      sta = C5GDrawBezier( ::handle, p1:handle, p2, p3, p4, p5, p6, p7, p8, p9 )
+   endif
+
+return sta
 
 **********************************************************************************************************
-  METHOD DrawBezier( aStartPt, aPtCtrl1, aPtCtrl2, aEndPt   ) CLASS GPGraphics
+  METHOD DrawBeziers( p1, p2 ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GP_DrawBezier( ::handle, ::oPen:handle, aStartPt[1], aStartPt[2], aPtCtrl1[1], aPtCtrl1[2], aPtCtrl2[1], aPtCtrl2[2], aEndPt[1], aEndPt[2]  )
+   DEFAULT p1 := ::oPen
 
-return 0
-
-**********************************************************************************************************
-  METHOD DrawBeziers( ) CLASS GPGraphics
-**********************************************************************************************************
-
-
-return 0
+return C5GDrawBeziers( ::handle, p1:handle, p2 )
 
 **********************************************************************************************************
   METHOD DrawCachedBitmap( oCBitmap, nTop, nLeft ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GP_DrawCachedBitmap( ::handle, oCBitmap:handle, nTop, nLeft )
+  C5GDrawCachedBitmap( ::handle, oCBitmap:handle, nTop, nLeft )
 
 return 0
 
@@ -439,9 +453,9 @@ return 0
    DEFAULT oPen := ::oPen
 
    if D != NIL
-      return C5GP_DrawCurve( ::handle, oPen:handle, B:handle, C, D, E, F )
+      return C5GDrawCurve( ::handle, oPen:handle, B:handle, C, D, E, F )
    else
-      return C5GP_DrawCurve( ::handle, oPen:handle, B, C )
+      return C5GDrawCurve( ::handle, oPen:handle, B, C )
    endif
 
 
@@ -467,19 +481,54 @@ return 0
      nTop    := nTop[1]
   endif
 
-return C5GP_DrawEllipse( ::handle, oPen:handle, nTop, nLeft, nwidth, nHeight )
+return C5GDrawEllipse( ::handle, oPen:handle, nTop, nLeft, nwidth, nHeight )
 
 **********************************************************************************************************
-  METHOD DrawImage( oImage, nTop, nLeft, nWidth, nHeight ) CLASS GPGraphics
+  METHOD DrawImage( oImage, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11  ) CLASS GPGraphics
 **********************************************************************************************************
 
-  DEFAULT nWidth  := oImage:nWidth()
-  DEFAULT nHeight := oImage:nHeight()
+   local sta
+   
+   DEFAULT nWidth  := oImage:nWidth()
+   DEFAULT nHeight := oImage:nHeight()
 
-  C5GP_DrawImage( ::handle, oImage:handle, nTop, nLeft, nWidth, nHeight )
+   if ValType( p2 ) == "O"
+      p2 = p2:handle 
+   endif 
 
+   if ValType( p3 ) == "O"
+      p3 = p3:handle 
+   endif    
 
-return 0
+   if ValType( p5 ) == "O"
+      p5 = p5:handle 
+   endif       
+   
+   if ValType( p8 ) == "O"
+      p8 = p8:handle 
+   endif
+
+   if ValType( p9 ) == "O"
+      p9 = p9:handle 
+   endif   
+   
+   if p11 != NIL 
+      sta = C5GDrawImage( ::handle, oImage:handle, p2:handle, p3, p4, p5, p6, p7, p8, p9, p10, p11 )
+   elseif p10 != nil       
+      sta = C5GDrawImage( ::handle, oImage:handle, p2:handle, p3, p4, p5, p6, p7, p8, p9, p10 )
+   elseif p9 != nil 
+      sta = C5GDrawImage( ::handle, oImage:handle, p2, p3, p4, p5, p6, p7, p8, p9 )      
+   elseif p8 != NIL
+      sta = C5GDrawImage( ::handle, oImage:handle, p2, p3, p4, p5, p6, p7, p8 )
+   elseif p5 != NIL 
+      sta = C5GDrawImage( ::handle, oImage:handle, p2, p3, p4, p5 )
+   elseif p3 != NIL 
+      sta = C5GDrawImage( ::handle, oImage:handle, p2, p3 )      
+   else 
+      sta = C5GDrawImage( ::handle, oImage:handle, p2 )      
+   endif
+   
+return sta
 
 **********************************************************************************************************
   METHOD FillEllipse( oBrush, nTop, nLeft, nwidth, nHeight ) CLASS GPGraphics
@@ -492,11 +541,11 @@ return 0
      nWidth  := nTop[4]-nTop[2]
      nHeight := nTop[3]-nTop[1]
      nTop    := nTop[1]
-     C5GP_FillEllipse( ::handle, oBrush:handle, nTop, nLeft, nwidth, nHeight )
+     C5GFillEllipse( ::handle, oBrush:handle, nTop, nLeft, nwidth, nHeight )
   elseif ( valtype( nTop ) == "O" )
-     C5GP_FillEllipse( ::handle, oBrush:handle, nTop:handle )
+     C5GFillEllipse( ::handle, oBrush:handle, nTop:handle )
   elseif ( valtype( nTop ) == "N" )
-     C5GP_FillEllipse( ::handle, oBrush:handle, nTop, nLeft, nwidth, nHeight )
+     C5GFillEllipse( ::handle, oBrush:handle, nTop, nLeft, nwidth, nHeight )
   endif
 
 return 0
@@ -506,7 +555,7 @@ return 0
   METHOD FillPath( oPath ) CLASS GPGraphics
 **********************************************************************************************************
 
-return C5GP_FillPath( ::oBrush:handle, oPath:handle )
+return C5GFillPath( ::oBrush:handle, oPath:handle )
 
 **********************************************************************************************************
   METHOD FillPie( ) CLASS GPGraphics
@@ -532,9 +581,9 @@ return 0
 
 
    if nLen == 5
-      nStatus = C5GP_FillRectangle( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
+      nStatus = C5GFillRectangle( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ], aParams[ 3 ], aParams[ 4 ], aParams[ 5 ] )
    elseif nLen == 2
-      nStatus = C5GP_FillRectangle( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ]:handle /*Rect(F)*/ )
+      nStatus = C5GFillRectangle( ::handle, aParams[ 1 ]:handle /*Brush*/, aParams[ 2 ]:handle /*Rect(F)*/ )
    endif
    /*
   if oPen == nil
@@ -558,7 +607,7 @@ return 0
 
    DEFAULT oBrush := ::oBrush
 
-return C5GP_FillRegion( ::handle, oBrush:handle, oRegion:handle )
+return C5GFillRegion( ::handle, oBrush:handle, oRegion:handle )
 
 **********************************************************************************************************
   METHOD FillRoundRect( rc, nRad1, nRad2, oBrush, oPen ) CLASS GPGraphics
@@ -568,7 +617,7 @@ return C5GP_FillRegion( ::handle, oBrush:handle, oRegion:handle )
   DEFAULT oPen   := ::oPen
 
 
-return C5GP_RoundRect( ::handle, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2, oBrush:handle )
+return C5GRoundRect( ::handle, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2, oBrush:handle )
 
 **********************************************************************************************************
   METHOD Flush( ) CLASS GPGraphics
@@ -728,7 +777,7 @@ return 0
   METHOD GetTransform( oMatrix ) CLASS GPGraphics
 **********************************************************************************************************
    local sta
-   sta = C5GP_GetTransform( ::handle, @oMatrix )
+   sta = C5GGetTransform( ::handle, @oMatrix )
 return sta
 
 **********************************************************************************************************
@@ -833,7 +882,7 @@ return 0
    DEFAULT oPen := ::oPen
 
 
-return C5GP_DrawPath( ::handle, oPen:handle, oPath:handle )
+return C5GDrawPath( ::handle, oPen:handle, oPath:handle )
 
 **********************************************************************************************************
   METHOD DrawPie( ) CLASS GPGraphics
@@ -856,10 +905,10 @@ return 0
   DEFAULT oPen := ::oPen
 
   if ValType( x ) == "O"
-     return C5GP_DrawRectangle( ::handle, oPen:handle, x:handle )
+     return C5GDrawRectangle( ::handle, oPen:handle, x:handle )
 
   else
-     return C5GP_DrawRectangle( ::handle, oPen:handle, x, y, width, height )
+     return C5GDrawRectangle( ::handle, oPen:handle, x, y, width, height )
   endif
 
 return 0
@@ -875,7 +924,7 @@ return 0
   METHOD DrawRoundRect( rc, oPen, nRad1, nRad2 ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GP_RoundRect( ::handle, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2 )
+  C5GRoundRect( ::handle, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2 )
 
 return 0
 
@@ -887,20 +936,19 @@ return 0
   DEFAULT font := ::oFont
   if B != NIL
      DEFAULT B := ::oBrush
-     sta = C5GP_DrawString( ::handle, cText, font:handle, point:handle, A:handle, B:handle )
+     sta = C5GDrawString( ::handle, cText, font:handle, point:handle, A:handle, B:handle )
   else
      DEFAULT A := ::oBrush
-     sta = C5GP_DrawString( ::handle, cText, font:handle, point:handle, A:handle )
+     sta = C5GDrawString( ::handle, cText, font:handle, point:handle, A:handle )
   endif
 
 return sta
 
 **********************************************************************************************************
-  METHOD EndContainer( ) CLASS GPGraphics
+  METHOD EndContainer( p1 ) CLASS GPGraphics
 **********************************************************************************************************
 
-
-return 0
+return C5GEndContainer( ::handle, p1 )
 
 **********************************************************************************************************
   METHOD EnumerateMetafile( ) CLASS GPGraphics
@@ -932,9 +980,9 @@ return 0
    DEFAULT oPen := ::oPen
 
    if ValType( nTop ) == "O"
-      return C5GP_DrawLine( ::handle, oPen:handle, nTop:handle, nLeft:handle )
+      return C5GDrawLine( ::handle, oPen:handle, nTop:handle, nLeft:handle )
    else
-      return C5GP_DrawLine( ::handle, oPen:handle, nTop, nLeft, nBottom, nRight )
+      return C5GDrawLine( ::handle, oPen:handle, nTop, nLeft, nBottom, nRight )
    endif
 
 
@@ -952,7 +1000,7 @@ return 0
   METHOD RotateTransform( angle, order ) CLASS GPGraphics
 **********************************************************************************************************
 
-  C5GP_RotateTransform( ::handle, angle, order )
+  C5GRotateTransform( ::handle, angle, order )
 
 return nil
 
@@ -965,7 +1013,7 @@ return nil
   METHOD ScaleTransform( hor, ver, order ) CLASS GPGraphics
 **********************************************************************************************************
 
-return C5GP_ScaleTransform( ::handle, hor, ver, order )
+return C5GScaleTransform( ::handle, hor, ver, order )
 
 **********************************************************************************************************
   METHOD SetAbort( ) CLASS GPGraphics
@@ -1073,7 +1121,7 @@ return 0
 **********************************************************************************************************
 
 
-return C5GP_SetTransform( ::handle, oMatrix:handle )
+return C5GSetTransform( ::handle, oMatrix:handle )
 
 **********************************************************************************************************
   METHOD TransformPoints( ) CLASS GPGraphics
@@ -1096,7 +1144,7 @@ return 0
 
   
 
-return C5GP_TranslateTransform( ::handle, hor, ver, order )
+return C5GTranslateTransform( ::handle, hor, ver, order )
 
 function _GPConvertHandle( o, h )
    o:handle = getGdiplusHandle( h )
@@ -1226,17 +1274,17 @@ HB_FUNC( C5GPBEGINCONTAINER )
      Graphics *g = ( Graphics * ) pObj->pObject;
      GraphicsContainer gc;
      if( HB_ISPOINTER( 2 ) ){
-        GDIPLUS * p2 = hb_GDIPLUS_par( 2 );	
-        GDIPLUS * p3 = hb_GDIPLUS_par( 3 );	
+        GDIPLUS * p2 = hb_GDIPLUS_par( 2 );  
+        GDIPLUS * p3 = hb_GDIPLUS_par( 3 );  
         Unit p4 = ( Unit ) hb_parni( 4 );
         if( GP_IS_RECT( p2 ) ){
-           Rect * r1 = ( Rect * )	GP_GET( p2 );
-           Rect * r2 = ( Rect * )	GP_GET( p3 );
-        	 gc = g->BeginContainer( *r1, *r2, p4 );
+           Rect * r1 = ( Rect * )   GP_GET( p2 );
+           Rect * r2 = ( Rect * )   GP_GET( p3 );
+          gc = g->BeginContainer( *r1, *r2, p4 );
         }else {
-           RectF * r1 = ( RectF * )	GP_GET( p2 );
-           RectF * r2 = ( RectF * )	GP_GET( p3 );
-        	 gc = g->BeginContainer( *r1, *r2, p4 );        	
+           RectF * r1 = ( RectF * ) GP_GET( p2 );
+           RectF * r2 = ( RectF * ) GP_GET( p3 );
+          gc = g->BeginContainer( *r1, *r2, p4 );           
         }
      }else
         gc = g->BeginContainer( );
@@ -1271,7 +1319,7 @@ HB_FUNC( C5GPBEGINCONTAINER )
 //};
 
 
-HB_FUNC( C5GP_BITBLT )
+HB_FUNC( C5GBITBLT )
 {
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
@@ -1288,59 +1336,142 @@ HB_FUNC( C5GP_BITBLT )
 
 }
 
-HB_FUNC( C5GP_CLEAR )
+HB_FUNC( C5GCLEAR )
 {
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
 
    if( GP_IS_GRAPHICS( pG ) && GP_IS_COLOR( pObj ) )
    {
-     Graphics *g = ( Graphics * ) pG->pObject;
-     Color* c = (Color*) pObj->pObject;
-     g->Clear( *c );
+     Graphics *g = ( Graphics * ) GP_GET( pG );
+     Color* c = (Color*) GP_GET( pObj );
+     hb_retni( ( int ) g->Clear( *c ) );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-
-    hb_ret();
 }
 
 
-HB_FUNC( C5GP_DRAWARC )
+HB_FUNC( C5GDRAWARC )
 {
-    Graphics *g = hb_Graphics_par( 1 );
-    Pen* p = (Pen*) hb_parptr( 2 );
-
-   if( g && p && hb_pcount() > 7 )
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_GRAPHICS( pG ) && GP_IS_PEN( pObj ) )
    {
-    //TODO Garbage Collector for PEN
-    g->DrawArc( p, hb_parni(4), hb_parni(3), hb_parni(5), hb_parni(6), (REAL) hb_parnd( 7 ), (REAL) hb_parnd( 8 ) );
+     Graphics *g = ( Graphics * ) GP_GET( pG );
+     Pen * pen = ( Pen * ) GP_GET( pObj );
+     Status sta;
+     BOOL lOk = true;
+     if( HB_ISNUM( 3 ) ){
+        if( HB_ISDOUBLE( 3 ) ){
+           sta = g->DrawArc( pen, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ), ( REAL ) hb_parnd( 8 ) );
+        }else{
+           sta = g->DrawArc( pen, hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), ( REAL ) hb_parnd( 7 ), ( REAL ) hb_parnd( 8 ) );
+        }        
+     }else if( HB_ISPOINTER( 3 ) ){
+        GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+        void * rect = GP_GET( p3 );
+        if( GP_IS_RECT( p3 ) ){
+           sta = g->DrawArc( pen, *( ( Rect * ) rect ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ) );        
+        }else{
+          sta = g->DrawArc( pen, *( ( RectF * ) rect ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ) );
+        }
+     }else 
+        lOk = false;
+     if( lOk )
+        hb_retni( ( int ) sta );
+     else 
+        hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+     
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-    hb_ret();
 }
 
-HB_FUNC( C5GP_DRAWBEZIER )
+HB_FUNC( C5GDRAWBEZIER )
 {
-    Graphics *g = hb_Graphics_par( 1 );
-    Pen* p = (Pen*) hb_parptr( 2 );
-
-   if( g && p && hb_pcount() > 9 )
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
+   
+   if( GP_IS_GRAPHICS( pG ) && GP_IS_PEN( pObj ) )
    {
-    //TODO Garbage Collector for PEN
-     g->DrawBezier( p, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 6 ), hb_parni( 5 ), hb_parni( 8 ), hb_parni( 7 ), hb_parni( 10 ), hb_parni( 9 ) );
+     Graphics *g = ( Graphics * ) GP_GET( pG );
+     Pen * pen = ( Pen * ) GP_GET( pObj );
+     Status sta;
+     BOOL lOk = true;
+     if( HB_ISNUM( 3 ) ){
+        if( HB_ISDOUBLE( 3 ) ){
+           sta = g->DrawBezier( pen, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), 
+                                     ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ), ( REAL ) hb_parnd( 8 ), ( REAL ) hb_parnd( 9 ), ( REAL ) hb_parnd( 10 ) );         
+        }else {
+          sta = g->DrawBezier( pen, hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), hb_parni( 7 ), hb_parni( 8 ), hb_parni( 9 ), hb_parni( 10 ) );                   
+        }
+      
+     }else if( HB_ISPOINTER( 3 ) ){
+        GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+        GDIPLUS * p4 = hb_GDIPLUS_par( 4 );
+        GDIPLUS * p5 = hb_GDIPLUS_par( 5 );
+        GDIPLUS * p6 = hb_GDIPLUS_par( 6 );
+        void * point1 = GP_GET( p3 );
+        void * point2 = GP_GET( p4 );
+        void * point3 = GP_GET( p5 );
+        void * point4 = GP_GET( p6 );
+        if( GP_IS_POINT( p3 ) && GP_IS_POINT( p4 ) && GP_IS_POINT( p5 ) && GP_IS_POINT( p6 ) ){
+            sta = g->DrawBezier( pen, *( ( Point * ) point1 ), *( ( Point * ) point2 ), *( ( Point * ) point3 ), *( ( Point * ) point4 ) );
+        }else if( GP_IS_POINTF( p3 ) && GP_IS_POINTF( p4 ) && GP_IS_POINTF( p5 ) && GP_IS_POINTF( p6 ) ){
+           sta = g->DrawBezier( pen, *( ( PointF * ) point1 ), *( ( PointF * ) point2 ), *( ( PointF * ) point3 ), *( ( PointF * ) point4 ) );
+        }else 
+           lOk = false;
+     }else 
+        lOk = false;
+        
+     if( lOk )
+        hb_retni( ( int ) sta );
+     else
+        hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+     
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
-
-    hb_ret();
 }
 
-HB_FUNC( C5GP_DRAWCACHEDBITMAP )
+HB_FUNC( C5GDRAWBEZIERS )
+{
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
+   Traza( "0");
+   if( GP_IS_GRAPHICS( pG ) && GP_IS_PEN( pObj ) && HB_ISARRAY( 3 ) )
+   {
+     Graphics *g = ( Graphics * ) GP_GET( pG );
+     Pen * pen = ( Pen * ) GP_GET( pObj );
+     Status sta;
+     BOOL lF;
+     void * pPoints;
+     PHB_ITEM aPoints = hb_param( 3, HB_IT_ARRAY );
+     Traza( "1");
+     pPoints = ConvertArray2Point( aPoints, &lF );
+     Traza( "2");
+     int iLen = hb_arrayLen( aPoints );
+     Traza( "3");
+     if( lF )
+        sta = g->DrawBeziers( pen, ( PointF * ) pPoints, iLen );
+     else 
+        sta = g->DrawBeziers( pen, ( Point * ) pPoints, iLen );
+     Traza( "4");
+     hb_retni( ( int ) sta );
+    
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+
+     
+}
+
+HB_FUNC( C5GDRAWCACHEDBITMAP )
 {
     Graphics* g = hb_Graphics_par( 1 );
     CachedBitmap* b = (CachedBitmap*) hb_parptr( 2 );
@@ -1358,7 +1489,7 @@ HB_FUNC( C5GP_DRAWCACHEDBITMAP )
     hb_ret();
 }
 
-HB_FUNC( C5GP_DRAWCURVE ){
+HB_FUNC( C5GDRAWCURVE ){
 
    GDIPLUS *p = hb_GDIPLUS_par( 1 );
    GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
@@ -1429,7 +1560,7 @@ HB_FUNC( C5GP_DRAWCURVE ){
 }
 
 
-HB_FUNC( C5GP_DRAWELLIPSE )
+HB_FUNC( C5GDRAWELLIPSE )
 {
 
    GDIPLUS *p = hb_GDIPLUS_par( 1 );
@@ -1446,15 +1577,92 @@ HB_FUNC( C5GP_DRAWELLIPSE )
 
 }
 
-HB_FUNC( C5GP_DRAWIMAGE )
+HB_FUNC( C5GDRAWIMAGE )
 {
    GDIPLUS *p = hb_GDIPLUS_par( 1 );
    GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
 
-   if( GP_IS_GRAPHICS( p )  && ( GP_IS_IMAGE( pObj ) || GP_IS_BITMAP( pObj ) ) && hb_pcount() > 5 )
+   if( GP_IS_GRAPHICS( p )  && ( GP_IS_ANYIMAGE( pObj ) ) )
    {
+       int iParams = hb_pcount();
        Graphics * g = ( Graphics * ) GP_GET( p );
        Image * c = ( Image * ) GP_GET( pObj );
+       Status sta;
+       BOOL lOk = true;
+       switch( iParams ){
+          case 3:{
+             GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+             void * uRP = GP_GET( p3 );
+             if( GP_IS_RECT( p3 ) || GP_IS_RECTF( p3 ) ){
+                 if( GP_IS_RECT( p3 ) )
+                   sta = g->DrawImage( c, *( ( Rect * ) uRP ) );
+                else
+                   sta = g->DrawImage( c, *( ( RectF * ) uRP ) );
+                   
+             }else if( GP_IS_POINT( p3 ) || GP_IS_POINTF( p3 ) ){
+                if( GP_IS_POINT( p3 ) )
+                   sta = g->DrawImage( c, *( ( Point * ) uRP ) );
+                else 
+                   sta = g->DrawImage( c, *( ( PointF * ) uRP ) );
+             }else 
+                lOk = false;
+          }
+          break;
+          case 4:{
+             if( HB_ISARRAY( 3 ) ){
+                 PHB_ITEM aPoint = hb_param( 3, HB_IT_ARRAY );
+                 BOOL lF;
+                 int iLen = hb_arrayLen( aPoint );
+                void * pPoint = ConvertArray2Point( aPoint, &lF );
+                if( lF )
+                   sta = g->DrawImage( c, ( PointF * ) pPoint, iLen );
+                else 
+                   sta = g->DrawImage( c, ( Point * ) pPoint, iLen );
+                
+                hb_xfree( pPoint );                
+             }else if( HB_ISNUM( 3 ) ){
+                if( HB_ISDOUBLE( 3 ) )
+                   sta = g->DrawImage( c, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ) );
+                else
+                   sta = g->DrawImage( c, hb_parni( 3 ), hb_parni( 4 ) );              
+             }else 
+                lOk = false;
+          }
+          break;
+          case 6:{
+             if( HB_ISDOUBLE( 3 ) )
+                sta = g->DrawImage( c, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ) );
+             else if( HB_ISINTEGER( 3 ) )
+                sta = g->DrawImage( c, hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ) );
+             else 
+                lOk = false;
+          }
+          break;
+          case 9:{
+             if( HB_ISDOUBLE( 3 ) )
+                sta = g->DrawImage( c, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ), ( REAL ) hb_parnd( 7 ), ( REAL ) hb_parnd( 8 ), ( Unit ) hb_parni( 9 ) );
+             else if( HB_ISINTEGER( 3 ) )
+                sta = g->DrawImage( c, hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), hb_parni( 7 ), hb_parni( 8 ), ( Unit ) hb_parni( 9 ) );
+             else
+                lOk = false;
+          }
+          break;
+          //TODO PARANETER 11 Y 12
+//          case 11:{
+//             GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+//             void * uRP = GP_GET( p3 );
+//             if( HB_ISPOINTER( 9 ){
+//                GDIPLUS * p9 = hb_GDIPLUS_par( 9 ); 
+//                
+//             
+//             }
+//             
+//          
+//          
+//          }
+       }
+       
+       
        hb_retni( g->DrawImage( c, hb_parni(3), hb_parni(4), hb_parni(5), hb_parni(6) ) );
    }
    else
@@ -1463,7 +1671,7 @@ HB_FUNC( C5GP_DRAWIMAGE )
 }
 
 
-HB_FUNC( C5GP_DRAWLINE )
+HB_FUNC( C5GDRAWLINE )
 {
    GDIPLUS *p = hb_GDIPLUS_par( 1 );
    GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
@@ -1497,28 +1705,28 @@ HB_FUNC( C5GP_DRAWLINE )
 }
 
 
-HB_FUNC( C5GP_FILLREGION ){
+HB_FUNC( C5GFILLREGION ){
 
    GDIPLUS *p = hb_GDIPLUS_par( 1 );
    GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
-	 GDIPLUS * pregion = hb_GDIPLUS_par( 3 );
+    GDIPLUS * pregion = hb_GDIPLUS_par( 3 );
 
-	 if( GP_IS_GRAPHICS( p ) && GP_IS_BRUSH( pBrush ) && GP_IS_REGION( pregion ) ){
-	 	  Status sta;
-	 	  Graphics * g = ( Graphics * ) GP_GET( p );
-	    Brush * b = ( Brush * ) GP_GET( pBrush );
-	    Region * r = ( Region * ) GP_GET( pregion );
+    if( GP_IS_GRAPHICS( p ) && GP_IS_BRUSH( pBrush ) && GP_IS_REGION( pregion ) ){
+        Status sta;
+        Graphics * g = ( Graphics * ) GP_GET( p );
+       Brush * b = ( Brush * ) GP_GET( pBrush );
+       Region * r = ( Region * ) GP_GET( pregion );
 
-	    sta = g->FillRegion( b, r );
+       sta = g->FillRegion( b, r );
 
-	    hb_retni( ( int ) sta );
+       hb_retni( ( int ) sta );
 
-	 }else
+    }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 
-HB_FUNC( C5GP_ROUNDRECT )
+HB_FUNC( C5GROUNDRECT )
 {
     Graphics *g = hb_Graphics_par( 1 );
     Pen* p = (Pen*) hb_parptr( 2 );
@@ -1561,7 +1769,7 @@ HB_FUNC( C5GP_ROUNDRECT )
 }
 
 
-HB_FUNC( C5GP_DRAWPATH )
+HB_FUNC( C5GDRAWPATH )
 {
 
    GDIPLUS * pObj1 = hb_GDIPLUS_par( 1 );
@@ -1580,7 +1788,7 @@ HB_FUNC( C5GP_DRAWPATH )
 
 }
 
-HB_FUNC( C5GP_DRAWRECTANGLE )
+HB_FUNC( C5GDRAWRECTANGLE )
 {
     GDIPLUS * pG = hb_GDIPLUS_par( 1 );
     GDIPLUS * pP = hb_GDIPLUS_par( 2 );
@@ -1616,7 +1824,7 @@ HB_FUNC( C5GP_DRAWRECTANGLE )
 
 }
 
-HB_FUNC( C5GP_DRAWSTRING )
+HB_FUNC( C5GDRAWSTRING )
 {
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    GDIPLUS * pF = hb_GDIPLUS_par( 3 );
@@ -1680,7 +1888,7 @@ HB_FUNC( C5GP_DRAWSTRING )
 //  [in]       const Brush *brush
 //);
 
-//HB_FUNC( C5GP_DRAWSTRINGRC )
+//HB_FUNC( C5GDRAWSTRINGRC )
 //{
 //   Graphics *g = (Graphics*) hb_parnl( 1 );
 //   LPWSTR str = hb_mbtowc( (LPSTR) hb_parc( 2 ));
@@ -1695,7 +1903,20 @@ HB_FUNC( C5GP_DRAWSTRING )
 //}
 //
 
-HB_FUNC( C5GP_FILLELLIPSE )
+HB_FUNC( C5GENDCONTAINER )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GraphicsContainer  state = ( GraphicsContainer ) hb_parnl( 2 );
+   if( GP_IS_GRAPHICS( p ) ){
+      Graphics * o = ( Graphics * ) GP_GET( p );
+      hb_retni( ( int ) o->EndContainer( state ) );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( C5GFILLELLIPSE )
 {
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
@@ -1728,7 +1949,7 @@ HB_FUNC( C5GP_FILLELLIPSE )
 }
 
 
-HB_FUNC( C5GP_FILLPATH )
+HB_FUNC( C5GFILLPATH )
 {
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    GDIPLUS * p1 = hb_GDIPLUS_par( 2 );
@@ -1745,7 +1966,7 @@ HB_FUNC( C5GP_FILLPATH )
 }
 
 
-HB_FUNC( C5GP_FILLRECTANGLE )
+HB_FUNC( C5GFILLRECTANGLE )
 {
     GDIPLUS * pG = hb_GDIPLUS_par( 1 );
     GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
@@ -1798,7 +2019,7 @@ HB_FUNC( C5GP_FILLRECTANGLE )
 }
 
 
-HB_FUNC( C5GP_FILLRECTANGLER )
+HB_FUNC( C5GFILLRECTANGLER )
 {
     Graphics *g = hb_Graphics_par( 1 );
     void ** pPtr = ( void**) hb_parptr( 2 );
@@ -1815,7 +2036,7 @@ HB_FUNC( C5GP_FILLRECTANGLER )
        hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-HB_FUNC( C5GP_FILLRECT )
+HB_FUNC( C5GFILLRECT )
 {
     Graphics *g = hb_Graphics_par( 1 );
     SolidBrush* brush = hb_SolidBrush_par( 3 );
@@ -1856,7 +2077,7 @@ HB_FUNC( C5GRESETCLIP )
 //  MatrixOrderPrepend   = 0,
 //  MatrixOrderAppend    = 1
 //} MatrixOrder;
-HB_FUNC( C5GP_ROTATETRANSFORM )
+HB_FUNC( C5GROTATETRANSFORM )
 {
    Graphics *g = hb_Graphics_par( 1 );
 
@@ -1870,7 +2091,7 @@ HB_FUNC( C5GP_ROTATETRANSFORM )
    hb_ret();
 }
 
-HB_FUNC( C5GP_SCALETRANSFORM )
+HB_FUNC( C5GSCALETRANSFORM )
 {
    Graphics *g = hb_Graphics_par( 1 );
 
@@ -1930,7 +2151,7 @@ HB_FUNC( C5GSETCLIP )
 }
 
 
-HB_FUNC( C5GP_TRANSLATETRANSFORM )
+HB_FUNC( C5GTRANSLATETRANSFORM )
 {
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    Status sta;
@@ -1976,7 +2197,7 @@ HB_FUNC( C5SETTEXTRENDERINGHINT )
 
 }
 
-HB_FUNC( C5GP_SETTRANSFORM )
+HB_FUNC( C5GSETTRANSFORM )
 {
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    GDIPLUS * pM = hb_GDIPLUS_par( 2 );
@@ -1988,7 +2209,7 @@ HB_FUNC( C5GP_SETTRANSFORM )
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
-//HB_FUNC( C5GP_GETTRANSFORM )
+//HB_FUNC( C5GGETTRANSFORM )
 //{
 //
 //   GDIPLUS * p = hb_GDIPLUS_par( 1 );
@@ -2016,7 +2237,7 @@ HB_FUNC( C5GP_SETTRANSFORM )
 //}
 
 
-HB_FUNC( C5GP_GETTRANSFORM )
+HB_FUNC( C5GGETTRANSFORM )
 {
 
    GDIPLUS * p = hb_GDIPLUS_par( 1 );

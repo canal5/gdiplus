@@ -7,7 +7,7 @@ Local oTest
 
    DEFINE SUITTEST oTest
 
-      TestsGraphics()
+//      TestsGraphics()
 //      TestsPen()
 //      TestsColor()
 //      TestsBrush()
@@ -26,7 +26,7 @@ Local oTest
 //      TestFont()
 //      TestStringFormat()
 //      TestRegion()
-//      TestBitmap( oTest )
+      TestBitmap( oTest )
 
       SHOW RESULT
 
@@ -185,28 +185,13 @@ function TestBitmap( oTest )
    SEPARADOR( "BITMAP" )
 
    TEST .T. DESCRIPTION "CaptureWnd()" SAMPLE Example_CaptureWnd( oTest )
+   TEST .T. DESCRIPTION "Clone()"      SAMPLE Example_BMPClone3()
 
 
 return 0
 
 
-function Example_CaptureWnd( oTest )
-   local bPainted
-
-   bPainted := { | hdc, ps, oWnd |
-      local hBmp := MakeBmpFromHWND( oTest:oWnd:hWnd )
-      local oBmp
-      Bitmap oBmp( hBmp, 0 )
-      DeleteObject( hBmp )
-
-      Graphics graphics(hdc)
-
-      graphics:DrawImage( oBmp, 0, 0, oWnd:nWidth, oWnd:nHeight )
-   }
-
-   exampleWindow( bPainted )
-
-return nil
+//*************
 
 
 *****************************************************************************************
@@ -766,6 +751,7 @@ return 0
    SEPARADOR( "GRAPHICS" )
 
    TEST TestConstructorDestructorGraphics()               DESCRIPTION "Probando el constructor/destructor de Graphics"
+   TEST g:BeginContainer() != 0 DESCRIPTION "BeginContainer()" SAMPLE Example_BeginContainer()
    TEST .T.      DESCRIPTION "DrawCurve( pen, point ) "  SAMPLE Example_DrawCurve1()
    TEST .T.      DESCRIPTION "SetClip( GraphicsPath )"   SAMPLE Example_SetClip3()
    TEST .T.      DESCRIPTION "SetClip( Region )"         SAMPLE Example_SetClip6()
@@ -774,6 +760,19 @@ return 0
    TEST .T.      DESCRIPTION "SetClip( HRGN )"           SAMPLE Example_SetClip2()
    TEST g:ResetClip() == 0  DESCRIPTION "ResetClip()"    SAMPLE Example_ResetClip()
    TEST .T.      DESCRIPTION "SetTransform( matrix ) "   SAMPLE Example_SetTransformG()
+   TEST g:Clear( Color( 255, 0, 0, 255 ) ) == 0          DESCRIPTION "Clear()"
+   TEST .T.      DESCRIPTION "DrawArc( Pen, Rect, REAL, REAL )"                   SAMPLE Example_DrawArc()
+   TEST .T.      DESCRIPTION "DrawArc( Pen, RectF, REAL, REAL )"                  SAMPLE Example_DrawArc2()
+   TEST .T.      DESCRIPTION "DrawArc( Pen, REAL, REAL, REAL, REAL, REAL, REAL )" SAMPLE Example_DrawArc3()
+   TEST .T.      DESCRIPTION "DrawArc( Pen, INT, INT, INT, INT, REAL, REAL )"     SAMPLE Example_DrawArc4()
+   TEST .T.      DESCRIPTION "DrawBezier( PEN, POINT, POINT, POINT, POINT )"      SAMPLE Example_DrawBezier()
+   TEST .T.      DESCRIPTION "DrawBezier( PEN, POINTF, POINTF, POINTF, POINTF )"      SAMPLE Example_DrawBezier2()
+   TEST .T.      DESCRIPTION "DrawBezier( PEN, REAL, REAL, REAL, REAL, REAL, REAL, REAL, REAL )"      SAMPLE Example_DrawBezier3()
+   TEST .T.      DESCRIPTION "DrawBezier( PEN, INT, INT, INT, INT, INT,INT,INT,INT )"      SAMPLE Example_DrawBezier4()
+   TEST .T.      DESCRIPTION "DrawBeziers( PEN, APOINT )"      SAMPLE Example_DrawBeziers()
+   TEST .T.      DESCRIPTION "DrawBeziers( PEN, APOINTF )"      SAMPLE Example_DrawBeziers2()
+
+
 
 return 0
 
@@ -2720,6 +2719,118 @@ return nil
 //GRAPHICS
 //--------------------
 
+function Example_BeginContainer( )
+   local bPainted := { | hdc |
+  
+   Graphics graphics(hdc)
+   // Set the clipping region for the Graphics object.
+   graphics:SetClip(Rect(10, 10, 150, 150))
+
+   // Begin a graphics container.
+   container = graphics:BeginContainer()
+
+   // Set an additional clipping region for the container.
+   graphics:SetClip(Rect(100, 50, 100, 75))
+
+   // Fill a red rectangle in the container.
+   SolidBrush redBrush(Color(255, 255, 0, 0))
+   graphics:FillRectangle(redBrush, 0, 0, 400, 400)
+
+   // End the container, and fill the same rectangle with blue. 
+   graphics:EndContainer(container)
+   SolidBrush blueBrush(Color(128, 0, 0, 255))
+   graphics:FillRectangle(blueBrush, 0, 0, 400, 400)
+
+   // Set the clipping region to infinite, and draw the outlines 
+   // of the two previous clipping regions.
+   graphics:ResetClip()
+   Pen blackPen(Color(255, 0, 0, 0), 2.0)
+   graphics:DrawRectangle(blackPen, 10, 10, 150, 150)
+   graphics:DrawRectangle(blackPen, 100, 50, 100, 75)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+function Example_DrawArc( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+
+   Graphics graphics(hdc)
+      // Set up the arc.
+   Pen redPen(Color(255, 255, 0, 0), 3)
+   Rect ellipseRect(0, 0, 200, 100)
+   startAngle = 0.0
+   sweepAngle = 90.0
+
+   // Draw the arc.
+   graphics:DrawArc(redPen, ellipseRect, startAngle, sweepAngle)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function Example_DrawArc2( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+
+   Graphics graphics(hdc)
+      // Set up the arc.
+   Pen redPen(Color(255, 255, 0, 0), 3)
+   RectF ellipseRect(0, 0, 200, 100)
+   startAngle = 0.0
+   sweepAngle = 90.0
+
+   // Draw the arc.
+   graphics:DrawArc(redPen, ellipseRect, startAngle, sweepAngle)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function Example_DrawArc3( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+
+   Graphics graphics(hdc)
+      // Set up the arc.
+   Pen redPen(Color(255, 255, 0, 0), 3)
+   RectF ellipseRect(0, 0, 200, 100)
+   startAngle = 0.0
+   sweepAngle = 90.0
+
+   // Draw the arc.
+   graphics:DrawArc(redPen, 0.0, 0.0, 200.0, 100.0, startAngle, sweepAngle)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function Example_DrawArc4( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+
+   Graphics graphics(hdc)
+      // Set up the arc.
+   Pen redPen(Color(255, 255, 0, 0), 3)
+   RectF ellipseRect(0, 0, 200, 100)
+   startAngle = 0.0
+   sweepAngle = 90.0
+
+   // Draw the arc.
+   graphics:DrawArc(redPen, 0, 0, 200, 100, startAngle, sweepAngle)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
 function Example_DrawCurve1( )
    local bPainted := { | hdc |
       local aPoint := {}
@@ -2749,6 +2860,200 @@ function Example_DrawCurve1( )
 
 return nil
 
+function Example_DrawBezier( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+
+   Graphics graphics(hdc)
+   // Set up the pen and curve points.
+   Pen greenPen(Color(255, 0, 255, 0))
+   Point startPoint(100, 100)
+   Point controlPoint1(200, 10)
+   Point controlPoint2(350, 50)
+   Point endPoint(500, 100)
+
+   //Draw the curve.
+   graphics:DrawBezier(greenPen, startPoint, controlPoint1, controlPoint2, endPoint)
+
+   //Draw the end points and control points.
+   SolidBrush redBrush(Color(255, 255, 0, 0))
+   SolidBrush blueBrush(Color(255, 0, 0, 255))
+   graphics:FillEllipse(redBrush, 100 - 5, 100 - 5, 10, 10)
+   graphics:FillEllipse(redBrush, 500 - 5, 100 - 5, 10, 10)
+   graphics:FillEllipse(blueBrush, 200 - 5, 10 - 5, 10, 10)
+   graphics:FillEllipse(blueBrush, 350 - 5, 50 - 5, 10, 10)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function Example_DrawBezier2( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+
+   Graphics graphics(hdc)
+   // Set up the pen and curve points.
+   Pen greenPen(Color(255, 0, 255, 0))
+   PointF startPoint(100, 100)
+   PointF controlPoint1(200, 10)
+   PointF controlPoint2(350, 50)
+   PointF endPoint(500, 100)
+
+   //Draw the curve.
+   graphics:DrawBezier(greenPen, startPoint, controlPoint1, controlPoint2, endPoint)
+
+   //Draw the end points and control points.
+   SolidBrush redBrush(Color(255, 255, 0, 0))
+   SolidBrush blueBrush(Color(255, 0, 0, 255))
+   graphics:FillEllipse(redBrush, 100 - 5, 100 - 5, 10, 10)
+   graphics:FillEllipse(redBrush, 500 - 5, 100 - 5, 10, 10)
+   graphics:FillEllipse(blueBrush, 200 - 5, 10 - 5, 10, 10)
+   graphics:FillEllipse(blueBrush, 350 - 5, 50 - 5, 10, 10)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function Example_DrawBezier3( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+
+   Graphics graphics(hdc)
+   // Set up the pen and curve points.
+   Pen greenPen(Color(255, 0, 255, 0))
+
+   //Draw the curve.
+   graphics:DrawBezier(greenPen, 100, 100, 200, 10, 350, 50, 500, 100 )
+
+   //Draw the end points and control points.
+   SolidBrush redBrush(Color(255, 255, 0, 0))
+   SolidBrush blueBrush(Color(255, 0, 0, 255))
+   graphics:FillEllipse(redBrush, 100 - 5, 100 - 5, 10, 10)
+   graphics:FillEllipse(redBrush, 500 - 5, 100 - 5, 10, 10)
+   graphics:FillEllipse(blueBrush, 200 - 5, 10 - 5, 10, 10)
+   graphics:FillEllipse(blueBrush, 350 - 5, 50 - 5, 10, 10)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function Example_DrawBezier4( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+
+   Graphics graphics(hdc)
+   // Set up the pen and curve points.
+   Pen greenPen(Color(255, 0, 255, 0))
+
+   //Draw the curve.
+   graphics:DrawBezier(greenPen, 100.0, 100.0, 200.0, 10.0, 350.0, 50.0, 500.0, 100.0 )
+
+   //Draw the end points and control points.
+   SolidBrush redBrush(Color(255, 255, 0, 0))
+   SolidBrush blueBrush(Color(255, 0, 0, 255))
+   graphics:FillEllipse(redBrush, 100 - 5, 100 - 5, 10, 10)
+   graphics:FillEllipse(redBrush, 500 - 5, 100 - 5, 10, 10)
+   graphics:FillEllipse(blueBrush, 200 - 5, 10 - 5, 10, 10)
+   graphics:FillEllipse(blueBrush, 350 - 5, 50 - 5, 10, 10)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+function Example_DrawBeziers( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+
+   Graphics graphics(hdc)
+   // Define a Pen object and an array of Point objects.
+   Pen greenPen(Color(255, 0, 255, 0), 3)
+
+   Point startPoint(100, 100)
+   Point ctrlPoint1(200, 50)
+   Point ctrlPoint2(400, 10)
+   Point endPoint1(500, 100)
+   Point ctrlPoint3(600, 200)
+   Point ctrlPoint4(700, 400)
+   Point endPoint2(500, 500)
+
+   curvePoints = { ;
+      startPoint,  ;
+      ctrlPoint1,  ;
+      ctrlPoint2,  ;
+      endPoint1,   ;
+      ctrlPoint3,  ;
+      ctrlPoint4,  ;
+      endPoint2}
+
+   // Draw the Bezier curves.
+   graphics:DrawBeziers(greenPen, curvePoints, 7)
+
+   // Draw the control and end points.
+   SolidBrush redBrush(Color(255, 255, 0, 0))
+   graphics:FillEllipse(redBrush, Rect(100 - 5, 100 - 5, 10, 10))
+   graphics:FillEllipse(redBrush, Rect(500 - 5, 100 - 5, 10, 10))
+   graphics:FillEllipse(redBrush, Rect(500 - 5, 500 - 5, 10, 10))
+   SolidBrush blueBrush(Color(255, 0, 0, 255))
+   graphics:FillEllipse(blueBrush, Rect(200 - 5, 50 - 5, 10, 10))
+   graphics:FillEllipse(blueBrush, Rect(400 - 5, 10 - 5, 10, 10))
+   graphics:FillEllipse(blueBrush, Rect(600 - 5, 200 - 5, 10, 10))
+   graphics:FillEllipse(blueBrush, Rect(700 - 5, 400 - 5, 10, 10))
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+function Example_DrawBeziers2( )
+   local bPainted := { | hdc |
+      local aPoint := {}
+
+   Graphics graphics(hdc)
+   // Define a Pen object and an array of Point objects.
+   Pen greenPen(Color(255, 0, 255, 0), 3)
+
+   PointF startPoint(100, 100)
+   PointF ctrlPoint1(200, 50)
+   PointF ctrlPoint2(400, 10)
+   PointF endPoint1(500, 100)
+   PointF ctrlPoint3(600, 200)
+   PointF ctrlPoint4(700, 400)
+   PointF endPoint2(500, 500)
+
+   curvePoints = { ;
+      startPoint,  ;
+      ctrlPoint1,  ;
+      ctrlPoint2,  ;
+      endPoint1,   ;
+      ctrlPoint3,  ;
+      ctrlPoint4,  ;
+      endPoint2}
+
+   // Draw the Bezier curves.
+
+   graphics:DrawBeziers(greenPen, curvePoints, 7)
+
+   // Draw the control and end points.
+   SolidBrush redBrush(Color(255, 255, 0, 0))
+   graphics:FillEllipse(redBrush, Rect(100 - 5, 100 - 5, 10, 10))
+   graphics:FillEllipse(redBrush, Rect(500 - 5, 100 - 5, 10, 10))
+   graphics:FillEllipse(redBrush, Rect(500 - 5, 500 - 5, 10, 10))
+   SolidBrush blueBrush(Color(255, 0, 0, 255))
+   graphics:FillEllipse(blueBrush, Rect(200 - 5, 50 - 5, 10, 10))
+   graphics:FillEllipse(blueBrush, Rect(400 - 5, 10 - 5, 10, 10))
+   graphics:FillEllipse(blueBrush, Rect(600 - 5, 200 - 5, 10, 10))
+   graphics:FillEllipse(blueBrush, Rect(700 - 5, 400 - 5, 10, 10))
+   }
+
+   exampleWindow( bPainted )
+
+return nil
 
 function Example_ResetClip( )
    local bPainted := { | hdc |
@@ -2898,6 +3203,9 @@ function Example_SetTransformG( )
    exampleWindow( bPainted )
 
 return nil
+
+
+
 
 
 //--------------------
@@ -5398,9 +5706,49 @@ function Example_RGXor4( )
 
 return nil
 
+//---------------------------------
+//BITMAP
+//---------------------------------
 
 
+function Example_CaptureWnd( oTest )
+   local bPainted
 
+   bPainted := { | hdc, ps, oWnd |
+      local hBmp := MakeBmpFromHWND( oTest:oWnd:hWnd )
+      local oBmp
+      Bitmap oBmp( hBmp, 0 )
+      DeleteObject( hBmp )
+
+      Graphics graphics(hdc)
+
+      graphics:DrawImage( oBmp, 0, 0, oWnd:nWidth, oWnd:nHeight )
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function Example_BMPClone3( oTest )
+   local bPainted
+
+   bPainted := { | hdc, ps, oWnd |
+   	Graphics graphics(hdc)
+   // Create a Bitmap object from a JPEG file.
+//   ? File( "images\007.bmp" )
+   Bitmap bitmap("images\yankees.jpg")
+//? 1
+//   // Clone a portion of the bitmap.
+//   clone = bitmap:Clone(0, 0, 100, 100, PixelFormatDontCare)
+//? 2
+//   // Draw the clone.
+   graphics:DrawImage(bitmap, 0, 0 )
+   
+   }
+
+   exampleWindow( bPainted )
+
+return nil
 
 
 

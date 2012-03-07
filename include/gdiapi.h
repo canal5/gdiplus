@@ -69,6 +69,7 @@ typedef struct __gdiplus
 #define GP_IS_REGION( p )         ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGION ) ) 
 #define GP_IS_REGIONDATA( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGIONDATA ) ) 
 #define GP_IS_PATHDATA( p )       ( ( GP_OBJECT_TYPE( p ) == GP_IT_PATHDATA ) ) 
+#define GP_IS_ANYIMAGE( p )       ( GP_IS_BITMAP( p ) || GP_IS_IMAGE( p ) )
                                   
 #define HB_ISDOUBLE( n )   ( hb_param( n, HB_IT_DOUBLE ) != NULL )
 #define HB_ISINTEGER( n )  ( hb_param( n, HB_IT_INTEGER) != NULL )
