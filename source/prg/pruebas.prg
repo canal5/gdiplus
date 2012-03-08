@@ -181,13 +181,15 @@ return 0
 function TestBitmap( oTest )
 
    local hBmp
-   local 
+   local oBmp
 
    SEPARADOR( "BITMAP" )
-   
-   TEST 
+   Bitmap oBmp(100,100)
+
+   TEST !Empty( oBmp:handle ) DESCRIPTION "Bitmap( INT, INT, [PixelFormat] )"
    TEST .T. DESCRIPTION "Clone()"      SAMPLE Example_BMPClone3()
-   TEST .T. DESCRIPTION "CaptureWnd()" SAMPLE Example_CaptureWnd( oTest )
+   TEST !Empty( oBmp:fromFile( "images\seleccion_espana_b_2010.jpg" ):handle ) DESCRIPTION "FromFile()" SAMPLE Example_BMPFromFile()
+   TEST .T. DESCRIPTION "FromHBitmap()" SAMPLE Example_BMPFromHBITMAP( oTest )
 
 
 return 0
@@ -5719,7 +5721,7 @@ function Example_CaptureWnd( oTest )
    bPainted := { | hdc, ps, oWnd |
       local hBmp := MakeBmpFromHWND( oTest:oWnd:hWnd )
       local oBmp
-      Bitmap oBmp( hBmp, 0 )
+      Bitmap oBmp( Long2Ptr( hBmp ), 0 )
       DeleteObject( hBmp )
 
       Graphics graphics(hdc)
@@ -5741,6 +5743,46 @@ function Example_BMPClone3( oTest )
    Bitmap bitmap("images\seleccion_espana_b_2010.jpg")
    // Clone a portion of the bitmap.
    clone = bitmap:Clone(42, 100, 100, 100, PixelFormatDontCare)
+
+   // Draw the clone.
+   graphics:DrawImage(Clone, 0, 0 )
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function Example_BMPFromFile( oTest )
+   local bPainted
+
+   bPainted := { | hdc, ps, oWnd |
+ 	Graphics graphics(hdc)
+ // Create a Bitmap object from a JPEG file.
+
+   Bitmap bitmap(0, 0)
+   // Clone a portion of the bitmap.
+   clone = bitmap:FromFile("images\seleccion_espana_b_2010.jpg")
+
+   // Draw the clone.
+   graphics:DrawImage(Clone, 0, 0 )
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function Example_BMPFromHBITMAP( oTest )
+   local bPainted
+
+   bPainted := { | hdc, ps, oWnd |
+   local hBmp := MakeBmpFromHWND( oTest:oWnd:hWnd )
+ 	Graphics graphics(hdc)
+ // Create a Bitmap object from a JPEG file.
+
+   Bitmap bitmap(0, 0)
+   // Clone a portion of the bitmap.
+   clone = bitmap:FromHBitmap( Long2Ptr( hBmp ), 0 )
+   DeleteObject( Long2Ptr( hBmp ) )
 
    // Draw the clone.
    graphics:DrawImage(Clone, 0, 0 )

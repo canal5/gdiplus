@@ -62,7 +62,6 @@ CLASS GPBitmap
   METHOD GetHistogram()
   METHOD GetHistogramSize()
   METHOD GetPixel()
-  METHOD InitializePalette()
   METHOD LockBits()
   METHOD SetPixel()
   METHOD SetResolution()
@@ -83,12 +82,12 @@ ENDCLASS
          ::handle = C5GPBitmap( aParams[ 1 ], .F. )
          exit
       case 2
-         if ValType( aParams[ 1 ] ) == "N"
-            aParams[ 1 ] = Long2Ptr( aParams[ 1 ] )
-         endif
-         if ValType( aParams[ 2 ] ) == "N"
-            aParams[ 2 ] = Long2Ptr( aParams[ 2 ] )
-         endif
+//         if ValType( aParams[ 1 ] ) == "N"
+//            aParams[ 1 ] = Long2Ptr( aParams[ 1 ] )
+//         endif
+//         if ValType( aParams[ 2 ] ) == "N"
+//            aParams[ 2 ] = Long2Ptr( aParams[ 2 ] )
+//         endif
          ::handle = C5GPBitmap( aParams[ 1 ], aParams[ 2 ] )
         exit
       case 3
@@ -134,10 +133,10 @@ return oClone
 return C5GPBitmapFromFile( ::handle, p1, p2 )
 
 *********************************************************************************************************
-  METHOD FromHBITMAP() CLASS GPBitmap
+  METHOD FromHBITMAP( p1, p2 ) CLASS GPBitmap
 *********************************************************************************************************
 
-return 0
+return C5GPBitmapFromHBitmap( ::handle, p1, p2 )
 
 *********************************************************************************************************
   METHOD FromHICON() CLASS GPBitmap
@@ -187,11 +186,6 @@ return 0
 
 return 0
 
-*********************************************************************************************************
-  METHOD InitializePalette() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
 
 *********************************************************************************************************
   METHOD LockBits() CLASS GPBitmap
@@ -294,7 +288,7 @@ HB_FUNC( C5GPBITMAP )
       case 2:{
       	 void * p1 = hb_parptr( 1 );      	 
          if( GetObjectType( ( HGDIOBJ ) p1 ) && ! HB_ISCHAR( 2 ) ){
-         	  void * p2 = hb_parptr( 2 );
+         	void * p2 = hb_parptr( 2 );
             o = new Bitmap( ( HBITMAP ) p1, ( HPALETTE ) p2 ); //HBITMAP, HPALETTE
          }
          else if( HB_ISCHAR( 2 ) ){
@@ -302,10 +296,12 @@ HB_FUNC( C5GPBITMAP )
             o = new Bitmap( ( HINSTANCE ) p1, p2 ); //HINSTANCE, WCHAR
             hb_xfree( p2 );
          }else if( HB_ISCHAR( 1 ) ){
-         	  WCHAR * p1 = hb_GDIPLUS_parw( 1 );
+            WCHAR * p1 = hb_GDIPLUS_parw( 1 );
             o = new Bitmap( p1, hb_parl( 2 ) ); //HINSTANCE, WCHAR
             hb_xfree( p1 );         	         	
-         }else 
+         }else if( HB_ISNUM( 1 ) ){
+            o = new Bitmap( hb_parni( 1 ), hb_parni( 2 ) );         
+         }else
             lOk = false;
          
       }
@@ -374,11 +370,35 @@ HB_FUNC( C5GPBITMAPFROMFILE )
 {
 
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
-   if( GP_IS_GRAPHICS( p ) && HB_ISCHAR( 2 ){
+   if( GP_IS_BITMAP( p ) && HB_ISCHAR( 2 ) ){
       Bitmap * o = ( Bitmap * ) GP_GET( p );
+      Bitmap * o2;
       WCHAR * file = hb_GDIPLUS_parw( 2 );
-      hb_retni( ( int ) o->FromFile( file, hb_parl( 3 ) ) );      
+      PHB_ITEM pClone;
+      o2 = o->FromFile( file, hb_parl( 3 ) );
+      
+      pClone = GPNewGDIPLUSObject( o2, GP_IT_BITMAP );
+      hb_itemReturnRelease( pClone ); 
+      
       hb_xfree( file );
+    
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( C5GPBITMAPFROMHBITMAP )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   void * p1 = hb_parptr( 2 );      	 
+   if( GP_IS_BITMAP( p ) && GetObjectType( ( HGDIOBJ ) p1 ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      Bitmap * o2;
+      PHB_ITEM pClone;      
+      o2 = o->FromHBITMAP( ( HBITMAP ) p1, ( HPALETTE ) hb_parptr( 3 ) );      
+      pClone = GPNewGDIPLUSObject( o2, GP_IT_BITMAP );
+      hb_itemReturnRelease( pClone ); 
     
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -399,7 +419,7 @@ HB_FUNC( C5GPBITMAP... )
 {
 
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
-   if( GP_IS_GRAPHICS( p ) ){
+   if( GP_IS_BITMAP( p ) ){
       Bitmap * o = ( Bitmap * ) GP_GET( p );
 
    }else
