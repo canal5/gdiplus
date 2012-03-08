@@ -691,7 +691,7 @@ return 0
 **********************************************************************************************************
 
 
-return 0
+return C5GetHDC( ::handle )
 
 **********************************************************************************************************
   METHOD GetHalftonePalette( ) CLASS GPGraphics
@@ -845,7 +845,7 @@ return 0
 **********************************************************************************************************
 
 
-return 0
+return C5ReleaseHDC(::handle)
 
 **********************************************************************************************************
   METHOD ResetClip( ) CLASS GPGraphics
@@ -2204,6 +2204,28 @@ HB_FUNC( C5GSETTRANSFORM )
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
+
+HB_FUNC( C5GETHDC )
+{
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   if( GP_IS_GRAPHICS( pG ) ){
+      Graphics * g = ( Graphics * ) GP_GET( pG );
+      hb_retnl( (long) g->GetHDC() );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+HB_FUNC( C5RELEASEHDC )
+{
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   HDC hDC = (HDC) hb_parnl( 2 );
+   if( GP_IS_GRAPHICS( pG ) ){
+      Graphics * g = ( Graphics * ) GP_GET( pG );
+      g->ReleaseHDC( hDC );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
 
 //HB_FUNC( C5GGETTRANSFORM )
 //{
