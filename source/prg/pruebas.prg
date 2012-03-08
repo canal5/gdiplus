@@ -181,11 +181,13 @@ return 0
 function TestBitmap( oTest )
 
    local hBmp
+   local 
 
    SEPARADOR( "BITMAP" )
-
-   TEST .T. DESCRIPTION "CaptureWnd()" SAMPLE Example_CaptureWnd( oTest )
+   
+   TEST 
    TEST .T. DESCRIPTION "Clone()"      SAMPLE Example_BMPClone3()
+   TEST .T. DESCRIPTION "CaptureWnd()" SAMPLE Example_CaptureWnd( oTest )
 
 
 return 0
@@ -5733,17 +5735,15 @@ function Example_BMPClone3( oTest )
    local bPainted
 
    bPainted := { | hdc, ps, oWnd |
-   	Graphics graphics(hdc)
-   // Create a Bitmap object from a JPEG file.
-//   ? File( "images\007.bmp" )
-   Bitmap bitmap("images\yankees.jpg")
-//? 1
-//   // Clone a portion of the bitmap.
-//   clone = bitmap:Clone(0, 0, 100, 100, PixelFormatDontCare)
-//? 2
-//   // Draw the clone.
-   graphics:DrawImage(bitmap, 0, 0 )
-   
+ 	Graphics graphics(hdc)
+ // Create a Bitmap object from a JPEG file.
+
+   Bitmap bitmap("images\seleccion_espana_b_2010.jpg")
+   // Clone a portion of the bitmap.
+   clone = bitmap:Clone(42, 100, 100, 100, PixelFormatDontCare)
+
+   // Draw the clone.
+   graphics:DrawImage(Clone, 0, 0 )
    }
 
    exampleWindow( bPainted )

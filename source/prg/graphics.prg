@@ -488,9 +488,6 @@ return C5GDrawEllipse( ::handle, oPen:handle, nTop, nLeft, nwidth, nHeight )
 **********************************************************************************************************
 
    local sta
-   
-   DEFAULT nWidth  := oImage:nWidth()
-   DEFAULT nHeight := oImage:nHeight()
 
    if ValType( p2 ) == "O"
       p2 = p2:handle 
@@ -1581,7 +1578,6 @@ HB_FUNC( C5GDRAWIMAGE )
 {
    GDIPLUS *p = hb_GDIPLUS_par( 1 );
    GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
-
    if( GP_IS_GRAPHICS( p )  && ( GP_IS_ANYIMAGE( pObj ) ) )
    {
        int iParams = hb_pcount();

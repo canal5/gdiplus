@@ -49,9 +49,9 @@ CLASS GPBitmap
   METHOD ApplyEffect()    INLINE Msginfo( "Not implemented" )
   METHOD ApplyEffect2()   INLINE Msginfo( "Not implemented" )
   METHOD Clone()
-  METHOD ConvertFormat()
+  METHOD ConvertFormat()  INLINE Msginfo( "Not implemented" )
   METHOD FromBITMAPINFO() INLINE Msginfo( "Not implemented" )
-  METHOD FromDirectDrawSurface7()
+  METHOD FromDirectDrawSurface7() INLINE Msginfo( "Not implemented" )
   METHOD FromFile()
   METHOD FromHBITMAP()
   METHOD FromHICON()
@@ -120,36 +120,18 @@ return nil
    local oClone
    
    if ValType( p1 ) == "O"   
-      oClone = C5GPBitmapClone( p1:handle, p2 )
+      oClone = C5GPBitmapClone( ::handle, p1:handle, p2 )
    else 
-      oClone = C5GPBitmapClone( p1, p2, p3, p4, p5 )
+      oClone = C5GPBitmapClone( ::handle, p1, p2, p3, p4, p5 )
    endif
 
-return 0
+return oClone
 
 *********************************************************************************************************
-  METHOD ConvertFormat() CLASS GPBitmap
+  METHOD FromFile( p1, p2 ) CLASS GPBitmap
 *********************************************************************************************************
 
-return 0
-
-*********************************************************************************************************
-  METHOD FromBITMAPINFO() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD FromDirectDrawSurface7() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
-
-*********************************************************************************************************
-  METHOD FromFile() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
+return C5GPBitmapFromFile( ::handle, p1, p2 )
 
 *********************************************************************************************************
   METHOD FromHBITMAP() CLASS GPBitmap
@@ -353,11 +335,12 @@ HB_FUNC( C5GPBITMAPCLONE )
 {
 
    GDIPLUS * p = hb_GDIPLUS_par( 1 );
-   if( GP_IS_GRAPHICS( p ) ){
+   if( GP_IS_BITMAP( p ) ){
       Bitmap * o = ( Bitmap * ) GP_GET( p );
       int iParams = hb_pcount();
       BOOL lOk = true;
       Bitmap * oClone;
+
       if( iParams == 3 ){
          GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
          void * rect = GP_GET( p2 );
@@ -368,7 +351,6 @@ HB_FUNC( C5GPBITMAPCLONE )
          }else 
             lOk = false;
       }else {
-
          if( HB_ISDOUBLE( 2 ) ){
          	   oClone = o->Clone( ( REAL ) hb_parnd( 2 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( PixelFormat ) hb_parni( 6 ) );         	
          }else{
@@ -386,6 +368,29 @@ HB_FUNC( C5GPBITMAPCLONE )
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
+
+
+HB_FUNC( C5GPBITMAPFROMFILE )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_GRAPHICS( p ) && HB_ISCHAR( 2 ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      WCHAR * file = hb_GDIPLUS_parw( 2 );
+      hb_retni( ( int ) o->FromFile( file, hb_parl( 3 ) ) );      
+      hb_xfree( file );
+    
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+
+//HB_FUNC( C5XXX ){
+//   HDC hdc = ( HDC ) hb_parnl( 1 );
+//   Example_ConvertFormat( hdc );
+//
+//}
 
 
 
