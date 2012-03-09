@@ -31,7 +31,7 @@ typedef struct __gdiplus
 #define GP_IT_INSTALLEDFONTCOLLECTION  ( ( int ) 0x00010 )
 #define GP_IT_PRIVATEFONTCOLLECTION ( ( int ) 0x00011 )
 #define GP_IT_FONTFAMILY   ( ( int ) 0x00012 )
-#define GP_IT_FONT         ( ( int ) 0x00013 ) 
+#define GP_IT_FONT         ( ( int ) 0x00013 )
 #define GP_IT_LOGFONTA     ( ( int ) 0x00014 )
 #define GP_IT_LOGFONTW     ( ( int ) 0x00015 )
 #define GP_IT_STRINGFORMAT ( ( int ) 0x00016 )
@@ -40,14 +40,15 @@ typedef struct __gdiplus
 #define GP_IT_REGIONDATA   ( ( int ) 0x00019 )
 #define GP_IT_LINEARGRADIENTBRUSH ( ( int ) 0x0001A )
 #define GP_IT_PATHDATA     ( ( int ) 0x0001B )
+#define GP_IT_IMAGEATTRIBUTES ( ( int ) 0x0001C )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
-#define GP_IS_RECT( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECT )     ) 
+#define GP_IS_RECT( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECT )     )
 #define GP_IS_IMAGE( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_IMAGE )    )
 #define GP_IS_COLOR( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_COLOR)     )
 #define GP_IS_SOLIDBRUSH( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_SOLIDBRUSH ) )
-#define GP_IS_LINEARGRADIENTBRUSH( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_LINEARGRADIENTBRUSH ) ) 
+#define GP_IS_LINEARGRADIENTBRUSH( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_LINEARGRADIENTBRUSH ) )
 #define GP_IS_BRUSH( p )    ( GP_IS_SOLIDBRUSH( p ) || GP_IS_LINEARGRADIENTBRUSH( p ) )
 #define GP_IS_PEN( p )      ( ( GP_OBJECT_TYPE( p ) == GP_IT_PEN ) )
 #define GP_IS_POINT( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_POINT ) )
@@ -60,17 +61,18 @@ typedef struct __gdiplus
 #define GP_IS_INSTALLEDFONTCOLLECTION( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_INSTALLEDFONTCOLLECTION ) )
 #define GP_IS_PRIVATEFONTCOLLECTION( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_PRIVATEFONTCOLLECTION ) )
 #define GP_IS_FONTCOLLECTION( p )          ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONTCOLLECTION ) || GP_IS_INSTALLEDFONTCOLLECTION( p ) || GP_IS_PRIVATEFONTCOLLECTION( p ) )
-#define GP_IS_FONTFAMILY( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONTFAMILY ) ) 
-#define GP_IS_FONT( p )           ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONT ) ) 
-#define GP_IS_LOGFONTA( p )       ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTA ) ) 
-#define GP_IS_LOGFONTW( p )       ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTB ) ) 
-#define GP_IS_STRINGFORMAT( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_STRINGFORMAT ) ) 
-#define GP_IS_CHARACTERRANGE( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_CHARACTERRANGE ) ) 
-#define GP_IS_REGION( p )         ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGION ) ) 
-#define GP_IS_REGIONDATA( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGIONDATA ) ) 
-#define GP_IS_PATHDATA( p )       ( ( GP_OBJECT_TYPE( p ) == GP_IT_PATHDATA ) ) 
+#define GP_IS_FONTFAMILY( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONTFAMILY ) )
+#define GP_IS_FONT( p )           ( ( GP_OBJECT_TYPE( p ) == GP_IT_FONT ) )
+#define GP_IS_LOGFONTA( p )       ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTA ) )
+#define GP_IS_LOGFONTW( p )       ( ( GP_OBJECT_TYPE( p ) == GP_IT_LOGFONTB ) )
+#define GP_IS_STRINGFORMAT( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_STRINGFORMAT ) )
+#define GP_IS_CHARACTERRANGE( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_CHARACTERRANGE ) )
+#define GP_IS_REGION( p )         ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGION ) )
+#define GP_IS_REGIONDATA( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_REGIONDATA ) )
+#define GP_IS_PATHDATA( p )       ( ( GP_OBJECT_TYPE( p ) == GP_IT_PATHDATA ) )
 #define GP_IS_ANYIMAGE( p )       ( GP_IS_BITMAP( p ) || GP_IS_IMAGE( p ) )
-                                  
+#define GP_IS_IMAGEATTRIBUTES( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_IMAGEATTRIBUTES )    )
+
 #define HB_ISDOUBLE( n )   ( hb_param( n, HB_IT_DOUBLE ) != NULL )
 #define HB_ISINTEGER( n )  ( hb_param( n, HB_IT_INTEGER) != NULL )
 
@@ -89,5 +91,5 @@ PHB_ITEM  GPCreateObjectToFill( void ** uPtr, int iType );
 
 extern "C"
 {
-LPSTR LToStr( long ); 
+LPSTR LToStr( long );
 }
