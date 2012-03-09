@@ -841,11 +841,11 @@ return 0
 return 0
 
 **********************************************************************************************************
-  METHOD ReleaseHDC( ) CLASS GPGraphics
+  METHOD ReleaseHDC( hDC ) CLASS GPGraphics
 **********************************************************************************************************
 
 
-return C5ReleaseHDC(::handle)
+return C5ReleaseHDC(::handle, hDC )
 
 **********************************************************************************************************
   METHOD ResetClip( ) CLASS GPGraphics
@@ -860,7 +860,7 @@ return sta
 **********************************************************************************************************
 
 
-return 0
+return C5ResetTransform(::handle)
 
 **********************************************************************************************************
   METHOD Restore( ) CLASS GPGraphics
@@ -2087,6 +2087,22 @@ HB_FUNC( C5GROTATETRANSFORM )
    hb_ret();
 }
 
+HB_FUNC( C5RESETTRANSFORM )
+{
+   Graphics *g = hb_Graphics_par( 1 );
+
+   if( g )
+   {
+      g->ResetTransform();
+   }
+   else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+   hb_ret();
+}
+
+
+
 HB_FUNC( C5GSCALETRANSFORM )
 {
    Graphics *g = hb_Graphics_par( 1 );
@@ -2210,15 +2226,15 @@ HB_FUNC( C5GETHDC )
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    if( GP_IS_GRAPHICS( pG ) ){
       Graphics * g = ( Graphics * ) GP_GET( pG );
-      hb_retnl( (long) g->GetHDC() );
+      hb_retptr( (void*) g->GetHDC() );
    }else
-     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 HB_FUNC( C5RELEASEHDC )
 {
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
-   HDC hDC = (HDC) hb_parnl( 2 );
+   HDC hDC = (HDC) hb_parptr( 2 );
    if( GP_IS_GRAPHICS( pG ) ){
       Graphics * g = ( Graphics * ) GP_GET( pG );
       g->ReleaseHDC( hDC );

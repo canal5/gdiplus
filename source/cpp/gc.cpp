@@ -59,90 +59,93 @@ GDIPLUS * hb_GDIPLUS_par( int iParam )
       return *ph;
 
    hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   return NULL;     
+   return NULL;
 }
 
 void gdiplus_destroy( GDIPLUS * p ){
-   
-  
+
+
    switch( GP_OBJECT_TYPE( p ) ){
      case GP_IT_IMAGE:
         delete (Image *) p->pObject;
         break;
      case GP_IT_POINTF:
         delete (PointF *) p->pObject;
-        break;           
+        break;
      case GP_IT_POINT:
         delete (Point *) p->pObject;
-        break;       
+        break;
      case GP_IT_SIZEF:
         delete (SizeF *) p->pObject;
-        break;                                     
+        break;
      case GP_IT_SIZE:
         delete (Size *) p->pObject;
-        break;                                                
+        break;
      case GP_IT_RECT:
         delete (Rect *) p->pObject;
-        break;                                                           
+        break;
      case GP_IT_RECTF:
         delete (RectF *) p->pObject;
-        break;                                                                      
+        break;
      case GP_IT_SOLIDBRUSH:
         delete (SolidBrush *) p->pObject;
-        break;           
+        break;
      case GP_IT_COLOR:
         delete (Color *) p->pObject;
-        break;        
+        break;
      case GP_IT_PEN:
         delete (Pen *) p->pObject;
-        break;                                    
+        break;
      case GP_IT_GRAPHICS:
         delete (Graphics *) p->pObject;
-        break;                                               
+        break;
      case GP_IT_MATRIX:
         delete (Matrix *) p->pObject;
-        break;       
+        break;
      case GP_IT_GRAPHICSPATH:
         delete (GraphicsPath *) p->pObject;
-        break;      
+        break;
      case GP_IT_BITMAP:
         delete (Bitmap *) p->pObject;
-        break; 
+        break;
      case GP_IT_FONTCOLLECTION:
         delete ( FontCollection * ) p->pObject;
         break;
      case GP_IT_INSTALLEDFONTCOLLECTION:
         delete ( InstalledFontCollection  * ) p->pObject;
-        break;                                                                     
+        break;
      case GP_IT_PRIVATEFONTCOLLECTION:
         delete ( PrivateFontCollection * ) p->pObject;
-        break;                                                                     
+        break;
      case GP_IT_FONTFAMILY:
         delete ( FontFamily * ) p->pObject;
-        break;                                                                     
+        break;
      case GP_IT_FONT:
         delete ( Font * ) p->pObject;
-        break;       
+        break;
      case GP_IT_LOGFONTA:
      case GP_IT_LOGFONTW:
      case GP_IT_REGIONDATA:
         hb_xfree( ( void * ) p->pObject );
-        break;    
+        break;
      case GP_IT_STRINGFORMAT:
      	   delete ( StringFormat * ) p->pObject;
      	   break;
      case GP_IT_CHARACTERRANGE:
      	   delete ( CharacterRange * ) p->pObject;
-     	   break;     	   
+     	   break;
      case GP_IT_REGION:
      	   delete ( Region * ) p->pObject;
-     	   break;     	   
+     	   break;
      case GP_IT_LINEARGRADIENTBRUSH:
      	   delete ( LinearGradientBrush * ) p->pObject;
-     	   break;     	     
+     	   break;
      case GP_IT_PATHDATA:
      	   delete ( PathData * ) p->pObject;
-     	   break;       	      	   
+     	   break;
+     case GP_IT_IMAGEATTRIBUTES:
+           delete ( ImageAttributes * ) p->pObject;
+           break;
    }
    hb_xfree( p );
 
@@ -154,7 +157,7 @@ GDIPLUS * gdiplus_new( int type )
 
    if( type )
       p->type = type;
-      
+
    return p;
 }
 
@@ -186,7 +189,7 @@ void GDIPLUSItemClear( PHB_ITEM pItem )
 }
 
 void GDIPLUS_StoreParam( int iParam, PHB_ITEM p ){
-  
+
    if( !hb_itemParamStoreRelease( iParam, p ))
       hb_itemRelease( p );
 
@@ -196,7 +199,7 @@ void GDIPLUS_StoreParam( int iParam, PHB_ITEM p ){
 WCHAR * hb_GDIPLUS_parw( int iParam ){
    WCHAR * filename;
    char* szFile = ( char * ) hb_parc( iParam );
-   filename = hb_mbtowc( szFile );          
+   filename = hb_mbtowc( szFile );
    return filename;
 }
 

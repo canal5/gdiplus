@@ -315,6 +315,18 @@ HB_FUNC( C5_GPIMAGEATTRIBUTES )
    //hb_retptr( (void*) ptr );
 }
 
+HB_FUNC( C5_GPIMAGEATTRIBUTES )
+{
+   GDIPLUS * pObj = gdiplus_new( GP_IT_IMAGEATTRIBUTES );
+   ImageAttributes * pIMGA = new ImageAttributes();
+
+   GP_SET( pObj, pIMGA );
+   hb_GDIPLUS_ret( pObj );
+
+}
+
+
+
 HB_FUNC( C5DELETEIMAGEATTRIBUTES )
 {
    ImageAttributes* clr = (ImageAttributes*) hb_parptr( 1 );
