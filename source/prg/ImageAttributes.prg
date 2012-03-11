@@ -169,10 +169,10 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD SetColorMatrix() CLASS GPImageAttributes
+  METHOD SetColorMatrix( aColorMatyrix ) CLASS GPImageAttributes
 *********************************************************************************************************
 
-return C5SetColorMatrix( ::handle,
+return C5GPIMGATTSETColorMatrix( ::handle, aColorMatyrix )
 
 *********************************************************************************************************
   METHOD SetGamma() CLASS GPImageAttributes
@@ -277,11 +277,8 @@ return 0
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
+#include <gc.h>
 
-using namespace Gdiplus;
 
 HB_FUNC( C5_GPIMAGEATTRIBUTES )
 {
@@ -298,17 +295,43 @@ HB_FUNC( C5_GPIMAGEATTRIBUTES )
   [in, optional]  ColorAdjustType type
 );*/
 
-HB_FUNC( C5SETCOLORMATRIX )
+HB_FUNC( C5GPIMGATTSETCOLORMATRIX )
 {
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_IMAGEATTRIBUTES( p ) ){
+      ImageAttributes * o = ( ImageAttributes * ) GP_GET( p );
+      PHB_ITEM aColors = hb_param( 2, HB_IT_ARRAY );
+      ColorMatrix clrMatrix;
+      int i,j;
+      memset( &clrMatrix, 0, sizeof( ColorMatrix ) );
+      for( j=0; j<4; j++ ){
+         PHB_ITEM aRow = hb_itemNew( NULL );
+         hb_arrayGet( aColors, j + 1, aRow );
+         for( i=0; i<4; i++ ){    
+            clrMatrix.m[ j ][ i ] = ( REAL ) hb_arrayGetND( aRow, i + 1 );
+         }
+         hb_itemRelease( aRow );
+      }
 
-
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
 
-//HB_FUNC( GPIMAGEATTRIBUTES... )
-//{
-//   ImageAttributes* ptr = (ImageAttributes*) hb_parptr( 1 );
-//}
+
+/*
+HB_FUNC( C5GPIMGATTS... )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_IMAGEATTRIBUTES( p ) ){
+      ImageAttributes * o = ( ImageAttributes * ) GP_GET( p );
+
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+*/
 
 #pragma ENDDUMP
 

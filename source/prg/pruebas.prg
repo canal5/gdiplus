@@ -26,11 +26,21 @@ Local oTest
 //      TestFont()
 //      TestStringFormat()
 //      TestRegion()
-      TestBitmap( oTest )
+//      TestBitmap( oTest )
+      TestImageAtt( oTest )
 
       SHOW RESULT
 
    ENDDEFINE
+
+return nil
+
+function TestImageAtt( oTest )
+  
+  SEPARADOR( "IMAGEATTRIBUTES" )
+  
+  TEST !Empty( ImageAttributes():handle )                                      DESCRIPTION "Constructor ImageAttributes()"
+  TEST .T. DESCRIPTION "SetColorMatrix" SAMPLE Example_SetColormatrix( otest )
 
 return nil
 
@@ -5791,6 +5801,40 @@ function Example_BMPFromHBITMAP( oTest )
    exampleWindow( bPainted )
 
 return nil
+
+function Example_SetColormatrix( )
+   local bPainted := { | hdc |
+      local aColorMatrix
+      local Blend := (100-80/*m_nTransparency*/)/100.0
+      Graphics graphics(hdc)
+      
+      Bitmap oImage1( "images\seleccion_espana_b_2010.jpg" )
+      Bitmap oImage2( "images\ice_cream.png" )
+      
+      ImageAttributes oImgAtts()
+      
+      graphics:DrawImage( oImage1, 0, 0 )
+      
+      aColorMatrix = { 1.0, 0.0, 0.0, 0.0, 0.0,  ;
+                       0.0, 1.0, 0.0, 0.0, 0.0,  ;
+                       0.0, 0.0, 1.0, 0.0, 0.0,  ;
+                       0.0, 0.0, 0.0, Blend, 0.0,;
+                       0.0, 0.0, 0.0, 0.0, 1.0   }
+                       
+                       
+      oImgAtts:SetColorMatrix( aColorMatrix )
+      
+      RectF destination(100,100,400,400)
+      RectF source(0,0,400,400)
+ 
+      graphics:DrawImage(oImage2,destination, source,UnitPixel,oImgAtts)
+
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
 
 
 

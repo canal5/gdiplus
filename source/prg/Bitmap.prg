@@ -405,6 +405,24 @@ HB_FUNC( C5GPBITMAPFROMHBITMAP )
 
 }
 
+HB_FUNC( C5GPBITMAPFROMHICON )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   void * p1 = hb_parptr( 2 );      	 
+   if( GP_IS_BITMAP( p ) && GetObjectType( ( HGDIOBJ ) p1 ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      Bitmap * o2;
+      PHB_ITEM pClone;      
+      o2 = o->FromHICON( ( HICON ) p1 );      
+      pClone = GPNewGDIPLUSObject( o2, GP_IT_BITMAP );
+      hb_itemReturnRelease( pClone ); 
+    
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
 
 //HB_FUNC( C5XXX ){
 //   HDC hdc = ( HDC ) hb_parnl( 1 );

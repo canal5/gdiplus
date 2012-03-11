@@ -1630,6 +1630,15 @@ HB_FUNC( C5GDRAWIMAGE )
                 sta = g->DrawImage( c, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ) );
              else if( HB_ISINTEGER( 3 ) )
                 sta = g->DrawImage( c, hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ) );
+             else if( HB_ISPOINTER ( 3 ) ){
+                GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+                GDIPLUS * p4 = hb_GDIPLUS_par( 4 );
+                GDIPLUS * p6 = hb_GDIPLUS_par( 6 );
+                RectF * destRect = ( RectF * ) GP_GET( p3 );
+                RectF * srcRect = ( RectF * ) GP_GET( p4 );
+                ImageAttributes *imageAttributes = ( ImageAttributes * ) GP_GET( p6 );
+                sta = g->DrawImage( c, *destRect, srcRect->X, srcRect->Y, srcRect->Width, srcRect->Height, ( Unit ) hb_parni( 5 ), imageAttributes );
+              }
              else
                 lOk = false;
           }
@@ -1657,9 +1666,14 @@ HB_FUNC( C5GDRAWIMAGE )
 //
 //          }
        }
+       
+       if( lOk ){
+          hb_retni( sta );  
+       }else
+          hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 
-       hb_retni( g->DrawImage( c, hb_parni(3), hb_parni(4), hb_parni(5), hb_parni(6) ) );
+//       hb_retni( g->DrawImage( c, hb_parni(3), hb_parni(4), hb_parni(5), hb_parni(6) ) );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );

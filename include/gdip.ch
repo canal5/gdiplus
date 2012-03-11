@@ -29,8 +29,8 @@
 #xcommand STRINGFORMAT       <o>       ( [<par1> [,<par2> ] ] )                                       => <o>       := StringFormat       ( [<par1>][, <par2>] )
 #xcommand REGION             <o>       ( [<par1> [,<par2> ] ] )                                       => <o>       := Region             ( [<par1>][, <par2>] )
 #xcommand PATHDATA           <o>       ()                                                             => <o>       := PathData           ()
-#xcommand BITMAP             <o>       ( <par1> [, <par2> [, <par3> [, <par4>, <par5> ] ] ] )        => <o>       := Bitmap             ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>] )
-
+#xcommand BITMAP             <o>       ( <par1> [, <par2> [, <par3> [, <par4>, <par5> ] ] ] )         => <o>       := Bitmap             ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>] )
+#xcommand IMAGEATTRIBUTES    <o>       ()                                                             => <o>       := ImageAttributes    ()
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"
 #xtranslate guidStr.ImageFormatMemoryBMP      =>   "B96B3CAA-0728-11D3-9D7B-0000F81EF32E"
