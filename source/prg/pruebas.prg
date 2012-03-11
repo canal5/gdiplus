@@ -5805,11 +5805,11 @@ return nil
 function Example_SetColormatrix( )
    local bPainted := { | hdc |
       local aColorMatrix
-      local Blend := (100-80/*m_nTransparency*/)/100.0
+      local Blend := (100-50/*m_nTransparency*/)/100.0
       Graphics graphics(hdc)
       
       Bitmap oImage1( "images\seleccion_espana_b_2010.jpg" )
-      Bitmap oImage2( "images\ice_cream.png" )
+      Bitmap oImage2( "images\yankees.jpg" )
       
       ImageAttributes oImgAtts()
       
@@ -5822,10 +5822,10 @@ function Example_SetColormatrix( )
                        0.0, 0.0, 0.0, 0.0, 1.0   }
                        
                        
-      oImgAtts:SetColorMatrix( aColorMatrix )
+      oImgAtts:SetColorMatrix( aColorMatrix, ColorMatrixFlagsDefault, ColorAdjustTypeBitmap )
       
-      RectF destination(100,100,400,400)
-      RectF source(0,0,400,400)
+      RectF destination(10,10,400,400)
+      RectF source(0,0,1500,1500)
  
       graphics:DrawImage(oImage2,destination, source,UnitPixel,oImgAtts)
 

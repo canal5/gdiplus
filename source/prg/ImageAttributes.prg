@@ -169,10 +169,17 @@ return 0
 return 0
 
 *********************************************************************************************************
-  METHOD SetColorMatrix( aColorMatyrix ) CLASS GPImageAttributes
+  METHOD SetColorMatrix( aColorMatyrix, mode, type ) CLASS GPImageAttributes
 *********************************************************************************************************
+   local sta
 
-return C5GPIMGATTSETColorMatrix( ::handle, aColorMatyrix )
+   if type != NIL 
+      sta = C5GPIMGATTSETColorMatrix( ::handle, aColorMatyrix, type )
+   else
+      sta = C5GPIMGATTSETColorMatrix( ::handle, aColorMatyrix ) 
+   endif
+
+return sta
 
 *********************************************************************************************************
   METHOD SetGamma() CLASS GPImageAttributes
@@ -304,6 +311,7 @@ HB_FUNC( C5GPIMGATTSETCOLORMATRIX )
       ColorMatrix clrMatrix;
       int i,j;
       memset( &clrMatrix, 0, sizeof( ColorMatrix ) );
+      Status sta;
       for( j=0; j<4; j++ ){
          PHB_ITEM aRow = hb_itemNew( NULL );
          hb_arrayGet( aColors, j + 1, aRow );
@@ -312,7 +320,13 @@ HB_FUNC( C5GPIMGATTSETCOLORMATRIX )
          }
          hb_itemRelease( aRow );
       }
-
+      if( hb_pcount() < 4 )
+         sta = o->SetColorMatrix( &clrMatrix, ( ColorMatrixFlags ) hb_parni( 3 ) );
+      else
+         sta = o->SetColorMatrix( &clrMatrix, ( ColorMatrixFlags ) hb_parni( 3 ), ( ColorAdjustType ) hb_parni( 4 ) );
+     
+      hb_retni( ( int ) sta );
+     
    }else
      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 

@@ -1227,12 +1227,24 @@
 #xtranslate WarpModePerspective                           => 0
 #xtranslate WarpModeBilinear                              => 1
 
-#xtranslate CombineModeReplace                           => 0
-#xtranslate CombineModeIntersect                         => 1
-#xtranslate CombineModeUnion                             => 2
-#xtranslate CombineModeXor                               => 3
-#xtranslate CombineModeExclude                           => 4
-#xtranslate CombineModeComplement                        => 5
+#xtranslate CombineModeReplace                            => 0
+#xtranslate CombineModeIntersect                          => 1
+#xtranslate CombineModeUnion                              => 2
+#xtranslate CombineModeXor                                => 3
+#xtranslate CombineModeExclude                            => 4
+#xtranslate CombineModeComplement                         => 5
+                                                         
+#xtranslate ColorAdjustTypeDefault                        => 0
+#xtranslate ColorAdjustTypeBitmap                         => 1
+#xtranslate ColorAdjustTypeBrush                          => 2
+#xtranslate ColorAdjustTypePen                            => 3
+#xtranslate ColorAdjustTypeText                           => 4
+#xtranslate ColorAdjustTypeCount                          => 5
+#xtranslate ColorAdjustTypeAny                            => 6
+
+#xtranslate ColorMatrixFlagsDefault                       => 0
+#xtranslate ColorMatrixFlagsSkipGrays                     => 1
+#xtranslate ColorMatrixFlagsAltGray                       => 2
 
 #define    PixelFormatDontCare        0
 
