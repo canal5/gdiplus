@@ -5808,8 +5808,8 @@ function Example_SetColormatrix( )
       local Blend := (100-50/*m_nTransparency*/)/100.0
       Graphics graphics(hdc)
       
-      Bitmap oImage1( "images\seleccion_espana_b_2010.jpg" )
-      Bitmap oImage2( "images\yankees.jpg" )
+      Image oImage1( "images\seleccion_espana_b_2010.jpg" )
+      Image oImage2( "images\yankees.jpg" )
       
       ImageAttributes oImgAtts()
       
@@ -5827,8 +5827,8 @@ function Example_SetColormatrix( )
       RectF destination(10,10,400,400)
       RectF source(0,0,1500,1500)
  
-      graphics:DrawImage(oImage2,destination, source,UnitPixel,oImgAtts)
-
+      graphics:DrawImage(oImage2,destination, source, UnitPixel, oImgAtts)
+//      PRUEBABLEND( hDC, oImgAtts:handle, aColorMatrix )
    }
 
    exampleWindow( bPainted )

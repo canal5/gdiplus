@@ -173,11 +173,7 @@ return 0
 *********************************************************************************************************
    local sta
 
-   if type != NIL 
-      sta = C5GPIMGATTSETColorMatrix( ::handle, aColorMatyrix, type )
-   else
-      sta = C5GPIMGATTSETColorMatrix( ::handle, aColorMatyrix ) 
-   endif
+    sta = C5GPIMGATTSETColorMatrix( ::handle, aColorMatyrix, mode, type ) 
 
 return sta
 
@@ -296,6 +292,7 @@ HB_FUNC( C5_GPIMAGEATTRIBUTES )
    hb_GDIPLUS_ret( pObj );
 }
 
+
 /*Status SetColorMatrix(
   [in]            const ColorMatrix *colorMatrix,
   [in]            ColorMatrixFlags mode,
@@ -308,22 +305,17 @@ HB_FUNC( C5GPIMGATTSETCOLORMATRIX )
    if( GP_IS_IMAGEATTRIBUTES( p ) ){
       ImageAttributes * o = ( ImageAttributes * ) GP_GET( p );
       PHB_ITEM aColors = hb_param( 2, HB_IT_ARRAY );
-      ColorMatrix clrMatrix;
-      int i,j;
-      memset( &clrMatrix, 0, sizeof( ColorMatrix ) );
+      ColorMatrix ClrMatrix;
       Status sta;
-      for( j=0; j<4; j++ ){
-         PHB_ITEM aRow = hb_itemNew( NULL );
-         hb_arrayGet( aColors, j + 1, aRow );
-         for( i=0; i<4; i++ ){    
-            clrMatrix.m[ j ][ i ] = ( REAL ) hb_arrayGetND( aRow, i + 1 );
+      int j,i,x=1;
+
+      for( j = 0; j < 5; j ++ ){
+         for( i = 0; i < 5; i ++ ){      
+            ClrMatrix.m[ j ][ i ] = ( REAL ) hb_arrayGetND( aColors, x++ );
          }
-         hb_itemRelease( aRow );
       }
-      if( hb_pcount() < 4 )
-         sta = o->SetColorMatrix( &clrMatrix, ( ColorMatrixFlags ) hb_parni( 3 ) );
-      else
-         sta = o->SetColorMatrix( &clrMatrix, ( ColorMatrixFlags ) hb_parni( 3 ), ( ColorAdjustType ) hb_parni( 4 ) );
+      
+      sta = o->SetColorMatrix( &ClrMatrix, ( ColorMatrixFlags ) hb_parni( 3 ), ( ColorAdjustType ) hb_parni( 4 ) );
      
       hb_retni( ( int ) sta );
      
@@ -346,6 +338,9 @@ HB_FUNC( C5GPIMGATTS... )
 
 }
 */
+
+
+
 
 #pragma ENDDUMP
 

@@ -144,8 +144,8 @@ void gdiplus_destroy( GDIPLUS * p ){
      	   delete ( PathData * ) p->pObject;
      	   break;
      case GP_IT_IMAGEATTRIBUTES:
-           delete ( ImageAttributes * ) p->pObject;
-           break;
+         delete ( ImageAttributes * ) p->pObject;
+         break;
    }
    hb_xfree( p );
 
