@@ -1107,11 +1107,10 @@ return C5SetSmoothingMode(::handle, nMode )
 return 0
 
 **********************************************************************************************************
-  METHOD SetTextRenderingHint( ) CLASS GPGraphics
+  METHOD SetTextRenderingHint( nMode ) CLASS GPGraphics
 **********************************************************************************************************
 
-
-return 0
+return C5SetTextRenderingHint( ::handle, nMode )
 
 **********************************************************************************************************
   METHOD SetTransform( oMatrix ) CLASS GPGraphics
@@ -1567,7 +1566,7 @@ HB_FUNC( C5GDRAWELLIPSE )
    {
       Graphics *g = ( Graphics * ) GP_GET( p ) ;
       Pen* p = (Pen*) GP_GET( pObj );
-      hb_retni( g->DrawEllipse( p, hb_parni(4), hb_parni(3), hb_parni(6), hb_parni(5) ) );
+      hb_retni( g->DrawEllipse( p, hb_parni(4), hb_parni(3), hb_parni(5), hb_parni(6) ) );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -1666,9 +1665,9 @@ HB_FUNC( C5GDRAWIMAGE )
 //
 //          }
        }
-       
+
        if( lOk ){
-          hb_retni( sta );  
+          hb_retni( sta );
        }else
           hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
@@ -1738,32 +1737,36 @@ HB_FUNC( C5GFILLREGION ){
 
 HB_FUNC( C5GROUNDRECT )
 {
-    Graphics *g = hb_Graphics_par( 1 );
-    Pen* p = (Pen*) hb_parptr( 2 );
+    GDIPLUS *pG = hb_GDIPLUS_par( 1 );
+    GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
     int x = hb_parni( 4 );
     int y = hb_parni( 3 );
     int xr = x + hb_parni( 5 );
     int yr = y + hb_parni( 6 );
 
 
-    if( g && p && hb_pcount() > 7 )
+    if( pG && pObj && hb_pcount() > 7 )
     {
+      Graphics *g = ( Graphics * ) GP_GET( pG ) ;
+      Pen * p = ( Pen * ) GP_GET( pObj );
+
       //TODO Garbage Collector for PEN
       Size* CornerSize = new Size(hb_parni( 7 ),hb_parni( 8 ));
       RectF* tl = new RectF(x,y,CornerSize->Width,CornerSize->Height);
       RectF* tr = new RectF(xr,y,CornerSize->Width,CornerSize->Height);
       RectF* bl = new RectF(x,yr,CornerSize->Width,CornerSize->Height);
       RectF* br = new RectF(xr,yr,CornerSize->Width,CornerSize->Height);
-      GraphicsPath* oPath = new GraphicsPath                        ();
+      GraphicsPath* oPath = new GraphicsPath();
       oPath->AddArc(*tl, 180, 90);
       oPath->AddArc(*tr, 270, 90);
       oPath->AddArc(*br, 360, 90);  //NOTE: br BEFORE bl
       oPath->AddArc(*bl, 90, 90);
-      oPath->CloseAllFigures                        ();
-      if ( hb_pcount                        () > 8 )
+      oPath->CloseAllFigures();
+      if ( hb_pcount() > 8 )
       {
-         SolidBrush* b = (SolidBrush*) hb_parptr( 9 );
-         g->FillPath( b, oPath );
+         GDIPLUS * pObj1 = hb_GDIPLUS_par( 9 );
+         SolidBrush* pBrush = (SolidBrush*) GP_GET( pObj1 );
+         g->FillPath( pBrush, oPath );
       }
       g->DrawPath( p, oPath );
 
@@ -1938,9 +1941,9 @@ HB_FUNC( C5GFILLELLIPSE )
 
      if( iParam > 5 ){
         if( HB_IS_DOUBLE( hb_param( 4, HB_IT_ANY ) ) )
-            hb_retni( g->FillEllipse( b, hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 )) );
+            hb_retni( g->FillEllipse( b, hb_parni( 4 ), hb_parni( 3 ), hb_parni( 5 ), hb_parni( 6 )) );
         else
-           hb_retni( g->FillEllipse( b, ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ) ) );
+           hb_retni( g->FillEllipse( b, ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 3 ), ( REAL ) hb_parnd( 5 ), ( REAL ) hb_parnd( 6 ) ) );
      }else if( iParam < 4 ){
         GDIPLUS * pRect = hb_GDIPLUS_par( 3 );
         if( GP_IS_RECT( pRect ) ){
@@ -2211,11 +2214,14 @@ HB_FUNC( C5SETSMOOTHINGMODE )
 
 HB_FUNC( C5SETTEXTRENDERINGHINT )
 {
-   Graphics *g = hb_Graphics_par( 1 );
-
-   if( g  )
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   TextRenderingHint newMode = (TextRenderingHint) hb_parni( 2 );
+   Status sta;
+   if( GP_IS_GRAPHICS( pG ) )
    {
-      g->SetTextRenderingHint(TextRenderingHintAntiAlias);
+      Graphics * g = ( Graphics *) GP_GET( pG );
+      sta = g->SetTextRenderingHint( newMode );
+      hb_retni( sta );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );

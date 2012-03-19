@@ -8,7 +8,7 @@ Local oTest
    DEFINE SUITTEST oTest
 
 //      TestsGraphics()
-//      TestsPen()
+      TestsPen()
 //      TestsColor()
 //      TestsBrush()
 //      TestMatrix()
@@ -36,9 +36,9 @@ Local oTest
 return nil
 
 function TestImageAtt( oTest )
-  
+
   SEPARADOR( "IMAGEATTRIBUTES" )
-  
+
   TEST !Empty( ImageAttributes():handle )                                      DESCRIPTION "Constructor ImageAttributes()"
   TEST .T. DESCRIPTION "SetColorMatrix" SAMPLE Example_SetColormatrix( otest )
 
@@ -304,14 +304,14 @@ return 0
    TEST .T.                                                     DESCRIPTION "IsOutlineVisible()"            SAMPLE Example_IsOutlineVisibleExample()
    TEST .T.                                                     DESCRIPTION "IsVisible()"                   SAMPLE IsVisibleExample()
    TEST .T.                                                     DESCRIPTION "OutLine()"                     SAMPLE OutlineExample()
-   TEST gp:Reset() == 0                                         DESCRIPTION "Reset()"                     
+   TEST gp:Reset() == 0                                         DESCRIPTION "Reset()"
    TEST gp2:Reverse() == 0                                      DESCRIPTION "Reverse()"                     SAMPLE ReverseExample()
    TEST gp2:SetFillMode( FillModeAlternate ) == 0               DESCRIPTION "SetFillMode()"
    TEST gp2:SetMarker() == 0                                    DESCRIPTION "SetMarket()"
    TEST gp2:StartFigure() == 0                                  DESCRIPTION "StartFigure()"                 SAMPLE StartFigureExample()
    TEST gp2:Transform( Matrix() ) == 0                          DESCRIPTION "Transform()"                   SAMPLE GPTransformExample()
    TEST .T.                                                     DESCRIPTION "Warp()"                        SAMPLE WarpExample()
-   
+
 return 0
 
 *****************************************************************************************
@@ -2735,7 +2735,7 @@ return nil
 
 function Example_BeginContainer( )
    local bPainted := { | hdc |
-  
+
    Graphics graphics(hdc)
    // Set the clipping region for the Graphics object.
    graphics:SetClip(Rect(10, 10, 150, 150))
@@ -2750,12 +2750,12 @@ function Example_BeginContainer( )
    SolidBrush redBrush(Color(255, 255, 0, 0))
    graphics:FillRectangle(redBrush, 0, 0, 400, 400)
 
-   // End the container, and fill the same rectangle with blue. 
+   // End the container, and fill the same rectangle with blue.
    graphics:EndContainer(container)
    SolidBrush blueBrush(Color(128, 0, 0, 255))
    graphics:FillRectangle(blueBrush, 0, 0, 400, 400)
 
-   // Set the clipping region to infinite, and draw the outlines 
+   // Set the clipping region to infinite, and draw the outlines
    // of the two previous clipping regions.
    graphics:ResetClip()
    Pen blackPen(Color(255, 0, 0, 0), 2.0)
@@ -3185,7 +3185,7 @@ function Example_SetClip2( )
    // Create a Region object, and get its handle.
    Region region(Rect(0, 0, 100, 100))
    hRegion := region:GetHRGN(graphics)
-   
+
    graphics:SetClip(hRegion)
 
    // Fill a rectangle to demonstrate the clipping region.
@@ -3935,7 +3935,7 @@ function OutlineExample()
 
    points = {;
       PointF(20.0, 20.0),  ;
-      PointF(160.0, 100.0),;  
+      PointF(160.0, 100.0),;
       PointF(140.0, 60.0), ;
       PointF(60.0, 100.0)}
 
@@ -3967,7 +3967,7 @@ function ReverseExample()
    pts = {Point(10, 60),;
                   Point(50, 110),;
                   Point(90, 60)}
-                  
+
    path:AddLines(pts)
    path:Reverse()
 
@@ -4062,9 +4062,9 @@ function WarpExample()
       PointF(280.0, 10.0), ;
       PointF(100.0, 150.0),;
       PointF(400.0, 150.0)}
-      
+
    path:Warp(destPts, srcRect)
-   
+
    // Draw the warped path.
    graphics:DrawPath(bluePen, path)
 
@@ -5807,26 +5807,26 @@ function Example_SetColormatrix( )
       local aColorMatrix
       local Blend := (100-50/*m_nTransparency*/)/100.0
       Graphics graphics(hdc)
-      
+
       Image oImage1( "images\seleccion_espana_b_2010.jpg" )
       Image oImage2( "images\yankees.jpg" )
-      
+
       ImageAttributes oImgAtts()
-      
+
       graphics:DrawImage( oImage1, 0, 0 )
-      
+
       aColorMatrix = { 1.0, 0.0, 0.0, 0.0, 0.0,  ;
                        0.0, 1.0, 0.0, 0.0, 0.0,  ;
                        0.0, 0.0, 1.0, 0.0, 0.0,  ;
                        0.0, 0.0, 0.0, Blend, 0.0,;
                        0.0, 0.0, 0.0, 0.0, 1.0   }
-                       
-                       
+
+
       oImgAtts:SetColorMatrix( aColorMatrix, ColorMatrixFlagsDefault, ColorAdjustTypeBitmap )
-      
+
       RectF destination(10,10,400,400)
       RectF source(0,0,1500,1500)
- 
+
       graphics:DrawImage(oImage2,destination, source, UnitPixel, oImgAtts)
 //      PRUEBABLEND( hDC, oImgAtts:handle, aColorMatrix )
    }
