@@ -469,12 +469,12 @@
 #xtranslate PixelOffsetMode.None          => (QualityMode.High + 1)
 #xtranslate PixelOffsetMode.Half          => (QualityMode.High + 2)
 // ---------------------------------------------------------------------------
-#xtranslate TextRenderingHint.SystemDefault                =>0)
-#xtranslate TextRenderingHint.SingleBitPerPixelGridFit     =>1)
-#xtranslate TextRenderingHint.SingleBitPerPixel            =>2)
-#xtranslate TextRenderingHint.AntiAliasGridFit             =>3)
-#xtranslate TextRenderingHint.AntiAlias                    =>4)
-#xtranslate TextRenderingHint.ClearTypeGridFit             =>5)
+#xtranslate TextRenderingHint.SystemDefault                => (0)
+#xtranslate TextRenderingHint.SingleBitPerPixelGridFit     => (1)
+#xtranslate TextRenderingHint.SingleBitPerPixel            => (2)
+#xtranslate TextRenderingHint.AntiAliasGridFit             => (3)
+#xtranslate TextRenderingHint.AntiAlias                    => (4)
+#xtranslate TextRenderingHint.ClearTypeGridFit             => (5)
 // ---------------------------------------------------------------------------
 #xtranslate MetafileType.Invalid                => (0)
 #xtranslate MetafileType.Wmf                    => (1)
@@ -1233,7 +1233,7 @@
 #xtranslate CombineModeXor                                => 3
 #xtranslate CombineModeExclude                            => 4
 #xtranslate CombineModeComplement                         => 5
-                                                         
+
 #xtranslate ColorAdjustTypeDefault                        => 0
 #xtranslate ColorAdjustTypeBitmap                         => 1
 #xtranslate ColorAdjustTypeBrush                          => 2
@@ -1253,7 +1253,7 @@
 #define    PixelFormatAlpha        0x00040000 // Has an alpha component
 #define    PixelFormatPAlpha       0x00080000 // Pre-multiplied alpha
 #define    PixelFormatExtended     0x00100000 // Extended color 16 bits/channel
-#define    PixelFormatCanonical    0x00200000 
+#define    PixelFormatCanonical    0x00200000
 
 #define    PixelFormat1bppIndexed     (1 | ( 1 << 8) | PixelFormatIndexed | PixelFormatGDI)
 #define    PixelFormat4bppIndexed     (2 | ( 4 << 8) | PixelFormatIndexed | PixelFormatGDI)
