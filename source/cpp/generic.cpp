@@ -261,3 +261,13 @@ HB_FUNC( MAKEBMPFROMHWND )
 {
   hb_retnl( ( LONG ) MakeBmpFromHWND( ( HWND ) hb_parnl( 1 ) ) );
 }
+
+HB_FUNC( C5_PTR2LONG ){
+   void * ptr = hb_parptr( 1 );
+   hb_retnl( ( LONG ) ptr );
+}
+
+HB_FUNC( C5_LONG2PTR ){
+	 void * l = ( void * ) hb_parnl( 1 );
+   hb_retptr( l );
+}

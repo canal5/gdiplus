@@ -5265,10 +5265,10 @@ function Example_RGGetHRGN( )
 
       hBrush = CreateSolidBrush( CLR_HRED )
 
-      FillRgn(hdc, Ptr2Long( hRgn ), hBrush)
+      FillRgn(hdc, C5_Ptr2Long( hRgn ), hBrush)
 
       DeleteObject(hBrush)
-      DeleteObject( Ptr2Long( hRgn ) )
+      DeleteObject( C5_Ptr2Long( hRgn ) )
 
 
    }
@@ -5731,7 +5731,7 @@ function Example_CaptureWnd( oTest )
    bPainted := { | hdc, ps, oWnd |
       local hBmp := MakeBmpFromHWND( oTest:oWnd:hWnd )
       local oBmp
-      Bitmap oBmp( Long2Ptr( hBmp ), 0 )
+      Bitmap oBmp( C5_Long2Ptr( hBmp ), 0 )
       DeleteObject( hBmp )
 
       Graphics graphics(hdc)
@@ -5791,8 +5791,8 @@ function Example_BMPFromHBITMAP( oTest )
 
    Bitmap bitmap(0, 0)
    // Clone a portion of the bitmap.
-   clone = bitmap:FromHBitmap( Long2Ptr( hBmp ), 0 )
-   DeleteObject( Long2Ptr( hBmp ) )
+   clone = bitmap:FromHBitmap( C5_Long2Ptr( hBmp ), 0 )
+   DeleteObject( C5_Long2Ptr( hBmp ) )
 
    // Draw the clone.
    graphics:DrawImage(Clone, 0, 0 )
@@ -5862,21 +5862,3 @@ exit procedure salida
   GdiplusShutdown()
 
 return
-
-#pragma BEGINDUMP
-#include <windows.h>
-#include <hbapi.h>
-
-HB_FUNC( PTR2LONG ){
-   void * ptr = hb_parptr( 1 );
-   hb_retnl( ( LONG ) ptr );
-}
-
-HB_FUNC( LONG2PTR ){
-	 void * l = ( void * ) hb_parnl( 1 );
-   hb_retptr( l );
-}
-
-#pragma ENDDUMP
-
-

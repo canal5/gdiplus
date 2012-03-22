@@ -1028,7 +1028,7 @@ return 0
    if( ValType( p1 ) == "O" )
       p1 = p1:handle
    elseif( ValType( p1 ) == "N" )
-      p1 = Long2Ptr( p1 )
+      p1 = C5_Long2Ptr( p1 )
    endif
 
    sta = C5GSetClip( ::handle, p1, p2 )

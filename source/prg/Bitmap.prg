@@ -24,7 +24,7 @@ function Bitmap( ... )
 return oBmp
 
 
-CLASS GPBitmap
+CLASS GPBitmap FROM GPImage
 
   DATA handle
 
@@ -142,31 +142,29 @@ return C5GPBitmapFromHBitmap( ::handle, p1, p2 )
   METHOD FromHICON() CLASS GPBitmap
 *********************************************************************************************************
 
-return 0
+return C5GPBitmapFromHIcon( ::handle, p1 )
 
 *********************************************************************************************************
-  METHOD FromResource() CLASS GPBitmap
+  METHOD FromResource( p1, p2 ) CLASS GPBitmap
 *********************************************************************************************************
 
-return 0
+return C5GPBitmapFromHIcon( ::handle, p1, p2 )
 
 *********************************************************************************************************
-  METHOD FromStream() CLASS GPBitmap
+  METHOD GetHBITMAP( oColor, hBitmap ) CLASS GPBitmap
 *********************************************************************************************************
+   
+   if ValType( oColor ) == "O"
+      oColor = oColor:handle 
+   endif
 
-return 0
-
-*********************************************************************************************************
-  METHOD GetHBITMAP() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
+return C5GPBitmapGetHBITMAP( ::handle, oColor, @hBitmap )
 
 *********************************************************************************************************
-  METHOD GetHICON() CLASS GPBitmap
+  METHOD GetHICON( hIcon ) CLASS GPBitmap
 *********************************************************************************************************
 
-return 0
+return C5GPBitmapGetHICON( ::handle, @hIcon)
 
 *********************************************************************************************************
   METHOD GetHistogram() CLASS GPBitmap
@@ -423,6 +421,62 @@ HB_FUNC( C5GPBITMAPFROMHICON )
 
 }
 
+HB_FUNC( C5GPBITMAPFROMRESOURCE )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );   
+   void * p1 = hb_parptr( 2 );
+   if( GP_IS_BITMAP( p ) && HB_ISPOINTER( 2 ) && HB_ISCHAR( 3 ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      Bitmap * o2;
+      PHB_ITEM pClone;      
+      WCHAR * cName = hb_GDIPLUS_parw( 3 );
+      HINSTANCE hInst = ( HINSTANCE ) p1;
+      o2 = o->FromResource( hInst, cName );
+      hb_xfree( cName );
+      pClone = GPNewGDIPLUSObject( o2, GP_IT_BITMAP );
+      hb_itemReturnRelease( pClone ); 
+    
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+
+HB_FUNC( C5GPBITMAPGETHBITMAP )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_BITMAP( p ) ){   
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      HBITMAP hOut;
+      Status sta;
+      if( HB_ISPOINTER( 2 ) ){
+         GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+         Color * oColor = ( Color * ) GP_GET( p2 );
+         sta = o->GetHBITMAP( *oColor, &hOut );
+      }else{
+         sta = o->GetHBITMAP( 0, &hOut );
+      }
+      hb_retptr( ( void * ) hOut );      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+
+HB_FUNC( C5GPBITMAPGETHICON )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_BITMAP( p ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      HICON hOut;
+      o->GetHICON( &hOut );
+      hb_retptr( ( void * ) hOut );
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
 
 //HB_FUNC( C5XXX ){
 //   HDC hdc = ( HDC ) hb_parnl( 1 );
