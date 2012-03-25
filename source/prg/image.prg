@@ -464,7 +464,7 @@ HB_FUNC( C5_GPIMAGE )
 HB_FUNC( C5GPIMAGECLONE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* ptr = ( Image * ) GP_GET( pObj );
       GDIPLUS * pObjClone = gdiplus_new( GP_IT_IMAGE );
       pObjClone->pObject = ( void * ) ptr->Clone();
@@ -483,7 +483,7 @@ HB_FUNC( C5GPIMAGEGETBOUNDS )
 HB_FUNC( C5GPIMAGEGETHEIGHT )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->GetHeight() );
    }else
@@ -496,7 +496,7 @@ HB_FUNC( C5GPIMAGEGETHORIZONTALRESOLUTION )
 {
 
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retnd( cimg->GetHorizontalResolution() );
    }else
@@ -508,7 +508,7 @@ HB_FUNC( C5GPIMAGEGETHORIZONTALRESOLUTION )
 HB_FUNC( C5GPIMAGEGETLASTSTATUS )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
      hb_retnd( cimg->GetLastStatus() );
    }else
@@ -519,7 +519,7 @@ HB_FUNC( C5GPIMAGEGETLASTSTATUS )
 HB_FUNC( C5GPIMAGEGETPALETTESIZE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->GetPaletteSize() );
    }else
@@ -532,7 +532,7 @@ HB_FUNC( C5GPIMAGEGETPHYSICALDIMENSION )
 {
 
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       SizeF* csize = hb_SizeF_par( 2 );
 
@@ -547,7 +547,7 @@ HB_FUNC( C5GPIMAGEGETPIXELFORMAT )
 {
 
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->GetPixelFormat() );
    }else
@@ -558,7 +558,7 @@ HB_FUNC( C5GPIMAGEGETPIXELFORMAT )
 HB_FUNC( C5GPIMAGEGETPROPERTYCOUNT )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->GetPropertyCount() );
    }else
@@ -569,7 +569,7 @@ HB_FUNC( C5GPIMAGEGETPROPERTYCOUNT )
 HB_FUNC( C5GPIMAGEGETTYPE )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->GetType() );
    }else
@@ -580,7 +580,7 @@ HB_FUNC( C5GPIMAGEGETTYPE )
 HB_FUNC( C5GPIMAGEGETVERTICALRESOLUTION )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retnd( cimg->GetVerticalResolution() );
    }else
@@ -591,7 +591,7 @@ HB_FUNC( C5GPIMAGEGETVERTICALRESOLUTION )
 HB_FUNC( C5GPIMAGEGETWIDTH )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( (int)cimg->GetWidth() );
    }else
@@ -601,7 +601,7 @@ HB_FUNC( C5GPIMAGEGETWIDTH )
 HB_FUNC( C5GPIMAGEROTATEFLIP )
 {
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( GP_IS_IMAGE( pObj ) ){
+   if( GP_IS_ANYIMAGE( pObj ) ){
       Image* cimg = ( Image * ) GP_GET( pObj );
       hb_retni( cimg->RotateFlip( (RotateFlipType) hb_parni(2) ) );
    }else
@@ -618,7 +618,7 @@ HB_FUNC( C5GPIMAGESAVE )
 //  );
 
    GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
-   if( ! GP_IS_IMAGE( pObj ) )
+   if( ! GP_IS_ANYIMAGE( pObj ) )
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
   Image* img = ( Image * ) GP_GET( pObj );

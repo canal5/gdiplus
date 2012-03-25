@@ -31,6 +31,8 @@
 #xcommand PATHDATA           <o>       ()                                                             => <o>       := PathData           ()
 #xcommand BITMAP             <o>       ( <par1> [, <par2> [, <par3> [, <par4>, <par5> ] ] ] )         => <o>       := Bitmap             ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>] )
 #xcommand IMAGEATTRIBUTES    <o>       ()                                                             => <o>       := ImageAttributes    ()
+#xcommand BITMAPDATA         <o>       ()                                                             => <o>       := BitmapData         ()
+
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"
 #xtranslate guidStr.ImageFormatMemoryBMP      =>   "B96B3CAA-0728-11D3-9D7B-0000F81EF32E"
@@ -1246,6 +1248,21 @@
 #xtranslate ColorMatrixFlagsSkipGrays                     => 1
 #xtranslate ColorMatrixFlagsAltGray                       => 2
 
+#xtranslate HistogramFormatARGB                           => 0
+#xtranslate HistogramFormatPARGB                          => 1
+#xtranslate HistogramFormatRGB                            => 2
+#xtranslate HistogramFormatGray                           => 3
+#xtranslate HistogramFormatB                              => 4
+#xtranslate HistogramFormatG                              => 5
+#xtranslate HistogramFormatR                              => 6
+#xtranslate HistogramFormatA                              => 7
+
+#xtranslate ImageLockModeRead                             => 0x1
+#xtranslate ImageLockModeWrite                            => 0x2
+#xtranslate ImageLockModeUserInputBuf                     => 0x4 
+
+
+
 #define    PixelFormatDontCare        0
 
 #define    PixelFormatIndexed      0x00010000 // Indexes into a palette
@@ -1255,20 +1272,20 @@
 #define    PixelFormatExtended     0x00100000 // Extended color 16 bits/channel
 #define    PixelFormatCanonical    0x00200000
 
-#define    PixelFormat1bppIndexed     (1 | ( 1 << 8) | PixelFormatIndexed | PixelFormatGDI)
-#define    PixelFormat4bppIndexed     (2 | ( 4 << 8) | PixelFormatIndexed | PixelFormatGDI)
-#define    PixelFormat8bppIndexed     (3 | ( 8 << 8) | PixelFormatIndexed | PixelFormatGDI)
-#define    PixelFormat16bppGrayScale  (4 | (16 << 8) | PixelFormatExtended)
-#define    PixelFormat16bppRGB555     (5 | (16 << 8) | PixelFormatGDI)
-#define    PixelFormat16bppRGB565     (6 | (16 << 8) | PixelFormatGDI)
-#define    PixelFormat16bppARGB1555   (7 | (16 << 8) | PixelFormatAlpha | PixelFormatGDI)
-#define    PixelFormat24bppRGB        (8 | (24 << 8) | PixelFormatGDI)
-#define    PixelFormat32bppRGB        (9 | (32 << 8) | PixelFormatGDI)
-#define    PixelFormat32bppARGB       (10 | (32 << 8) | PixelFormatAlpha | PixelFormatGDI | PixelFormatCanonical)
-#define    PixelFormat32bppPARGB      (11 | (32 << 8) | PixelFormatAlpha | PixelFormatPAlpha | PixelFormatGDI)
-#define    PixelFormat48bppRGB        (12 | (48 << 8) | PixelFormatExtended)
-#define    PixelFormat64bppARGB       (13 | (64 << 8) | PixelFormatAlpha  | PixelFormatCanonical | PixelFormatExtended)
-#define    PixelFormat64bppPARGB      (14 | (64 << 8) | PixelFormatAlpha  | PixelFormatPAlpha | PixelFormatExtended)
+#define    PixelFormat1bppIndexed     hb_bitOr(1,  hb_bitShift( 1, 8), PixelFormatIndexed , PixelFormatGDI)
+#define    PixelFormat4bppIndexed     hb_bitOr(2,  hb_bitShift( 4, 8), PixelFormatIndexed , PixelFormatGDI)
+#define    PixelFormat8bppIndexed     hb_bitOr(3,  hb_bitShift( 8, 8), PixelFormatIndexed , PixelFormatGDI)
+#define    PixelFormat16bppGrayScale  hb_bitOr(4,  hb_bitShift(16, 8), PixelFormatExtended)
+#define    PixelFormat16bppRGB555     hb_bitOr(5,  hb_bitShift(16, 8), PixelFormatGDI)
+#define    PixelFormat16bppRGB565     hb_bitOr(6,  hb_bitShift(16, 8), PixelFormatGDI)
+#define    PixelFormat16bppARGB1555   hb_bitOr(7,  hb_bitShift(16, 8), PixelFormatAlpha , PixelFormatGDI)
+#define    PixelFormat24bppRGB        hb_bitOr(8,  hb_bitShift(24, 8), PixelFormatGDI)
+#define    PixelFormat32bppRGB        hb_bitOr(9,  hb_bitShift(32, 8), PixelFormatGDI)
+#define    PixelFormat32bppARGB       hb_bitOr(10, hb_bitShift(32, 8), PixelFormatAlpha , PixelFormatGDI , PixelFormatCanonical)
+#define    PixelFormat32bppPARGB      hb_bitOr(11, hb_bitShift(32, 8), PixelFormatAlpha , PixelFormatPAlpha , PixelFormatGDI)
+#define    PixelFormat48bppRGB        hb_bitOr(12, hb_bitShift(48, 8), PixelFormatExtended)
+#define    PixelFormat64bppARGB       hb_bitOr(13, hb_bitShift(64, 8), PixelFormatAlpha  , PixelFormatCanonical , PixelFormatExtended)
+#define    PixelFormat64bppPARGB      hb_bitOr(14, hb_bitShift(64, 8), PixelFormatAlpha  , PixelFormatPAlpha , PixelFormatExtended)
 #define    PixelFormatMax             15
 
 // ---------------------------------------------------------------------------

@@ -59,8 +59,8 @@ CLASS GPBitmap FROM GPImage
   METHOD FromStream()    INLINE Msginfo( "Not implemented" )
   METHOD GetHBITMAP()
   METHOD GetHICON()
-  METHOD GetHistogram()
-  METHOD GetHistogramSize()
+  METHOD GetHistogram()     INLINE Msginfo( "Not implemented" )
+  METHOD GetHistogramSize() INLINE Msginfo( "Not implemented" )
   METHOD GetPixel()
   METHOD LockBits()
   METHOD SetPixel()
@@ -166,48 +166,37 @@ return C5GPBitmapGetHBITMAP( ::handle, oColor, @hBitmap )
 
 return C5GPBitmapGetHICON( ::handle, @hIcon)
 
-*********************************************************************************************************
-  METHOD GetHistogram() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
 
 *********************************************************************************************************
-  METHOD GetHistogramSize() CLASS GPBitmap
+  METHOD GetPixel( x, y, color ) CLASS GPBitmap
 *********************************************************************************************************
 
-return 0
-
-*********************************************************************************************************
-  METHOD GetPixel() CLASS GPBitmap
-*********************************************************************************************************
-
-return 0
+return C5GPBitmapGetPixel( ::handle, x, y, color:handle )
 
 
 *********************************************************************************************************
-  METHOD LockBits() CLASS GPBitmap
+  METHOD LockBits( rect, flag, format, oData ) CLASS GPBitmap
 *********************************************************************************************************
 
-return 0
+return C5GPBitmapLockBits( ::handle, rect:handle, flag, format, oData:handle )
 
 *********************************************************************************************************
-  METHOD SetPixel() CLASS GPBitmap
+  METHOD SetPixel( x, y, color ) CLASS GPBitmap
 *********************************************************************************************************
 
-return 0
+return C5GPBitmapSetPixel( ::handle, x, y, color:handle )
 
 *********************************************************************************************************
-  METHOD SetResolution() CLASS GPBitmap
+  METHOD SetResolution( x, y ) CLASS GPBitmap
 *********************************************************************************************************
 
-return 0
+return C5GPBitmapSetResolution( ::handle, x, y )
 
 *********************************************************************************************************
-  METHOD UnlockBits() CLASS GPBitmap
+  METHOD UnlockBits( locked ) CLASS GPBitmap
 *********************************************************************************************************
 
-return 0
+return C5GPBitmapUnlockBits( ::handle, locked:handle )
 
 
 
@@ -478,10 +467,131 @@ HB_FUNC( C5GPBITMAPGETHICON )
 
 }
 
+HB_FUNC( C5GPBITMAPGETHISTOGRAMSIZE )
+{
+
+//   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+//   if( GP_IS_BITMAP( p ) ){
+//      Bitmap * o = ( Bitmap * ) GP_GET( p );
+//      HistogramFormat format = ( HistogramFormat ) hb_parni( 2 );
+//      UNIT NumberOfEntries;
+//      Status sta;
+//      sta = o->GetHistogramSize( format, &NumberOfEntries );
+//      hb_storvni( NumberOfEntries, 3 );
+//      hb_retni( ( int ) sta );
+//
+//   }else
+//     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+
+HB_FUNC( C5GPBITMAPGETPIXEL )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p4 = hb_GDIPLUS_par( 4 );
+   if( GP_IS_BITMAP( p ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      int x = hb_parni( 2 );
+      int y = hb_parni( 3 );
+      Color * c = ( Color * ) GP_GET( p4 );
+      Status sta;
+      
+      sta = o->GetPixel( x, y, c );
+      
+      hb_retni( ( int ) sta );
+
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+
+HB_FUNC( C5GPBITMAPSETPIXEL )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p4 = hb_GDIPLUS_par( 4 );
+   if( GP_IS_BITMAP( p ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      int x = hb_parni( 2 );
+      int y = hb_parni( 3 );
+      Color * c = ( Color * ) GP_GET( p4 );
+      Status sta;
+      
+      sta = o->SetPixel( x, y, *c );
+      
+      hb_retni( ( int ) sta );
+
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( C5GPBITMAPLOCKBITS )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   GDIPLUS * p5 = hb_GDIPLUS_par( 5 );
+   if( GP_IS_BITMAP( p ) && GP_IS_RECT( p2 ) && GP_IS_BITMAPDATA( p5 ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      Rect * r = ( Rect * ) GP_GET( p2 );
+      BitmapData * locked = ( BitmapData * ) GP_GET( p5 );
+      UINT flag = ( UINT ) hb_parni( 3 );
+      PixelFormat format = ( PixelFormat ) hb_parni( 4 );
+      Status sta;
+      
+      sta = o->LockBits( r, flag, format, locked );
+      
+      hb_retni( ( int ) sta );      
+
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( C5GPBITMAPUNLOCKBITS )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   GDIPLUS * p2 = hb_GDIPLUS_par( 2 );
+   if( GP_IS_BITMAP( p ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      BitmapData * locked = ( BitmapData * ) GP_GET( p2 );
+      Status sta;
+      sta = o->UnlockBits( locked );
+      
+      hb_retni( ( int ) sta );
+      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+HB_FUNC( C5GPBITMAPSETRESOLUTION )
+{
+
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );   
+   if( GP_IS_BITMAP( p ) ){
+      Bitmap * o = ( Bitmap * ) GP_GET( p );
+      int x = hb_parni( 2 );
+      int y = hb_parni( 3 );
+      Status sta;
+      sta = o->SetResolution( x, y );
+      
+      hb_retni( ( int ) sta );
+      
+   }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
+
 //HB_FUNC( C5XXX ){
 //   HDC hdc = ( HDC ) hb_parnl( 1 );
-//   Example_ConvertFormat( hdc );
-//
+//   Example_GetPixel( hdc );
 //}
 
 

@@ -30,24 +30,7 @@ ENDCLASS
   METHOD New() CLASS GPBitmapData
 *********************************************************************************************************
 
-local iParams := PCount()
-
-
-  if iParams == 0
-     ::handle := C5_GPBitmapData()
-  elseif iParams == 1
-     ::handle := C5_GPBitmapData( p1 )                               //
-  elseif iParams == 3
-     ::handle := C5_GPBitmapData( p1, p2, p3 )                       //
-  elseif iParams == 4
-     ::handle := C5_GPBitmapData( p1, p2, p3 )                       //
-  elseif iParams == 5
-     ::handle := C5_GPBitmapData( p1, p2, p3, p4, p5 )               //
-  elseif iParams == 6
-     ::handle := C5_GPBitmapData( p1, p2, p3, p4, p5, p6 )           //
-  elseif iParams == 7
-     ::handle := C5_GPBitmapData( p1, p2, p3, p4, p5, p6, p7 )       //
-  endif
+   ::handle := C5_GPBitmapData()
 
 return self
 
@@ -87,41 +70,20 @@ return nil
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
+#include <gc.h>
 
-using namespace Gdiplus;
 
 HB_FUNC( C5_GPBITMAPDATA )
 {
-   //BitmapData* clr;
-   //int iParams = hb_pcount();
-   //
-   //if( iParams == 0 )
-   //    clr = new BitmapData();
-   //else if (iParams == 1 )
-   //    clr = new BitmapData( hb_parnl( 1 ) );
-   //else if (iParams == 3 )
-   //    clr = new BitmapData( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ) );
-   //else
-   //    clr = new BitmapData( hb_parnl( 1 ), hb_parnl( 2 ), hb_parnl( 3 ), hb_parnl( 4 ) );
-   //
-   //hb_retptr( (void*)  );
+   BitmapData * o;
+   GDIPLUS * pObj = gdiplus_new( GP_IT_BITMAPDATA );
+      
+   o = new BitmapData();
+   
+   GP_SET( pObj, o );
+   hb_GDIPLUS_ret( pObj );
+   
 }
-
-HB_FUNC( C5DELETEBITMAPDATA )
-{
-   //BitmapData* clr = (BitmapData*) hb_parptr( 1 );
-   //delete (BitmapData*) clr;
-   //hb_ret();
-}
-
-//HB_FUNC( GPBitmapData... )
-//{
-//   BitmapData* ptr = (BitmapData*) hb_parptr( 1 );
-//   hb_retni( ptr->GetA() );
-//}
 
 #pragma ENDDUMP
 

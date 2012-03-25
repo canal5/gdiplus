@@ -38,7 +38,8 @@ static const GPNEWOBJ _newo[] = {
    { "GPREGION"                 ,"REGION"                 , GP_IT_REGION                  , sizeof( Region ) },
    { ""                         ,""                       , GP_IT_REGIONDATA              , sizeof( BYTE ) },
    { "GPLINEARGRADIENTBRUSH"    ,"LINEARGRADIENTBRUSH"    , GP_IT_LINEARGRADIENTBRUSH     , sizeof( LinearGradientBrush ) },
-   { "GPPATHDATA"               ,"PATHDATA"               , GP_IT_PATHDATA                , sizeof( PathData ) }
+   { "GPPATHDATA"               ,"PATHDATA"               , GP_IT_PATHDATA                , sizeof( PathData ) },
+   { "GPBITMAPDATA"             ,"GPBITMAPDATA"           , GP_IT_BITMAPDATA              , sizeof( BitmapData ) }
 };
 
 

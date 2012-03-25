@@ -8,7 +8,7 @@ Local oTest
    DEFINE SUITTEST oTest
 
 //      TestsGraphics()
-      TestsPen()
+//      TestsPen()
 //      TestsColor()
 //      TestsBrush()
 //      TestMatrix()
@@ -26,8 +26,8 @@ Local oTest
 //      TestFont()
 //      TestStringFormat()
 //      TestRegion()
-//      TestBitmap( oTest )
-      TestImageAtt( oTest )
+      TestBitmap( oTest )
+//      TestImageAtt( oTest )
 
       SHOW RESULT
 
@@ -195,11 +195,15 @@ function TestBitmap( oTest )
 
    SEPARADOR( "BITMAP" )
    Bitmap oBmp(100,100)
+   Color oColor()
 
    TEST !Empty( oBmp:handle ) DESCRIPTION "Bitmap( INT, INT, [PixelFormat] )"
    TEST .T. DESCRIPTION "Clone()"      SAMPLE Example_BMPClone3()
    TEST !Empty( oBmp:fromFile( "images\seleccion_espana_b_2010.jpg" ):handle ) DESCRIPTION "FromFile()" SAMPLE Example_BMPFromFile()
    TEST .T. DESCRIPTION "FromHBitmap()" SAMPLE Example_BMPFromHBITMAP( oTest )
+   TEST oBmp:GetPixel( 1, 1, oColor ) == 0 DESCRIPTION "GetPixel" SAMPLE Example_GetPixel()
+   TEST oBmp:SetPixel(10, 10, Color(255, 0, 0, 0) ) == 0 DESCRIPTION "SetPixel" SAMPLE Example_SetPixel()
+   TEST .T. DESCRIPTION "LockBits()" SAMPLE Example_LockBits2()
 
 
 return 0
@@ -5836,13 +5840,123 @@ function Example_SetColormatrix( )
 return nil
 
 
+function Example_GetPixel( )
+   local bPainted := { | hdc |
+
+      Graphics graphics(hdc)
+
+   Graphics graphics(hdc)
+
+   // Create a Bitmap object from a JPEG file.
+   Bitmap myBitmap( "images\seleccion_espana_b_2010.jpg" )
+
+   // Get the value of a pixel from myBitmap.
+   Color pixelColor()
+   myBitmap:GetPixel(25, 25, pixelColor)
+
+   // Fill a rectangle with the pixel color.
+   SolidBrush brush(pixelColor)
+   graphics:FillRectangle(brush, Rect(0, 0, 100, 100))      
+
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+function Example_SetPixel( )
+   local bPainted := { | hdc |
+
+   Graphics graphics(hdc)
+   // Create a Bitmap object from a JPEG file.
+   Bitmap myBitmap( "images\seleccion_espana_b_2010.jpg" )
+
+   // Draw the bitmap.
+   graphics:DrawImage(myBitmap, 0, 0)
+
+   // Create a checkered pattern with black pixels.
+   
+   for row = 0 to myBitmap:GetWidth() step 2 
+      for col = 0 to myBitmap:GetHeight() step 2
+         myBitmap:SetPixel(row, col, Color(255, 0, 0, 0))
+      next
+   next
+
+   // Draw the altered bitmap.
+   graphics:DrawImage(myBitmap, 200, 0)   
+
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+
+function Example_LockBits2( )
+   local bPainted := { | hdc |
+
+   Graphics graphics(hdc)
+   // Create a Bitmap object from a BMP file.
+   Bitmap bitmap("images\ice_cream.png")
+
+   // Display the bitmap before locking and altering it.
+   graphics:DrawImage(bitmap, 10, 10)
+
+   // Lock a 50xs30 rectangular portion of the bitmap for writing.
+   BitmapData bitmapData()
+   Rect rect(20, 10, 50, 30)
+
+   bitmap:LockBits(          ;
+      rect,                  ;
+      ImageLockModeWrite,    ;
+      PixelFormat32bppARGB,  ;
+      bitmapData)
+
+   // Write to the temporary buffer provided by LockBits.
+
+   EXALOCKBIT( bitmapData:handle )
+   
+   // Commit the changes, and unlock the 50x30 portion of the bitmap:  
+   bitmap:UnlockBits(bitmapData)
+
+   // Display the altered bitmap.
+   graphics:DrawImage(bitmap, 150, 10)
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
+#pragma BEGINDUMP
+#include <gc.h>
+
+HB_FUNC( EXALOCKBIT ){
+   
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   BitmapData * bitmapData = ( BitmapData * ) GP_GET( p );
+   UINT row, col;
+   UINT* pixels;
+
+   pixels = ( UINT * )bitmapData->Scan0;
+
+   for(row = 0; row < 30; ++row)
+   {
+      for(col = 0; col < 50; ++col)
+      {
+         pixels[row * bitmapData->Stride / 4 + col] = 0xff00ff00;
+      }
+   }
+
+}
+
+#pragma ENDDUMP
 
 
 /*prototype
 function Example_( )
    local bPainted := { | hdc |
 
-      Graphics graphics(hdc)
+   Graphics graphics(hdc)
 
    }
 
