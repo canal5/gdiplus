@@ -7,7 +7,7 @@ Local oTest
 
    DEFINE SUITTEST oTest
 
-//      TestsGraphics()
+      TestsGraphics()
 //      TestsPen()
 //      TestsColor()
 //      TestsBrush()
@@ -26,7 +26,7 @@ Local oTest
 //      TestFont()
 //      TestStringFormat()
 //      TestRegion()
-      TestBitmap( oTest )
+//      TestBitmap( oTest )
 //      TestImageAtt( oTest )
 
       SHOW RESULT
@@ -789,6 +789,7 @@ return 0
    TEST .T.      DESCRIPTION "DrawBezier( PEN, INT, INT, INT, INT, INT,INT,INT,INT )"      SAMPLE Example_DrawBezier4()
    TEST .T.      DESCRIPTION "DrawBeziers( PEN, APOINT )"      SAMPLE Example_DrawBeziers()
    TEST .T.      DESCRIPTION "DrawBeziers( PEN, APOINTF )"      SAMPLE Example_DrawBeziers2()
+   TEST .T.      DESCRIPTION "DrawCachedBitmap( )"      SAMPLE Example_DrawCachedBitmap()
 
 
 
@@ -3072,6 +3073,24 @@ function Example_DrawBeziers2( )
    exampleWindow( bPainted )
 
 return nil
+
+function Example_DrawCachedBitmap( )
+   local bPainted := { | hdc |
+
+   Graphics graphics(hdc)
+   Bitmap bitmap("images\ice_cream.png")
+
+   // Use the Bitmap object to create a CachedBitmap object.
+   CachedBitmap cachedBitmap( bitmap, graphics)
+
+   // Draw the cached bitmap.
+   graphics:DrawCachedBitmap( cachedBitmap, 20, 10 )
+   }
+
+   exampleWindow( bPainted )
+
+return nil
+
 
 function Example_ResetClip( )
    local bPainted := { | hdc |

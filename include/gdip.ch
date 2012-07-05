@@ -32,6 +32,7 @@
 #xcommand BITMAP             <o>       ( <par1> [, <par2> [, <par3> [, <par4>, <par5> ] ] ] )         => <o>       := Bitmap             ( [<par1>][, <par2>][, <par3>][, <par4>][, <par5>] )
 #xcommand IMAGEATTRIBUTES    <o>       ()                                                             => <o>       := ImageAttributes    ()
 #xcommand BITMAPDATA         <o>       ()                                                             => <o>       := BitmapData         ()
+#xcommand CACHEDBITMAP       <o>       ( <par1>, <par2> )                                             => <o>       := CachedBitmap       ( <par1>, <par2> )
 
 
 #xtranslate guidStr.ImageFormatUndefined      =>   "B96B3CA9-0728-11D3-9D7B-0000F81EF32E"

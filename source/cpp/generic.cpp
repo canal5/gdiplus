@@ -39,7 +39,8 @@ static const GPNEWOBJ _newo[] = {
    { ""                         ,""                       , GP_IT_REGIONDATA              , sizeof( BYTE ) },
    { "GPLINEARGRADIENTBRUSH"    ,"LINEARGRADIENTBRUSH"    , GP_IT_LINEARGRADIENTBRUSH     , sizeof( LinearGradientBrush ) },
    { "GPPATHDATA"               ,"PATHDATA"               , GP_IT_PATHDATA                , sizeof( PathData ) },
-   { "GPBITMAPDATA"             ,"GPBITMAPDATA"           , GP_IT_BITMAPDATA              , sizeof( BitmapData ) }
+   { "GPBITMAPDATA"             ,"BITMAPDATA"             , GP_IT_BITMAPDATA              , sizeof( BitmapData ) },
+   { "GPCACHEDBITMAP"           ,"GPBITMAPDATA"           , GP_IT_CACHEDBITMAP            , sizeof( CachedBitmap ) }
 };
 
 

@@ -1439,7 +1439,6 @@ HB_FUNC( C5GDRAWBEZIERS )
 {
    GDIPLUS * pG = hb_GDIPLUS_par( 1 );
    GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
-   Traza( "0");
    if( GP_IS_GRAPHICS( pG ) && GP_IS_PEN( pObj ) && HB_ISARRAY( 3 ) )
    {
      Graphics *g = ( Graphics * ) GP_GET( pG );
@@ -1448,16 +1447,12 @@ HB_FUNC( C5GDRAWBEZIERS )
      BOOL lF;
      void * pPoints;
      PHB_ITEM aPoints = hb_param( 3, HB_IT_ARRAY );
-     Traza( "1");
      pPoints = ConvertArray2Point( aPoints, &lF );
-     Traza( "2");
      int iLen = hb_arrayLen( aPoints );
-     Traza( "3");
      if( lF )
         sta = g->DrawBeziers( pen, ( PointF * ) pPoints, iLen );
      else
         sta = g->DrawBeziers( pen, ( Point * ) pPoints, iLen );
-     Traza( "4");
      hb_retni( ( int ) sta );
 
    }else
@@ -1469,13 +1464,12 @@ HB_FUNC( C5GDRAWBEZIERS )
 
 HB_FUNC( C5GDRAWCACHEDBITMAP )
 {
-    Graphics* g = hb_Graphics_par( 1 );
-    CachedBitmap* b = (CachedBitmap*) hb_parptr( 2 );
-
-   if( g && b && hb_pcount() > 3 )
-   {
-    //TODO Garbage Collector for CachedBitmap
-     g->DrawCachedBitmap( b, hb_parni( 4 ), hb_parni( 3 ));
+   GDIPLUS * pG = hb_GDIPLUS_par( 1 );
+   GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
+   if( GP_IS_GRAPHICS( pG ) && GP_IS_CACHEDBITMAP( pObj ) ){
+     Graphics *g = ( Graphics * ) GP_GET( pG );
+     CachedBitmap* b = (CachedBitmap*) GP_GET( pObj );
+     g->DrawCachedBitmap( b, hb_parni( 4 ), hb_parni( 3 ) );
    }
    else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );

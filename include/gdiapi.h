@@ -42,6 +42,7 @@ typedef struct __gdiplus
 #define GP_IT_PATHDATA     ( ( int ) 0x0001B )
 #define GP_IT_IMAGEATTRIBUTES ( ( int ) 0x0001C )
 #define GP_IT_BITMAPDATA   ( ( int ) 0x0001D )
+#define GP_IT_CACHEDBITMAP ( ( int ) 0x0001E )
 
 #define GP_IS_GRAPHICS( p ) ( ( GP_OBJECT_TYPE( p ) == GP_IT_GRAPHICS ) )
 #define GP_IS_RECTF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_RECTF )    )
@@ -74,6 +75,7 @@ typedef struct __gdiplus
 #define GP_IS_ANYIMAGE( p )       ( GP_IS_BITMAP( p ) || GP_IS_IMAGE( p ) )
 #define GP_IS_IMAGEATTRIBUTES( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_IMAGEATTRIBUTES ) )
 #define GP_IS_BITMAPDATA( p )     ( GP_OBJECT_TYPE( p ) == GP_IT_BITMAPDATA )
+#define GP_IS_CACHEDBITMAP( p )   ( GP_OBJECT_TYPE( p ) == GP_IT_CACHEDBITMAP )
 
 #define HB_ISDOUBLE( n )   ( hb_param( n, HB_IT_DOUBLE ) != NULL )
 #define HB_ISINTEGER( n )  ( hb_param( n, HB_IT_INTEGER) != NULL )

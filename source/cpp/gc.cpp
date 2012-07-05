@@ -149,6 +149,9 @@ void gdiplus_destroy( GDIPLUS * p ){
      case GP_IT_BITMAPDATA:
          delete ( BitmapData * ) p->pObject;
          break;
+     case GP_IT_CACHEDBITMAP:
+         delete ( CachedBitmap * ) p->pObject;
+         break;         
    }
    hb_xfree( p );
 

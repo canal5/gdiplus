@@ -13,6 +13,7 @@ CLASS GPCachedBitmap
   METHOD New(oBitmap, graphics) CONSTRUCTOR
 
   METHOD Destroy()
+  
   DESTRUCTOR Destroy()
 
   METHOD GetLastStatus()
@@ -44,26 +45,39 @@ return C5GPCachedBitmapGetLastStatus(::handle)
 
 
 #pragma BEGINDUMP
-#include "windows.h"
-#include "hbapi.h"
-#include <gdiplus.h>
-
-using namespace Gdiplus;
+#include <gc.h>
 
 HB_FUNC( C5_GPCACHEDBITMAP )
 {
-   Bitmap* bmp = (Bitmap*) hb_parptr( 1 );
-   Graphics* gr = (Graphics*) hb_parptr( 2 );
+   CachedBitmap * o;
+   GDIPLUS * pObj = gdiplus_new( GP_IT_CACHEDBITMAP );
+   BOOL lOk = true;
+   
+   GDIPLUS * b = hb_GDIPLUS_par( 1 );
+   GDIPLUS * g = hb_GDIPLUS_par( 2 );
+   if( GP_IS_BITMAP( b ) && GP_IS_GRAPHICS( g ) ){
+      Bitmap * bmp = ( Bitmap * ) GP_GET( b );
+      Graphics * grp = ( Graphics * ) GP_GET( g );
+      o = new CachedBitmap( bmp, grp );
+   }else
+      lOk = false;
 
-   CachedBitmap* cbmp = new CachedBitmap( bmp, gr);
-
-   hb_retptr( (void*) cbmp );
+   if( lOk ){
+      GP_SET( pObj, o );
+      hb_GDIPLUS_ret( pObj );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      
 }
 
 HB_FUNC( C5GPCACHEDBITMAPGETLASTSTATUS )
 {
-   CachedBitmap* ptr = (CachedBitmap*) hb_parptr( 1 );
-   hb_retni( ptr->GetLastStatus() );
+   GDIPLUS * p = hb_GDIPLUS_par( 1 );
+   if( GP_IS_CACHEDBITMAP( p ) ){      
+      CachedBitmap * o = ( CachedBitmap * ) GP_GET( p );
+      hb_retni( o->GetLastStatus() );
+   }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
 #pragma ENDDUMP

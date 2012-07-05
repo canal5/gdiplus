@@ -246,18 +246,6 @@ return C5GPBitmapUnlockBits( ::handle, locked:handle )
 //Bitmap::UnlockBits                                              The Bitmap::UnlockBits method unlocks a portion of this bitmap that was previously locked by a call to Bitmap::LockBits.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 #pragma BEGINDUMP
 #include <gc.h>
 
