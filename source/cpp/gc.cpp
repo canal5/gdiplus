@@ -1,3 +1,4 @@
+//$cabecera$
 #include <gc.h>
 
 
