@@ -790,11 +790,13 @@ return 0
    TEST .T.      DESCRIPTION "DrawBeziers( PEN, APOINT )"      SAMPLE Example_DrawBeziers()
    TEST .T.      DESCRIPTION "DrawBeziers( PEN, APOINTF )"      SAMPLE Example_DrawBeziers2()
    TEST .T.      DESCRIPTION "DrawCachedBitmap( )"      SAMPLE Example_DrawCachedBitmap()
-
+   TEST .T.      DESCRIPTION "DrawPie( Pen, INT, INT, INT, INT, REAL, REAL )"  SAMPLE Example_DrawPie1()
+   TEST .T.      DESCRIPTION "DrawPie( Pen, REAL, REAL, REAL, REAL, REAL, REAL )"  SAMPLE Example_DrawPie2()
+   TEST .T.      DESCRIPTION "DrawPie( Pen, Rect, REAL, REAL )"  SAMPLE Example_DrawPie3()
+   TEST .T.      DESCRIPTION "DrawPie( Pen, RectF, REAL, REAL )"  SAMPLE Example_DrawPie4()
 
 
 return 0
-
 
 
 *********************************************************************************************************************
@@ -3089,6 +3091,103 @@ function Example_DrawCachedBitmap( )
 
    exampleWindow( bPainted )
 
+return nil
+
+
+function Example_DrawPie1()
+   local bPainted := { | hDC |
+   LOCAL x := 0
+   LOCAL y := 0
+   LOCAL width := 200
+   LOCAL height := 100
+   LOCAL startAngle := 0.0
+   LOCAL sweepAngle := 45.0
+
+   Graphics graphics(hdc)
+
+   // Create a Pen object.
+   Pen blackPen(Color(255, 0, 0, 0), 3)
+
+   // Define the pie.
+
+
+   // Draw the pie.
+   graphics:DrawPie(blackPen, x, y, width, height, startAngle, sweepAngle)
+}
+   exampleWindow( bPainted )
+return nil
+
+function Example_DrawPie2()
+   local bPainted := { | hDC |
+   LOCAL x := 10.1
+   LOCAL y := 5.5
+   LOCAL width := 200.8
+   LOCAL height := 100.3
+   LOCAL startAngle := 30.0
+   LOCAL sweepAngle := 70.0
+
+   Graphics graphics(hdc)
+
+   // Create a Pen object.
+   Pen blackPen(Color(255, 0, 0, 0), 3)
+
+   // Define the pie.
+
+
+   // Draw the pie.
+   graphics:DrawPie(blackPen, x, y, width, height, startAngle, sweepAngle)
+}
+   exampleWindow( bPainted )
+return nil
+
+function Example_DrawPie3()
+   local bPainted := { | hDC |
+   LOCAL x := 0
+   LOCAL y := 0
+   LOCAL width := 200
+   LOCAL height := 100
+   LOCAL startAngle := 0.0
+   LOCAL sweepAngle := 45.0
+
+   Graphics graphics(hdc)
+   
+   Rect rect( x, y, width, height ) 
+
+   // Create a Pen object.
+   Pen blackPen(Color(255, 0, 0, 0), 3)
+
+   // Define the pie.
+
+
+   // Draw the pie.
+   graphics:DrawPie(blackPen, rect, startAngle, sweepAngle)
+}
+   exampleWindow( bPainted )
+return nil
+
+function Example_DrawPie4()
+   local bPainted := { | hDC |
+   LOCAL x := 10.1
+   LOCAL y := 5.5
+   LOCAL width := 200.8
+   LOCAL height := 100.3
+   LOCAL startAngle := 30.0
+   LOCAL sweepAngle := 70.0
+
+   Graphics graphics(hdc)
+
+   RectF rect( x, y, width, height ) 
+
+   // Create a Pen object.
+   Pen blackPen(Color(255, 0, 0, 0), 3)
+
+   // Define the pie.
+
+
+   // Draw the pie.
+   graphics:DrawPie(blackPen, rect, startAngle, sweepAngle)
+}
+   exampleWindow( bPainted )
 return nil
 
 

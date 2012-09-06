@@ -24,7 +24,7 @@ MAP_FILE      = NO
 # Application directories & filenames ########################################
 
 APP_NAME         = gdiplus  # (Your EXE name without extension)
-APP_PRG_DIR      = source\prg
+APP_SRC_DIR      = source
 APP_OBJ_DIR      = obj  # (create the app\obj directory first)
 APP_INCLUDE_DIR  = include
 APP_EXE_DIR      = .
@@ -37,36 +37,77 @@ APP_MAP  = $(APP_RES_DIR)\$(APP_NAME).map
 
 # Paths for dependent files ##################################################
 
-.path.prg = $(APP_PRG_DIR)
+.path.prg = $(APP_SRC_DIR)\prg
 .path.hrb = $(APP_OBJ_DIR)
 .path.obj = $(APP_OBJ_DIR)
-.path.c   = $(APP_PRG_DIR)
-.path.cpp = $(APP_PRG_DIR)
+.path.c   = $(APP_SRC_DIR)\c
+.path.cpp = $(APP_SRC_DIR)\cpp
 
 # Application PRG files (your PRG files go here) #############################
 
 
 APP_PRG_LIST =                 \
-    gdiplus.prg                \
-    color.prg                  \
-    CustomLineCap.prg          \
-    font.prg                   \
-    fontfamily.prg             \
-    graphics.prg               \
-    GraphicsPath.prg           \
-    HueSaturationLightness.prg \
-    image.prg                  \
-    LinearGradientBrush.prg    \
-    matrix.prg                 \
-    metafile.prg               \
-    metafileheader.prg         \
-    pathgradientbrush.prg      \
-    pen.prg                    \
-    solidbrush.prg             \
-    stringformat.prg           \
-    TextureBrush.prg
-
-APP_CPPPP_LIST =
+	pruebas.prg                 \
+	testunit.prg                \
+	AdjustableArrowCap.prg      \
+	Bitmap.prg                  \
+	BitmapData.prg              \
+	Blur.prg                    \
+	BrightnessContrast.prg      \
+	Brush.prg                   \
+	CachedBitmap.prg            \
+	CharacterRange.prg          \
+	Color.prg                   \
+	ColorBalance.prg            \
+	ColorCurve.prg              \
+	ColorLUT.prg                \
+	ColorMatrixEffect.prg       \
+	CustomLineCap.prg           \
+	Effect.prg                  \
+	EncoderParameter.prg        \
+	EncoderParameters.prg       \
+	Font.prg                    \
+	FontCollection.prg          \
+	Fontfamily.prg              \
+	Gdiplus.prg                 \
+	GdiplusBase.prg             \
+	Graphics.prg                \
+	GraphicsPath.prg            \
+	GraphicsPathIterator.prg    \
+	HatchBrush.prg              \
+	HueSaturationLightness.prg  \
+	Image.prg                   \
+	ImageAttributes.prg         \
+	ImageCodecInfo.prg          \
+	ImageItemData.prg           \
+	InstalledFontCollection.prg \
+	Levels.prg                  \
+	LinearGradientBrush.prg     \
+	Matrix.prg                  \
+	Metafile.prg                \
+	Metafileheader.prg          \
+	PathData.prg                \
+	Pathgradientbrush.prg       \
+	Pen.prg                     \
+	Point.prg                   \
+	PointF.prg                  \
+	PrivateFontCollection.prg   \
+	PropertyItem.prg            \
+	Rect.prg                    \
+	RectF.prg                   \
+	RedEyeCorrection.prg        \
+	Region.prg                  \
+	Sharpen.prg                 \
+	Size.prg                    \
+	SizeF.prg                   \
+	Solidbrush.prg              \
+	Stringformat.prg            \
+	TextureBrush.prg            \
+	Tint.prg                    
+	
+APP_CPPPP_LIST =	\
+	gc.cpp          \
+	generic.cpp
 
 APP_C_LIST =
 
@@ -94,8 +135,8 @@ FIVEC_LIB = $(FIVEWIN_LIB_DIR)\fiveHC.lib
 # Harbour directories & flags ################################################
 
 HARBOUR_INCLUDE_DIR = $(HBDIR)\include;$(APP_PRG_DIR)\include
-HARBOUR_EXE_DIR     = $(HBDIR)\bin
-HARBOUR_LIB_DIR     = $(HBDIR)\lib
+HARBOUR_EXE_DIR     = $(HBDIR)\bin\win\bcc
+HARBOUR_LIB_DIR     = $(HBDIR)\lib\win\bcc
 #HARBOUR_INCLUDE_DIR = $(XHBDIR)\include;
 #HARBOUR_EXE_DIR     = $(XHBDIR)\bin
 #HARBOUR_LIB_DIR     = $(XHBDIR)\lib
@@ -124,7 +165,9 @@ HBWIN_LIB  = $(HARBOUR_LIB_DIR)\hbwin.lib
 HBCT_LIB     = $(HARBOUR_LIB_DIR)\hbct.lib
 CODEMAX_LIB = codemax.lib
 HBCPLR_LIB = $(HARBOUR_LIB_DIR)\hbcplr.lib
-
+NORTL_LIB  = $(HARBOUR_LIB_DIR)\hbnortl.lib
+XHB_LIB    = $(HARBOUR_LIB_DIR)\xhb.lib
+HBPCRE_LIB = $(HARBOUR_LIB_DIR)\hbpcre.lib
 
 
 
@@ -140,15 +183,15 @@ ACE32_LIB  = $(FIVEWIN_LIB_DIR)\ace32.lib
 
 # Borlanc directories & flags ################################################
 
-BORLANDC_INCLUDE_DIR = \bcc582\include
-BORLANDC_EXE_DIR     = \bcc582\bin
-BORLANDC_LIB_DIR     = \bcc582\lib
+BORLANDC_INCLUDE_DIR = g:\bcc582\include
+BORLANDC_EXE_DIR     = g:\bcc582\bin
+BORLANDC_LIB_DIR     = g:\bcc582\lib
 #BORLANDC_INCLUDE_DIR = \prg\bcc55\include
 #BORLANDC_EXE_DIR     = \prg\bcc55\bin
 #BORLANDC_LIB_DIR     = \prg\bcc55\lib
 
-BORLANDC_COMP_FLAGS  = -P -c -O2 -I$(HARBOUR_INCLUDE_DIR);$(BORLANDC_INCLUDE_DIR)
-BORLANDC_COMP_FLAGS_CPP  = -P -c -O2 -I$(HARBOUR_INCLUDE_DIR);$(BORLANDC_INCLUDE_DIR)
+BORLANDC_COMP_FLAGS  = -P -c -O2 -I$(HARBOUR_INCLUDE_DIR);$(BORLANDC_INCLUDE_DIR);.\include
+BORLANDC_COMP_FLAGS_CPP  = -P -c -O2 -I$(HARBOUR_INCLUDE_DIR);$(BORLANDC_INCLUDE_DIR);.\include
 BORLANDC_COMP_EXE    = $(BORLANDC_EXE_DIR)\bcc32.exe
 BORLANDC_LINK_FLAGS  = -Gn -aa -Tpe -s -I$(APP_OBJ_DIR) -L$(BORLANDC_LIB_DIR)
 BORLANDC_LINK_EXE    = $(BORLANDC_EXE_DIR)\ilink32.exe
@@ -222,6 +265,9 @@ $(APP_EXE) :: $(APP_OBJS)
    @echo $(HBWIN_LIB) + >> make.tmp
    @echo $(HBCT_LIB) + >> make.tmp
    @echo $(HBCPLR_LIB) + >> make.tmp
+   @echo $(NORTL_LIB) + >> make.tmp   
+   @echo $(XHB_LIB) + >> make.tmp   
+   @echo $(HBPCRE_LIB) + >> make.tmp   
 !if $(LNK_DBFNTX) == YES
    @echo $(DBFNTX_LIB) + >> make.tmp
 #  @echo $(DBFDBT_LIB) + >> make.tmp

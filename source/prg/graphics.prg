@@ -528,6 +528,139 @@ return C5GDrawEllipse( ::handle, oPen:handle, nTop, nLeft, nwidth, nHeight )
 return sta
 
 **********************************************************************************************************
+  METHOD DrawPath( oPen, oPath ) CLASS GPGraphics
+**********************************************************************************************************
+
+   DEFAULT oPen := ::oPen
+
+
+return C5GDrawPath( ::handle, oPen:handle, oPath:handle )
+
+**********************************************************************************************************
+  METHOD DrawPie( oPen, p2, p3, p4, p5, p6, p7 ) CLASS GPGraphics
+**********************************************************************************************************
+
+   local sta
+
+   if ValType( p2 ) == "O"
+      p2 = p2:handle
+   endif
+
+   if ValType( p3 ) == "O"
+      p3 = p3:handle
+   endif
+
+   sta = C5GDrawPie( ::handle, oPen:handle, p2, p3, p4, p5, p6, p7 )      
+
+return sta
+
+**********************************************************************************************************
+  METHOD DrawPolygon( ) CLASS GPGraphics
+**********************************************************************************************************
+
+
+return 0
+
+**********************************************************************************************************
+  METHOD DrawRectangle( oPen, x, y, width, height ) CLASS GPGraphics
+**********************************************************************************************************
+
+  DEFAULT oPen := ::oPen
+
+  if ValType( x ) == "O"
+     return C5GDrawRectangle( ::handle, oPen:handle, x:handle )
+
+  else
+     return C5GDrawRectangle( ::handle, oPen:handle, x, y, width, height )
+  endif
+
+return 0
+
+**********************************************************************************************************
+  METHOD DrawRectangles( ) CLASS GPGraphics
+**********************************************************************************************************
+
+
+return 0
+
+**********************************************************************************************************
+  METHOD DrawRoundRect( rc, oPen, nRad1, nRad2 ) CLASS GPGraphics
+**********************************************************************************************************
+
+  C5GRoundRect( ::handle, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2 )
+
+return 0
+
+**********************************************************************************************************
+  METHOD DrawString( cText, font, point, A, B  ) CLASS GPGraphics
+**********************************************************************************************************
+  local sta
+
+  DEFAULT font := ::oFont
+  if B != NIL
+     DEFAULT B := ::oBrush
+     sta = C5GDrawString( ::handle, cText, font:handle, point:handle, A:handle, B:handle )
+  else
+     DEFAULT A := ::oBrush
+     sta = C5GDrawString( ::handle, cText, font:handle, point:handle, A:handle )
+  endif
+
+return sta
+
+**********************************************************************************************************
+  METHOD EndContainer( p1 ) CLASS GPGraphics
+**********************************************************************************************************
+
+return C5GEndContainer( ::handle, p1 )
+
+**********************************************************************************************************
+  METHOD EnumerateMetafile( ) CLASS GPGraphics
+**********************************************************************************************************
+
+
+return 0
+
+**********************************************************************************************************
+  METHOD ExcludeClip( ) CLASS GPGraphics
+**********************************************************************************************************
+
+
+return 0
+
+**********************************************************************************************************
+  METHOD FillClosedCurve( ) CLASS GPGraphics
+**********************************************************************************************************
+
+
+return 0
+
+
+
+**********************************************************************************************************
+  METHOD DrawLine( oPen, nTop, nLeft, nBottom, nRight ) CLASS GPGraphics
+**********************************************************************************************************
+
+   DEFAULT oPen := ::oPen
+
+   if ValType( nTop ) == "O"
+      return C5GDrawLine( ::handle, oPen:handle, nTop:handle, nLeft:handle )
+   else
+      return C5GDrawLine( ::handle, oPen:handle, nTop, nLeft, nBottom, nRight )
+   endif
+
+
+return 0
+
+
+**********************************************************************************************************
+  METHOD DrawLines( )  CLASS GPGraphics
+**********************************************************************************************************
+
+
+return 0
+
+
+**********************************************************************************************************
   METHOD FillEllipse( oBrush, nTop, nLeft, nwidth, nHeight ) CLASS GPGraphics
 **********************************************************************************************************
 
@@ -869,129 +1002,6 @@ return C5ResetTransform(::handle)
 
 return 0
 
-
-
-
-**********************************************************************************************************
-  METHOD DrawPath( oPen, oPath ) CLASS GPGraphics
-**********************************************************************************************************
-
-   DEFAULT oPen := ::oPen
-
-
-return C5GDrawPath( ::handle, oPen:handle, oPath:handle )
-
-**********************************************************************************************************
-  METHOD DrawPie( ) CLASS GPGraphics
-**********************************************************************************************************
-
-
-return 0
-
-**********************************************************************************************************
-  METHOD DrawPolygon( ) CLASS GPGraphics
-**********************************************************************************************************
-
-
-return 0
-
-**********************************************************************************************************
-  METHOD DrawRectangle( oPen, x, y, width, height ) CLASS GPGraphics
-**********************************************************************************************************
-
-  DEFAULT oPen := ::oPen
-
-  if ValType( x ) == "O"
-     return C5GDrawRectangle( ::handle, oPen:handle, x:handle )
-
-  else
-     return C5GDrawRectangle( ::handle, oPen:handle, x, y, width, height )
-  endif
-
-return 0
-
-**********************************************************************************************************
-  METHOD DrawRectangles( ) CLASS GPGraphics
-**********************************************************************************************************
-
-
-return 0
-
-**********************************************************************************************************
-  METHOD DrawRoundRect( rc, oPen, nRad1, nRad2 ) CLASS GPGraphics
-**********************************************************************************************************
-
-  C5GRoundRect( ::handle, oPen:handle, rc[1], rc[2], rc[4]-rc[2], rc[3]-rc[1], nRad1, nRad2 )
-
-return 0
-
-**********************************************************************************************************
-  METHOD DrawString( cText, font, point, A, B  ) CLASS GPGraphics
-**********************************************************************************************************
-  local sta
-
-  DEFAULT font := ::oFont
-  if B != NIL
-     DEFAULT B := ::oBrush
-     sta = C5GDrawString( ::handle, cText, font:handle, point:handle, A:handle, B:handle )
-  else
-     DEFAULT A := ::oBrush
-     sta = C5GDrawString( ::handle, cText, font:handle, point:handle, A:handle )
-  endif
-
-return sta
-
-**********************************************************************************************************
-  METHOD EndContainer( p1 ) CLASS GPGraphics
-**********************************************************************************************************
-
-return C5GEndContainer( ::handle, p1 )
-
-**********************************************************************************************************
-  METHOD EnumerateMetafile( ) CLASS GPGraphics
-**********************************************************************************************************
-
-
-return 0
-
-**********************************************************************************************************
-  METHOD ExcludeClip( ) CLASS GPGraphics
-**********************************************************************************************************
-
-
-return 0
-
-**********************************************************************************************************
-  METHOD FillClosedCurve( ) CLASS GPGraphics
-**********************************************************************************************************
-
-
-return 0
-
-
-
-**********************************************************************************************************
-  METHOD DrawLine( oPen, nTop, nLeft, nBottom, nRight ) CLASS GPGraphics
-**********************************************************************************************************
-
-   DEFAULT oPen := ::oPen
-
-   if ValType( nTop ) == "O"
-      return C5GDrawLine( ::handle, oPen:handle, nTop:handle, nLeft:handle )
-   else
-      return C5GDrawLine( ::handle, oPen:handle, nTop, nLeft, nBottom, nRight )
-   endif
-
-
-return 0
-
-
-**********************************************************************************************************
-  METHOD DrawLines( )  CLASS GPGraphics
-**********************************************************************************************************
-
-
-return 0
 
 **********************************************************************************************************
   METHOD RotateTransform( angle, order ) CLASS GPGraphics
@@ -1712,9 +1722,9 @@ HB_FUNC( C5GFILLREGION ){
 
    GDIPLUS *p = hb_GDIPLUS_par( 1 );
    GDIPLUS * pBrush = hb_GDIPLUS_par( 2 );
-    GDIPLUS * pregion = hb_GDIPLUS_par( 3 );
+   GDIPLUS * pregion = hb_GDIPLUS_par( 3 );
 
-    if( GP_IS_GRAPHICS( p ) && GP_IS_BRUSH( pBrush ) && GP_IS_REGION( pregion ) ){
+   if( GP_IS_GRAPHICS( p ) && GP_IS_BRUSH( pBrush ) && GP_IS_REGION( pregion ) ){
         Status sta;
         Graphics * g = ( Graphics * ) GP_GET( p );
        Brush * b = ( Brush * ) GP_GET( pBrush );
@@ -1724,7 +1734,7 @@ HB_FUNC( C5GFILLREGION ){
 
        hb_retni( ( int ) sta );
 
-    }else
+   }else
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
 
@@ -1780,7 +1790,7 @@ HB_FUNC( C5GDRAWPATH )
 {
 
    GDIPLUS * pObj1 = hb_GDIPLUS_par( 1 );
-   GDIPLUS * pObj = hb_GDIPLUS_par( 2 );
+   GDIPLUS * pObj  = hb_GDIPLUS_par( 2 );
    GDIPLUS * pObj2 = hb_GDIPLUS_par( 3 );
 
    if(GP_IS_GRAPHICS( pObj1 )  && GP_IS_PEN( pObj ) && GP_IS_GRAPHICSPATH( pObj2 ) )
@@ -1794,6 +1804,57 @@ HB_FUNC( C5GDRAWPATH )
       hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 
 }
+
+HB_FUNC( C5GDRAWPIE )
+{
+  GDIPLUS * pObj = hb_GDIPLUS_par( 1 );
+  GDIPLUS * pObj2 = hb_GDIPLUS_par( 2 );
+  if( GP_IS_GRAPHICS( pObj ) && GP_IS_PEN( pObj2 ) )
+  {
+    Graphics * g = ( Graphics * ) GP_GET( pObj );
+  	Pen * p = ( Pen * ) GP_GET( pObj2 );
+  	Status sta;
+  	if( HB_ISNIL( 6 ) && HB_ISNIL( 7 ) && HB_ISNIL( 8 ) )
+  	{
+  		GDIPLUS * p3 = hb_GDIPLUS_par( 3 );
+        void * rect = GP_GET( p3 );
+        if( GP_IS_RECT( p3 ) ){
+           sta = g->DrawPie( p, *( ( Rect * ) rect ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ) );
+        }else if GP_IS_RECTF( p3 ) {
+          sta = g->DrawPie( p, *( ( RectF * ) rect ), ( REAL ) hb_parnd( 4 ), ( REAL ) hb_parnd( 5 ) );
+        }
+  	}else
+  	{
+  		PHB_ITEM p3 = hb_param( 3, HB_IT_ANY );
+  		PHB_ITEM p4 = hb_param( 4, HB_IT_ANY );
+  		PHB_ITEM p5 = hb_param( 5, HB_IT_ANY );
+  		PHB_ITEM p6 = hb_param( 6, HB_IT_ANY );
+  		PHB_ITEM p7 = hb_param( 7, HB_IT_ANY );
+  		PHB_ITEM p8 = hb_param( 8, HB_IT_ANY );
+
+  		if( HB_IS_DOUBLE( p3 ) ){
+           sta = g->DrawPie( p, ( REAL ) hb_itemGetND( p3 ), 
+           	                    ( REAL ) hb_itemGetND( p4 ),
+           	                    ( REAL ) hb_itemGetND( p5 ), 
+           	                    ( REAL ) hb_itemGetND( p6 ), 
+           	                    ( REAL ) hb_itemGetND( p7 ),
+           	                    ( REAL ) hb_itemGetND( p8 ) );
+  		}else
+  		{
+           sta = g->DrawPie( p, hb_itemGetNI( p3 ), 
+           	                    hb_itemGetNI( p4 ),
+           	                    hb_itemGetNI( p5 ), 
+           	                    hb_itemGetNI( p6 ), 
+           	                    hb_itemGetND( p7 ),
+           	                    hb_itemGetND( p8 ) );	
+  		}
+  		hb_retni( ( int ) sta );
+  	}
+  }else
+     hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+
+}
+
 
 HB_FUNC( C5GDRAWRECTANGLE )
 {

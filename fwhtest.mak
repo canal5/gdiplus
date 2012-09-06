@@ -139,8 +139,8 @@ FIVEC_LIB = $(FIVEWIN_LIB_DIR)\fiveHC.lib
 # Harbour directories & flags ################################################
 
 HARBOUR_INCLUDE_DIR = $(HBDIR)\include
-HARBOUR_EXE_DIR     = $(HBDIR)\bin
-HARBOUR_LIB_DIR     = $(HBDIR)\lib
+HARBOUR_EXE_DIR     = $(HBDIR)\bin\win\bcc
+HARBOUR_LIB_DIR     = $(HBDIR)\lib\win\bcc
 #HARBOUR_INCLUDE_DIR = $(XHBDIR)\include
 #HARBOUR_EXE_DIR     = $(XHBDIR)\bin
 #HARBOUR_LIB_DIR     = $(XHBDIR)\lib
@@ -169,7 +169,10 @@ HBWIN_LIB  = $(HARBOUR_LIB_DIR)\hbwin.lib
 HBCT_LIB     = $(HARBOUR_LIB_DIR)\hbct.lib
 CODEMAX_LIB = codemax.lib
 HBCPLR_LIB = $(HARBOUR_LIB_DIR)\hbcplr.lib
-XHB_LIB      = $(HARBOUR_LIB_DIR)\xhb.lib
+NORTL_LIB  = $(HARBOUR_LIB_DIR)\hbnortl.lib
+XHB_LIB    = $(HARBOUR_LIB_DIR)\xhb.lib
+HBPCRE_LIB = $(HARBOUR_LIB_DIR)\hbpcre.lib
+
 
 
 
@@ -185,9 +188,9 @@ ACE32_LIB  = $(FIVEWIN_LIB_DIR)\ace32.lib
 
 # Borlanc directories & flags ################################################
 
-BORLANDC_INCLUDE_DIR = \bcc582\include
-BORLANDC_EXE_DIR     = \bcc582\bin
-BORLANDC_LIB_DIR     = \bcc582\lib
+BORLANDC_INCLUDE_DIR = g:\bcc582\include
+BORLANDC_EXE_DIR     = g:\bcc582\bin
+BORLANDC_LIB_DIR     = g:\bcc582\lib
 #BORLANDC_INCLUDE_DIR = \prg\bcc55\include
 #BORLANDC_EXE_DIR     = \prg\bcc55\bin
 #BORLANDC_LIB_DIR     = \prg\bcc55\lib
@@ -267,7 +270,10 @@ $(APP_EXE) :: $(APP_OBJS)
    @echo $(HBWIN_LIB) + >> make.tmp
    @echo $(HBCT_LIB) + >> make.tmp
    @echo $(HBCPLR_LIB) + >> make.tmp
+   @echo $(NORTL_LIB) + >> make.tmp   
    @echo $(XHB_LIB) + >> make.tmp   
+   @echo $(HBPCRE_LIB) + >> make.tmp   
+   
 !if $(LNK_DBFNTX) == YES
    @echo $(DBFNTX_LIB) + >> make.tmp
 #  @echo $(DBFDBT_LIB) + >> make.tmp
