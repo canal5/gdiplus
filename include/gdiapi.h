@@ -55,6 +55,7 @@ typedef struct __gdiplus
 #define GP_IS_PEN( p )      ( ( GP_OBJECT_TYPE( p ) == GP_IT_PEN ) )
 #define GP_IS_POINT( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_POINT ) )
 #define GP_IS_POINTF( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_POINTF ) )
+#define GP_IS_POINTS( p )    ( ( GP_IS_POINT( p ) || GP_IS_POINTF( p ) ) )
 #define GP_IS_SIZE( p )     ( ( GP_OBJECT_TYPE( p ) == GP_IT_SIZE ) )
 #define GP_IS_SIZEF( p )    ( ( GP_OBJECT_TYPE( p ) == GP_IT_SIZEF ) )
 #define GP_IS_MATRIX( p )   ( ( GP_OBJECT_TYPE( p ) == GP_IT_MATRIX ) )

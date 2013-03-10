@@ -172,7 +172,7 @@ HBCPLR_LIB = $(HARBOUR_LIB_DIR)\hbcplr.lib
 NORTL_LIB  = $(HARBOUR_LIB_DIR)\hbnortl.lib
 XHB_LIB    = $(HARBOUR_LIB_DIR)\xhb.lib
 HBPCRE_LIB = $(HARBOUR_LIB_DIR)\hbpcre.lib
-
+HBXPP_LIB  = $(HARBOUR_LIB_DIR)\hbxpp.lib
 
 
 
@@ -188,9 +188,9 @@ ACE32_LIB  = $(FIVEWIN_LIB_DIR)\ace32.lib
 
 # Borlanc directories & flags ################################################
 
-BORLANDC_INCLUDE_DIR = g:\bcc582\include
-BORLANDC_EXE_DIR     = g:\bcc582\bin
-BORLANDC_LIB_DIR     = g:\bcc582\lib
+BORLANDC_INCLUDE_DIR = c:\bcc582\include
+BORLANDC_EXE_DIR     = c:\bcc582\bin
+BORLANDC_LIB_DIR     = c:\bcc582\lib
 #BORLANDC_INCLUDE_DIR = \prg\bcc55\include
 #BORLANDC_EXE_DIR     = \prg\bcc55\bin
 #BORLANDC_LIB_DIR     = \prg\bcc55\lib
@@ -273,6 +273,7 @@ $(APP_EXE) :: $(APP_OBJS)
    @echo $(NORTL_LIB) + >> make.tmp   
    @echo $(XHB_LIB) + >> make.tmp   
    @echo $(HBPCRE_LIB) + >> make.tmp   
+   @echo $(HBXPP_LIB) + >> make.tmp
    
 !if $(LNK_DBFNTX) == YES
    @echo $(DBFNTX_LIB) + >> make.tmp

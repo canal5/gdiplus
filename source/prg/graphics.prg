@@ -527,6 +527,31 @@ return C5GDrawEllipse( ::handle, oPen:handle, nTop, nLeft, nwidth, nHeight )
 
 return sta
 
+
+**********************************************************************************************************
+  METHOD DrawLine( oPen, nTop, nLeft, nBottom, nRight ) CLASS GPGraphics
+**********************************************************************************************************
+
+   DEFAULT oPen := ::oPen
+
+   if ValType( nTop ) == "O"
+      return C5GDrawLine( ::handle, oPen:handle, nTop:handle, nLeft:handle )
+   else
+      return C5GDrawLine( ::handle, oPen:handle, nTop, nLeft, nBottom, nRight )
+   endif
+
+
+return 0
+
+
+**********************************************************************************************************
+  METHOD DrawLines( oPen, p1, p2 )  CLASS GPGraphics
+**********************************************************************************************************
+	DEFAULT oPen := ::oPen
+
+return C5GDrawLines( ::handle, oPen:handle, p1, p2 )
+
+
 **********************************************************************************************************
   METHOD DrawPath( oPen, oPath ) CLASS GPGraphics
 **********************************************************************************************************
@@ -555,11 +580,13 @@ return C5GDrawPath( ::handle, oPen:handle, oPath:handle )
 return sta
 
 **********************************************************************************************************
-  METHOD DrawPolygon( ) CLASS GPGraphics
+  METHOD DrawPolygon(oPen, p1, p2 )  CLASS GPGraphics
 **********************************************************************************************************
+	DEFAULT oPen := ::oPen
+
+return C5GDrawPolygon( ::handle, oPen:handle, p1, p2 )
 
 
-return 0
 
 **********************************************************************************************************
   METHOD DrawRectangle( oPen, x, y, width, height ) CLASS GPGraphics
@@ -629,31 +656,6 @@ return 0
 
 **********************************************************************************************************
   METHOD FillClosedCurve( ) CLASS GPGraphics
-**********************************************************************************************************
-
-
-return 0
-
-
-
-**********************************************************************************************************
-  METHOD DrawLine( oPen, nTop, nLeft, nBottom, nRight ) CLASS GPGraphics
-**********************************************************************************************************
-
-   DEFAULT oPen := ::oPen
-
-   if ValType( nTop ) == "O"
-      return C5GDrawLine( ::handle, oPen:handle, nTop:handle, nLeft:handle )
-   else
-      return C5GDrawLine( ::handle, oPen:handle, nTop, nLeft, nBottom, nRight )
-   endif
-
-
-return 0
-
-
-**********************************************************************************************************
-  METHOD DrawLines( )  CLASS GPGraphics
 **********************************************************************************************************
 
 
@@ -1717,6 +1719,58 @@ HB_FUNC( C5GDRAWLINE )
 
 }
 
+HB_FUNC( C5GDRAWLINES )
+{
+	GDIPLUS *p = hb_GDIPLUS_par( 1 );
+	GDIPLUS *pObj = hb_GDIPLUS_par( 2 );
+	Status sta;
+	if( GP_IS_GRAPHICS( p )  && GP_IS_PEN( pObj  ) )
+    {
+    	Graphics *g = ( Graphics * ) GP_GET( p ) ;
+    	Pen* p = (Pen*) GP_GET( pObj );
+		BOOL lF = false;
+		void * vPoint;
+		int iCount =  hb_parni(4);
+		PHB_ITEM aPoint = hb_param( 3, HB_IT_ARRAY );
+  		vPoint = ConvertArray2Point( aPoint, &lF );
+  		if( lF ){
+  			sta = g->DrawLines( p, ( PointF *) vPoint, iCount ) ;
+  		}else
+  		{
+  			sta = g->DrawLines( p, ( Point *) vPoint, iCount ) ;
+  		}
+		hb_xfree( vPoint );
+		hb_retni( ( Status ) sta );
+    }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
+
+
+HB_FUNC( C5GDRAWPOLYGON )
+{
+	GDIPLUS *p = hb_GDIPLUS_par( 1 );
+	GDIPLUS *pObj = hb_GDIPLUS_par( 2 );
+	Status sta;
+	if( GP_IS_GRAPHICS( p )  && GP_IS_PEN( pObj  ) )
+    {
+    	Graphics *g = ( Graphics * ) GP_GET( p ) ;
+    	Pen* p = (Pen*) GP_GET( pObj );
+		BOOL lF = false;
+		void * vPoint;
+		int iCount =  hb_parni(4);
+		PHB_ITEM aPoint = hb_param( 3, HB_IT_ARRAY );
+  		vPoint = ConvertArray2Point( aPoint, &lF );
+  		if( lF ){
+  			sta = g->DrawPolygon( p, ( PointF *) vPoint, iCount ) ;
+  		}else
+  		{
+  			sta = g->DrawPolygon( p, ( Point *) vPoint, iCount ) ;
+  		}
+		hb_xfree( vPoint );
+		hb_retni( ( Status ) sta );
+    }else
+      hb_errRT_BASE( EG_ARG, 2020, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+}
 
 HB_FUNC( C5GFILLREGION ){
 

@@ -7,7 +7,7 @@
 
 :READY
 @if not exist obj md obj
-@CALL make FWDIR=c:\fivewin\svn\repo HBDIR=c:\harbour
+@CALL make FWDIR=c:\fivewin\svn\repo HBDIR=c:\hb30
 @IF ERRORLEVEL 1 GOTO ERROR
 @test
 @GOTO FINISHED

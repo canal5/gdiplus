@@ -794,6 +794,11 @@ return 0
    TEST .T.      DESCRIPTION "DrawPie( Pen, REAL, REAL, REAL, REAL, REAL, REAL )"  SAMPLE Example_DrawPie2()
    TEST .T.      DESCRIPTION "DrawPie( Pen, Rect, REAL, REAL )"  SAMPLE Example_DrawPie3()
    TEST .T.      DESCRIPTION "DrawPie( Pen, RectF, REAL, REAL )"  SAMPLE Example_DrawPie4()
+   TEST .T.      DESCRIPTION "DrawLines( Pen, Point, len )"  SAMPLE Example_DrawLines1()
+   TEST .T.      DESCRIPTION "DrawLines( Pen, PointF, len )"  SAMPLE Example_DrawLines2()
+   TEST .T.      DESCRIPTION "DrawPolygon( Pen, Point, len )"  SAMPLE Example_DrawPolygon1()
+   TEST .T.      DESCRIPTION "DrawPolygon( Pen, PointF, len )"  SAMPLE Example_DrawPolygon2()
+   
 
 
 return 0
@@ -3191,6 +3196,98 @@ function Example_DrawPie4()
 return nil
 
 
+function Example_DrawLines1()
+   local bPainted := {| hDC |
+   local aPoints
+   Graphics graphics(hdc)
+
+   // Create a Pen object.
+   Pen blackPen(Color(255, 0, 0, 0), 3)
+
+   // Create an array of Point objects that define the lines to draw.
+   Point point1(10, 10)
+   Point point2(10, 100)
+   Point point3(200, 50)
+   Point point4(250, 300)
+
+   aPoints = {point1, point2, point3, point4}
+
+   // Draw the lines.
+   graphics:DrawLines(blackPen, aPoints, 4)
+   }
+   exampleWindow( bPainted )
+return nil
+
+
+function Example_DrawLines2()
+   local bPainted := {| hDC |
+   local aPoints
+   Graphics graphics(hdc)
+
+   // Create a Pen object.
+   Pen blackPen(Color(255, 0, 0, 0), 3)
+
+   // Create an array of Point objects that define the lines to draw.
+   PointF point1(10.5, 10.0)
+   PointF point2(10.6, 100.0)
+   PointF point3(200.0, 50.2)
+   PointF point4(250.0, 300.2)
+
+   aPoints = {point1, point2, point3, point4}
+
+   // Draw the lines.
+   graphics:DrawLines(blackPen, aPoints, 4)
+   }
+   exampleWindow( bPainted )
+return nil
+
+
+function Example_DrawPolygon1()
+   local bPainted := {| hDC |
+   local aPoints
+   Graphics graphics(hdc)
+
+   // Create a Pen object.
+   Pen blackPen(Color(255, 0, 0, 0), 3)
+
+   // Create an array of Point objects that define the lines to draw.
+   Point point1(100, 100)
+   Point point2(200, 130)
+   Point point3(150, 200)
+   Point point4(50, 200)
+   Point point5(0, 130)
+   
+   aPoints = {point1, point2, point3, point4, point5}
+
+   // Draw the lines.
+   graphics:DrawPolygon(blackPen, aPoints, 4)
+   }
+   exampleWindow( bPainted )
+return nil
+
+function Example_DrawPolygon2()
+   local bPainted := {| hDC |
+   local aPoints
+   Graphics graphics(hdc)
+
+   // Create a Pen object.
+   Pen blackPen(Color(255, 0, 0, 0), 3)
+
+   // Create an array of Point objects that define the lines to draw.
+   Point point1(100.0, 100.0)
+   Point point2(200.0, 130.0)
+   Point point3(150.0, 200.0)
+   Point point4(50.0, 200.0)
+   Point point5(0.0, 130.0)
+   
+   aPoints = {point1, point2, point3, point4, point5}
+
+   // Draw the lines.
+   graphics:DrawPolygon(blackPen, aPoints, 4)
+   }
+   exampleWindow( bPainted )
+return nil
+
 function Example_ResetClip( )
    local bPainted := { | hdc |
 
@@ -4202,6 +4299,7 @@ function WarpExample()
    exampleWindow( bPainted )
 
 return nil
+
 
 
 //---------------------------------
